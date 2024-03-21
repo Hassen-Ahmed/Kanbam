@@ -1,1 +1,37 @@
-$body-bg-color: grey;
+// Color
+$bg-color-nav-01: #1d2125;
+$bg-color-nav-glass: #22272b68;
+$bg-color-lists: #101204;
+$bg-color-card: #21262a;
+$bg-color-menu: #282e33;
+
+$color-white-01: #9eacba;
+$color-white-02: #ffffff;
+$color-black-01: #000000;
+$color-black-02: #101204;
+$color-grey-01: #9e9e9e;
+$color-grey-02: #434343;
+
+$border-color-01: #45505b;
+$border-color-card: #59a4e1;
+
+// Typography
+$font-family-01: "Ubuntu", "Blinker", Segoe UI, Roboto, Droid Sans,
+  Helvetica Neue, sans-serif;
+
+// Width, Space, or Gap
+$margin-vertical-card: 1rem;
+$margin-vertical-lists: 2rem;
+$margin-horizontal-card: 1rem;
+$margin-horizontal-lists: 1rem;
+
+$padding-vertical-card: 1rem;
+$padding-vertical-lists: 1rem;
+$padding-horizontal-card: 1rem;
+$padding-horizontal-lists: 1rem;
+
+$gap-tiny: 1rem;
+$gap-small: 2rem;
+$gap-medium: 4rem;
+$gap-big: 6rem;
+$gap-huge: 10rem;
