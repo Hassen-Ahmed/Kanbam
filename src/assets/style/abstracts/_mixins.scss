@@ -1,0 +1,12 @@
+@mixin flexy(
+  $direction: row,
+  $just-content: center,
+  $al-item: center,
+  $gap: 0rem
+) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $just-content;
+  align-items: $al-item;
+  gap: $gap;
+}

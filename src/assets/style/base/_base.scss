@@ -1,4 +1,5 @@
 @use "../abstracts/variable" as var;
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
 *,
 *::after,
@@ -15,14 +16,15 @@ html {
 body {
   width: 100vw;
   height: 100vh;
-
   background-image: linear-gradient(
       45deg,
       rgba(155, 105, 105, 0.25),
       rgba(105, 130, 155, 0.25)
     ),
-    url("/images/trello-bg-04.jpg");
+    url("/images/trello-bg-06.jpg");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+
+  font-family: "Ubuntu Mono", monospace;
 }
