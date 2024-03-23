@@ -1,3 +1,10 @@
+@use "../../assets/style/abstracts/variable" as var;
+@use "../../assets/style/abstracts/mixins" as mixn;
 .nav-bar {
-  background-color: rgb(98, 0, 255);
+  background-color: var.$bg-color-nav-01;
+  color: var.$color-white-01;
+  height: var.$height-nav-01;
+  border-bottom: 0.1rem solid var.$border-color-01;
+
+  @include mixn.flexy(row, flex-start, center, 1rem);
 }
