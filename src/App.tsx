@@ -1,7 +1,9 @@
+import Home from "./pages/home/Home";
+
 const App: React.FC = () => {
   return (
-    <div>
-      <h1>Hello world! </h1>
+    <div className="app">
+      <Home />
     </div>
   );
 };
