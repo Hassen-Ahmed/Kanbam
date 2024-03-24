@@ -1,11 +1,11 @@
 @use "../../assets/style/abstracts/mixins" as mixn;
 .logo-kanbam {
+  @include mixn.flexy(row, center, center);
   width: 10rem;
   margin-left: 4rem;
-  @include mixn.flexy(row, center, center);
-}
 
-.logo-kanbam h1 {
-  margin-left: 1rem;
-  font-size: 2.4rem;
+  & h1 {
+    margin-left: 1rem;
+    font-size: 2.4rem;
+  }
 }
