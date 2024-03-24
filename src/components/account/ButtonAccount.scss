@@ -1,0 +1,36 @@
+@use "../../assets/style/abstracts/variable" as var;
+@use "../../assets/style/abstracts/mixins" as mixn;
+
+.account-btn {
+  @include mixn.flexy(row, center, center);
+  background-color: var.$bg-color-btn-account;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+
+  cursor: pointer;
+  position: relative;
+  z-index: var.$z-index-10;
+
+  &::after {
+    content: "";
+    position: absolute;
+
+    width: 130%;
+    height: 130%;
+    border-radius: 50%;
+    opacity: 0;
+    background-color: inherit;
+    z-index: -1;
+    transition: all 0.2s ease;
+  }
+
+  &:hover::after {
+    opacity: 0.4;
+  }
+
+  p {
+    color: var.$color-white-02;
+    font-size: 1.6rem;
+  }
+}
