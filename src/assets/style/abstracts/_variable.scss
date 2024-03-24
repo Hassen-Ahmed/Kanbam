@@ -4,6 +4,7 @@ $bg-color-nav-glass: #22272b68;
 $bg-color-lists: #101204;
 $bg-color-card: #21262a;
 $bg-color-menu: #282e33;
+$bg-color-btn-account: #1a66d8;
 
 $color-white-01: #9eacba;
 $color-white-02: #ffffff;
@@ -16,8 +17,19 @@ $border-color-01: #45505b;
 $border-color-card: #59a4e1;
 
 // Typography
-$font-family-01: "Ubuntu", "Blinker", Segoe UI, Roboto, Droid Sans,
-  Helvetica Neue, sans-serif;
+
+// font families = ff
+$ff-01: "Ubuntu Mono", "Blinker", Segoe UI, Roboto, Droid Sans, Helvetica Neue,
+  sans-serif;
+
+// font size = fsi
+$fsi-root: 62.5%;
+$fsi-1: 1rem;
+$fsi-12: 1.2rem;
+$fsi-14: 1.4rem;
+$fsi-16: 1.6rem;
+$fsi-18: 1.8rem;
+$fsi-2: 2rem;
 
 // Width, Space, or Gap
 $margin-vertical-card: 1rem;
@@ -37,3 +49,28 @@ $gap-big: 6rem;
 $gap-huge: 10rem;
 
 $height-nav-01: 5rem;
+
+// Z-index
+
+$z-index-1: 1;
+$z-index-10: 10;
+$z-index-20: 20;
+$z-index-50: 50;
+$z-index-100: 100;
+$z-index-150: 150;
+$z-index-200: 200;
+$z-index-250: 250;
+$z-index-350: 350;
+$z-index-400: 400;
+$z-index-450: 450;
+$z-index-500: 500;
+$z-index-550: 550;
+$z-index-600: 600;
+$z-index-650: 650;
+$z-index-700: 700;
+$z-index-750: 750;
+$z-index-800: 800;
+$z-index-850: 850;
+$z-index-900: 900;
+$z-index-950: 950;
+$z-index-1000: 1000;
