@@ -1,0 +1,163 @@
+@use "../../assets/style/abstracts/variable" as var;
+@use "../../assets/style/abstracts/mixins" as mixn;
+
+@mixin hover-effect {
+  &:hover {
+    background-color: #c1d3ef1a;
+    border-right: 0.2rem solid var.$border-color-card;
+  }
+}
+
+.menu-account {
+  position: absolute;
+  top: (var.$height-nav-01 + 0.1rem);
+  right: 0;
+  width: 100vw;
+  height: 90vh;
+}
+.menu__background {
+  position: absolute;
+  top: -(var.$height-nav-01 + 0.1rem);
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(102, 51, 153, 0.263);
+  z-index: var.$z-index-1;
+}
+
+.menu {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.2rem;
+  width: 25rem;
+  height: 90vh;
+  padding-bottom: 1rem;
+  background-color: var.$bg-color-menu;
+
+  border-radius: 0.5rem;
+  border: 0.1rem solid var.$border-color-01;
+  z-index: var.$z-index-100;
+
+  & hr {
+    width: 100%;
+    border: none;
+    border-bottom: 0.1rem solid var.$border-color-01;
+    margin: 1rem 0;
+  }
+
+  &__heading {
+    margin-top: 2rem;
+    margin-left: 2rem;
+    font-size: var.$fsi-16;
+  }
+
+  &__logo {
+    @include mixn.flexy(row, flex-start, center, 1rem);
+    padding: 0 2rem;
+
+    &--icon {
+      @include mixn.flexy();
+      background-color: var.$bg-color-btn-account;
+      width: 4rem;
+      height: 4rem;
+      margin: 2rem 0;
+      border-radius: 50%;
+      opacity: 1;
+      transition: all 0.2s ease;
+
+      & p {
+        color: var.$color-white-02;
+        font-size: var.$fsi-16;
+      }
+    }
+
+    &--photo {
+      position: absolute;
+      @include mixn.flexy();
+      background-color: var.$bg-color-nav-glass;
+      width: 4rem;
+      height: 4rem;
+      margin: 2rem 0;
+      border-radius: 50%;
+      opacity: 0;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    &:hover &--icon {
+      opacity: 0;
+    }
+
+    &:hover &--photo {
+      opacity: 1;
+    }
+
+    &--texts {
+    }
+
+    &--user {
+      font-size: var.$fsi-16;
+      margin-bottom: 0.5rem;
+    }
+    &--email {
+      font-size: var.$fsi-14;
+    }
+  }
+
+  &__theme {
+    padding: 1rem 2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+
+    @include hover-effect;
+
+    &--text {
+      font-size: var.$fsi-16;
+    }
+
+    &--list {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateX(-100%);
+      background-color: var.$bg-color-menu;
+      border: 0.1rem solid var.$border-color-01;
+      list-style: none;
+      border-top-left-radius: 0.5rem;
+      border-bottom-left-radius: 0.5rem;
+      display: none;
+
+      & li {
+        padding: 1rem 3rem;
+        font-size: var.$fsi-16;
+        @include mixn.flexy(row, flex-start, center, 1rem);
+
+        &:hover {
+          background-color: #c1d3ef1a;
+          border-left: 0.1rem solid var.$border-color-card;
+        }
+      }
+
+      & li:first-child {
+        border-bottom: 0.1rem solid var.$border-color-01;
+      }
+    }
+
+    &:hover &--list {
+      display: block;
+    }
+  }
+  &__logout {
+    padding: 1rem 2rem;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    @include hover-effect;
+
+    &--text {
+      font-size: var.$fsi-16;
+    }
+  }
+}
