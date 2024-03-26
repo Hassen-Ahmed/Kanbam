@@ -1,0 +1,20 @@
+@use "../../assets/style/abstracts/mixins" as mixn;
+
+.lists--container {
+  &-main {
+    width: 28rem;
+    height: 85vh;
+    background-color: rgba(148, 194, 56, 0.164);
+  }
+
+  &-sub {
+    background-color: rgba(70, 51, 153, 0.345);
+    height: auto;
+  }
+}
+
+.lists {
+  padding: 2rem 1rem;
+  border-radius: 1rem;
+  @include mixn.flexy(column, center, center, 3rem);
+}
