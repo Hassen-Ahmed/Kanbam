@@ -1,0 +1,10 @@
+@use "../../assets/style/abstracts/mixins" as mixn;
+
+.board {
+  margin-top: 4rem;
+  //   background-color: rgb(164, 130, 199);
+  height: auto;
+  width: auto;
+
+  @include mixn.flexy(row, center, center, 3rem);
+}
