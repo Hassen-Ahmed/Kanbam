@@ -1,11 +1,43 @@
 @use "../../assets/style/abstracts/mixins" as mixn;
+@use "../../assets/style/base/animation" as *;
 .logo-kanbam {
   @include mixn.flexy(row, center, center);
-  width: 10rem;
+  width: 12rem;
   margin-left: 4rem;
 
   & h1 {
     margin-left: 1rem;
     font-size: 2.4rem;
+  }
+}
+
+.logo__icon {
+  width: 2.2rem;
+  height: 2.4rem;
+  padding: 0.2rem 0;
+  border-radius: 0.2rem;
+  background-color: rgba(204, 202, 202, 0.999);
+  position: relative;
+
+  @mixin sudo-ele($duration: 0.2s, $delay: 0.2s) {
+    content: "";
+    position: absolute;
+    background-color: rgb(44, 44, 44);
+    top: 0.3rem;
+    width: 0.6rem;
+    border-radius: 0.15rem;
+
+    animation: logo-up-down $duration ease $delay infinite;
+  }
+  &::after {
+    @include sudo-ele(1s, 0.5s);
+    left: 0.34em;
+    height: 70%;
+  }
+
+  &::before {
+    @include sudo-ele(1s, 0.2s);
+    right: 0.34em;
+    height: 50%;
   }
 }
