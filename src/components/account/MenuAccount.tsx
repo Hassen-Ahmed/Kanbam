@@ -1,11 +1,16 @@
-import { useState } from "react";
 import "./MenuAccount.scss";
 import { ImCamera } from "react-icons/im";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 
-export default function MenuAccount() {
-  const [isAccountMenuVisible, setIsAccountMenuVisible] = useState(true);
+interface IMenuVisiblity {
+  isAccountMenuVisible: boolean;
+  setIsAccountMenuVisible: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
+const MenuAccount: React.FC<IMenuVisiblity> = ({
+  isAccountMenuVisible,
+  setIsAccountMenuVisible,
+}) => {
   return (
     <div className="menu-account">
       {isAccountMenuVisible && (
@@ -54,4 +59,6 @@ export default function MenuAccount() {
       )}
     </div>
   );
-}
+};
+
+export default MenuAccount;
