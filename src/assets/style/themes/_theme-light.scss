@@ -1,0 +1,3 @@
+@use "../abstracts/mixins" as mixn;
+
+@include mixn.handler-theme(theme-light);
