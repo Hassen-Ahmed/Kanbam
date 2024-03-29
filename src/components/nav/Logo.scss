@@ -1,5 +1,7 @@
 @use "../../assets/style/abstracts/mixins" as mixn;
+@use "../../assets/style/abstracts/variable" as var;
 @use "../../assets/style/base/animation" as *;
+
 .logo-kanbam {
   @include mixn.flexy(row, center, center);
   width: 12rem;
@@ -16,7 +18,6 @@
   height: 2.4rem;
   padding: 0.2rem 0;
   border-radius: 0.2rem;
-  background-color: rgba(204, 202, 202, 0.999);
   position: relative;
 
   @mixin sudo-ele($duration: 0.2s, $delay: 0.2s) {
@@ -29,6 +30,7 @@
 
     animation: logo-up-down $duration ease $delay infinite;
   }
+
   &::after {
     @include sudo-ele(1s, 0.5s);
     left: 0.34em;
