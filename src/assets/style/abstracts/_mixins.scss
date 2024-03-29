@@ -1,3 +1,5 @@
+@use "./variable" as var;
+
 @mixin flexy(
   $direction: row,
   $just-content: center,
@@ -9,4 +11,134 @@
   justify-content: $just-content;
   align-items: $al-item;
   gap: $gap;
+}
+
+// themes maker
+
+@mixin shared-statement(
+  $theme-name,
+  $bg-dark,
+  $bg-light,
+  $font-dark: null,
+  $font-light: null
+) {
+  @if ($theme-name == theme-dark) {
+    background-color: $bg-dark;
+    @if ($font-dark != null) {
+      color: $font-dark;
+    }
+  } @else {
+    background-color: $bg-light;
+    @if ($font-light != null) {
+      color: $font-light;
+    }
+  }
+  transition: all 0.5s ease;
+}
+
+@mixin bg($theme-name, $bg-dark, $bg-light) {
+  @if ($theme-name == theme-dark) {
+    background-color: $bg-dark;
+  } @else {
+    background-color: $bg-light;
+  }
+}
+
+@mixin handler-theme($theme-name) {
+  .#{$theme-name} {
+    .card {
+      @include shared-statement(
+        $theme-name,
+        var.$bg-color-dark-card,
+        var.$bg-color-light-card,
+        var.$font-color-dark-01,
+        var.$font-color-light-01
+      );
+    }
+    .lists--container-sub {
+      @include shared-statement(
+        $theme-name,
+        var.$bg-color-dark-lists,
+        var.$bg-color-light-lists,
+        var.$font-color-dark-01,
+        var.$font-color-light-01
+      );
+    }
+
+    .nav-bar {
+      @include shared-statement(
+        $theme-name,
+        var.$bg-color-dark-nav-01,
+        var.$bg-color-light-nav-01,
+        var.$font-color-dark-01,
+        var.$font-color-light-03
+      );
+
+      & .logo__icon {
+        @include shared-statement(
+          $theme-name,
+          var.$color-white-01,
+          var.$color-white-02
+        );
+
+        &::after,
+        &::before {
+          @include shared-statement(
+            $theme-name,
+            var.$bg-color-dark-nav-01,
+            var.$color-grey-02
+          );
+        }
+      }
+    }
+    .menu {
+      @include shared-statement(
+        $theme-name,
+        var.$bg-color-dark-menu,
+        var.$bg-color-light-menu,
+        var.$font-color-dark-01,
+        var.$font-color-light-01
+      );
+
+      &__theme {
+        &:hover {
+          @include bg(
+            $theme-name,
+            var.$bg-color-dark-hover,
+            var.$bg-color-light-hover
+          );
+        }
+
+        &--list {
+          @include shared-statement(
+            $theme-name,
+            var.$bg-color-dark-menu,
+            var.$bg-color-light-menu,
+            var.$font-color-dark-01,
+            var.$font-color-light-01
+          );
+
+          & li {
+            &:hover {
+              @include bg(
+                $theme-name,
+                var.$bg-color-dark-hover,
+                var.$bg-color-light-hover
+              );
+            }
+          }
+        }
+      }
+
+      &__logout {
+        &:hover {
+          @include bg(
+            $theme-name,
+            var.$bg-color-dark-hover,
+            var.$bg-color-light-hover
+          );
+        }
+      }
+    }
+  }
 }
