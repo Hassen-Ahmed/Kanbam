@@ -2,8 +2,8 @@
 @use "../../assets/style/abstracts/mixins" as mixn;
 
 .nav-bar {
-  background-color: var.$bg-color-nav-01;
-  color: var.$color-white-01;
+  background-color: var.$bg-color-dark-nav-01;
+  color: var.$font-color-dark-01;
   height: var.$height-nav-01;
   border-bottom: 0.1rem solid var.$border-color-01;
   padding: 0 2rem;
