@@ -3,30 +3,30 @@
 
 .account-btn {
   @include mixn.flexy(row, center, center);
-  background-color: var.$bg-color-btn-account;
+  background-color: var.$bg-color-dark-btn-account;
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
 
   cursor: pointer;
   position: relative;
-  z-index: var.$z-index-10;
 
-  &::after {
+  &::before {
     content: "";
     position: absolute;
-
-    width: 130%;
-    height: 130%;
+    display: block;
+    width: 120%;
+    height: 120%;
     border-radius: 50%;
     opacity: 0;
-    background-color: inherit;
-    z-index: -1;
+    background-color: transparent;
+    border: 0.4rem solid var.$color-grey-01;
+
     transition: all 0.2s ease;
   }
 
-  &:hover::after {
-    opacity: 0.4;
+  &:hover::before {
+    opacity: 0.5;
   }
 
   p {
