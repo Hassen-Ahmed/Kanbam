@@ -1,6 +1,6 @@
+import ButtonTheme from "./ButtonTheme";
 import "./MenuAccount.scss";
-import { ImCamera } from "react-icons/im";
-import { MdDarkMode, MdLightMode } from "react-icons/md";
+import MenuAccountLogo from "./MenuAccountLogo";
 
 interface IMenuVisiblity {
   isAccountMenuVisible: boolean;
@@ -17,33 +17,10 @@ const MenuAccount: React.FC<IMenuVisiblity> = ({
         <>
           <div className="menu">
             <h2 className="menu__heading">Account</h2>
-            <div className="menu__logo">
-              <div className="menu__logo--icon">
-                <p>HB</p>
-              </div>
-              <div className="menu__logo--photo">
-                <ImCamera size={16} />
-              </div>
-              <div className="menu__logo--texts">
-                <h2 className="menu__logo--user">hassen best</h2>
-                <h3 className="menu__logo--email">hassenbet23@gmail.com</h3>
-              </div>
-            </div>
 
+            <MenuAccountLogo />
             <hr />
-
-            <div className="menu__theme">
-              <h2 className="menu__theme--text">Theme</h2>
-              <ul className="menu__theme--list">
-                <li>
-                  Light <MdLightMode size={18} />
-                </li>
-                <li>
-                  Dark <MdDarkMode size={18} />
-                </li>
-              </ul>
-            </div>
-
+            <ButtonTheme setIsAccountMenuVisible={setIsAccountMenuVisible} />
             <hr />
 
             <div className="menu__logout">
@@ -52,7 +29,7 @@ const MenuAccount: React.FC<IMenuVisiblity> = ({
           </div>
 
           <div
-            className="menu__background"
+            className="menu__overlay"
             onClick={() => setIsAccountMenuVisible(false)}
           ></div>
         </>
