@@ -1,4 +1,3 @@
-import { FC } from "react";
 import Card from "../card/Card";
 import { List, ListsType } from "../../types/lists.type";
 import "./Lists.scss";
@@ -10,7 +9,7 @@ interface IList {
   title: string;
 }
 
-const Lists: FC<IList> = ({ list, title }) => {
+const Lists = ({ list, title }: IList) => {
   return (
     <div className="lists--container-main">
       <div className="lists--container-sub">

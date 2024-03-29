@@ -1,6 +1,6 @@
 import Home from "./pages/home/Home";
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <div className="app">
       <Home />

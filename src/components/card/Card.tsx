@@ -1,8 +1,7 @@
-import { FC } from "react";
 import { ICard } from "../../types/lists.type";
 import "./Card.scss";
 
-const Card: FC<ICard> = ({ title }) => {
+const Card = ({ title }: ICard) => {
   return (
     <div className="card-container">
       <div className="card">

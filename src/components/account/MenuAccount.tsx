@@ -7,10 +7,10 @@ interface IMenuVisiblity {
   setIsAccountMenuVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MenuAccount: React.FC<IMenuVisiblity> = ({
+const MenuAccount = ({
   isAccountMenuVisible,
   setIsAccountMenuVisible,
-}) => {
+}: IMenuVisiblity) => {
   return (
     <div className="menu-account">
       {isAccountMenuVisible && (

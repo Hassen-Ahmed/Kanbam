@@ -4,9 +4,7 @@ interface IMenuVisiblitySingle {
   setIsAccountMenuVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ButtonAccount: React.FC<IMenuVisiblitySingle> = ({
-  setIsAccountMenuVisible,
-}) => {
+const ButtonAccount = ({ setIsAccountMenuVisible }: IMenuVisiblitySingle) => {
   return (
     <div
       className="account-btn"

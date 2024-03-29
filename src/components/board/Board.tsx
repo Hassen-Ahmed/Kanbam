@@ -1,9 +1,9 @@
-import { FC, useState } from "react";
+import { useState } from "react";
 import Lists from "../lists/Lists";
 import { ListsType } from "../../types/lists.type";
 import "./Board.scss";
 
-const Board: FC = () => {
+const Board = () => {
   const [lists, setLists] = useState<ListsType>([
     {
       id: 1,
