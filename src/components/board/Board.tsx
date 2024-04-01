@@ -1,10 +1,12 @@
 import { useState } from "react";
 import Lists from "../lists/Lists";
 import { ListsType } from "../../types/lists.type";
+import { IKanbam } from "../../types/kanbam.type";
 import "./Board.scss";
 
-const Board = () => {
-  const [lists, setLists] = useState<ListsType>([
+const kanbam: IKanbam = {
+  theme: "light",
+  lists: [
     {
       id: 1,
       title: "title",
@@ -44,7 +46,11 @@ const Board = () => {
         },
       ],
     },
-  ]);
+  ],
+};
+
+const Board = () => {
+  const [lists, setLists] = useState<ListsType>(kanbam.lists);
 
   return (
     <div className="board-container">

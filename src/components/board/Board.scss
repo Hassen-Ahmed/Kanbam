@@ -2,9 +2,9 @@
 
 .board {
   margin-top: 4rem;
-  //   background-color: rgb(164, 130, 199);
+  // background-color: rgb(164, 130, 199);
   height: auto;
   width: auto;
 
-  @include mixn.flexy(row, center, center, 3rem);
+  @include mixn.flexy(row, center, center, 2rem);
 }
