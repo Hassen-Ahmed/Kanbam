@@ -20,7 +20,7 @@ const MenuAccount = ({
 
             <MenuAccountLogo />
             <hr />
-            <ButtonTheme setIsAccountMenuVisible={setIsAccountMenuVisible} />
+            <ButtonTheme />
             <hr />
 
             <div className="menu__logout">
