@@ -1,9 +1,6 @@
-import { MdDarkMode, MdLightMode } from "react-icons/md";
-export default function ButtonTheme({
-  setIsAccountMenuVisible,
-}: {
-  setIsAccountMenuVisible: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+import themeLight from "../../../public/theme-light.svg";
+import themeDark from "../../../public/theme-dark.svg";
+export default function ButtonTheme() {
   const handleTheme = (ev: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
     const id = ev.currentTarget.id;
 
@@ -13,16 +10,20 @@ export default function ButtonTheme({
   };
   return (
     <div className="menu__theme">
-      <h2 className="menu__theme--text">Theme</h2>
-      <ul
-        className="menu__theme--list"
-        onClick={() => setIsAccountMenuVisible(false)}
-      >
+      <h2 className="menu__theme--heading">Theme</h2>
+      <ul className="menu__theme--list">
         <li id="theme-light__btn" onClick={(ev) => handleTheme(ev)}>
-          Light <MdLightMode size={18} />
+          <div className="menu__theme--btn" style={{}}>
+            <img src={themeLight} alt="theme light logo" />
+          </div>
+          <p>Light</p>
         </li>
+
         <li id="theme-dark__btn" onClick={(ev) => handleTheme(ev)}>
-          Dark <MdDarkMode size={18} />
+          <div className="menu__theme--btn">
+            <img src={themeDark} alt="theme dark logo" />
+          </div>
+          <p>Dark</p>
         </li>
       </ul>
     </div>
