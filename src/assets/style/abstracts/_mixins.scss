@@ -33,7 +33,7 @@
       color: $font-light;
     }
   }
-  transition: all 0.5s ease;
+  transition: all 0.2s ease;
 }
 
 @mixin bg($theme-name, $bg-dark, $bg-light) {
@@ -44,8 +44,41 @@
   }
 }
 
+@mixin border-bottom($theme-name) {
+  @if ($theme-name == theme-dark) {
+    border-bottom: 0.1rem solid var.$border-color-01;
+  } @else {
+    border-bottom: 0.1rem solid var.$border-color-02;
+  }
+}
+
 @mixin handler-theme($theme-name) {
   .#{$theme-name} {
+    hr {
+      @include border-bottom($theme-name);
+    }
+    .side-bar-left {
+      &,
+      &__btn-toggler,
+      &__container {
+        @include shared-statement(
+          $theme-name,
+          var.$bg-color-dark-card,
+          var.$bg-color-light-nav-01,
+          var.$font-color-dark-01,
+          var.$font-color-light-03
+        );
+      }
+      &__btn {
+        &:hover {
+          @include bg(
+            $theme-name,
+            var.$bg-color-dark-hover,
+            var.$bg-color-light-hover-02
+          );
+        }
+      }
+    }
     .card {
       @include shared-statement(
         $theme-name,
@@ -74,10 +107,12 @@
         var.$font-color-light-03
       );
 
+      @include border-bottom($theme-name);
+
       & .logo__icon {
         @include shared-statement(
           $theme-name,
-          var.$color-white-01,
+          var.$font-color-dark-01,
           var.$color-white-02
         );
 
@@ -99,6 +134,14 @@
         var.$font-color-dark-01,
         var.$font-color-light-01
       );
+
+      &__theme--list {
+        @if ($theme-name == theme-dark) {
+          border: 0.1rem solid var.$border-color-01;
+        } @else {
+          border: 0.1rem solid var.$border-color-02;
+        }
+      }
 
       &__theme {
         &:hover {
