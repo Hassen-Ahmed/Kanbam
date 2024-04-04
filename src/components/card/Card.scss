@@ -1,3 +1,26 @@
+@use "../../assets/style/abstracts/variable" as var;
+.card-container {
+  z-index: var.$z-ix-100;
+  width: 100%;
+}
 .card {
-  background-color: orange;
+  border-radius: var.$bor-1;
+  padding: 1.2rem;
+  box-shadow: 0.1rem 0.2rem 0.5rem rgba(0, 0, 0, 0.15);
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    outline: auto;
+    outline-width: 0.2rem;
+    outline-color: var.$border-color-card;
+    outline-style: solid;
+  }
+
+  &__heading {
+    h2 {
+      font-size: var.$fsi-14;
+      font-weight: var.$fwt-500;
+    }
+  }
 }
