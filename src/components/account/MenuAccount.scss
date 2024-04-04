@@ -14,34 +14,31 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: var.$z-index-1;
+  z-index: var.$z-ix-1;
 }
 
 .menu {
   position: absolute;
   top: 0.2rem;
   right: 0.2rem;
-  width: 25rem;
+  width: auto;
   height: 90vh;
   padding-bottom: 1rem;
-  background-color: var.$bg-color-dark-menu;
-  color: var.$font-color-dark-01;
-
-  border-radius: 0.5rem;
-  // border: 0.1rem solid var.$border-color-01;
-  z-index: var.$z-index-100;
+  border-radius: var.$bor-05;
+  box-shadow: -0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.15);
+  z-index: var.$z-ix-200;
 
   & hr {
     width: 100%;
     border: none;
-    // border-bottom: 0.1rem solid var.$border-color-01;
     margin: 1rem 0;
   }
 
   &__heading {
     margin-top: 2rem;
     margin-left: 2rem;
-    font-size: var.$fsi-16;
+    font-size: var.$fsi-14;
+    font-weight: var.$fwt-500;
   }
 
   &__logo {
@@ -54,13 +51,14 @@
       width: 4rem;
       height: 4rem;
       margin: 2rem 0;
-      border-radius: 50%;
+      border-radius: var.$bor-50;
       opacity: 1;
       transition: all 0.2s ease;
 
       & p {
         color: var.$color-white-02;
-        font-size: var.$fsi-16;
+        font-size: var.$fsi-14;
+        font-weight: var.$fwt-500;
       }
     }
 
@@ -71,7 +69,7 @@
       width: 4rem;
       height: 4rem;
       margin: 2rem 0;
-      border-radius: 50%;
+      border-radius: var.$bor-50;
       opacity: 0;
       transition: all 0.2s ease;
       cursor: pointer;
@@ -89,11 +87,13 @@
     }
 
     &--user {
-      font-size: var.$fsi-16;
+      font-size: var.$fsi-14;
+      font-weight: var.$fwt-500;
       margin-bottom: 0.5rem;
     }
     &--email {
       font-size: var.$fsi-14;
+      font-weight: var.$fwt-500;
     }
   }
 
@@ -111,7 +111,7 @@
       @include mixn.flexy(row, flex-start, center, 1rem);
       width: 70px;
       height: 50px;
-      border-radius: 1rem;
+      border-radius: var.$bor-1;
       box-shadow: 0rem 0.2rem 0.1rem rgba(0, 0, 0, 0.15);
 
       & img {
@@ -121,7 +121,8 @@
     }
 
     &--heading {
-      font-size: var.$fsi-16;
+      font-size: var.$fsi-14;
+      font-weight: var.$fwt-500;
     }
 
     &--list {
@@ -136,12 +137,14 @@
       list-style: none;
       border-top-left-radius: 1rem;
       border-bottom-left-radius: 1rem;
+      box-shadow: -0.5rem 0rem 0.5rem rgba(0, 0, 0, 0.05) inset;
       display: none;
 
       & li {
         width: 100%;
         padding: 1rem 3rem;
-        font-size: var.$fsi-16;
+        font-size: var.$fsi-14;
+        font-weight: var.$fwt-500;
         @include mixn.flexy(row, flex-start, center, 1.5rem);
         position: relative;
 
@@ -182,7 +185,8 @@
     }
 
     &--text {
-      font-size: var.$fsi-16;
+      font-size: var.$fsi-14;
+      font-weight: var.$fwt-500;
     }
   }
 }

@@ -12,7 +12,12 @@ const MenuAccount = ({
   setIsAccountMenuVisible,
 }: IMenuVisiblity) => {
   return (
-    <div className="menu-account">
+    <div
+      className="menu-account"
+      style={{
+        zIndex: isAccountMenuVisible ? 2000 : 0,
+      }}
+    >
       {isAccountMenuVisible && (
         <>
           <div className="menu">
