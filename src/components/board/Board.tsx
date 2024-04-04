@@ -2,6 +2,7 @@ import { useState } from "react";
 import Lists from "../lists/Lists";
 import { ListsType } from "../../types/lists.type";
 import { IKanbam } from "../../types/kanbam.type";
+import { IoMdAdd } from "react-icons/io";
 import "./Board.scss";
 
 const kanbam: IKanbam = {
@@ -46,6 +47,21 @@ const kanbam: IKanbam = {
         },
       ],
     },
+    // {
+    //   id: 3,
+    //   title: "title",
+    //   list: [],
+    // },
+    // {
+    //   id: 4,
+    //   title: "title",
+    //   list: [],
+    // },
+    // {
+    //   id: 5,
+    //   title: "title",
+    //   list: [],
+    // },
   ],
 };
 
@@ -67,6 +83,11 @@ const Board = () => {
             />
           );
         })}
+
+        <div className="board__btn--add">
+          <IoMdAdd size={20} />
+          <p>Add another list</p>
+        </div>
       </div>
     </div>
   );

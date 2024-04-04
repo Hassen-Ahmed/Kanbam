@@ -1,10 +1,21 @@
 @use "../../assets/style/abstracts/mixins" as mixn;
+@use "../../assets/style/abstracts/variable" as var;
 
 .board {
   margin-top: 4rem;
-  // background-color: rgb(164, 130, 199);
   height: auto;
   width: auto;
 
-  @include mixn.flexy(row, center, center, 2rem);
+  @include mixn.flexy(row, center, flex-start, 1.4rem);
+
+  &__btn--add {
+    @include mixn.flexy(row, flex-start, center, 1.4rem);
+    width: 24rem;
+    border-radius: var.$bor-15;
+    font-size: var.$fsi-14;
+    font-weight: var.$fwt-600;
+    padding: 1.5rem 1rem;
+    z-index: var.$z-ix-200;
+    cursor: pointer;
+  }
 }
