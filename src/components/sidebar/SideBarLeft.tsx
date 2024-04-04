@@ -17,7 +17,13 @@ export default function SideBarLeft() {
   };
 
   return (
-    <div className="side-bar-left">
+    <div
+      className="side-bar-left"
+      style={{
+        zIndex: "3000",
+        width: isDisplay ? "auto" : "2rem",
+      }}
+    >
       <div
         className={`side-bar-left__btn-toggler ${isDisplay && "toggler--on"}`}
         onClick={handleDisplay}
@@ -50,7 +56,7 @@ export default function SideBarLeft() {
           <SlCalender />
           Calender
         </div>
-        <div className="side-bar-left__btn--calender side-bar-left__btn">
+        <div className="side-bar-left__btn--dashboard side-bar-left__btn">
           <TfiDashboard />
           Dashboard
         </div>

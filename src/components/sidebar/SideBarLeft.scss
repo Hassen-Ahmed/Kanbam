@@ -2,9 +2,10 @@
 @use "../../assets/style/abstracts/variable" as var;
 
 .side-bar-left {
-  min-width: 2rem;
-  width: auto;
+  // min-width: 20rem;
+  // width: auto;
   height: 100%;
+  margin-right: 1rem;
   position: relative;
 
   &__btn-toggler {
@@ -14,7 +15,7 @@
     transform: translateX(50%) rotate(0deg);
     width: 3rem;
     height: 3rem;
-    border-radius: 50%;
+    border-radius: var.$bor-50;
     border: 0.1rem solid var.$border-color-02;
     box-shadow: 0.1rem 0.2rem 0.5rem rgba(1, 1, 1, 0.25);
     @include mixn.flexy();
@@ -28,7 +29,7 @@
   .toggler--on {
     right: 1rem;
     transform: translateX(0%) rotate(180deg);
-    border-radius: 0.5rem;
+    border-radius: var.$bor-05;
     border: inherit;
     box-shadow: none;
   }
@@ -51,24 +52,30 @@
   &__btn {
     @include mixn.flexy(row, flex-start, center, 1.5rem);
     padding: 1rem 2rem;
-    font-size: 1.6rem;
+    font-size: var.$fsi-14;
+    font-weight: var.$fwt-400;
     width: 100%;
     cursor: pointer;
 
     &--workspace {
       @include mixn.flexy(row, flex-start, center, 1rem);
       margin: 2rem 0;
-      // margin-top: 3rem;
 
       & h3 {
-        font-size: 1.2rem;
+        font-size: var.$fsi-12;
+        font-weight: var.$fwt-400;
       }
     }
     &--board {
     }
     &--table {
+      cursor: not-allowed;
     }
     &--calender {
+      cursor: not-allowed;
+    }
+    &--dashboard {
+      cursor: not-allowed;
     }
     &--help {
       position: absolute;
