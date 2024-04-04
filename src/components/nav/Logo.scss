@@ -17,7 +17,7 @@
   width: 2.2rem;
   height: 2.4rem;
   padding: 0.2rem 0;
-  border-radius: 0.2rem;
+  border-radius: var.$bor-02;
   position: relative;
 
   @mixin sudo-ele($duration: 0.2s, $delay: 0.2s) {
@@ -26,7 +26,7 @@
     background-color: rgb(44, 44, 44);
     top: 0.3rem;
     width: 0.6rem;
-    border-radius: 0.15rem;
+    border-radius: var.$bor-015;
 
     animation: logo-up-down $duration ease $delay infinite;
   }
