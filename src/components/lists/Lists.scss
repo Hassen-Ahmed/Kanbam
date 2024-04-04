@@ -1,20 +1,74 @@
 @use "../../assets/style/abstracts/mixins" as mixn;
+@use "../../assets/style/abstracts/variable" as var;
 
 .lists--container {
-  &-main {
+  &--main {
     width: 30rem;
     height: 85vh;
-    background-color: rgba(148, 194, 56, 0.164);
   }
 
-  &-sub {
-    background-color: rgba(92, 153, 51, 0.345);
+  &--sub {
     height: auto;
+    border-radius: var.$bor-15;
+    box-shadow: 0.1rem 0.2rem 0.5rem rgba(0, 0, 0, 0.15);
   }
 }
 
 .lists {
-  padding: 2rem 1rem;
-  border-radius: 1rem;
-  @include mixn.flexy(column, center, center, 3rem);
+  padding: 0rem 1rem;
+  padding-bottom: 1rem;
+  border-radius: var.$bor-15;
+  @include mixn.flexy(column, center, center, 1rem);
+
+  &__heading {
+    padding: 1.4rem 1rem;
+    cursor: pointer;
+
+    display: grid;
+    grid-template-columns: 1fr 3.5rem;
+    align-items: center;
+
+    &--text {
+      @include mixn.flexy(row, flex-start);
+      height: 3.5rem;
+      z-index: var.$z-ix-100;
+      p {
+        padding-left: 1rem;
+        width: 100%;
+      }
+      input {
+        width: 100%;
+        height: 98%;
+        border-radius: var.$bor-1;
+        border: 0.3rem solid var.$border-color-card;
+        outline: none;
+        padding: 1rem;
+        font-size: var.$fsi-14;
+        font-family: var.$ff-01;
+        font-weight: var.$fwt-600;
+        background-color: transparent;
+      }
+    }
+
+    &--btn {
+      @include mixn.flexy(row);
+      height: 3.5rem;
+      border-radius: var.$bor-1;
+      z-index: var.$z-ix-100;
+      filter: brightness(120%);
+    }
+  }
+
+  &__btn--add {
+    width: 90%;
+    padding: 0.5rem 0.2rem;
+    padding-left: 1rem;
+    border-radius: var.$bor-1;
+    align-self: flex-start;
+    @include mixn.flexy(row, flex-start, center, 1rem);
+    font-size: var.$fsi-14;
+    font-weight: var.$fwt-600;
+    z-index: var.$z-ix-150;
+    cursor: pointer;
+  }
 }
