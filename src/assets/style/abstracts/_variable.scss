@@ -1,9 +1,11 @@
-// Color
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
+// Color
 // dark theme
 $bg-color-dark-nav-01: #1d2125;
 $bg-color-dark-nav-glass: #22272b68;
-$bg-color-dark-side-bar-01: #1e2429;
+$bg-color-dark-side-bar-01: rgba(30, 36, 41, 0.99);
 $bg-color-dark-lists: #101204;
 $bg-color-dark-card: #21262a;
 $bg-color-dark-menu: #282e33;
@@ -19,7 +21,7 @@ $font-color-dark-03: #b6b6b6;
 // light theme
 $bg-color-light-nav-01: #3d567d;
 $bg-color-light-nav-glass: #22272b68;
-$bg-color-light-side-bar-01: #3d567d;
+$bg-color-light-side-bar-01: rgba(61, 84, 125, 0.99);
 $bg-color-light-lists: #f1f2f4;
 $bg-color-light-card: #ffffff;
 $bg-color-light-menu: #f1f2f4;
@@ -47,8 +49,8 @@ $border-color-card: #59a4e1;
 // Typography
 
 // font families = ff
-$ff-01: "Ubuntu Mono", "Blinker", Segoe UI, Roboto, Droid Sans, Helvetica Neue,
-  sans-serif;
+$ff-01: "Reddit Mono", "Roboto", "Ubuntu Mono", "Blinker", Segoe UI, Roboto,
+  Droid Sans, Helvetica Neue, sans-serif;
 
 // font size = fsi
 $fsi-root: 62.5%;
@@ -58,6 +60,15 @@ $fsi-14: 1.4rem;
 $fsi-16: 1.6rem;
 $fsi-18: 1.8rem;
 $fsi-2: 2rem;
+
+// font weight
+
+$fwt-200: 200;
+$fwt-300: 300;
+$fwt-400: 400;
+$fwt-500: 500;
+$fwt-600: 600;
+$fwt-700: 700;
 
 // Width, Space, or Gap
 $margin-vertical-card: 1rem;
@@ -78,27 +89,41 @@ $gap-huge: 10rem;
 
 $height-nav-01: 5rem;
 
-// Z-index
+// border-radius === bor
+$bor-015: 0.15rem;
+$bor-02: 0.2rem;
+$bor-05: 0.5rem;
+$bor-1: 1rem;
+$bor-15: 1.5rem;
+$bor-18: 1.8rem;
+$bor-2: 2rem;
+$bor-50: 50%;
 
-$z-index-1: 1;
-$z-index-10: 10;
-$z-index-20: 20;
-$z-index-50: 50;
-$z-index-100: 100;
-$z-index-150: 150;
-$z-index-200: 200;
-$z-index-250: 250;
-$z-index-350: 350;
-$z-index-400: 400;
-$z-index-450: 450;
-$z-index-500: 500;
-$z-index-550: 550;
-$z-index-600: 600;
-$z-index-650: 650;
-$z-index-700: 700;
-$z-index-750: 750;
-$z-index-800: 800;
-$z-index-850: 850;
-$z-index-900: 900;
-$z-index-950: 950;
-$z-index-1000: 1000;
+// z-index === z-ix
+
+$z-ix-1: 1;
+$z-ix-10: 10;
+$z-ix-20: 20;
+$z-ix-50: 50;
+$z-ix-100: 100;
+$z-ix-150: 150;
+$z-ix-200: 200;
+$z-ix-250: 250;
+$z-ix-350: 350;
+$z-ix-400: 400;
+$z-ix-450: 450;
+$z-ix-500: 500;
+$z-ix-550: 550;
+$z-ix-600: 600;
+$z-ix-650: 650;
+$z-ix-700: 700;
+$z-ix-750: 750;
+$z-ix-800: 800;
+$z-ix-850: 850;
+$z-ix-900: 900;
+$z-ix-950: 950;
+$z-ix-1000: 1000;
+$z-ix-1500: 1500;
+$z-ix-2000: 2000;
+$z-ix-2500: 2500;
+$z-ix-3000: 3000;
