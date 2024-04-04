@@ -1,5 +1,5 @@
-import themeLight from "../../../public/theme-light.svg";
-import themeDark from "../../../public/theme-dark.svg";
+import themeLight from "/theme-light.svg";
+import themeDark from "/theme-dark.svg";
 export default function ButtonTheme() {
   const handleTheme = (ev: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
     const id = ev.currentTarget.id;
