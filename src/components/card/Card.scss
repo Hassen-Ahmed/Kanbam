@@ -4,10 +4,11 @@
   width: 100%;
 }
 .card {
-  border-radius: var.$bor-1;
+  width: 100%;
   padding: 1.2rem;
-  box-shadow: 0.1rem 0.2rem 0.5rem rgba(0, 0, 0, 0.15);
   border: none;
+  border-radius: var.$bor-1;
+  box-shadow: 0.1rem 0.2rem 0.5rem rgba(0, 0, 0, 0.15);
   cursor: pointer;
 
   &:hover {
