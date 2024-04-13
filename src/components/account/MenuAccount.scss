@@ -3,7 +3,7 @@
 
 .menu-account {
   position: absolute;
-  top: (var.$height-nav-01 - 0.5rem);
+  top: (var.$height-nav-01 - 1.2rem);
   right: 0;
   width: 100vw;
   height: 90vh;
@@ -21,6 +21,7 @@
   position: absolute;
   top: 0.2rem;
   right: 0.2rem;
+  @include mixn.flexy(column, flex-start, flex-start);
   width: auto;
   height: 90vh;
   padding-bottom: 1rem;
@@ -98,10 +99,11 @@
   }
 
   &__theme {
+    width: 100%;
     padding: 1rem 2rem;
-    cursor: pointer;
     transition: all 0.2s ease;
     position: relative;
+    cursor: pointer;
 
     &:hover {
       border-right: 0.2rem solid var.$border-color-card;
@@ -174,19 +176,36 @@
     }
   }
   &__logout {
+    width: 100%;
     padding: 1rem 2rem;
-
     cursor: pointer;
     transition: all 0.2s ease;
 
     &:hover {
-      // background-color: #c1d3ef1a;
       border-right: 0.2rem solid var.$border-color-card;
     }
 
     &--text {
       font-size: var.$fsi-14;
       font-weight: var.$fwt-500;
+    }
+  }
+  &__donate {
+    position: absolute;
+    bottom: 2rem;
+    width: 100%;
+    padding: 1rem 2rem;
+    color: rgb(27, 162, 27);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      border-right: 0.2rem solid var.$border-color-card;
+    }
+
+    &--text {
+      font-size: var.$fsi-16;
+      font-weight: var.$fwt-600;
     }
   }
 }
