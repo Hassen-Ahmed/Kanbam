@@ -10,7 +10,7 @@ export default function ButtonTheme() {
   };
   return (
     <div className="menu__theme">
-      <h2 className="menu__theme--heading">Theme</h2>
+      <h2 className="menu__theme--heading">Theme </h2>
       <ul className="menu__theme--list">
         <li id="theme-light__btn" onClick={(ev) => handleTheme(ev)}>
           <div className="menu__theme--btn" style={{}}>
