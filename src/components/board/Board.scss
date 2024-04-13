@@ -1,21 +1,31 @@
 @use "../../assets/style/abstracts/mixins" as mixn;
 @use "../../assets/style/abstracts/variable" as var;
 
-.board {
-  margin-top: 4rem;
-  height: auto;
-  width: auto;
+.board-container {
+  min-width: 82vw;
+  width: 99vw;
+}
 
-  @include mixn.flexy(row, center, flex-start, 1.4rem);
+.board {
+  @include mixn.flexy(row, flex-start, flex-start, 1.4rem);
+  margin-top: 4rem;
+  padding: 0 1rem;
+  width: 100%;
+  overflow-x: auto;
+  z-index: var.$z-ix-300;
 
   &__btn--add {
-    @include mixn.flexy(row, flex-start, center, 1.4rem);
-    width: 24rem;
+    @include mixn.flexy(row, flex-start, center);
     border-radius: var.$bor-15;
-    font-size: var.$fsi-14;
-    font-weight: var.$fwt-600;
-    padding: 1.5rem 1rem;
-    z-index: var.$z-ix-200;
+    padding: 1rem;
+    border: 0.1rem solid var.$border-color-02;
     cursor: pointer;
+
+    p {
+      font-size: var.$fsi-14;
+      font-weight: var.$fwt-600;
+      width: 20rem;
+      margin-left: 1rem;
+    }
   }
 }
