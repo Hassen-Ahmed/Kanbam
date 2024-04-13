@@ -4,5 +4,13 @@ export interface ICard {
   description: string;
   isDragging: boolean;
 }
-export type List = ICard[];
-export type ListsType = { id: number; title: string; list: List }[];
+
+export type ListType = ICard[];
+
+export interface IList {
+  id: number;
+  title: string;
+  isDragging: boolean;
+  indexNumber: number;
+  list: ListType;
+}
