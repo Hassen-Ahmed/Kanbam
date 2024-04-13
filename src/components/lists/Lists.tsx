@@ -1,5 +1,6 @@
 import Card from "../card/Card";
-import { ICard, List, ListsType } from "../../types/lists.type";
+import { ICard, ListType } from "../../types/lists.type";
+import { BoardType } from "../../types/board.type";
 import { BsThreeDots } from "react-icons/bs";
 import { IoMdAdd } from "react-icons/io";
 
@@ -8,16 +9,16 @@ import { useState } from "react";
 import { handleDragstartUtil } from "../../utils/dnd";
 import { DragEventMy } from "../../types/html.type";
 
-interface IList {
-  list: List;
-  setLists: React.Dispatch<React.SetStateAction<ListsType>>;
+interface IListLocal {
+  list: ListType;
+  setLists: React.Dispatch<React.SetStateAction<BoardType>>;
   idOfList: number;
   title: string;
   id: number;
   itemDragging: React.MutableRefObject<ICard | null>;
 }
 
-const Lists = ({ id, list, title, itemDragging }: IList) => {
+const Lists = ({ id, list, title, itemDragging }: IListLocal) => {
   const [titleValue, setTitleValue] = useState<string>(title);
   const [isTitleInputVisible, setIsTitleInputVisible] =
     useState<boolean>(false);
@@ -35,7 +36,7 @@ const Lists = ({ id, list, title, itemDragging }: IList) => {
     handleDragstartUtil(ev, "lists--container--sub");
   };
 
-  const handleDragenter = (ev: DragEventMy) => {
+  const handleDragenter = () => {
     // console.log(ev.target);
     console.log(itemDragging.current);
   };
@@ -45,7 +46,7 @@ const Lists = ({ id, list, title, itemDragging }: IList) => {
       className="lists--container--main"
       draggable="true"
       onDragStart={(ev) => handleDragStart(ev)}
-      onDragEnter={(ev) => handleDragenter(ev)}
+      onDragEnter={() => handleDragenter()}
       data-id={id}
       data-identity="lists"
     >
