@@ -62,6 +62,15 @@
 
 @mixin handler-theme($theme-name) {
   .#{$theme-name} {
+    ::-webkit-scrollbar-thumb {
+      border-radius: var.$bor-1;
+      @if ($theme-name == theme-dark) {
+        background-color: var.$bg-color-dark-scroll-01;
+      } @else {
+        background-color: var.$bg-color-light-scroll-01;
+      }
+    }
+
     hr {
       @include border-bottom($theme-name);
     }
@@ -234,7 +243,8 @@
         }
       }
 
-      &__logout {
+      &__logout,
+      &__donate {
         &:hover {
           @include bg(
             $theme-name,

@@ -1,15 +1,15 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
 // Color
 // dark theme
 $bg-color-dark-nav-01: #1d2125;
 $bg-color-dark-nav-glass: #22272b68;
-$bg-color-dark-side-bar-01: rgba(30, 36, 41, 0.99);
+$bg-color-dark-side-bar-01: #1e2429fc;
 $bg-color-dark-lists: #101204;
 $bg-color-dark-card: #21262a;
 $bg-color-dark-menu: #282e33;
 $bg-color-dark-btn-account: #1a66d8;
+$bg-color-dark-scroll-01: #1e2429fc;
 
 $bg-color-dark-hover: #c1d3ef1a;
 $bg-color-dark-hover-02: #c1d3ef1a;
@@ -21,11 +21,12 @@ $font-color-dark-03: #b6b6b6;
 // light theme
 $bg-color-light-nav-01: #3d567d;
 $bg-color-light-nav-glass: #22272b68;
-$bg-color-light-side-bar-01: rgba(61, 84, 125, 0.99);
+$bg-color-light-side-bar-01: #3d547dfc;
 $bg-color-light-lists: #f1f2f4;
 $bg-color-light-card: #ffffff;
 $bg-color-light-menu: #f1f2f4;
 $bg-color-light-btn-account: #1a66d8;
+$bg-color-light-scroll-01: #445777fc;
 
 $bg-color-light-hover: #6e849626;
 $bg-color-light-hover-02: #8aa2b65a;
@@ -109,6 +110,7 @@ $z-ix-100: 100;
 $z-ix-150: 150;
 $z-ix-200: 200;
 $z-ix-250: 250;
+$z-ix-300: 300;
 $z-ix-350: 350;
 $z-ix-400: 400;
 $z-ix-450: 450;

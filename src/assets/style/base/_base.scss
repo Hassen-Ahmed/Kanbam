@@ -32,3 +32,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+  background-color: var.$bg-color-light-hover;
+}
