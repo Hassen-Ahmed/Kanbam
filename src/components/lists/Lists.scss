@@ -15,7 +15,9 @@
 }
 
 .lists {
-  padding: 0rem 1rem;
+  min-width: 27rem;
+  width: none;
+  padding: 0rem 0.8rem;
   padding-bottom: 1rem;
   border-radius: var.$bor-15;
   @include mixn.flexy(column, center, center, 1rem);

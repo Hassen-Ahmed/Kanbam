@@ -1,31 +1,54 @@
 import Card from "../card/Card";
-import { List, ListsType } from "../../types/lists.type";
+import { ICard, List, ListsType } from "../../types/lists.type";
 import { BsThreeDots } from "react-icons/bs";
 import { IoMdAdd } from "react-icons/io";
 
 import "./Lists.scss";
 import { useState } from "react";
+import { handleDragstartUtil } from "../../utils/dnd";
+import { DragEventMy } from "../../types/html.type";
 
 interface IList {
   list: List;
   setLists: React.Dispatch<React.SetStateAction<ListsType>>;
   idOfList: number;
   title: string;
+  id: number;
+  itemDragging: React.MutableRefObject<ICard | null>;
 }
 
-const Lists = ({ list, title }: IList) => {
+const Lists = ({ id, list, title, itemDragging }: IList) => {
   const [titleValue, setTitleValue] = useState<string>(title);
   const [isTitleInputVisible, setIsTitleInputVisible] =
     useState<boolean>(false);
 
-  const hadlerTitleInputClose = (ev: React.KeyboardEvent<HTMLInputElement>) => {
+  // const itemDragging = useRef<ICard | null>(null);
+
+  const handleTitleInputClose = (ev: React.KeyboardEvent<HTMLInputElement>) => {
     if (ev.key == "Enter") {
       setIsTitleInputVisible(false);
     }
   };
 
+  const handleDragStart = (ev: DragEventMy) => {
+    if (!(ev.target instanceof HTMLDivElement)) return;
+    handleDragstartUtil(ev, "lists--container--sub");
+  };
+
+  const handleDragenter = (ev: DragEventMy) => {
+    // console.log(ev.target);
+    console.log(itemDragging.current);
+  };
+
   return (
-    <div className="lists--container--main">
+    <div
+      className="lists--container--main"
+      draggable="true"
+      onDragStart={(ev) => handleDragStart(ev)}
+      onDragEnter={(ev) => handleDragenter(ev)}
+      data-id={id}
+      data-identity="lists"
+    >
       <div className="lists--container--sub">
         <h1 className="lists__heading">
           <div className="lists__heading--text">
@@ -35,7 +58,7 @@ const Lists = ({ list, title }: IList) => {
               <input
                 type="text"
                 value={titleValue}
-                onKeyDown={(ev) => hadlerTitleInputClose(ev)}
+                onKeyDown={(ev) => handleTitleInputClose(ev)}
                 autoFocus
                 spellCheck="false"
                 onBlur={() => setIsTitleInputVisible(false)}
@@ -51,7 +74,9 @@ const Lists = ({ list, title }: IList) => {
         </h1>
         <div className="lists">
           {list.map((content) => {
-            return <Card {...content} />;
+            return (
+              <Card {...content} key={content.id} itemDragging={itemDragging} />
+            );
           })}
           <div className="lists__btn--add">
             <IoMdAdd size={20} />
