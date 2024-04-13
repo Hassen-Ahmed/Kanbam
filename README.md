@@ -1,30 +1,82 @@
-# React + TypeScript + Vite
+# ⭐️ Kanbam ⭐️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Kanbam is a web application inspired by Trello's kanban board, designed to help teams manage projects and tasks effectively.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Create multiple boards to organize projects.
+- Add lists to boards to represent different stages of a project.
+- Add cards to lists to represent tasks or items to be completed.
+- Drag and drop cards between lists to update their status.
+- Collaborate with team members by sharing boards and assigning tasks.
+- And more!
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Backend**:
 
-- Configure the top-level `parserOptions` property like this:
+  - ASP.NET Core: A cross-platform, high-performance framework for building web applications with C#.
+  - C#: A powerful, statically typed programming language for building robust applications.
+  - MongoDB: A NoSQL database for storing and managing data. Also I used Mogodb Drive package which help dotnet api to interact with mongodb server.
+  - Docker: A platform for building, shipping, and running applications in containers.
+
+- **Frontend**:
+  - React.js: A JavaScript library for building user interfaces.
+  - TypeScript: A statically typed superset of JavaScript that adds optional static typing.
+  - Sass/SCSS: A CSS extension language that adds features like variables, mixins, and nesting.
+  - Chart.js: Is JavaScript library for data visualization.
+
+## Getting Started
+
+### Prerequisites
+
+- Docker installed on your machine.
+- Node.js and npm installed for frontend development.
+- I am using VS Code code editor.
+- You need to download Dotnet SDK based on your system I am using Linux.
+
+#### For installation visit this microsoft link
 
 ```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+https://learn.microsoft.com/en-us/dotnet/core/install/
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### Installation
+
+1. Clone the repository Front-End
+
+   ```bash
+   git clone https://github.com/Hassen-Ahmed/Kanbam.git
+   cd kanbam
+   npm install
+   npm run dev
+   ```
+
+2. Clone the repository Back-End
+   ```bash
+   git clone https://github.com/Hassen-Ahmed/KanbamApi.git
+   cd kanbamApi
+   dotnet watch run
+   ```
+
+## KanbamApi dotnet packages
+
+- DotNetEnv
+- Microsoft.AspNetCore.Authentication.JwtBearer
+- Microsoft.AspNetCore.OpenApi
+- MongoDB.Driver
+- Swashbuckle.AspNetCore
+
+## Contributing
+
+Contributions are welcome! If you'd like to contribute to Kanbam or KanbamApi, please follow these steps:
+
+- Fork the repository.
+- Create a new branch for your feature or bug fix: git checkout -b feature/my-feature.
+- Commit your changes: git commit -am 'Add new feature'.
+- Push to your branch: git push origin feature/my-feature.
+- Submit a pull request.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE.txt). See the [LICENSE](LICENSE.txt) file for details.
