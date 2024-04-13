@@ -8,11 +8,8 @@
   overflow: hidden;
 
   &__sub {
-    // @include mixn.flexy(row, flex-start, center);
+    @include mixn.flexy(row, flex-start, center);
     width: 100%;
     height: 98%;
-
-    display: grid;
-    grid-template-columns: auto 1fr;
   }
 }
