@@ -1,6 +1,6 @@
 import Card from "../card/Card";
 import { ICard, ListType } from "../../types/lists.type";
-import { BoardType } from "../../types/board.type";
+// import { BoardType } from "../../types/board.type";
 import { BsThreeDots } from "react-icons/bs";
 import { IoMdAdd } from "react-icons/io";
 
@@ -10,12 +10,12 @@ import { handleDragstartUtil } from "../../utils/dnd";
 import { DragEventMy } from "../../types/html.type";
 
 interface IListLocal {
-  list: ListType;
-  setLists: React.Dispatch<React.SetStateAction<BoardType>>;
-  idOfList: number;
+  id: string;
+  // setLists: React.Dispatch<React.SetStateAction<BoardType>>;
+  indexNumber: number;
   title: string;
-  id: number;
   itemDragging: React.MutableRefObject<ICard | null>;
+  list: ListType;
 }
 
 const Lists = ({ id, list, title, itemDragging }: IListLocal) => {
@@ -37,9 +37,11 @@ const Lists = ({ id, list, title, itemDragging }: IListLocal) => {
   };
 
   const handleDragenter = () => {
-    // console.log(ev.target);
     console.log(itemDragging.current);
   };
+
+  const computedTitle =
+    titleValue?.length > 20 ? titleValue.slice(0, 16) + "..." : titleValue;
 
   return (
     <div
@@ -54,7 +56,9 @@ const Lists = ({ id, list, title, itemDragging }: IListLocal) => {
         <h1 className="lists__heading">
           <div className="lists__heading--text">
             {!isTitleInputVisible ? (
-              <p onClick={() => setIsTitleInputVisible(true)}>{titleValue}</p>
+              <p onClick={() => setIsTitleInputVisible(true)}>
+                {computedTitle}
+              </p>
             ) : (
               <input
                 type="text"
