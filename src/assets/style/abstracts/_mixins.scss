@@ -74,6 +74,26 @@
     hr {
       @include border-bottom($theme-name);
     }
+    .loading {
+      @include color-bg-font(
+        $theme-name,
+        var.$bg-color-dark-card,
+        var.$bg-color-light-card,
+        var.$font-color-dark-02,
+        var.$font-color-light-01
+      );
+      &__icon {
+        &::before,
+        &::after {
+          @include color-bg-font(
+            $theme-name,
+            var.$font-color-dark-02,
+            var.$font-color-light-01
+          );
+        }
+      }
+    }
+
     .board {
       &__btn--add {
         @include color-bg-font(
@@ -83,13 +103,34 @@
           var.$font-color-dark-02,
           var.$font-color-light-01
         );
-
         &:hover {
           @include bg(
             $theme-name,
             rgba(0, 0, 0, 0.5),
             rgba(255, 255, 255, 0.5)
           );
+        }
+      }
+
+      &__new-list {
+        @include color-bg-font(
+          $theme-name,
+          var.$bg-color-dark-card,
+          var.$bg-color-light-card,
+          var.$font-color-dark-02,
+          var.$font-color-light-01
+        );
+
+        &--input {
+          input {
+            @include color-bg-font(
+              $theme-name,
+              var.$bg-color-dark-card,
+              var.$bg-color-light-card,
+              var.$font-color-dark-02,
+              var.$font-color-light-01
+            );
+          }
         }
       }
     }
