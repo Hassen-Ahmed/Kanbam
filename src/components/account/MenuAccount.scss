@@ -3,7 +3,7 @@
 
 .menu-account {
   position: absolute;
-  top: (var.$height-nav-01 - 1.2rem);
+  top: (var.$height-nav-01);
   right: 0;
   width: 100vw;
   height: 90vh;
@@ -195,17 +195,27 @@
     bottom: 2rem;
     width: 100%;
     padding: 1rem 2rem;
-    color: rgb(27, 162, 27);
     cursor: pointer;
     transition: all 0.2s ease;
 
-    &:hover {
-      border-right: 0.2rem solid var.$border-color-card;
-    }
-
     &--text {
+      background-image: linear-gradient(
+        to right,
+        rgb(203, 67, 33),
+        rgb(107, 47, 176)
+      );
+      color: white;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      text-align: center;
       font-size: var.$fsi-16;
       font-weight: var.$fwt-600;
+      box-shadow: 0.2rem 0.3rem 0.5rem rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+
+      &:hover {
+        filter: brightness(110%);
+      }
     }
   }
 }
