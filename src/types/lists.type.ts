@@ -1,16 +1,17 @@
 export interface ICard {
-  id: number;
+  id: string;
+  listId: string;
   title: string;
-  description: string;
+  indexNumber: number;
   isDragging: boolean;
 }
 
 export type ListType = ICard[];
 
 export interface IList {
-  id: number;
+  id?: string;
   title: string;
-  isDragging: boolean;
-  indexNumber: number;
-  list: ListType;
+  isDragging?: boolean;
+  indexNumber?: number;
+  list?: ListType;
 }
