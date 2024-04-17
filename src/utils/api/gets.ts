@@ -3,6 +3,9 @@ import { kanbamApi, authorizationToken } from "./baseApi";
 
 // cards
 
+console.log("Is this dev true ? ==>", import.meta.env.DEV);
+console.log("Is this prod true ? ==>", import.meta.env.PROD);
+
 export const getAllCardByListId = async (listId: string) => {
   const { data } = await kanbamApi.get<ICard[]>(`/cards/${listId}/list`);
   return data;
