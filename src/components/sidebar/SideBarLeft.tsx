@@ -20,7 +20,7 @@ export default function SideBarLeft() {
     <div
       className="side-bar-left"
       style={{
-        zIndex: 3000,
+        zIndex: 2000,
         width: isDisplay ? "auto" : "2rem",
       }}
     >
