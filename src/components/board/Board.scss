@@ -4,6 +4,13 @@
 .board-container {
   min-width: 82vw;
   width: 99vw;
+  align-self: flex-start;
+}
+
+.board__loading {
+  position: absolute;
+  top: 30%;
+  left: 50%;
 }
 
 .board {

@@ -1,104 +1,58 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import Lists from "../lists/Lists";
 import { ICard } from "../../types/lists.type";
-import { BoardType } from "../../types/board.type";
+// import { BoardType } from "../../types/board.type";
 import { IoMdAdd } from "react-icons/io";
-import "./Board.scss";
 
-const board: BoardType = [
-  // id: objectId / id
-  {
-    id: 1,
-    title: "title",
-    isDragging: false,
-    indexNumber: 0,
-    list: [
-      {
-        id: 1,
-        title: "Heading 8",
-        description: "Lorem, Pariatur sunt esse modi ",
-        isDragging: false,
-      },
-    ],
-  },
-  {
-    id: 2,
-    title: "title",
-    isDragging: false,
-    indexNumber: 1,
-    list: [
-      {
-        id: 2,
-        title: "Heading Lorem, Pariatur sunt Lorem, Pariatur sunt",
-        description: "Lorem, Pariatur sunt",
-        isDragging: false,
-      },
-      {
-        id: 3,
-        title: "Heading 8",
-        description:
-          "Lorem, Pariatur sunt esse modi earum rem blanditiis Lorem, ",
-        isDragging: false,
-      },
-      {
-        id: 4,
-        title: "Heading 8",
-        description:
-          "Lorem, Pariatur sunt esse modi earum rem blanditiis Lorem, ",
-        isDragging: false,
-      },
-    ],
-  },
-  {
-    id: 3,
-    title: "title",
-    isDragging: false,
-    indexNumber: 2,
-    list: [],
-  },
-  {
-    id: 4,
-    title: "title",
-    isDragging: false,
-    indexNumber: 3,
-    list: [],
-  },
-  {
-    id: 5,
-    title: "title",
-    isDragging: false,
-    indexNumber: 4,
-    list: [],
-  },
-];
+import "./Board.scss";
+import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+import BoardNewListCreator from "./BoardNewListCreator";
+import Loading from "../notifications/Loading";
 
 const Board = () => {
-  const [lists, setLists] = useState<BoardType>(board);
   const itemDragging = useRef<ICard | null>(null);
+  const { lists } = useContext(KanbamContext) as IkanbamContext;
+  const [isListAdded, setIsListAdded] = useState<boolean>(false);
+
+  const isListAddedSetter = (value: boolean) => {
+    setIsListAdded(value);
+  };
+
+  const newListCreator = isListAdded ? (
+    <BoardNewListCreator isListAddedSetter={isListAddedSetter} />
+  ) : (
+    <div className="board__btn--add" onClick={() => isListAddedSetter(true)}>
+      <IoMdAdd size={20} />
+      <p>Add another list</p>
+    </div>
+  );
+  console.log(lists);
+
+  const listsToBeDisplayed = lists?.map((list) => {
+    return (
+      <Lists
+        key={list.id}
+        id={list.id!}
+        title={list.title}
+        indexNumber={list.indexNumber!}
+        itemDragging={itemDragging}
+        list={list.list!}
+      />
+    );
+  });
 
   return (
     <div className="board-container">
-      <div className="board">
-        {lists.map((list) => {
-          // list === {id:100, list:[]}
-          return (
-            <Lists
-              key={list.id}
-              id={list.id}
-              list={list.list}
-              setLists={setLists}
-              idOfList={list.id}
-              title={list.title}
-              itemDragging={itemDragging}
-            />
-          );
-        })}
-
-        <div className="board__btn--add">
-          <IoMdAdd size={20} />
-          <p>Add another list</p>
+      {lists?.length ? (
+        <div className="board">
+          {listsToBeDisplayed}
+          {newListCreator}
         </div>
-      </div>
+      ) : (
+        <div className="board__loading">
+          <Loading />
+        </div>
+      )}
     </div>
   );
 };
