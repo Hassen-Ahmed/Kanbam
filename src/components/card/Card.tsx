@@ -10,15 +10,17 @@ interface ICardExtended extends ICard {
 const Card = ({
   id,
   title,
-  description,
+  listId,
   isDragging,
+  indexNumber,
   itemDragging,
 }: ICardExtended) => {
   const handleDragStart = (ev: DragEventMy) => {
     itemDragging.current = {
       id,
+      listId,
+      indexNumber,
       title,
-      description,
       isDragging,
     };
 
@@ -36,7 +38,7 @@ const Card = ({
     >
       <div className="card">
         <div className="card__heading">
-          <h2>{title} someting else.</h2>
+          <h2>{title} </h2>
         </div>
       </div>
     </div>
