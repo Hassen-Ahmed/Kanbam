@@ -1,0 +1,53 @@
+@use "../../assets/style/abstracts/mixins" as mixn;
+@use "../../assets/style/abstracts/variable" as var;
+
+.board__new-list {
+  padding: 1rem;
+  border-radius: var.$bor-1;
+
+  &--creator {
+  }
+  &--input {
+    input {
+      width: 30rem;
+      border-radius: var.$bor-015;
+      border: 0.3rem solid var.$border-color-card;
+      outline: none;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      font-size: var.$fsi-14;
+      font-family: var.$ff-01;
+      font-weight: var.$fwt-600;
+    }
+  }
+  &--btns {
+    @include mixn.flexy(row, flex-start, center, 0.5rem);
+
+    &-add {
+      width: 7rem;
+      height: 3rem;
+      &:hover {
+        filter: brightness(110%);
+      }
+
+      button {
+        padding: 0.5rem;
+        width: 100%;
+        height: 100%;
+        background-color: var.$bg-color-light-btn-account;
+        border: none;
+        color: var.$color-white-02;
+      }
+    }
+    &-cancel {
+      background-color: var.$bg-color-light-hover;
+      @include mixn.flexy();
+      width: 3rem;
+      height: 3rem;
+
+      &:hover {
+        filter: brightness(80%);
+      }
+    }
+  }
+}
