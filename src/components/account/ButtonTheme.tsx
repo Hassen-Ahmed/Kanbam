@@ -1,13 +1,29 @@
 import themeLight from "/theme-light.svg";
 import themeDark from "/theme-dark.svg";
+import { useContext } from "react";
+import { KanbamContext, IkanbamContext } from "../../context/kanbamContext";
+
 export default function ButtonTheme() {
+  const { themeSetter } = useContext(KanbamContext) as IkanbamContext;
+
   const handleTheme = (ev: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
     const id = ev.currentTarget.id;
 
-    id == "theme-light__btn"
-      ? document.body.classList.add("theme-light")
-      : document.body.classList.remove("theme-light");
+    if (id == "theme-light__btn") {
+      document.body.classList.add("theme-light");
+      document.body.classList.remove("theme-dark");
+      themeSetter("light");
+    } else if (id == "theme-dark__btn") {
+      document.body.classList.add("theme-dark");
+      document.body.classList.remove("theme-light");
+      themeSetter("dark");
+    }
+
+    // id == "theme-light__btn"
+    //   ? document.body.classList.add("theme-light")
+    //   : document.body.classList.remove("theme-light");
   };
+
   return (
     <div className="menu__theme">
       <h2 className="menu__theme--heading">Theme </h2>
