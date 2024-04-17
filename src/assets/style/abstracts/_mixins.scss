@@ -284,8 +284,7 @@
         }
       }
 
-      &__logout,
-      &__donate {
+      &__logout {
         &:hover {
           @include bg(
             $theme-name,
