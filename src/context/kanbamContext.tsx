@@ -1,20 +1,17 @@
-import { createContext, useEffect, useReducer, useState } from "react";
-import { BoardType } from "../types/board.type";
-import { boardReducer } from "../reducers/boardReducer";
-import { IActionBoard } from "../types/actions.type";
+import { createContext, useEffect, useState } from "react";
 
 export interface IkanbamContext {
   theme?: string;
   themeSetter: (themeValue: string) => void;
-  lists: BoardType | null;
-  dispatch: React.Dispatch<IActionBoard>;
+  idOfModalCard: string;
+  handleModalCardId: (value: string) => void;
 }
 
 export const KanbamContext = createContext<IkanbamContext | null>(null);
 
 const KanbamContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme] = useState<string>("");
-  const [lists, dispatch] = useReducer(boardReducer, []);
+  const [theme, setTheme] = useState("");
+  const [idOfModalCard, setIdOfModalCard] = useState("");
 
   useEffect(() => {
     const responseTheme = localStorage.getItem("theme");
@@ -38,8 +35,14 @@ const KanbamContextProvider = ({ children }: { children: React.ReactNode }) => {
     setTheme(themeValue);
   };
 
+  const handleModalCardId = (value: string) => {
+    setIdOfModalCard(value);
+  };
+
   return (
-    <KanbamContext.Provider value={{ themeSetter, lists, dispatch }}>
+    <KanbamContext.Provider
+      value={{ themeSetter, idOfModalCard, handleModalCardId }}
+    >
       {children}
     </KanbamContext.Provider>
   );
