@@ -2,6 +2,9 @@ import { ICard } from "../../types/lists.type";
 import { DragEventMy } from "../../types/html.type";
 import "./Card.scss";
 import { handleDragstartUtil } from "../../utils/dnd";
+// import { createPortal } from "react-dom";
+import { useContext } from "react";
+import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 
 interface ICardExtended extends ICard {
   itemDragging: React.MutableRefObject<ICard | null>;
@@ -15,6 +18,8 @@ const Card = ({
   indexNumber,
   itemDragging,
 }: ICardExtended) => {
+  // const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const { handleModalCardId } = useContext(KanbamContext) as IkanbamContext;
   const handleDragStart = (ev: DragEventMy) => {
     itemDragging.current = {
       id,
@@ -36,7 +41,7 @@ const Card = ({
       data-id={id}
       data-identity="card"
     >
-      <div className="card">
+      <div className="card" onClick={() => handleModalCardId(id)}>
         <div className="card__heading">
           <h2>{title} </h2>
         </div>
