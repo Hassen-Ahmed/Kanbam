@@ -1,0 +1,191 @@
+@use "../../../assets/style/abstracts/mixins" as mixn;
+@use "../../../assets/style/abstracts/variable" as var;
+.big {
+  font-size: 2rem;
+}
+.small {
+  font-size: 1rem;
+}
+.card-modal--container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  // margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  // max-height: auto;
+
+  @include mixn.flexy(column, flex-start);
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.card-modal {
+  @include mixn.flexy(column, center, flex-start);
+  width: 55%;
+  height: auto;
+  margin: var.$height-nav-01 0;
+  margin-top: 1rem;
+  padding: 4rem 2rem 4rem 2rem;
+  border-radius: var.$bor-2;
+  position: relative;
+  z-index: 2300;
+
+  @media screen and (max-width: 1200px) {
+    width: 70%;
+  }
+  @media screen and (max-width: 920px) {
+    width: 90%;
+  }
+
+  &__heading {
+    @include mixn.flexy(row, center, center, 1rem);
+    margin: 1rem 0;
+  }
+  &__main {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    width: 100%;
+
+    @media screen and (max-width: 700px) {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+  }
+
+  &__left-bar {
+    grid-column: 1/4;
+
+    .description {
+      &__heading {
+        @include mixn.flexy(row, flex-start, center, 1rem);
+        margin: 1.5rem 0;
+
+        h2 {
+          font-size: var.$fsi-18;
+        }
+      }
+    }
+    .activity {
+      &__heading {
+        @include mixn.flexy(row, flex-start, center, 1rem);
+        margin: 1.5rem 0;
+        margin-top: 6rem;
+
+        h2 {
+          font-size: var.$fsi-18;
+        }
+      }
+      &__comment {
+        &--editor {
+          margin-left: 4rem;
+
+          textarea {
+            outline: none;
+            width: 100%;
+            background-color: white;
+            resize: none;
+            height: 10rem;
+            border: 0.2rem solid var.$border-color-card;
+            border-radius: var.$bor-05;
+            padding: 2rem;
+          }
+        }
+        &--btns {
+          @include mixn.flexy(row, flex-start, center, 1rem);
+          button {
+            padding: 0.5rem 1rem;
+            font-size: var.$fsi-14;
+            border: none;
+            margin-top: 0.5rem;
+            background-color: transparent;
+            cursor: pointer;
+
+            &:not(:last-child) {
+              background-color: var.$bg-color-light-btn-account;
+              color: white;
+
+              &:hover {
+                filter: brightness(90%);
+              }
+            }
+
+            &:hover:not(:first-child) {
+              background-color: rgba(0, 0, 0, 0.05);
+              border-radius: var.$bor-05;
+            }
+          }
+        }
+
+        &--para {
+          background-color: rgba(0, 0, 0, 0.05);
+          padding: 1rem;
+          padding-left: 2rem;
+          padding-bottom: 2rem;
+          margin-left: 4rem;
+          border-radius: var.$bor-015;
+          font-size: var.$fsi-14;
+          font-weight: var.$fwt-600;
+          cursor: pointer;
+
+          &:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+          }
+        }
+      }
+    }
+  }
+
+  &__right-bar {
+    align-self: flex-start;
+    grid-column: 4/-1;
+
+    @media screen and (max-width: 700px) {
+      margin-left: 4rem;
+    }
+
+    .right-bar--container {
+      h3 {
+        margin-top: 2rem;
+        font-size: var.$fsi-14;
+      }
+    }
+
+    .right-bar__btn {
+      @include mixn.flexy(row, flex-start, flex-start, 1rem);
+      margin: 1rem 0;
+      padding: 1rem;
+      width: 20rem;
+      cursor: pointer;
+    }
+  }
+
+  &__btn--close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 4rem;
+    height: 4rem;
+    @include mixn.flexy();
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: rgb(213, 213, 213);
+      border-radius: var.$bor-50;
+    }
+  }
+}
+
+.card-modal__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(3, 3, 3, 0.8);
+  width: 100%;
+  height: 100%;
+  //   z-index: 2200;
+}
