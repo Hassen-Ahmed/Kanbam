@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { IkanbamContext, KanbamContext } from "./context/kanbamContext";
 import Home from "./pages/home/Home";
 import { getAllLists } from "./utils/api/gets";
-import CardModla from "./components/card/modal/CardModla";
+import CardModal from "./components/card/modal/CardModal";
 import { IListsContext, ListsContext } from "./context/ListsContext";
 
 const App = () => {
@@ -30,7 +30,7 @@ const App = () => {
   return (
     <div className="app">
       {idOfModalCard.length ? (
-        <CardModla handleModalCardId={handleModalCardId} id={idOfModalCard} />
+        <CardModal handleModalCardId={handleModalCardId} id={idOfModalCard} />
       ) : null}
       <Home />
     </div>
