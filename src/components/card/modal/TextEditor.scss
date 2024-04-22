@@ -1,0 +1,120 @@
+@use "../../../assets/style/abstracts/mixins" as mixn;
+@use "../../../assets/style/abstracts/variable" as var;
+.text-editor {
+  padding-left: 4rem;
+
+  &__starter {
+    background-color: rgba(0, 0, 0, 0.05);
+    font-size: var.$fsi-14;
+    font-weight: var.$fwt-600;
+    padding: 1rem 2rem 4rem 2rem;
+    border-radius: var.$bor-05;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  &__edited {
+    position: relative;
+    padding-right: 4rem;
+
+    &-content {
+      padding-left: 3rem;
+      font-size: var.$fsi-14;
+      ul,
+      ol {
+        padding-left: 3rem;
+      }
+    }
+
+    button {
+      position: absolute;
+      top: -3rem;
+      right: 0rem;
+      padding: 1rem;
+      background-color: rgba(0, 0, 0, 0.05);
+      border: none;
+      font-size: var.$fsi-14;
+      font-weight: var.$fwt-600;
+      border-radius: var.$bor-05;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
+  &__editorial-area {
+    position: relative;
+    border: 0.2rem solid var.$border-color-card;
+    border-radius: var.$bor-05;
+    background-color: white;
+    min-height: 20rem;
+    max-height: auto;
+  }
+
+  &__btns {
+    padding-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    border-bottom: 0.1rem solid rgba(0, 0, 0, 0.15);
+    @include mixn.flexy(row, flex-start, center, 1rem);
+
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 2rem;
+      border: none;
+      margin-top: 0.5rem;
+      background-color: transparent;
+      cursor: pointer;
+
+      &:not(:last-child) {
+        border-right: 0.1rem solid rgba(60, 60, 60, 0.1);
+      }
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        border-radius: var.$bor-05;
+      }
+    }
+  }
+  &__para-editing {
+    padding: 1rem;
+    padding-left: 3.5rem;
+    font-size: var.$fsi-14;
+  }
+
+  &__save-btn {
+    position: absolute;
+    bottom: -4rem;
+    @include mixn.flexy(row, flex-start, center, 1rem);
+
+    button {
+      background-color: var.$bg-color-dark-btn-account;
+      color: white;
+      border: none;
+      border-radius: var.$bor-02;
+      padding: 0.7rem 1.5rem;
+      font-size: var.$fsi-14;
+      font-weight: var.$fwt-600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:not(:first-child) {
+        background-color: transparent;
+        color: black;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.1);
+        }
+      }
+
+      &:hover {
+        filter: brightness(90%);
+      }
+    }
+  }
+}
