@@ -2,9 +2,14 @@ import { useContext, useEffect } from "react";
 import { IkanbamContext, KanbamContext } from "./context/kanbamContext";
 import Home from "./pages/home/Home";
 import { getAllLists } from "./utils/api/gets";
+import CardModla from "./components/card/modal/CardModla";
+import { IListsContext, ListsContext } from "./context/ListsContext";
 
 const App = () => {
-  const { dispatch } = useContext(KanbamContext) as IkanbamContext;
+  const { idOfModalCard, handleModalCardId } = useContext(
+    KanbamContext
+  ) as IkanbamContext;
+  const { dispatch } = useContext(ListsContext) as IListsContext;
 
   const fetchAllLists = async () => {
     try {
@@ -24,6 +29,9 @@ const App = () => {
 
   return (
     <div className="app">
+      {idOfModalCard.length ? (
+        <CardModla handleModalCardId={handleModalCardId} id={idOfModalCard} />
+      ) : null}
       <Home />
     </div>
   );
