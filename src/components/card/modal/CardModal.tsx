@@ -29,7 +29,6 @@ export default function CardModal({
   const [isCommentVisible, setIsCommentVisible] = useState(false);
 
   const handleSave = () => {
-    console.log(comment);
     setComment("");
   };
 

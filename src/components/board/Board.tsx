@@ -27,8 +27,6 @@ const Board = memo(() => {
     </div>
   );
 
-  console.log(lists);
-
   const listsToBeDisplayed = lists?.map((list) => {
     return (
       <Lists

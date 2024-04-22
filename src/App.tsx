@@ -14,7 +14,6 @@ const App = () => {
   const fetchAllLists = async () => {
     try {
       const res = await getAllLists();
-      console.log(res);
       dispatch({ type: "GET_ALL_LISTS", payload: res });
     } catch (err) {
       console.log(`Error message: ${err}`);

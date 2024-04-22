@@ -37,7 +37,6 @@ const Lists = ({ id, list, title, itemDragging }: IListLocal) => {
   };
 
   const handleDragenter = () => {
-    console.log(itemDragging.current);
   };
 
   const computedTitle =

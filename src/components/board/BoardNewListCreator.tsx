@@ -21,7 +21,6 @@ const BoardNewListCreator = ({ isListAddedSetter }: isListAddedType) => {
         const data = await postList(newList);
 
         newList = { ...data, list: [] };
-        console.log(newList);
 
         dispatch({ type: "ADD_LIST", payload: [newList] });
         setInputList("");
