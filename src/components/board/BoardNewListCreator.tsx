@@ -1,16 +1,15 @@
 import { MdOutlineCancel } from "react-icons/md";
-import "./BoardNewListCreator.scss";
 import { useContext, useState } from "react";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
-// import { BoardType } from "../../types/board.type";
 import { IList } from "../../types/lists.type";
 import { postList } from "../../utils/api/posts";
+import { IListsContext, ListsContext } from "../../context/ListsContext";
+import "./BoardNewListCreator.scss";
 
 type isListAddedType = { isListAddedSetter: (value: boolean) => void };
 
 const BoardNewListCreator = ({ isListAddedSetter }: isListAddedType) => {
   const [inputList, setInputList] = useState<string>("");
-  const { lists, dispatch } = useContext(KanbamContext) as IkanbamContext;
+  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
 
   const handleAddList = async () => {
     if (inputList.length) {
