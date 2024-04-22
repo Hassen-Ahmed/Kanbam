@@ -1,17 +1,17 @@
-import { useContext, useRef, useState } from "react";
+import { memo, useContext, useRef, useState } from "react";
 import Lists from "../lists/Lists";
 import { ICard } from "../../types/lists.type";
-// import { BoardType } from "../../types/board.type";
 import { IoMdAdd } from "react-icons/io";
 
 import "./Board.scss";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import BoardNewListCreator from "./BoardNewListCreator";
 import Loading from "../notifications/Loading";
+import { IListsContext, ListsContext } from "../../context/ListsContext";
+import { createPortal } from "react-dom";
 
-const Board = () => {
+const Board = memo(() => {
   const itemDragging = useRef<ICard | null>(null);
-  const { lists } = useContext(KanbamContext) as IkanbamContext;
+  const { lists } = useContext(ListsContext) as IListsContext;
   const [isListAdded, setIsListAdded] = useState<boolean>(false);
 
   const isListAddedSetter = (value: boolean) => {
@@ -26,6 +26,7 @@ const Board = () => {
       <p>Add another list</p>
     </div>
   );
+
   console.log(lists);
 
   const listsToBeDisplayed = lists?.map((list) => {
@@ -49,12 +50,15 @@ const Board = () => {
           {newListCreator}
         </div>
       ) : (
-        <div className="board__loading">
-          <Loading />
-        </div>
+        createPortal(
+          <div className="board__loading">
+            <Loading />
+          </div>,
+          document.body
+        )
       )}
     </div>
   );
-};
+});
 
 export default Board;
