@@ -165,6 +165,31 @@
         var.$font-color-light-01
       );
     }
+    .card-modal {
+      @include color-bg-font(
+        $theme-name,
+        var.$bg-color-dark-card-modal,
+        var.$bg-color-light-lists,
+        var.$font-color-dark-01,
+        var.$font-color-light-04
+      );
+      .right-bar__btn {
+        @include color-bg-font(
+          $theme-name,
+          var.$bg-color-dark-hover,
+          var.$bg-color-light-hover,
+          var.$font-color-dark-01,
+          var.$font-color-light-04
+        );
+        &:hover {
+          @include bg(
+            $theme-name,
+            var.$bg-color-dark-hover-03,
+            var.$bg-color-light-hover-03
+          );
+        }
+      }
+    }
     .lists {
       &--container--sub {
         @include color-bg-font(
