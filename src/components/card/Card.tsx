@@ -1,4 +1,4 @@
-import { ICard } from "../../types/lists.type";
+import { ICard } from "../../types/board.type";
 import { DragEventMy } from "../../types/html.type";
 import "./Card.scss";
 import { handleDragstartUtil } from "../../utils/dnd";
@@ -6,9 +6,7 @@ import { handleDragstartUtil } from "../../utils/dnd";
 import { useContext } from "react";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 
-interface ICardExtended extends ICard {
-  itemDragging: React.MutableRefObject<ICard | null>;
-}
+interface ICardExtended extends ICard {}
 
 const Card = ({
   id,
@@ -16,21 +14,41 @@ const Card = ({
   listId,
   isDragging,
   indexNumber,
-  itemDragging,
+  opacity,
 }: ICardExtended) => {
-  // const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const { handleModalCardId } = useContext(KanbamContext) as IkanbamContext;
+  const { itemDragging } = useContext(KanbamContext) as IkanbamContext;
+
+  const handleDragEnd = (ev: DragEventMy) => {
+    ev.stopPropagation();
+    // set dragging item opacity to 1
+    const targetChildElemt = ev.currentTarget.childNodes[0] as HTMLElement;
+    targetChildElemt.style.opacity = "1";
+  };
+
+  const handleDrop = () => {};
+
   const handleDragStart = (ev: DragEventMy) => {
+    ev.stopPropagation();
+
     itemDragging.current = {
-      id,
-      listId,
-      indexNumber,
-      title,
-      isDragging,
+      item: {
+        id,
+        listId,
+        indexNumber,
+        title,
+        isDragging,
+        opacity: ".3",
+      },
+      identity: "card",
     };
 
     if (!(ev.target instanceof HTMLDivElement)) return;
     handleDragstartUtil(ev, "card");
+    const chilCarddElem = ev.target.childNodes[0] as HTMLElement;
+
+    chilCarddElem.style.opacity = ".3";
+    chilCarddElem.style.outline = "none";
   };
 
   return (
@@ -38,10 +56,17 @@ const Card = ({
       className="card-container"
       draggable="true"
       onDragStart={(ev) => handleDragStart(ev)}
+      onDrop={() => handleDrop()}
+      onDragEnd={(ev) => handleDragEnd(ev)}
       data-id={id}
       data-identity="card"
+      data-index={indexNumber}
     >
-      <div className="card" onClick={() => handleModalCardId(id)}>
+      <div
+        className="card"
+        onClick={() => handleModalCardId(id!, title)}
+        style={{ opacity: `${opacity}` }}
+      >
         <div className="card__heading">
           <h2>{title} </h2>
         </div>

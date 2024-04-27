@@ -86,7 +86,7 @@
           textarea {
             outline: none;
             width: 100%;
-            background-color: white;
+            // background-color: white;
             resize: none;
             height: 10rem;
             border: 0.2rem solid var.$border-color-card;
@@ -97,8 +97,9 @@
         &--btns {
           @include mixn.flexy(row, flex-start, center, 1rem);
           button {
-            padding: 0.5rem 1rem;
+            padding: 0.7rem 1.5rem;
             font-size: var.$fsi-14;
+            font-weight: var.$fwt-600;
             border: none;
             margin-top: 0.5rem;
             background-color: transparent;
@@ -127,7 +128,7 @@
           padding-bottom: 2rem;
           margin-left: 4rem;
           border-radius: var.$bor-015;
-          font-size: var.$fsi-14;
+          font-size: var.$fsi-16;
           font-weight: var.$fwt-600;
           cursor: pointer;
 
@@ -176,6 +177,32 @@
     &:hover {
       background-color: rgb(213, 213, 213);
       border-radius: var.$bor-50;
+    }
+  }
+
+  &__save-change {
+    margin-top: 2rem;
+    grid-column: 4/-1;
+    align-self: flex-start;
+
+    @media screen and (max-width: 700px) {
+      margin-left: 4rem;
+    }
+
+    button {
+      background-color: var.$bg-color-dark-btn-account;
+      color: white;
+      border: none;
+      border-radius: var.$bor-02;
+      padding: 0.7rem 1.5rem;
+      font-size: var.$fsi-14;
+      font-weight: var.$fwt-600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        filter: brightness(90%);
+      }
     }
   }
 }
