@@ -20,10 +20,12 @@ const sizeTwo = 22;
 
 export default function CardModal({
   handleModalCardId,
-  id,
+  // id,
+  title,
 }: {
-  handleModalCardId: (value: string) => void;
+  handleModalCardId: (id: string, title: string) => void;
   id: string;
+  title: string;
 }) {
   const [comment, setComment] = useState("");
   const [isCommentVisible, setIsCommentVisible] = useState(false);
@@ -37,7 +39,7 @@ export default function CardModal({
       <div className="card-modal">
         <div
           className="card-modal__btn--close"
-          onClick={() => handleModalCardId("")}
+          onClick={() => handleModalCardId("", "")}
         >
           <VscClose size={sizeOne} />
         </div>
@@ -46,9 +48,10 @@ export default function CardModal({
           <div className="card-modal__heading--icon">
             <FaRegCreditCard size={sizeTwo} />
           </div>
-          <h1>create SQL db tso store data{id}</h1>
+          <h1>{title}</h1>
         </div>
         <div className="card-modal__main">
+          {/* left-bar */}
           <div className="card-modal__left-bar">
             <div className="left-bar--container">
               <div className="priority">
@@ -78,6 +81,7 @@ export default function CardModal({
                         placeholder="Write a comment..."
                         id="comment"
                         value={comment}
+                        autoFocus
                         onChange={(e) => setComment(e.target.value)}
                       ></textarea>
                       <div
@@ -101,6 +105,7 @@ export default function CardModal({
               </div>
             </div>
           </div>
+          {/* right-bar */}
           <div className="card-modal__right-bar">
             <div className="right-bar--container">
               <h3>Add to card</h3>
@@ -134,6 +139,14 @@ export default function CardModal({
                 <h2>Archive</h2>
               </div>
             </div>
+          </div>
+          {/* save-change */}
+          <div className="card-modal__save-change">
+            <button
+            // onClick={() => handleModalCardId("")}
+            >
+              Save changes
+            </button>
           </div>
         </div>
       </div>
