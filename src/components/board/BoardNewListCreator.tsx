@@ -1,6 +1,5 @@
 import { MdOutlineCancel } from "react-icons/md";
 import { useContext, useState } from "react";
-import { IList } from "../../types/lists.type";
 import { postList } from "../../utils/api/posts";
 import { IListsContext, ListsContext } from "../../context/ListsContext";
 import "./BoardNewListCreator.scss";
@@ -13,9 +12,9 @@ const BoardNewListCreator = ({ isListAddedSetter }: isListAddedType) => {
 
   const handleAddList = async () => {
     if (inputList.length) {
-      let newList: IList = {
+      let newList = {
         title: inputList,
-        indexNumber: lists?.length,
+        indexNumber: lists?.length as number,
       };
       try {
         const data = await postList(newList);
