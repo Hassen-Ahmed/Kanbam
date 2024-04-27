@@ -10,7 +10,7 @@ export const handleDragstartUtil = (
 
   cloneElem.style.position = "absolute";
   cloneElem.style.top = "0";
-  cloneElem.style.left = "-220px";
+  cloneElem.style.left = "-1000px";
   cloneElem.style.width = "30rem";
   cloneElem.style.opacity = "0.9";
   cloneElem.style.boxShadow = "none";
