@@ -173,6 +173,36 @@
         var.$font-color-dark-01,
         var.$font-color-light-04
       );
+      .activity {
+        &__comment,
+        & {
+          textArea {
+            @include color-bg-font(
+              $theme-name,
+              var.$bg-color-dark-card,
+              var.$bg-color-light-card,
+              var.$font-color-dark-01,
+              var.$font-color-light-04
+            );
+          }
+        }
+        button:not(:first-child) {
+          &:hover {
+            @include bg(
+              $theme-name,
+              var.$bg-color-dark-hover,
+              var.$bg-color-light-hover-02
+            );
+          }
+          @include color-bg-font(
+            $theme-name,
+            transparent,
+            transparent,
+            var.$font-color-dark-01,
+            var.$font-color-light-04
+          );
+        }
+      }
       .right-bar__btn {
         @include color-bg-font(
           $theme-name,
@@ -186,6 +216,49 @@
             $theme-name,
             var.$bg-color-dark-hover-03,
             var.$bg-color-light-hover-03
+          );
+        }
+      }
+    }
+    .text-editor {
+      &__save-btn {
+        button:not(:first-child) {
+          &:hover {
+            @include bg(
+              $theme-name,
+              var.$bg-color-dark-hover,
+              var.$bg-color-light-hover-02
+            );
+          }
+          @include color-bg-font(
+            $theme-name,
+            transparent,
+            transparent,
+            var.$font-color-dark-01,
+            var.$font-color-light-04
+          );
+        }
+      }
+      &__editorial-area {
+        @include color-bg-font(
+          $theme-name,
+          var.$bg-color-dark-card,
+          var.$bg-color-light-card,
+          var.$font-color-dark-01,
+          var.$font-color-light-04
+        );
+      }
+      &__btns {
+        button {
+          &:not(:last-child) {
+            border-right: 0.1rem solid #afafaf1a;
+          }
+          @include color-bg-font(
+            $theme-name,
+            var.$bg-color-dark-card,
+            var.$bg-color-light-card,
+            var.$font-color-dark-01,
+            var.$font-color-light-04
           );
         }
       }
@@ -220,6 +293,13 @@
             color: var.$font-color-light-01;
           }
         }
+      }
+      &__btn--add-container {
+        @include color-bg-font(
+          $theme-name,
+          var.$bg-color-dark-lists,
+          var.$bg-color-light-lists
+        );
       }
       &__btn--add {
         &:hover {
