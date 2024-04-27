@@ -1,29 +1,220 @@
-import Card from "../card/Card";
-import { ICard, ListType } from "../../types/lists.type";
-// import { BoardType } from "../../types/board.type";
+import { ICard, IList, ListType } from "../../types/board.type";
 import { BsThreeDots } from "react-icons/bs";
 import { IoMdAdd } from "react-icons/io";
-
-import "./Lists.scss";
-import { useState } from "react";
+import { VscClose } from "react-icons/vsc";
+import { useContext, useState } from "react";
 import { handleDragstartUtil } from "../../utils/dnd";
 import { DragEventMy } from "../../types/html.type";
+import { postCard } from "../../utils/api/posts";
+import { IListsContext, ListsContext } from "../../context/ListsContext";
+import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+import { BoardType } from "../../types/board.type";
+import Card from "../card/Card";
+import "./Lists.scss";
 
 interface IListLocal {
   id: string;
-  // setLists: React.Dispatch<React.SetStateAction<BoardType>>;
   indexNumber: number;
   title: string;
-  itemDragging: React.MutableRefObject<ICard | null>;
   list: ListType;
+  isDragging: boolean;
+  opacity: string;
 }
 
-const Lists = ({ id, list, title, itemDragging }: IListLocal) => {
-  const [titleValue, setTitleValue] = useState<string>(title);
+const Lists = ({
+  id,
+  list,
+  title,
+  indexNumber,
+  isDragging,
+  opacity,
+}: IListLocal) => {
+  const [titleValueOfThisList, setTitleOfThisList] = useState<string>(title);
+  const [titleValeuOfNewCard, setTitleValeuOfNewCard] = useState("");
+
   const [isTitleInputVisible, setIsTitleInputVisible] =
     useState<boolean>(false);
+  const [isNewCardInputVisible, setIsNewCardInputVisible] =
+    useState<boolean>(false);
+  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
+  const { itemDragging } = useContext(KanbamContext) as IkanbamContext;
 
-  // const itemDragging = useRef<ICard | null>(null);
+  // end of hooks
+
+  const handleDragEnd = (ev: DragEventMy) => {
+    // set dragging item opacity to 1
+    const targetChildElemt = ev.currentTarget.childNodes[0] as HTMLElement;
+    targetChildElemt.style.opacity = "1";
+  };
+
+  const handleDragenter = (ev: DragEventMy) => {
+    const target = ev.target as HTMLElement;
+    const parentTarget = target.parentNode as HTMLElement;
+
+    const identityOfTarget = parentTarget.dataset.identity;
+    const identityOfItemDragging = itemDragging?.current?.identity;
+    const idOfTarget = parentTarget.dataset.id;
+    const idOfItemDragging = itemDragging?.current?.item.id;
+
+    if (identityOfItemDragging == "card") {
+      // swapping the card position
+      if (identityOfTarget == "card" && idOfItemDragging != idOfTarget) {
+        // find Only list of cards of this lists or column
+        const filteredList = lists?.filter((list) => list.id == id) as IList[];
+
+        let listOfCards = filteredList[0].list as ListType;
+
+        let indexOfTargetCard = 0;
+
+        for (let i = 0; i < listOfCards.length; i++) {
+          if (listOfCards[i].id == idOfTarget) {
+            indexOfTargetCard = i;
+            break;
+          }
+        }
+
+        listOfCards = listOfCards.filter((card) => card.id != idOfItemDragging);
+
+        const item = itemDragging.current?.item as ICard;
+
+        const itemDraggingIndex = parentTarget.dataset.index;
+        const skipingValue = item.id! > itemDraggingIndex! ? 0 : 1;
+
+        listOfCards.splice(indexOfTargetCard + skipingValue, 0, item);
+
+        const updatedLists = lists?.map((listObj) => {
+          if (listObj.id == id) {
+            return {
+              ...listObj,
+              list: listOfCards,
+            };
+          } else {
+            const updatedListOfCards = listObj.list
+              ?.filter((card) => card.id != idOfItemDragging)
+              .map((card, i) => {
+                card.indexNumber = i;
+                return card;
+              });
+
+            return {
+              ...listObj,
+              list: updatedListOfCards,
+            };
+          }
+        }) as BoardType;
+
+        // update indexNumber of this list/column
+        const finalLists = updatedLists.map((listObj) => {
+          if (listObj.id != id) return listObj;
+
+          const updatedList = listObj.list?.map((card, i) => {
+            card.indexNumber = i;
+            return card;
+          });
+
+          return { ...listObj, list: updatedList };
+        });
+
+        dispatch({ type: "GET_ALL_LISTS", payload: finalLists as BoardType });
+      }
+
+      // add card to empty list
+      if (!list.length) {
+        const updatedLists = lists?.map((listObj) => {
+          if (listObj.id == id)
+            return {
+              ...listObj,
+              list: [itemDragging.current?.item],
+            };
+
+          const filteredListOfCards =
+            listObj.list &&
+            listObj.list.filter(
+              (card) => card.id != itemDragging.current?.item.id
+            );
+
+          return { ...listObj, list: filteredListOfCards };
+        });
+
+        dispatch({ type: "GET_ALL_LISTS", payload: updatedLists as BoardType });
+      }
+    }
+
+    if (
+      identityOfItemDragging == "list" &&
+      ev.currentTarget.dataset.id != idOfItemDragging
+    ) {
+      const item = itemDragging?.current?.item as IList;
+
+      const filteredLists = lists?.filter((listObj) => {
+        return listObj.id != idOfItemDragging;
+      }) as BoardType;
+
+      let indexOfTargetListObj;
+
+      for (let i = 0; i < filteredLists.length; i++) {
+        if (filteredLists[i].id == ev.currentTarget.dataset.id) {
+          indexOfTargetListObj = i;
+          break;
+        }
+      }
+
+      const skipingValue = item.indexNumber! > indexNumber! ? 0 : 1;
+
+      filteredLists.splice(
+        (indexOfTargetListObj as number) + skipingValue,
+        0,
+        item
+      );
+
+      // update indexNumber of this lists
+      const finalLists = filteredLists.map((listObj, i) => {
+        listObj.indexNumber = i;
+        return listObj;
+      });
+
+      dispatch({ type: "GET_ALL_LISTS", payload: finalLists });
+    }
+  };
+
+  const handleDragStart = (ev: DragEventMy) => {
+    itemDragging.current = {
+      item: {
+        id,
+        indexNumber,
+        title,
+        isDragging,
+        list,
+        opacity: ".3",
+      },
+      identity: "list",
+    };
+
+    if (!(ev.target instanceof HTMLDivElement)) return;
+    handleDragstartUtil(ev, "lists--container--sub");
+    const chilCarddElem = ev.target.childNodes[0] as HTMLElement;
+    chilCarddElem.style.opacity = ".3";
+    chilCarddElem.style.outline = "none";
+  };
+
+  const handleDrop = () => {
+    const updatedLists = lists?.map((listObj) => {
+      listObj.opacity = "1";
+
+      const updatedList = listObj.list?.map((card) => {
+        card.opacity = "1";
+        return card;
+      });
+
+      return { ...listObj, list: updatedList };
+    });
+
+    dispatch({ type: "GET_ALL_LISTS", payload: updatedLists as BoardType });
+  };
+
+  const handleDragover = (ev: DragEventMy) => {
+    ev.preventDefault();
+  };
 
   const handleTitleInputClose = (ev: React.KeyboardEvent<HTMLInputElement>) => {
     if (ev.key == "Enter") {
@@ -31,25 +222,66 @@ const Lists = ({ id, list, title, itemDragging }: IListLocal) => {
     }
   };
 
-  const handleDragStart = (ev: DragEventMy) => {
-    if (!(ev.target instanceof HTMLDivElement)) return;
-    handleDragstartUtil(ev, "lists--container--sub");
+  const handleAddNewCard = async () => {
+    if (titleValeuOfNewCard.length > 0) {
+      try {
+        const cardToPost: ICard = {
+          listId: id,
+          title: titleValeuOfNewCard,
+          indexNumber: list.length,
+          isDragging: false,
+          opacity: "1",
+        };
+
+        const data = await postCard(cardToPost);
+        list = [...list, data];
+        const updatedListObj = {
+          id,
+          title,
+          indexNumber,
+          list,
+          isDragging,
+          opacity,
+        };
+        const updatedLists = lists?.map((listObj, i) => {
+          if (indexNumber != i) return listObj;
+          return updatedListObj;
+        }) as BoardType;
+
+        dispatch({ type: "GET_ALL_LISTS", payload: updatedLists });
+
+        setIsNewCardInputVisible(false);
+        setTitleValeuOfNewCard("");
+      } catch (err) {
+        console.log(err);
+      } finally {
+        console.log("New card post requesting...");
+      }
+    }
   };
 
-  const handleDragenter = () => {
+  const handleCancelAddNewCard = () => {
+    setTitleValeuOfNewCard("");
+    setIsNewCardInputVisible(false);
   };
 
   const computedTitle =
-    titleValue?.length > 20 ? titleValue.slice(0, 16) + "..." : titleValue;
+    titleValueOfThisList?.length > 20
+      ? titleValueOfThisList.slice(0, 16) + "..."
+      : titleValueOfThisList;
 
   return (
     <div
       className="lists--container--main"
       draggable="true"
       onDragStart={(ev) => handleDragStart(ev)}
-      onDragEnter={() => handleDragenter()}
+      onDragEnter={(ev) => handleDragenter(ev)}
+      onDrop={() => handleDrop()}
+      onDragOver={(e) => handleDragover(e)}
+      onDragEnd={(ev) => handleDragEnd(ev)}
       data-id={id}
-      data-identity="lists"
+      data-identity="list"
+      style={{ opacity: `${opacity}` }}
     >
       <div className="lists--container--sub">
         <h1 className="lists__heading">
@@ -61,13 +293,13 @@ const Lists = ({ id, list, title, itemDragging }: IListLocal) => {
             ) : (
               <input
                 type="text"
-                value={titleValue}
+                value={titleValueOfThisList}
                 onKeyDown={(ev) => handleTitleInputClose(ev)}
                 autoFocus
                 spellCheck="false"
                 onBlur={() => setIsTitleInputVisible(false)}
                 onChange={(e) => {
-                  setTitleValue(e.target.value);
+                  setTitleOfThisList(e.target.value);
                 }}
               />
             )}
@@ -78,13 +310,37 @@ const Lists = ({ id, list, title, itemDragging }: IListLocal) => {
         </h1>
         <div className="lists">
           {list.map((content) => {
-            return (
-              <Card {...content} key={content.id} itemDragging={itemDragging} />
-            );
+            return <Card {...content} key={content.id} />;
           })}
-          <div className="lists__btn--add">
-            <IoMdAdd size={20} />
-            <p>Add a Card</p>
+
+          <div className="lists__add-card--container">
+            {isNewCardInputVisible ? (
+              <div className="lists__add-card--input">
+                <input
+                  type="text"
+                  placeholder="Enter a title for new card..."
+                  value={titleValeuOfNewCard}
+                  onChange={(e) => setTitleValeuOfNewCard(e.target.value)}
+                  autoFocus
+                />
+                <div className="card-input--add-btns">
+                  <button onClick={handleAddNewCard}>Add card</button>
+                  <div className="close-btn" onClick={handleCancelAddNewCard}>
+                    <VscClose size={20} />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div
+                className="lists__btn--add-container"
+                onClick={() => setIsNewCardInputVisible(true)}
+              >
+                <div className="lists__btn--add">
+                  <IoMdAdd size={20} />
+                  <p>Add a Card</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

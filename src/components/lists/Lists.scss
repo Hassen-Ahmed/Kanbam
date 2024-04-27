@@ -11,16 +11,21 @@
     height: auto;
     border-radius: var.$bor-15;
     box-shadow: 0.1rem 0.2rem 0.5rem rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    padding-bottom: 3rem;
+    position: relative;
   }
 }
 
 .lists {
   min-width: 27rem;
-  width: none;
-  padding: 0rem 0.8rem;
+  height: auto;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 0.5rem 0.8rem;
   padding-bottom: 1rem;
   border-radius: var.$bor-15;
-  @include mixn.flexy(column, center, center, 1rem);
+  @include mixn.flexy(column, flex-start, center, 1rem);
 
   &__heading {
     padding: 1.4rem 1rem;
@@ -61,6 +66,15 @@
     }
   }
 
+  &__btn--add-container {
+    position: absolute;
+    bottom: 1rem;
+    width: 100%;
+    padding-top: 0.5rem;
+    @include mixn.flexy();
+    z-index: var.$z-ix-250;
+  }
+
   &__btn--add {
     width: 90%;
     padding: 0.5rem 0.2rem;
@@ -72,5 +86,54 @@
     font-weight: var.$fwt-600;
     z-index: var.$z-ix-150;
     cursor: pointer;
+  }
+  &__add-card--container {
+    @include mixn.flexy(column);
+    width: 100%;
+  }
+  &__add-card--input {
+    @include mixn.flexy(column);
+    width: 100%;
+
+    input {
+      width: 100%;
+      padding: 1rem;
+      padding-bottom: 2rem;
+      border-radius: var.$bor-1;
+      outline: none;
+      border: 0.2rem solid var.$border-color-card;
+      font-size: var.$fsi-14;
+    }
+    .card-input--add-btns {
+      width: 100%;
+      @include mixn.flexy(row, flex-start, flex-start, 0.5rem);
+      margin-top: 1rem;
+      margin-left: 1rem;
+
+      button {
+        background-color: var.$bg-color-dark-btn-account;
+        color: white;
+        border: none;
+        border-radius: var.$bor-05;
+        padding: 0.7rem 1rem;
+        font-size: var.$fsi-14;
+        font-weight: var.$fwt-600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          filter: brightness(90%);
+        }
+      }
+      .close-btn {
+        padding: 0.4rem 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2rem ease;
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.05);
+        }
+      }
+    }
   }
 }
