@@ -1,17 +1,41 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
+import { ListType } from "../types/board.type";
+
+interface IItem {
+  id?: string;
+  listId?: string;
+  indexNumber: number;
+  title: string;
+  isDragging?: boolean;
+  list?: ListType;
+  opacity: string;
+}
+
+export interface IItemDragging {
+  item: IItem;
+  identity: string;
+}
+
+export type IHandleModalCardId = (id: string, title: string) => void;
 
 export interface IkanbamContext {
   theme?: string;
   themeSetter: (themeValue: string) => void;
-  idOfModalCard: string;
-  handleModalCardId: (value: string) => void;
+  idOfModalCard: IModlaType | null;
+  handleModalCardId: IHandleModalCardId;
+  itemDragging: React.MutableRefObject<IItemDragging | null>;
+}
+export interface IModlaType {
+  id: string;
+  title: string;
 }
 
 export const KanbamContext = createContext<IkanbamContext | null>(null);
 
 const KanbamContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useState("");
-  const [idOfModalCard, setIdOfModalCard] = useState("");
+  const [idOfModalCard, setIdOfModalCard] = useState<IModlaType | null>(null);
+  const itemDragging = useRef<IItemDragging | null>(null);
 
   useEffect(() => {
     const responseTheme = localStorage.getItem("theme");
@@ -35,13 +59,18 @@ const KanbamContextProvider = ({ children }: { children: React.ReactNode }) => {
     setTheme(themeValue);
   };
 
-  const handleModalCardId = (value: string) => {
-    setIdOfModalCard(value);
+  const handleModalCardId: IHandleModalCardId = (id, title) => {
+    setIdOfModalCard({ id, title });
   };
 
   return (
     <KanbamContext.Provider
-      value={{ themeSetter, idOfModalCard, handleModalCardId }}
+      value={{
+        themeSetter,
+        idOfModalCard,
+        handleModalCardId,
+        itemDragging,
+      }}
     >
       {children}
     </KanbamContext.Provider>
