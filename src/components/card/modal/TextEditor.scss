@@ -5,7 +5,7 @@
 
   &__starter {
     background-color: rgba(0, 0, 0, 0.05);
-    font-size: var.$fsi-14;
+    font-size: var.$fsi-16;
     font-weight: var.$fwt-600;
     padding: 1rem 2rem 4rem 2rem;
     border-radius: var.$bor-05;
@@ -22,7 +22,7 @@
 
     &-content {
       padding-left: 3rem;
-      font-size: var.$fsi-14;
+      font-size: var.$fsi-16;
       ul,
       ol {
         padding-left: 3rem;
@@ -36,7 +36,7 @@
       padding: 1rem;
       background-color: rgba(0, 0, 0, 0.05);
       border: none;
-      font-size: var.$fsi-14;
+      font-size: var.$fsi-16;
       font-weight: var.$fwt-600;
       border-radius: var.$bor-05;
       cursor: pointer;
@@ -52,39 +52,46 @@
     position: relative;
     border: 0.2rem solid var.$border-color-card;
     border-radius: var.$bor-05;
-    background-color: white;
-    min-height: 20rem;
+    // background-color: white;
     max-height: auto;
   }
 
   &__btns {
     padding-bottom: 0.5rem;
     padding-left: 0.5rem;
-    border-bottom: 0.1rem solid rgba(0, 0, 0, 0.15);
+    border-bottom: 0.1rem solid rgba(119, 119, 119, 0.584);
     @include mixn.flexy(row, flex-start, center, 1rem);
 
     button {
       padding: 0.5rem 1rem;
-      font-size: 2rem;
+      font-size: var.$fsi-16;
       border: none;
       margin-top: 0.5rem;
       background-color: transparent;
       cursor: pointer;
 
       &:not(:last-child) {
-        border-right: 0.1rem solid rgba(60, 60, 60, 0.1);
+        border-right: 0.1rem solid rgba(144, 144, 144, 0.252);
       }
 
       &:hover {
-        background-color: rgba(0, 0, 0, 0.05);
         border-radius: var.$bor-05;
+      }
+
+      @media screen and (max-width: 700px) {
+        font-size: var.$fsi-14;
+        padding: 0.5rem 0.5rem;
       }
     }
   }
   &__para-editing {
     padding: 1rem;
     padding-left: 3.5rem;
-    font-size: var.$fsi-14;
+    font-size: var.$fsi-16;
+    border: 2px solid transparent;
+    outline: none;
+    outline-color: transparent;
+    min-height: 10rem;
   }
 
   &__save-btn {

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DOMPurify from "dompurify";
 import { IoMdRedo, IoMdUndo } from "react-icons/io";
 import { VscListOrdered, VscListUnordered } from "react-icons/vsc";
@@ -9,6 +9,13 @@ export default function TextEditor({ description }: { description: string }) {
   const [isEditorialOpen, setIsEditorialOpen] = useState(false);
   const [localDescription, setLocalDescription] = useState(description);
   const paraRef = useRef(null);
+
+  useEffect(() => {
+    if (paraRef.current) {
+      const elemRef = paraRef?.current as HTMLElement;
+      elemRef.focus();
+    }
+  }, [isEditorialOpen]);
 
   const handleSave = () => {
     if (paraRef.current) {
@@ -77,14 +84,11 @@ export default function TextEditor({ description }: { description: string }) {
               </div>
 
               <p
-                style={{
-                  border: "2px solid transparent",
-                  outline: "none",
-                  outlineColor: "transparent",
-                }}
                 className="text-editor__para-editing"
                 contentEditable
-                dangerouslySetInnerHTML={{ __html: html }}
+                dangerouslySetInnerHTML={{
+                  __html: html || "Write description here...",
+                }}
                 ref={paraRef}
               ></p>
               <div className="text-editor__save-btn">
