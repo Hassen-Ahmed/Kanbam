@@ -1,10 +1,10 @@
-import { ICard, IList } from "../../types/lists.type";
+import { ICard, IList } from "../../types/board.type";
 import { kanbamApi } from "./baseApi";
 
 // card
 
 export const postCard = async (newCard: ICard) => {
-  const { data } = await kanbamApi.post("/Cards", { newCard });
+  const { data } = await kanbamApi.post("/Cards", { ...newCard });
   return data;
 };
 
