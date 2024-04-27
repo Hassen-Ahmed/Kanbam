@@ -1,4 +1,4 @@
-import { ICard, IList } from "../../types/lists.type";
+import { ICard, IList } from "../../types/board.type";
 import { kanbamApi, authorizationToken } from "./baseApi";
 
 // cards
@@ -27,10 +27,18 @@ export const getAllLists = async () => {
 
   const listsWithCards = Promise.all(
     data.map(async (listSingle: IList) => {
+      listSingle.opacity = "1";
+      listSingle.isDragging = false;
+
       const id = listSingle.id == undefined ? "" : listSingle.id;
       const data = await getAllCardByListId(id);
+      const modifiedData = data.map((card) => {
+        card.opacity = "1";
+        card.isDragging = false;
+        return card;
+      });
 
-      return { ...listSingle, list: data };
+      return { ...listSingle, list: modifiedData };
     })
   );
 
