@@ -1,18 +1,17 @@
-import { memo, useContext, useRef, useState } from "react";
-import Lists from "../lists/Lists";
-import { ICard } from "../../types/lists.type";
+import { memo, useContext, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
-
-import "./Board.scss";
 import BoardNewListCreator from "./BoardNewListCreator";
 import Loading from "../notifications/Loading";
 import { IListsContext, ListsContext } from "../../context/ListsContext";
 import { createPortal } from "react-dom";
+import Lists from "../lists/Lists";
+import "./Board.scss";
 
 const Board = memo(() => {
-  const itemDragging = useRef<ICard | null>(null);
   const { lists } = useContext(ListsContext) as IListsContext;
   const [isListAdded, setIsListAdded] = useState<boolean>(false);
+
+  // end of hooks!
 
   const isListAddedSetter = (value: boolean) => {
     setIsListAdded(value);
@@ -34,8 +33,9 @@ const Board = memo(() => {
         id={list.id!}
         title={list.title}
         indexNumber={list.indexNumber!}
-        itemDragging={itemDragging}
         list={list.list!}
+        isDragging={list.isDragging!}
+        opacity={list.opacity!}
       />
     );
   });
