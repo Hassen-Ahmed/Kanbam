@@ -40,20 +40,23 @@ const Board = memo(() => {
     );
   });
 
-  return (
-    <div className="board-container">
-      {lists?.length ? (
+  if (lists)
+    return (
+      <div className="board-container">
         <div className="board">
           {listsToBeDisplayed}
           {newListCreator}
         </div>
-      ) : (
-        createPortal(
-          <div className="board__loading">
-            <Loading />
-          </div>,
-          document.body
-        )
+      </div>
+    );
+
+  return (
+    <div className="board-container">
+      {createPortal(
+        <div className="board__loading">
+          <Loading />
+        </div>,
+        document.body
       )}
     </div>
   );

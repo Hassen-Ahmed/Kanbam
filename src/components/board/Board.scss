@@ -12,14 +12,12 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  // top: 30%;
-  // left: 50%;
 }
 
 .board {
   @include mixn.flexy(row, flex-start, flex-start, 1.4rem);
-  margin-top: 4rem;
-  padding: 0 1rem;
+  padding: 3rem 1rem;
+  padding-bottom: 1rem;
   width: 100%;
   overflow-x: auto;
   z-index: var.$z-ix-300;
