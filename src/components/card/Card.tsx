@@ -3,8 +3,9 @@ import { DragEventMy } from "../../types/html.type";
 import "./Card.scss";
 import { handleDragstartUtil, handleRemovingCloneElem } from "../../utils/dnd";
 // import { createPortal } from "react-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+import CardModal from "./modal/CardModal";
 
 interface ICardExtended extends ICard {}
 
@@ -16,8 +17,12 @@ const Card = ({
   indexNumber,
   opacity,
 }: ICardExtended) => {
-  const { handleModalCardId } = useContext(KanbamContext) as IkanbamContext;
   const { itemDragging } = useContext(KanbamContext) as IkanbamContext;
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const handleModlaVisibility = (value: boolean) => {
+    setIsModalVisible(value);
+  };
 
   const handleDragEnd = (ev: DragEventMy) => {
     ev.stopPropagation();
@@ -66,9 +71,18 @@ const Card = ({
       data-identity="card"
       data-index={indexNumber}
     >
+      {isModalVisible && (
+        <CardModal
+          id={id!}
+          listId={listId}
+          title={title}
+          handleModlaVisibility={handleModlaVisibility}
+        />
+      )}
+
       <div
         className="card"
-        onClick={() => handleModalCardId(id!, title)}
+        onClick={() => setIsModalVisible(true)}
         style={{ opacity: `${opacity}` }}
       >
         <div className="card__heading">
