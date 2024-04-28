@@ -39,6 +39,7 @@ const BoardNewListCreator = ({ isListAddedSetter }: isListAddedType) => {
           autoFocus
           value={inputList}
           onChange={(ev) => setInputList(ev.target.value)}
+          onBlur={() => isListAddedSetter(false)}
         />
       </div>
       <div className="board__new-list--btns">
