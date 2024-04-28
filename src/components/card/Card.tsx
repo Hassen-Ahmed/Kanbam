@@ -1,7 +1,7 @@
 import { ICard } from "../../types/board.type";
 import { DragEventMy } from "../../types/html.type";
 import "./Card.scss";
-import { handleDragstartUtil } from "../../utils/dnd";
+import { handleDragstartUtil, handleRemovingCloneElem } from "../../utils/dnd";
 // import { createPortal } from "react-dom";
 import { useContext } from "react";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
@@ -21,9 +21,13 @@ const Card = ({
 
   const handleDragEnd = (ev: DragEventMy) => {
     ev.stopPropagation();
+
     // set dragging item opacity to 1
     const targetChildElemt = ev.currentTarget.childNodes[0] as HTMLElement;
     targetChildElemt.style.opacity = "1";
+
+    // remove cloneElem from body
+    handleRemovingCloneElem();
   };
 
   const handleDrop = () => {};
