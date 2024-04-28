@@ -123,7 +123,7 @@ const Lists = ({
           return { ...listObj, list: updatedList };
         });
 
-        dispatch({ type: "GET_ALL_LISTS", payload: finalLists as BoardType });
+        dispatch({ type: "ADD_ALL_LISTS", payload: finalLists as BoardType });
       }
 
       // add card to empty list
@@ -144,7 +144,7 @@ const Lists = ({
           return { ...listObj, list: filteredListOfCards };
         });
 
-        dispatch({ type: "GET_ALL_LISTS", payload: updatedLists as BoardType });
+        dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists as BoardType });
       }
     }
 
@@ -181,7 +181,7 @@ const Lists = ({
         return listObj;
       });
 
-      dispatch({ type: "GET_ALL_LISTS", payload: finalLists });
+      dispatch({ type: "ADD_ALL_LISTS", payload: finalLists });
     }
   };
 
@@ -217,7 +217,7 @@ const Lists = ({
       return { ...listObj, list: updatedList };
     });
 
-    dispatch({ type: "GET_ALL_LISTS", payload: updatedLists as BoardType });
+    dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists as BoardType });
 
     // remove cloneElem from body
     handleRemovingCloneElem();
@@ -245,26 +245,28 @@ const Lists = ({
         };
 
         const data = await postCard(cardToPost);
-        list = [...list, data];
+
         const updatedListObj = {
           id,
           title,
           indexNumber,
-          list,
+          list: [...list, data],
           isDragging,
           opacity,
         };
-        const updatedLists = lists?.map((listObj, i) => {
-          if (indexNumber != i) return listObj;
+
+        const updatedLists = lists?.map((listObj) => {
+          if (listObj.id != id) return listObj;
           return updatedListObj;
         }) as BoardType;
 
-        dispatch({ type: "GET_ALL_LISTS", payload: updatedLists });
+        dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists });
 
         setIsNewCardInputVisible(false);
         setTitleValeuOfNewCard("");
       } catch (err) {
-        console.log(err);
+        const error = err as IError;
+        console.log("Error on creating new card, err:", error.message);
       } finally {
         console.log("New card post requesting...");
       }
@@ -292,8 +294,7 @@ const Lists = ({
         indexNumber,
       };
       try {
-        const data = await updateList(id, newList);
-        console.log(data);
+        await updateList(id, newList);
       } catch (err) {
         const error = err as IError;
         console.log(`Error message: ${error.message}`);
