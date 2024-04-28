@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { postList } from "../../utils/api/posts";
 import { IListsContext, ListsContext } from "../../context/ListsContext";
 import "./BoardNewListCreator.scss";
+import { IError } from "../../types/status.type";
 
 type isListAddedType = { isListAddedSetter: (value: boolean) => void };
 
@@ -24,7 +25,8 @@ const BoardNewListCreator = ({ isListAddedSetter }: isListAddedType) => {
         dispatch({ type: "ADD_LIST", payload: [newList] });
         setInputList("");
       } catch (err) {
-        console.log(`Error message: ${err}`);
+        const error = err as IError;
+        console.log(`Error message: ${error}`);
       } finally {
         console.log("Send POST request for new list...");
       }
@@ -39,7 +41,6 @@ const BoardNewListCreator = ({ isListAddedSetter }: isListAddedType) => {
           autoFocus
           value={inputList}
           onChange={(ev) => setInputList(ev.target.value)}
-          onBlur={() => isListAddedSetter(false)}
         />
       </div>
       <div className="board__new-list--btns">
