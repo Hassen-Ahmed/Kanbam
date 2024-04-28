@@ -11,7 +11,7 @@ export interface IListsContext {
 export const ListsContext = createContext<IListsContext | null>(null);
 
 const ListsContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [lists, dispatch] = useReducer(boardReducer, []);
+  const [lists, dispatch] = useReducer(boardReducer, null);
 
   return (
     <ListsContext.Provider value={{ lists, dispatch }}>
