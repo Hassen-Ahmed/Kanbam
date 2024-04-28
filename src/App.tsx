@@ -1,21 +1,15 @@
 import { useContext, useEffect } from "react";
-import { IkanbamContext, KanbamContext } from "./context/kanbamContext";
 import { IListsContext, ListsContext } from "./context/ListsContext";
 import { getAllLists } from "./utils/api/gets";
-import CardModal from "./components/card/modal/CardModal";
 import Home from "./pages/home/Home";
 import { updateCard, updateList } from "./utils/api/updates";
 import { IList, ListType } from "./types/board.type";
+import { IError } from "./types/status.type";
 
 const App = () => {
-  const { idOfModalCard, handleModalCardId } = useContext(
-    KanbamContext
-  ) as IkanbamContext;
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
 
   const fetchAllLists = async () => {
-    console.log("onece app fetchAllLists ####");
-
     try {
       const res = await getAllLists();
 
@@ -29,11 +23,11 @@ const App = () => {
       });
       // save res to localStorage for later we compare this storedLists/res to lists and for PUT request.
       localStorage.setItem("storedLists", JSON.stringify(res));
-      dispatch({ type: "GET_ALL_LISTS", payload: res });
+      dispatch({ type: "ADD_ALL_LISTS", payload: res });
     } catch (err) {
       console.log(`Error message: ${err}`);
     } finally {
-      console.log("Sent GET / getAllLists request from App.");
+      console.log("Sent GetAllLists request from App.");
     }
   };
 
@@ -69,11 +63,10 @@ const App = () => {
       localStorage.setItem("storedLists", JSON.stringify(lists));
       // do put request for lists here
       try {
-        asyncUpdaterList(listsForPutRequest).then((data) =>
-          console.log("UpdateLists is successful --->>", data)
-        );
+        asyncUpdaterList(listsForPutRequest);
       } catch (err) {
-        console.log(`Updating List err ${err}`);
+        const error = err as IError;
+        console.log(`Updating List err: ${error.message}`);
       }
     } else {
       // for cards only if the lists result is ok no difference.
@@ -90,11 +83,6 @@ const App = () => {
             updatedCardsFromLists[i].title != cardsFromStoredLists[i]?.title
           ) {
             isThereSomeCardsDiff = true;
-            console.log(
-              "---->>",
-              updatedCardsFromLists[i]?.title,
-              lists[j].title
-            );
 
             cardsForPutRequest.push({
               id: updatedCardsFromLists[i].id,
@@ -109,15 +97,13 @@ const App = () => {
       // reset localStorage of storedLists with edited lists
       if (isThereSomeCardsDiff) {
         localStorage.setItem("storedLists", JSON.stringify(lists));
-        console.log("cardsForPutRequest ---", cardsForPutRequest);
 
         // do put request for lists here
         try {
-          asyncUpdateCard(cardsForPutRequest).then((data) =>
-            console.log("UpdateCard is successful --->>", data)
-          );
+          asyncUpdateCard(cardsForPutRequest);
         } catch (err) {
-          console.log(`Updating cards err ${err}`);
+          const error = err as IError;
+          console.log(`Updating cards err: ${error.message}`);
         }
       }
     }
@@ -141,13 +127,6 @@ const App = () => {
 
   return (
     <div className="app" onDrop={handleAppOnDrop}>
-      {idOfModalCard?.title || idOfModalCard?.id ? (
-        <CardModal
-          handleModalCardId={handleModalCardId}
-          id={idOfModalCard.id}
-          title={idOfModalCard.title}
-        />
-      ) : null}
       <Home />
     </div>
   );
