@@ -7,15 +7,12 @@
   font-size: 1rem;
 }
 .card-modal--container {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
-  // margin-bottom: 2rem;
   padding-bottom: 2rem;
-  // max-height: auto;
-
   @include mixn.flexy(column, flex-start);
   overflow-y: scroll;
   overflow-x: hidden;
@@ -30,7 +27,7 @@
   padding: 4rem 2rem 4rem 2rem;
   border-radius: var.$bor-2;
   position: relative;
-  z-index: 2300;
+  z-index: var.$z-ix-4500;
 
   @media screen and (max-width: 1200px) {
     width: 70%;
@@ -211,8 +208,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  background-color: rgba(3, 3, 3, 0.8);
+  background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
   height: 100%;
-  //   z-index: 2200;
 }

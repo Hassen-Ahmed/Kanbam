@@ -13,25 +13,55 @@ import { RxActivityLog } from "react-icons/rx";
 
 import "./CardModal.scss";
 import TextEditor from "./TextEditor";
-import { useState } from "react";
+import { useContext, useState } from "react";
+// import { BoardType } from "../../../types/board.type";
+import { deleteCardById } from "../../../utils/api/deletes";
+import { IError } from "../../../types/status.type";
+import { IListsContext, ListsContext } from "../../../context/ListsContext";
+import { BoardType } from "../../../types/board.type";
 
 const sizeOne = 26;
 const sizeTwo = 22;
 
 export default function CardModal({
-  handleModalCardId,
-  // id,
+  handleModlaVisibility,
+  id,
+  listId,
   title,
 }: {
-  handleModalCardId: (id: string, title: string) => void;
+  handleModlaVisibility: (value: boolean) => void;
   id: string;
+  listId: string;
   title: string;
 }) {
   const [comment, setComment] = useState("");
   const [isCommentVisible, setIsCommentVisible] = useState(false);
-
+  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const handleSave = () => {
     setComment("");
+  };
+
+  const handleCardArchive = async (cardId: string) => {
+    try {
+      await deleteCardById(cardId);
+      handleModlaVisibility(false);
+
+      const updatedLists = lists?.map((listObj) => {
+        if (listObj.id != listId) return listObj;
+
+        const updatedList = listObj.list?.filter((card) => card.id != cardId);
+
+        listObj.list = updatedList;
+        return listObj;
+      }) as BoardType;
+
+      dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists });
+    } catch (err) {
+      const error = err as IError;
+      console.log("Error deleting card, err: ", error);
+    } finally {
+      console.log("DeleteCardById request sending... Id = ", cardId);
+    }
   };
 
   return (
@@ -39,7 +69,7 @@ export default function CardModal({
       <div className="card-modal">
         <div
           className="card-modal__btn--close"
-          onClick={() => handleModalCardId("", "")}
+          onClick={() => handleModlaVisibility(false)}
         >
           <VscClose size={sizeOne} />
         </div>
@@ -134,7 +164,10 @@ export default function CardModal({
                 <MdContentCopy size={sizeTwo} />
                 <h2>Copy</h2>
               </div>
-              <div className="archive right-bar__btn">
+              <div
+                className="archive right-bar__btn"
+                onClick={() => handleCardArchive(id)}
+              >
                 <MdOutlineArchive size={sizeTwo} />
                 <h2>Archive</h2>
               </div>
@@ -142,15 +175,14 @@ export default function CardModal({
           </div>
           {/* save-change */}
           <div className="card-modal__save-change">
-            <button
-            // onClick={() => handleModalCardId("")}
-            >
-              Save changes
-            </button>
+            <button>Save changes</button>
           </div>
         </div>
       </div>
-      <div className="card-modal__overlay"></div>
+      <div
+        className="card-modal__overlay"
+        onClick={() => handleModlaVisibility(false)}
+      ></div>
     </div>
   );
 }
