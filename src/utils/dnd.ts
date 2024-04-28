@@ -15,6 +15,7 @@ export const handleDragstartUtil = (
   cloneElem.style.opacity = "0.9";
   cloneElem.style.boxShadow = "none";
   cloneElem.style.backgroundColor = "transparent";
+  cloneElem.classList.add("cloneElem");
 
   const inner = cloneElem.getElementsByClassName(
     innerElemClass
@@ -40,4 +41,9 @@ export const handleDragstartUtil = (
       board.scrollLeft -= 30;
     }
   });
+};
+
+export const handleRemovingCloneElem = () => {
+  const cloneElem = document.getElementsByClassName("cloneElem");
+  [...cloneElem].forEach((elem) => elem.remove());
 };
