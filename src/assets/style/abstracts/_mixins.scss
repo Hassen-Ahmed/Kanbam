@@ -311,7 +311,46 @@
         }
       }
     }
+    .lists-menu {
+      @include border($theme-name, var.$border-color-02, rgba(0, 0, 0, 0.25));
+      @include color-bg-font(
+        $theme-name,
+        var.$bg-color-dark-card-modal,
+        var.$bg-color-light-lists,
+        var.$font-color-dark-01,
+        var.$font-color-light-01
+      );
 
+      &__btns {
+        .lists-menu__btn {
+          button {
+            @include color-bg-font(
+              $theme-name,
+              transparent,
+              transparent,
+              var.$font-color-dark-01,
+              var.$font-color-light-01
+            );
+          }
+          &:hover {
+            @include bg(
+              $theme-name,
+              var.$bg-color-dark-hover,
+              var.$bg-color-light-hover
+            );
+          }
+        }
+      }
+      &__btn-close {
+        &:hover {
+          @include bg(
+            $theme-name,
+            var.$bg-color-dark-hover,
+            var.$bg-color-light-hover
+          );
+        }
+      }
+    }
     .nav-bar {
       @include color-bg-font(
         $theme-name,
