@@ -3,8 +3,9 @@
 
 .lists--container {
   &--main {
-    width: 30rem;
+    width: var.$wd-list-01;
     height: 85vh;
+    position: relative;
   }
 
   &--sub {
@@ -18,7 +19,8 @@
 }
 
 .lists {
-  min-width: 27rem;
+  min-width: var.$mi-wd-list-01;
+  width: auto;
   height: auto;
   max-height: 70vh;
   overflow-y: auto;
@@ -40,8 +42,10 @@
       height: 3.5rem;
       z-index: var.$z-ix-100;
       p {
-        padding-left: 1rem;
         width: 100%;
+        padding-left: 1rem;
+        font-size: var.$fsi-16;
+        font-weight: var.$fwt-700;
       }
       input {
         width: 100%;
@@ -61,8 +65,8 @@
       @include mixn.flexy(row);
       height: 3.5rem;
       border-radius: var.$bor-1;
-      z-index: var.$z-ix-100;
       filter: brightness(120%);
+      z-index: var.$z-ix-250;
     }
   }
 

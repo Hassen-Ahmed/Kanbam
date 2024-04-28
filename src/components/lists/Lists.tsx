@@ -3,7 +3,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { IoMdAdd } from "react-icons/io";
 import { VscClose } from "react-icons/vsc";
 import { useContext, useState } from "react";
-import { handleDragstartUtil } from "../../utils/dnd";
+import { handleDragstartUtil, handleRemovingCloneElem } from "../../utils/dnd";
 import { DragEventMy } from "../../types/html.type";
 import { postCard } from "../../utils/api/posts";
 import { IListsContext, ListsContext } from "../../context/ListsContext";
@@ -11,6 +11,9 @@ import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { BoardType } from "../../types/board.type";
 import Card from "../card/Card";
 import "./Lists.scss";
+import ListsMenu from "./ListsMenu";
+import { IError } from "../../types/status.type";
+import { updateList } from "../../utils/api/updates";
 
 interface IListLocal {
   id: string;
@@ -39,12 +42,17 @@ const Lists = ({
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const { itemDragging } = useContext(KanbamContext) as IkanbamContext;
 
+  const [isListMenuVisible, setIsListMenuVisible] = useState(false);
+
   // end of hooks
 
   const handleDragEnd = (ev: DragEventMy) => {
     // set dragging item opacity to 1
     const targetChildElemt = ev.currentTarget.childNodes[0] as HTMLElement;
     targetChildElemt.style.opacity = "1";
+
+    // remove cloneElem from body
+    handleRemovingCloneElem();
   };
 
   const handleDragenter = (ev: DragEventMy) => {
@@ -210,6 +218,9 @@ const Lists = ({
     });
 
     dispatch({ type: "GET_ALL_LISTS", payload: updatedLists as BoardType });
+
+    // remove cloneElem from body
+    handleRemovingCloneElem();
   };
 
   const handleDragover = (ev: DragEventMy) => {
@@ -265,6 +276,34 @@ const Lists = ({
     setIsNewCardInputVisible(false);
   };
 
+  const handleIsListMenuVisible = (value: boolean) => {
+    setIsListMenuVisible(value);
+  };
+
+  const handleListMenu = () => {
+    setIsListMenuVisible(true);
+  };
+
+  const handleTitleOnUpdate = async () => {
+    if (titleValueOfThisList.length) {
+      const newList = {
+        id,
+        title: titleValueOfThisList,
+        indexNumber,
+      };
+      try {
+        const data = await updateList(id, newList);
+        console.log(data);
+      } catch (err) {
+        const error = err as IError;
+        console.log(`Error message: ${error.message}`);
+      } finally {
+        console.log("Send POST request for new list...");
+        setIsTitleInputVisible(false);
+      }
+    }
+  };
+
   const computedTitle =
     titleValueOfThisList?.length > 20
       ? titleValueOfThisList.slice(0, 16) + "..."
@@ -283,6 +322,14 @@ const Lists = ({
       data-identity="list"
       style={{ opacity: `${opacity}` }}
     >
+      {isListMenuVisible && (
+        <ListsMenu
+          handleIsListMenuVisible={handleIsListMenuVisible}
+          id={id}
+          setIsNewCardInputVisible={setIsNewCardInputVisible}
+        />
+      )}
+
       <div className="lists--container--sub">
         <h1 className="lists__heading">
           <div className="lists__heading--text">
@@ -297,14 +344,14 @@ const Lists = ({
                 onKeyDown={(ev) => handleTitleInputClose(ev)}
                 autoFocus
                 spellCheck="false"
-                onBlur={() => setIsTitleInputVisible(false)}
+                onBlur={handleTitleOnUpdate}
                 onChange={(e) => {
                   setTitleOfThisList(e.target.value);
                 }}
               />
             )}
           </div>
-          <div className="lists__heading--btn">
+          <div className="lists__heading--btn" onClick={handleListMenu}>
             <BsThreeDots />
           </div>
         </h1>
