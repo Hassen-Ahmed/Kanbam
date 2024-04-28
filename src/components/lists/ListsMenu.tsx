@@ -4,6 +4,7 @@ import { useContext, useEffect, useRef } from "react";
 import { deleteListsById } from "../../utils/api/deletes";
 import { IListsContext, ListsContext } from "../../context/ListsContext";
 import { BoardType } from "../../types/board.type";
+import { IError } from "../../types/status.type";
 
 export default function ListsMenu({
   handleIsListMenuVisible,
@@ -26,7 +27,6 @@ export default function ListsMenu({
       menuList.style.left = `${-80}%`;
     }
     if (menuListRectangle.left < 0) {
-      console.log("> than 0 --->", menuListRectangle.left);
       menuList.style.left = `${40}%`;
     }
   }, []);
@@ -42,9 +42,10 @@ export default function ListsMenu({
         return listObj.id != listId;
       }) as BoardType;
 
-      dispatch({ type: "GET_ALL_LISTS", payload: updatedLists });
+      dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists });
     } catch (err) {
-      console.log(err);
+      const error = err as IError;
+      console.log("Error deleting list, err: ", error);
     } finally {
       console.log("DeleteListsById request sending... Id = ", listId);
     }
