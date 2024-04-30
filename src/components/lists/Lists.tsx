@@ -39,10 +39,10 @@ const Lists = ({
     useState<boolean>(false);
   const [isNewCardInputVisible, setIsNewCardInputVisible] =
     useState<boolean>(false);
+  const [isListMenuVisible, setIsListMenuVisible] = useState(false);
+
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const { itemDragging } = useContext(KanbamContext) as IkanbamContext;
-
-  const [isListMenuVisible, setIsListMenuVisible] = useState(false);
 
   // end of hooks
 
@@ -154,9 +154,9 @@ const Lists = ({
     ) {
       const item = itemDragging?.current?.item as IList;
 
-      const filteredLists = lists?.filter((listObj) => {
-        return listObj.id != idOfItemDragging;
-      }) as BoardType;
+      const filteredLists = lists?.filter(
+        (listObj) => listObj.id != idOfItemDragging
+      ) as BoardType;
 
       let indexOfTargetListObj;
 
@@ -286,7 +286,7 @@ const Lists = ({
     setIsListMenuVisible(true);
   };
 
-  const handleTitleOnUpdate = async () => {
+  const handleTitleUpdate = async () => {
     if (titleValueOfThisList.length) {
       const newList = {
         id,
@@ -345,7 +345,7 @@ const Lists = ({
                 onKeyDown={(ev) => handleTitleInputClose(ev)}
                 autoFocus
                 spellCheck="false"
-                onBlur={handleTitleOnUpdate}
+                onBlur={handleTitleUpdate}
                 onChange={(e) => {
                   setTitleOfThisList(e.target.value);
                 }}
