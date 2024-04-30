@@ -1,6 +1,9 @@
 # ⭐️ Kanbam ⭐️
 
-Kanbam is a web application inspired by Trello's kanban board, designed to help teams manage projects and tasks effectively.
+Kanbam is a web application inspired by Trello's kanban board and Jira, designed to help teams manage projects and tasks effectively.
+
+- [Live Demo](https://kanbam.netlify.app/)
+- [ Back-End ](https://github.com/Hassen-Ahmed/KanbamApi)
 
 ## Features
 
@@ -25,6 +28,9 @@ Kanbam is a web application inspired by Trello's kanban board, designed to help 
   - TypeScript: A statically typed superset of JavaScript that adds optional static typing.
   - Sass/SCSS: A CSS extension language that adds features like variables, mixins, and nesting.
   - Chart.js: Is JavaScript library for data visualization.
+  - Axios: Is a simple promise based HTTP client for the browser and node.js.
+  - DOMPurify: is a DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML and SVG.
+  - React Icons: is icons library for react apps.
 
 ## Getting Started
 
