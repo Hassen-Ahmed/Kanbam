@@ -1,15 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
-import "./assets/style/main.scss";
 import KanbamContextProvider from "./context/kanbamContext.tsx";
 import ListsContextProvider from "./context/ListsContext.tsx";
+import RouterMain from "./router/RouterMain.tsx";
+import "./assets/style/main.scss";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
+
+root.render(
   <React.StrictMode>
     <ListsContextProvider>
       <KanbamContextProvider>
-        <App />
+        <RouterMain />
       </KanbamContextProvider>
     </ListsContextProvider>
   </React.StrictMode>
