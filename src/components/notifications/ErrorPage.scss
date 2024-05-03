@@ -1,0 +1,9 @@
+@use "../../assets/style/abstracts/mixins" as mixn;
+@use "../../assets/style/abstracts/variable" as var;
+
+.error-route {
+  @include mixn.flexy(column, center, center, 1rem);
+  background-color: rgb(233, 233, 233);
+  width: 100vw;
+  height: 100vh;
+}
