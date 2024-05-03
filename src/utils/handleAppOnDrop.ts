@@ -1,8 +1,10 @@
-import { BoardType, IList, ListType } from "../types/board.type";
+import { BoardType, IList, Cards } from "../types/board.type";
 import { IError } from "../types/status.type";
 import { updateCard, updateList } from "./api/updates";
 
 export const handleAppOnDrop = (lists: BoardType | null) => {
+  const token = localStorage.getItem("token");
+  if (!token) return;
   // on this onDrop update reorderd lists and card
   const storedLists = localStorage.getItem("storedLists");
 
@@ -10,6 +12,7 @@ export const handleAppOnDrop = (lists: BoardType | null) => {
   const pareseStoredLists = JSON.parse(storedLists);
 
   if (lists == undefined) return;
+
   // for lists only difference checking
   let isThereSomeListsDifference = false;
   const listsForPutRequest = [];
@@ -30,7 +33,7 @@ export const handleAppOnDrop = (lists: BoardType | null) => {
   if (isThereSomeListsDifference) {
     localStorage.setItem("storedLists", JSON.stringify(lists));
     try {
-      asyncUpdaterList(listsForPutRequest);
+      asyncUpdaterList(listsForPutRequest, token);
     } catch (err) {
       const error = err as IError;
       console.log(`Updating List err: ${error.message}`);
@@ -38,17 +41,14 @@ export const handleAppOnDrop = (lists: BoardType | null) => {
   } else {
     // for cards only if the lists result is ok no difference.
     let isThereSomeCardsDiff = false;
-    const cardsForPutRequest: ListType = [];
-
+    const cardsForPutRequest: Cards = [];
     for (let j = 0; j < lists?.length; j++) {
-      const updatedCardsFromLists = lists[j].list;
-      const cardsFromStoredLists = pareseStoredLists[j].list;
-
+      const updatedCardsFromLists = lists[j].cards;
+      const cardsFromStoredLists = pareseStoredLists[j].cards;
       if (updatedCardsFromLists?.length == undefined) return;
       for (let i = 0; i < updatedCardsFromLists?.length; i++) {
         if (updatedCardsFromLists[i].title != cardsFromStoredLists[i]?.title) {
           isThereSomeCardsDiff = true;
-
           cardsForPutRequest.push({
             id: updatedCardsFromLists[i].id,
             listId: lists[j].id as string,
@@ -58,12 +58,11 @@ export const handleAppOnDrop = (lists: BoardType | null) => {
         }
       }
     }
-
     // reset localStorage of storedLists with edited lists
     if (isThereSomeCardsDiff) {
       localStorage.setItem("storedLists", JSON.stringify(lists));
       try {
-        asyncUpdateCard(cardsForPutRequest);
+        asyncUpdateCard(cardsForPutRequest, token);
       } catch (err) {
         const error = err as IError;
         console.log(`Updating cards err: ${error.message}`);
@@ -72,18 +71,18 @@ export const handleAppOnDrop = (lists: BoardType | null) => {
   }
 };
 
-async function asyncUpdaterList(lists: IList[]) {
+async function asyncUpdaterList(lists: IList[], token: string) {
   return Promise.all(
-    lists.map(async (list) => {
-      return await updateList(list.id!, list);
+    lists.map(async (listObj) => {
+      return await updateList(listObj.id!, listObj, token);
     })
   );
 }
 
-async function asyncUpdateCard(list: ListType) {
+async function asyncUpdateCard(cards: Cards, token: string) {
   return Promise.all(
-    list.map((card) => {
-      return updateCard(card.id!, card);
+    cards.map((card) => {
+      return updateCard(card.id!, card, token);
     })
   );
 }
