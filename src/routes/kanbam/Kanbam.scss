@@ -1,0 +1,21 @@
+@use "../../assets/style/abstracts/mixins" as mixn;
+@use "../../assets/style/abstracts/variable" as var;
+
+.kanbam {
+  @include mixn.flexy(column, flex-start, center);
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
+  &__sub {
+    @include mixn.flexy(row, flex-start, center);
+    width: 100%;
+    height: 98%;
+  }
+
+  &__outlet {
+    @include mixn.flexy();
+    width: 100%;
+    height: 100%;
+  }
+}
