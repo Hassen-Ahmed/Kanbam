@@ -1,0 +1,21 @@
+@use "../../assets/style/abstracts/mixins" as mixn;
+@use "../../assets/style/abstracts/variable" as var;
+
+.auth {
+  background-image: linear-gradient(
+    -45deg,
+    hsla(119, 19%, 42%, 0.6),
+    hsla(82, 20%, 62%, 0.6)
+  );
+  width: 100vw;
+  height: 100vh;
+  @include mixn.flexy(column, flex-start, center, 2rem);
+  padding-top: 10%;
+
+  hr {
+    width: 10%;
+    border: none;
+    margin: 1rem 0;
+    transform: rotate(90deg);
+  }
+}
