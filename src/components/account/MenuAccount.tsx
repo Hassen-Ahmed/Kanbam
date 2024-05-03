@@ -4,6 +4,7 @@ import "./MenuAccount.scss";
 import MenuAccountLogo from "./MenuAccountLogo";
 import { useState } from "react";
 import ConfettiComp from "../Confetti";
+import { Link } from "react-router-dom";
 
 interface IMenuVisiblity {
   isAccountMenuVisible: boolean;
@@ -33,8 +34,11 @@ const MenuAccount = ({
                 <hr />
                 <ButtonTheme />
                 <hr />
+
                 <div className="menu__logout">
-                  <h2 className="menu__logout--text">Logout</h2>
+                  <Link to={"/"}>
+                    <h2 className="menu__logout--text">Logout</h2>
+                  </Link>
                 </div>
 
                 {areWeCelebrating &&
