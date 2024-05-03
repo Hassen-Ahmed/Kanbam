@@ -1,5 +1,5 @@
 import { createContext, useEffect, useRef, useState } from "react";
-import { ListType } from "../types/board.type";
+import { Cards } from "../types/board.type";
 
 interface IItem {
   id?: string;
@@ -7,7 +7,7 @@ interface IItem {
   indexNumber: number;
   title: string;
   isDragging?: boolean;
-  list?: ListType;
+  cards?: Cards;
   opacity: string;
 }
 
