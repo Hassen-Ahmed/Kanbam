@@ -1,4 +1,4 @@
-import { ICard, IList, ListType } from "../../types/board.type";
+import { ICard, IList, Cards } from "../../types/board.type";
 import { BsThreeDots } from "react-icons/bs";
 import { IoMdAdd } from "react-icons/io";
 import { VscClose } from "react-icons/vsc";
@@ -19,14 +19,14 @@ interface IListLocal {
   id: string;
   indexNumber: number;
   title: string;
-  list: ListType;
+  cards: Cards;
   isDragging: boolean;
   opacity: string;
 }
 
 const Lists = ({
   id,
-  list,
+  cards,
   title,
   indexNumber,
   isDragging,
@@ -67,10 +67,12 @@ const Lists = ({
     if (identityOfItemDragging == "card") {
       // swapping the card position
       if (identityOfTarget == "card" && idOfItemDragging != idOfTarget) {
-        // find Only list of cards of this lists or column
-        const filteredList = lists?.filter((list) => list.id == id) as IList[];
+        // find Only cards of cards of this lists or column
+        const filteredList = lists?.filter(
+          (cards) => cards.id == id
+        ) as IList[];
 
-        let listOfCards = filteredList[0].list as ListType;
+        let listOfCards = filteredList[0].cards as Cards;
 
         let indexOfTargetCard = 0;
 
@@ -94,10 +96,10 @@ const Lists = ({
           if (listObj.id == id) {
             return {
               ...listObj,
-              list: listOfCards,
+              cards: listOfCards,
             };
           } else {
-            const updatedListOfCards = listObj.list
+            const updatedListOfCards = listObj.cards
               ?.filter((card) => card.id != idOfItemDragging)
               .map((card, i) => {
                 card.indexNumber = i;
@@ -106,42 +108,42 @@ const Lists = ({
 
             return {
               ...listObj,
-              list: updatedListOfCards,
+              cards: updatedListOfCards,
             };
           }
         }) as BoardType;
 
-        // update indexNumber of this list/column
+        // update indexNumber of this cards/column
         const finalLists = updatedLists.map((listObj) => {
           if (listObj.id != id) return listObj;
 
-          const updatedList = listObj.list?.map((card, i) => {
+          const updatedList = listObj.cards?.map((card, i) => {
             card.indexNumber = i;
             return card;
           });
 
-          return { ...listObj, list: updatedList };
+          return { ...listObj, cards: updatedList };
         });
 
         dispatch({ type: "ADD_ALL_LISTS", payload: finalLists as BoardType });
       }
 
       // add card to empty list
-      if (!list.length) {
+      if (!cards.length) {
         const updatedLists = lists?.map((listObj) => {
           if (listObj.id == id)
             return {
               ...listObj,
-              list: [itemDragging.current?.item],
+              cards: [itemDragging.current?.item],
             };
 
           const filteredListOfCards =
-            listObj.list &&
-            listObj.list.filter(
+            listObj.cards &&
+            listObj.cards.filter(
               (card) => card.id != itemDragging.current?.item.id
             );
 
-          return { ...listObj, list: filteredListOfCards };
+          return { ...listObj, cards: filteredListOfCards };
         });
 
         dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists as BoardType });
@@ -192,7 +194,7 @@ const Lists = ({
         indexNumber,
         title,
         isDragging,
-        list,
+        cards,
         opacity: ".3",
       },
       identity: "list",
@@ -209,12 +211,12 @@ const Lists = ({
     const updatedLists = lists?.map((listObj) => {
       listObj.opacity = "1";
 
-      const updatedList = listObj.list?.map((card) => {
+      const updatedList = listObj.cards?.map((card) => {
         card.opacity = "1";
         return card;
       });
 
-      return { ...listObj, list: updatedList };
+      return { ...listObj, cards: updatedList };
     });
 
     dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists as BoardType });
@@ -239,18 +241,19 @@ const Lists = ({
         const cardToPost: ICard = {
           listId: id,
           title: titleValeuOfNewCard,
-          indexNumber: list.length,
+          indexNumber: cards.length,
           isDragging: false,
           opacity: "1",
         };
-
-        const data = await postCard(cardToPost);
+        const token = localStorage.getItem("token");
+        if (!token) return;
+        const data = await postCard(cardToPost, token);
 
         const updatedListObj = {
           id,
           title,
           indexNumber,
-          list: [...list, data],
+          cards: [...cards, data],
           isDragging,
           opacity,
         };
@@ -267,8 +270,6 @@ const Lists = ({
       } catch (err) {
         const error = err as IError;
         console.log("Error on creating new card, err:", error.message);
-      } finally {
-        console.log("New card post requesting...");
       }
     }
   };
@@ -287,6 +288,8 @@ const Lists = ({
   };
 
   const handleTitleUpdate = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
     if (titleValueOfThisList.length) {
       const newList = {
         id,
@@ -294,7 +297,7 @@ const Lists = ({
         indexNumber,
       };
       try {
-        await updateList(id, newList);
+        await updateList(id, newList, token);
       } catch (err) {
         const error = err as IError;
         console.log(`Error message: ${error.message}`);
@@ -357,7 +360,7 @@ const Lists = ({
           </div>
         </h1>
         <div className="lists">
-          {list.map((content) => {
+          {cards.map((content) => {
             return <Card {...content} key={content.id} />;
           })}
 
