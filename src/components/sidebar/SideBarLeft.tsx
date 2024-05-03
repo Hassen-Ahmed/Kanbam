@@ -6,6 +6,7 @@ import { MdHelpOutline, MdAccountBox } from "react-icons/md";
 
 import "./SideBarLeft.scss";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function SideBarLeft() {
   const [isDisplay, setIsDisplay] = useState<boolean>(false);
@@ -44,22 +45,34 @@ export default function SideBarLeft() {
         </div>
         <hr />
 
-        <div className="side-bar-left__btn--board side-bar-left__btn">
-          <FaTrello />
-          Board
-        </div>
-        <div className="side-bar-left__btn--table side-bar-left__btn">
-          <PiTableLight />
-          Table
-        </div>
-        <div className="side-bar-left__btn--calender side-bar-left__btn">
-          <SlCalender />
-          Calender
-        </div>
-        <div className="side-bar-left__btn--dashboard side-bar-left__btn">
-          <TfiDashboard />
-          Dashboard
-        </div>
+        <Link to={"/kanbam/board"}>
+          <div className="side-bar-left__btn--board side-bar-left__btn">
+            <FaTrello />
+            Board
+          </div>
+        </Link>
+
+        <Link to={"/kanbam/table"}>
+          <div className="side-bar-left__btn--table side-bar-left__btn">
+            <PiTableLight />
+            Table
+          </div>
+        </Link>
+
+        <Link to={"/kanbam/calendar"}>
+          <div className="side-bar-left__btn--calender side-bar-left__btn">
+            <SlCalender />
+            Calender
+          </div>
+        </Link>
+
+        <Link to={"/kanbam/dashboard"}>
+          <div className="side-bar-left__btn--dashboard side-bar-left__btn">
+            <TfiDashboard />
+            Dashboard
+          </div>
+        </Link>
+
         <div className="side-bar-left__btn--help side-bar-left__btn">
           <MdHelpOutline />
           Help

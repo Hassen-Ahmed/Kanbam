@@ -68,19 +68,25 @@
       }
     }
     &--board {
+      cursor: pointer;
     }
     &--table {
-      cursor: not-allowed;
+      cursor: pointer;
     }
     &--calender {
-      cursor: not-allowed;
+      cursor: pointer;
     }
     &--dashboard {
-      cursor: not-allowed;
+      cursor: pointer;
     }
     &--help {
       position: absolute;
       bottom: 1rem;
     }
   }
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
