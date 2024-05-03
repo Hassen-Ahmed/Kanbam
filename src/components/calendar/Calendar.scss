@@ -1,0 +1,10 @@
+@use "../../assets/style/abstracts/mixins" as mixn;
+@use "../../assets/style/abstracts/variable" as var;
+
+.calendar {
+  width: 99%;
+  height: 99%;
+  background-color: rgba(134, 97, 28, 0.436);
+
+  @include mixn.flexy();
+}
