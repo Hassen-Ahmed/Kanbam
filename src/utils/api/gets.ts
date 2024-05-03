@@ -1,46 +1,34 @@
 import { ICard, IList } from "../../types/board.type";
-import { kanbamApi, authorizationToken } from "./baseApi";
+import { kanbamApi } from "./baseApi";
+
+const token = localStorage.getItem("token");
 
 // cards
-
-console.log("Is this dev true ? ==>", import.meta.env.DEV);
-console.log("Is this prod true ? ==>", import.meta.env.PROD);
-
 export const getAllCardByListId = async (listId: string) => {
-  const { data } = await kanbamApi.get<ICard[]>(`/cards/${listId}/list`);
+  const { data } = await kanbamApi.get<ICard[]>(`/cards/${listId}/list`, {
+    headers: {
+      Authorization: `Bearer  ${token}`,
+    },
+  });
   return data;
 };
 
 export const getCardByCardId = async (cardId: string) => {
-  const { data } = await kanbamApi.get<ICard>(`/cards/${cardId}/card`);
+  const { data } = await kanbamApi.get<ICard>(`/cards/${cardId}/card`, {
+    headers: {
+      Authorization: `Bearer  ${token}`,
+    },
+  });
   return data;
 };
 
 // lists
-
-export const getAllLists = async () => {
+export const getAllLists = async (token: string) => {
   const { data } = await kanbamApi.get<IList[]>("/Lists", {
     headers: {
-      Authorization: authorizationToken,
+      Authorization: `Bearer  ${token}`,
     },
   });
 
-  const listsWithCards = Promise.all(
-    data.map(async (listSingle: IList) => {
-      listSingle.opacity = "1";
-      listSingle.isDragging = false;
-
-      const id = listSingle.id == undefined ? "" : listSingle.id;
-      const data = await getAllCardByListId(id);
-      const modifiedData = data.map((card) => {
-        card.opacity = "1";
-        card.isDragging = false;
-        return card;
-      });
-
-      return { ...listSingle, list: modifiedData };
-    })
-  );
-
-  return await listsWithCards;
+  return data;
 };
