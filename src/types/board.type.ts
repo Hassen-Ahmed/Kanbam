@@ -7,14 +7,14 @@ export interface ICard {
   opacity?: string;
 }
 
-export type ListType = ICard[];
+export type Cards = ICard[];
 
 export interface IList {
   id?: string;
   title: string;
   isDragging?: boolean;
   indexNumber: number;
-  list?: ListType;
+  cards?: Cards;
   opacity?: string;
 }
 
