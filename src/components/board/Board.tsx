@@ -1,15 +1,39 @@
-import { memo, useContext, useState } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import BoardNewListCreator from "./BoardNewListCreator";
 import Loading from "../notifications/Loading";
 import { IListsContext, ListsContext } from "../../context/ListsContext";
 import { createPortal } from "react-dom";
 import Lists from "../lists/Lists";
+import { fetchAllLists } from "../../utils/fetchAllLists";
+import { IActionBoard } from "../../types/actions.type";
+import { isTokenAuthenticated } from "../../utils/jwtAuth";
+import { useNavigate } from "react-router-dom";
+import { IError } from "../../types/status.type";
 import "./Board.scss";
 
+async function findAllLists(dispatch: React.Dispatch<IActionBoard>) {
+  try {
+    const res = await fetchAllLists({ dispatch });
+    return res;
+  } catch (err) {
+    const error = err as IError;
+    console.log(error.message);
+  }
+}
+
 const Board = memo(() => {
-  const { lists } = useContext(ListsContext) as IListsContext;
+  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const [isListAdded, setIsListAdded] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    findAllLists(dispatch).then((data) => {
+      if (!isTokenAuthenticated() && data == undefined) {
+        navigate("/");
+      }
+    });
+  }, []);
 
   // end of hooks!
 
@@ -33,7 +57,7 @@ const Board = memo(() => {
         id={list.id!}
         title={list.title}
         indexNumber={list.indexNumber!}
-        list={list.list!}
+        cards={list.cards!}
         isDragging={list.isDragging!}
         opacity={list.opacity!}
       />
