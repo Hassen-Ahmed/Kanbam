@@ -16,17 +16,21 @@ const BoardNewListCreator = ({ isListAddedSetter }: isListAddedType) => {
       let newList = {
         title: inputList,
         indexNumber: lists?.length as number,
+        cards: [],
       };
+
       try {
-        const data = await postList(newList);
+        const token = localStorage.getItem("token");
+        if (!token) return;
+        const data = await postList(newList, token);
 
-        newList = { ...data, list: [] };
-
+        newList = { ...data, cards: [] };
         dispatch({ type: "ADD_LIST", payload: [newList] });
+        localStorage.setItem("storedLists", JSON.stringify([...lists!, data]));
         setInputList("");
       } catch (err) {
         const error = err as IError;
-        console.log(`Error message: ${error}`);
+        console.log(`Error message: ${error.message}`);
       } finally {
         console.log("Send POST request for new list...");
       }
