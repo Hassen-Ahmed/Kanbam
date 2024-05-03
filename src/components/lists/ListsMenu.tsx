@@ -35,7 +35,9 @@ export default function ListsMenu({
 
   const handleListArchive = async (listId: string) => {
     try {
-      await deleteListsById(listId);
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      await deleteListsById(listId, token);
       handleIsListMenuVisible(false);
 
       const updatedLists = lists?.filter((listObj) => {
@@ -45,9 +47,7 @@ export default function ListsMenu({
       dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists });
     } catch (err) {
       const error = err as IError;
-      console.log("Error deleting list, err: ", error);
-    } finally {
-      console.log("DeleteListsById request sending... Id = ", listId);
+      console.log("Error deleting list, err: ", error.message);
     }
   };
 
