@@ -43,24 +43,24 @@ export default function CardModal({
 
   const handleCardArchive = async (cardId: string) => {
     try {
-      await deleteCardById(cardId);
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      await deleteCardById(cardId, token);
       handleModlaVisibility(false);
 
       const updatedLists = lists?.map((listObj) => {
         if (listObj.id != listId) return listObj;
 
-        const updatedList = listObj.list?.filter((card) => card.id != cardId);
+        const updatedList = listObj.cards?.filter((card) => card.id != cardId);
 
-        listObj.list = updatedList;
+        listObj.cards = updatedList;
         return listObj;
       }) as BoardType;
 
       dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists });
     } catch (err) {
       const error = err as IError;
-      console.log("Error deleting card, err: ", error);
-    } finally {
-      console.log("DeleteCardById request sending... Id = ", cardId);
+      console.log("Error deleting card, err: ", error.message);
     }
   };
 
