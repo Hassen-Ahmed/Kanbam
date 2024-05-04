@@ -6,6 +6,7 @@ import { IListsContext, ListsContext } from "../../context/ListsContext";
 import { fetchAllLists } from "../../utils/fetchAllLists";
 import { useNavigate } from "react-router-dom";
 import { IError } from "../../types/status.type";
+import { FaArrowRotateLeft } from "react-icons/fa6";
 
 export default function LogIn() {
   const [userDetails, setUserDetails] = useState({
@@ -13,6 +14,7 @@ export default function LogIn() {
     password: "",
   });
   const { dispatch } = useContext(ListsContext) as IListsContext;
+  const [isAuthorizing, setIsAuthorizing] = useState(false);
   const navigate = useNavigate();
 
   // end of hooks
@@ -34,6 +36,8 @@ export default function LogIn() {
   };
 
   const handleLoginForm = async () => {
+    setIsAuthorizing(true);
+
     try {
       const { token }: { token: string } = await postAuthLogin(userDetails);
       localStorage.setItem("token", token);
@@ -42,6 +46,7 @@ export default function LogIn() {
 
       navigate("/kanbam/board");
     } catch (err) {
+      setIsAuthorizing(false);
       const error = err as IError;
       console.log(error.message);
     }
@@ -72,8 +77,19 @@ export default function LogIn() {
         />
       </div>
 
-      <div className="login_btn" onClick={handleLoginForm}>
-        <button>Log in</button>
+      <div
+        className="login_btn"
+        onClick={handleLoginForm}
+        style={{ opacity: `${isAuthorizing ? "0.5" : "1"}` }}
+      >
+        <button disabled={isAuthorizing ? true : false}>
+          Log in
+          {isAuthorizing && (
+            <span className="loading-notifiation">
+              <FaArrowRotateLeft />
+            </span>
+          )}
+        </button>
       </div>
       <div className="login__create-account">
         <Link to={"/auth/signup"}>
