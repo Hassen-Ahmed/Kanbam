@@ -9,8 +9,11 @@
   );
   width: 100vw;
   height: 100vh;
-  @include mixn.flexy(column, flex-start, center, 2rem);
-  padding-top: 10%;
+  @include mixn.flexy(column, center, center, 2rem);
+
+  h2 {
+    font-size: var.$fsi-18;
+  }
 
   hr {
     width: 10%;
