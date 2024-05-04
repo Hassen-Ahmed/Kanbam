@@ -12,7 +12,8 @@
   @include mixn.flexy(column, center, center, 2rem);
 
   h2 {
-    font-size: var.$fsi-18;
+    font-size: var.$fsi-2;
+    color: var.$color-greenish;
   }
 
   hr {
