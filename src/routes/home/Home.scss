@@ -3,15 +3,12 @@
 
 .home {
   // background-image: linear-gradient(-45deg, #588157, #a3b18a);
-  background-image: linear-gradient(
-    -45deg,
-    hsla(119, 19%, 42%, 0.6),
-    hsla(82, 20%, 62%, 0.6)
-  );
+  background-image: linear-gradient(-45deg, #577f5799, #a3b18b99);
   width: 100vw;
   height: 100vh;
   @include mixn.flexy(column, center, center, 2rem);
   position: relative;
+  color: var.$color-greenish;
 
   h1 {
     font-size: 5rem;
@@ -47,7 +44,7 @@
         hsla(119, 19%, 42%, 0.6),
         hsla(82, 20%, 62%, 0.6)
       );
-      color: var.$color-black-01;
+      color: hsla(120, 37%, 8%, 0.8);
       box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.1);
       transition: all 0.2s ease;
 

@@ -27,7 +27,7 @@ export default function Home() {
 
   return (
     <div className="home">
-      <h1>⭐️ Welcome to Kanbam ⭐️</h1>
+      <h1>⭐️ Welcome to Kanbam! ⭐️</h1>
       <p>
         Kanbam is a web application inspired by Trello's kanban board, designed
         to help teams manage projects and tasks effectively.
