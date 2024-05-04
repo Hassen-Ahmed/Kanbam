@@ -1,63 +1,21 @@
 @use "../../assets/style/abstracts/mixins" as mixn;
+@use "../../assets/style/abstracts/mixins02" as mixn02;
 @use "../../assets/style/abstracts/variable" as var;
 
 .signup {
-  @include mixn.flexy(column, center, flex-start, 1rem);
-  background-color: rgba(255, 255, 255, 0.5);
-  padding: 2rem 4rem;
-  padding-top: 3rem;
-  border-radius: var.$bor-15;
+  @include mixn02.auth;
 
   &-email,
   &-password {
-    @include mixn.flexy(column, center, flex-start);
-    label {
-      font-size: var.$fsi-14;
-      margin-bottom: 0.5rem;
-    }
-
-    input {
-      border: 0.1rem solid rgba(0, 0, 0, 0.5);
-      background-color: white;
-      outline: none;
-      padding: 0.5rem;
-    }
+    @include mixn02.auth-credential;
   }
 
   &_btn {
-    @include mixn.flexy(column);
-    width: 100%;
-
-    button {
-      align-self: center;
-      cursor: pointer;
-      margin-top: 1rem;
-      padding: 0.5rem 2rem;
-      border-radius: var.$bor-1;
-      border: 0.1rem solid white;
-      background-color: greenyellow;
-      background-image: linear-gradient(
-        -45deg,
-        hsla(119, 19%, 42%, 0.6),
-        hsla(82, 20%, 62%, 0.6)
-      );
-      color: var.$color-black-01;
-      box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.1);
-      transition: all 0.2s ease;
-
-      &:hover {
-        outline: auto;
-        outline-color: rgba(255, 255, 255, 0.8);
-        outline-offset: 0.5rem;
-        outline-width: 0.1rem;
-        outline-style: dashed;
-        transform: translateY(-0.2rem);
-      }
-    }
+    @include mixn02.auth-btn;
   }
 
   &__back-login {
     margin-top: 2rem;
-    color: blue;
+    color: rgba(0, 0, 255, 0.5);
   }
 }

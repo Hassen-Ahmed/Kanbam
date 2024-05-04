@@ -3,6 +3,7 @@ import "./SignUp.scss";
 import { useState } from "react";
 import { postAuthRegistarion } from "../../utils/api/posts";
 import { IError } from "../../types/status.type";
+import { FaArrowRotateLeft } from "react-icons/fa6";
 
 export default function SignUp() {
   const [userDetails, setUserDetails] = useState({
@@ -11,6 +12,9 @@ export default function SignUp() {
     passwordConfirm: "",
   });
   const navigate = useNavigate();
+  const [isRegistered, setIsRegistered] = useState(false);
+  // end of hooks
+
   const handleOnChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     const nameOfElem = ev.target.getAttribute("name");
 
@@ -34,10 +38,12 @@ export default function SignUp() {
   };
 
   const handleSignupForm = async () => {
+    setIsRegistered(true);
     try {
       await postAuthRegistarion(userDetails);
       navigate("/auth/login");
     } catch (err) {
+      setIsRegistered(false);
       const error = err as IError;
       console.log(error.message);
     }
@@ -79,8 +85,19 @@ export default function SignUp() {
         />
       </div>
 
-      <div className="signup_btn" onClick={handleSignupForm}>
-        <button>Sign up</button>
+      <div
+        className="signup_btn"
+        onClick={handleSignupForm}
+        style={{ opacity: `${isRegistered ? "0.5" : "1"}` }}
+      >
+        <button disabled={isRegistered ? true : false}>
+          Sign up
+          {isRegistered && (
+            <span className="loading-notifiation">
+              <FaArrowRotateLeft />
+            </span>
+          )}
+        </button>
       </div>
 
       <div className="signup__back-login">
