@@ -13,6 +13,7 @@
 @mixin auth-credential {
   @include mixn.flexy(column, center, flex-start);
   label {
+    color: var.$color-greenish;
     font-size: var.$fsi-16;
   }
 
@@ -20,6 +21,7 @@
     border: 0.1rem solid rgba(87, 127, 87, 0.6);
     outline: none;
     background-color: white;
+    color: var.$color-greenish-02;
     outline: none;
     margin: 0.5rem 0;
     padding: 0.5rem;
