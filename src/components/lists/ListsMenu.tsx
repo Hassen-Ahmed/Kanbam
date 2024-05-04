@@ -1,10 +1,11 @@
 import { VscClose } from "react-icons/vsc";
 import "./ListsMenu.scss";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { deleteListsById } from "../../utils/api/deletes";
 import { IListsContext, ListsContext } from "../../context/ListsContext";
 import { BoardType } from "../../types/board.type";
 import { IError } from "../../types/status.type";
+import { FaArrowRotateLeft } from "react-icons/fa6";
 
 export default function ListsMenu({
   handleIsListMenuVisible,
@@ -17,6 +18,7 @@ export default function ListsMenu({
 }) {
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const menuListRef = useRef(null);
+  const [isListRemoved, setIsListRemoved] = useState(false);
 
   useEffect(() => {
     if (!menuListRef.current) return;
@@ -34,6 +36,7 @@ export default function ListsMenu({
   // end of hooks
 
   const handleListArchive = async (listId: string) => {
+    setIsListRemoved(true);
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
@@ -48,6 +51,7 @@ export default function ListsMenu({
     } catch (err) {
       const error = err as IError;
       console.log("Error deleting list, err: ", error.message);
+      setIsListRemoved(false);
     }
   };
 
@@ -93,8 +97,16 @@ export default function ListsMenu({
           <div
             className="lists-menu__btn"
             onClick={() => handleListArchive(id)}
+            style={{ opacity: `${isListRemoved ? "0.5" : "1"}` }}
           >
-            <button>Archive this list</button>
+            <button disabled={isListRemoved ? true : false}>
+              Archive this list
+              {isListRemoved && (
+                <span className="loading-notifiation">
+                  <FaArrowRotateLeft />
+                </span>
+              )}
+            </button>
           </div>
         </div>
         <div
