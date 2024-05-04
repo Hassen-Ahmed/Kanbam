@@ -4,7 +4,7 @@ import "./MenuAccount.scss";
 import MenuAccountLogo from "./MenuAccountLogo";
 import { useState } from "react";
 import ConfettiComp from "../Confetti";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface IMenuVisiblity {
   isAccountMenuVisible: boolean;
@@ -16,6 +16,15 @@ const MenuAccount = ({
   setIsAccountMenuVisible,
 }: IMenuVisiblity) => {
   const [areWeCelebrating, setAreWeCelebrating] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setTimeout(() => {
+      console.log("loged out!");
+      navigate("/");
+    }, 100);
+  };
 
   return (
     <>
@@ -35,10 +44,8 @@ const MenuAccount = ({
                 <ButtonTheme />
                 <hr />
 
-                <div className="menu__logout">
-                  <Link to={"/"}>
-                    <h2 className="menu__logout--text">Logout</h2>
-                  </Link>
+                <div className="menu__logout" onClick={handleLogout}>
+                  <h2 className="menu__logout--text">Logout</h2>
                 </div>
 
                 {areWeCelebrating &&
