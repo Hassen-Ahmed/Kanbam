@@ -1,0 +1,33 @@
+@use "../../../assets/style/abstracts/mixins" as mixn;
+@use "../../../assets/style/abstracts/mixins02" as mixn02;
+@use "../../../assets/style/abstracts/variable" as var;
+
+.login {
+  &-form {
+    @include mixn02.auth;
+  }
+
+  &-email,
+  &-password {
+    @include mixn02.auth-credential;
+  }
+
+  &_btn {
+    @include mixn02.auth-btn;
+  }
+
+  &__create-account {
+    margin-top: 2rem;
+    color: rgba(0, 0, 255, 0.5);
+  }
+}
+.wrong-user {
+  align-self: center;
+  color: #a23811;
+}
+.tips {
+  align-self: center;
+  @include mixn.flexy(row, center, center, 2rem);
+  color: rgba(21, 21, 150, 0.718);
+  font-size: var.$fsi-12;
+}
