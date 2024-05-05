@@ -7,19 +7,18 @@ import Kanbam from "../routes/kanbam/Kanbam";
 import Dashboard from "../components/dashboard/Dashboard";
 import Table from "../components/table/Table";
 import Calendar from "../components/calendar/Calendar";
-import LogIn from "../pages/login/LogIn";
-import SignUp from "../pages/signup/SignUp";
+import LogIn from "../pages/auth/login/LogIn";
+import SignUp from "../pages/auth/signup/SignUp";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
-    errorElement: <ErrorPage text="Root" />,
+    errorElement: <ErrorPage />,
   },
   {
     path: "/auth",
     element: <Auth />,
-    errorElement: <ErrorPage text="Auth" />,
     children: [
       {
         path: "/auth",
@@ -38,7 +37,6 @@ const router = createBrowserRouter([
   {
     path: "/kanbam",
     element: <Kanbam />,
-    errorElement: <ErrorPage text="Kanbam" />,
     children: [
       {
         path: "/kanbam/",
