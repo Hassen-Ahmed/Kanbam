@@ -1,61 +1,117 @@
 @use "../../assets/style/abstracts/mixins" as mixn;
 @use "../../assets/style/abstracts/variable" as var;
+@import url("https://fonts.googleapis.com/css2?family=Freeman&family=Monoton&display=swap");
+
+.home-container {
+  @include mixn.flexy(column, flex-start);
+  width: 100vw;
+  min-height: 100vh;
+}
 
 .home {
-  // background-image: linear-gradient(-45deg, #588157, #a3b18a);
-  background-image: linear-gradient(-45deg, #577f5799, #a3b18b99);
-  width: 100vw;
-  height: 100vh;
-  @include mixn.flexy(column, center, center, 2rem);
+  background-image: var.$bg-image-home;
+  width: 100%;
+  height: 90vh;
+  padding: 0 20%;
+  @include mixn.flexy(column, center, flex-start, 2rem);
   position: relative;
-  color: var.$color-greenish;
+  color: white;
 
-  h1 {
-    font-size: 5rem;
-    font-weight: var.$fwt-400;
+  &__main {
+    h1 {
+      font-size: 5rem;
+      font-weight: var.$fwt-400;
+      font-family: "Freeman", sans-serif;
 
-    @media screen and (max-width: 450px) {
-      font-size: 3rem;
-      font-weight: var.$fwt-600;
-    }
-    @media screen and (max-width: 700px) {
-      font-size: 2.6rem;
-      font-weight: var.$fwt-600;
-    }
-  }
-
-  p {
-    width: 60%;
-    font-size: var.$fsi-18;
-    font-weight: var.$fwt-500;
-    text-align: center;
-  }
-
-  &__btn {
-    margin-top: 2rem;
-    button {
-      cursor: pointer;
-      padding: 0.5rem 1.5rem;
-      border-radius: var.$bor-1;
-      border: 0.1rem solid white;
-      background-color: greenyellow;
-      background-image: linear-gradient(
-        -45deg,
-        hsla(119, 19%, 42%, 0.6),
-        hsla(82, 20%, 62%, 0.6)
-      );
-      color: hsla(120, 37%, 8%, 0.8);
-      box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.1);
-      transition: all 0.2s ease;
-
-      &:hover {
-        outline: auto;
-        outline-color: rgba(255, 255, 255, 0.8);
-        outline-offset: 0.5rem;
-        outline-width: 0.1rem;
-        outline-style: dashed;
-        transform: translateY(-0.2rem);
+      @media screen and (max-width: 450px) {
+        font-size: 3rem;
+        font-weight: var.$fwt-600;
+      }
+      @media screen and (max-width: 700px) {
+        font-size: 2.6rem;
+        font-weight: var.$fwt-600;
       }
     }
+
+    p {
+      font-size: var.$fsi-18;
+      font-weight: var.$fwt-500;
+    }
+
+    &--btn {
+      margin-top: 2rem;
+      button {
+        cursor: pointer;
+        padding: 0.5rem 1.5rem;
+        border-radius: var.$bor-1;
+        border: 0.1rem solid white;
+        background-color: var.$bg-home;
+        background-image: var.$bg-image-home;
+        color: white;
+        box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.25);
+        transition: all 0.2s ease;
+
+        &:hover {
+          outline: auto;
+          outline-color: rgba(255, 255, 255, 0.8);
+          outline-offset: 0.5rem;
+          outline-width: 0.1rem;
+          outline-style: dashed;
+          transform: translateY(-0.2rem);
+        }
+      }
+    }
+  }
+  &__links {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    background-color: var.$bg-home;
+    padding: 1rem 4rem;
+    border: 0.2rem solid white;
+    border-radius: var.$bor-1;
+    transition: all 0.2s ease;
+
+    @include mixn.flexy(row, center, flex-start, 2rem);
+    a {
+      cursor: pointer;
+    }
+
+    &:hover {
+      outline: auto;
+      outline-offset: 1rem;
+      outline-width: 0.1rem;
+      outline-color: white;
+      outline-style: dashed;
+    }
+  }
+}
+
+.home__footer {
+  background-color: white;
+  @include mixn.flexy(column, center, center, 2rem);
+  width: 100vw;
+  min-height: 30vh;
+  height: auto;
+  padding-top: 8rem;
+
+  h2 {
+    font-size: 3rem;
+    font-weight: var.$fwt-400;
+    font-family: "Freeman", sans-serif;
+    background-color: var.$bg-home;
+    color: white;
+    padding: 1rem 5rem;
+  }
+  p {
+    padding: 1rem 5rem;
+    font-size: var.$fsi-18;
+    font-family: sans-serif;
+    font-weight: var.$fwt-300;
+  }
+  span {
+    margin: 1rem 0;
+    font-family: sans-serif;
   }
 }
