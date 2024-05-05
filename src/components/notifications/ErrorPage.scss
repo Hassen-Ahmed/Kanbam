@@ -2,8 +2,22 @@
 @use "../../assets/style/abstracts/variable" as var;
 
 .error-route {
+  position: fixed;
+  top: 0;
   @include mixn.flexy(column, center, center, 1rem);
-  background-color: rgb(233, 233, 233);
+  background-color: #623ff01a;
   width: 100vw;
   height: 100vh;
+
+  .contents {
+    @include mixn.flexy(column, center, center, 1rem);
+    width: 100%;
+    padding: 2rem 0;
+    background-image: var.$bg-image-home;
+    color: white;
+
+    p {
+      font-size: var.$fsi-16;
+    }
+  }
 }
