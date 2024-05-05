@@ -4,28 +4,42 @@
 
 @mixin auth {
   @include mixn.flexy(column, center, flex-start, 1rem);
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: var.$bg-auth;
   padding: 3rem 6rem;
   padding-top: 4rem;
   border-radius: var.$bor-15;
+
+  @media screen and (max-width: 2000px) {
+    width: 30%;
+  }
+
+  @media screen and (max-width: 1000px) {
+    width: 50%;
+  }
+  @media screen and (max-width: 700px) {
+    width: 70%;
+    padding: 3rem 3rem;
+  }
 }
 
 @mixin auth-credential {
   @include mixn.flexy(column, center, flex-start);
+  width: 100%;
+  position: relative;
+
   label {
-    color: var.$color-greenish;
+    color: var.$color-black-02;
     font-size: var.$fsi-16;
   }
 
   input {
-    border: 0.1rem solid rgba(87, 127, 87, 0.6);
+    border: 0.1rem solid var.$bg-home;
     outline: none;
     background-color: white;
-    color: var.$color-greenish-02;
     outline: none;
     margin: 0.5rem 0;
     padding: 0.5rem;
-    width: 20vw;
+    width: 100%;
     height: 3rem;
 
     @media screen and (max-width: 450px) {
@@ -46,14 +60,10 @@
     padding: 0.5rem 2rem;
     border-radius: var.$bor-1;
     border: 0.1rem solid white;
-    background-color: greenyellow;
-    background-image: linear-gradient(
-      -45deg,
-      hsla(119, 19%, 42%, 0.6),
-      hsla(82, 20%, 62%, 0.6)
-    );
-    color: var.$color-black-01;
-    box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.1);
+    background-color: var.$bg-home;
+    background-image: var.$bg-image-home;
+    color: white;
+    box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.25);
     transition: all 0.2s ease;
     position: relative;
 
@@ -77,6 +87,6 @@
   position: absolute;
   top: $y-val;
   left: $x-val;
-  color: green;
+  color: white;
   animation: spinner 1s ease 0s infinite;
 }
