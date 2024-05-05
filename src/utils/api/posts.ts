@@ -43,6 +43,7 @@ export const postAuthRegistarion = async (
     "/auth/registarion",
     registarionDetail
   );
+
   return data;
 };
 
