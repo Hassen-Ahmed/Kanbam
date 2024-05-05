@@ -1,0 +1,25 @@
+@use "../../../assets/style/abstracts/mixins" as mixn;
+@use "../../../assets/style/abstracts/mixins02" as mixn02;
+@use "../../../assets/style/abstracts/variable" as var;
+
+.form-input {
+  @include mixn02.auth-credential;
+}
+
+.error-message {
+  display: none;
+  align-self: flex-start;
+  font-size: var.$fsi-12;
+  color: #a23811;
+}
+
+.form-input input:invalid[data-focused="true"] ~ .error-message {
+  display: block;
+}
+
+.show-input {
+  position: absolute;
+  top: 3rem;
+  right: 1rem;
+  cursor: pointer;
+}
