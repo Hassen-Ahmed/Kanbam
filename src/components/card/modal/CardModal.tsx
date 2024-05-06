@@ -1,45 +1,89 @@
+import { useContext, useState } from "react";
 import { FaRegCreditCard } from "react-icons/fa";
-import { VscClose } from "react-icons/vsc";
-import { GiRank3 } from "react-icons/gi";
-import {
-  MdOutlineWatchLater,
-  MdOutlineAttachment,
-  MdContentCopy,
-  MdOutlineArchive,
-} from "react-icons/md";
-import { IoMdCard, IoMdArrowRoundForward } from "react-icons/io";
 import { BsTextParagraph } from "react-icons/bs";
 import { RxActivityLog } from "react-icons/rx";
-
-import "./CardModal.scss";
-import TextEditor from "./TextEditor";
-import { useContext, useState } from "react";
-// import { BoardType } from "../../../types/board.type";
 import { deleteCardById } from "../../../utils/api/deletes";
-import { IError } from "../../../types/status.type";
-import { IListsContext, ListsContext } from "../../../context/ListsContext";
-import { BoardType } from "../../../types/board.type";
+import { VscClose } from "react-icons/vsc";
+import { CiEdit } from "react-icons/ci";
 
-const sizeOne = 26;
+import { IListsContext, ListsContext } from "../../../context/ListsContext";
+import { BoardType, ICard, IList } from "../../../types/board.type";
+import { IError } from "../../../types/status.type";
+import { priorities } from "../../../utils/constantDatas/priorities";
+import TextEditor from "./components/textEditor/TextEditor";
+import ButtonsRight from "./components/ButtonsRight";
+import Comment from "./components/Comment";
+import "./CardModal.scss";
+import { updateCard } from "../../../utils/api/updates";
+import { MdAccountCircle } from "react-icons/md";
+
+const sizeOne = 22;
 const sizeTwo = 22;
+
+export interface IPriority {
+  name: string;
+  color: string;
+  direction: string;
+}
 
 export default function CardModal({
   handleModlaVisibility,
-  id,
-  listId,
-  title,
+  cardDetail,
 }: {
   handleModlaVisibility: (value: boolean) => void;
-  id: string;
-  listId: string;
-  title: string;
+  cardDetail: ICard;
 }) {
   const [comment, setComment] = useState("");
   const [isCommentVisible, setIsCommentVisible] = useState(false);
+  const [priority, setPriority] = useState({
+    name: "",
+    color: "",
+    direction: "0",
+  });
+  const [isPriorityPicked, setIsPriorityPicked] = useState(false);
+  const [titleValueOfThisCard, setTitleOfThisCard] = useState<string>(
+    cardDetail.title
+  );
+  const [isTitleInputVisible, setIsTitleInputVisible] =
+    useState<boolean>(false);
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
-  const handleSave = () => {
-    setComment("");
+
+  // end of hook
+
+  const bgColor = cardDetail.priority
+    ? `${
+        priorities.filter(
+          (priorityObj) => priorityObj.name === cardDetail.priority
+        )[0].color
+      }`
+    : "#00000033";
+
+  const handleSave = async () => {
+    // cardDetail,
+
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    if (comment.length) {
+      cardDetail.comments?.push(comment);
+
+      try {
+        await updateCard(cardDetail.id!, cardDetail, token);
+        setComment("");
+        setIsCommentVisible(false);
+      } catch (err) {
+        const error = err as IError;
+        console.log(`Error message: ${error.message}`);
+      } finally {
+        console.log("Send put request for Comment...");
+      }
+    }
   };
+
+  const computedTitle =
+    titleValueOfThisCard?.length > 20
+      ? titleValueOfThisCard.slice(0, 16) + "..."
+      : titleValueOfThisCard;
 
   const handleCardArchive = async (cardId: string) => {
     try {
@@ -49,7 +93,7 @@ export default function CardModal({
       handleModlaVisibility(false);
 
       const updatedLists = lists?.map((listObj) => {
-        if (listObj.id != listId) return listObj;
+        if (listObj.id != cardDetail.listId) return listObj;
 
         const updatedList = listObj.cards?.filter((card) => card.id != cardId);
 
@@ -64,13 +108,78 @@ export default function CardModal({
     }
   };
 
+  const handleDragStart = (ev: React.DragEvent<HTMLDivElement>) => {
+    ev.stopPropagation();
+    ev.preventDefault();
+  };
+
+  const handlePriority = (
+    changePriorityValues: boolean,
+    priority: IPriority
+  ) => {
+    if (changePriorityValues) {
+      setIsPriorityPicked((preValue) => !preValue);
+      setPriority(priority);
+    } else {
+      setIsPriorityPicked((preValue) => !preValue);
+    }
+  };
+
+  const handleTitleUpdate = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    if (
+      titleValueOfThisCard.length &&
+      titleValueOfThisCard !== cardDetail.title
+    ) {
+      cardDetail.title = titleValueOfThisCard;
+
+      try {
+        const res = await updateCard(cardDetail.id!, cardDetail, token);
+        console.log("res from CardModal:--->>", res);
+        setIsTitleInputVisible(false);
+      } catch (err) {
+        const error = err as IError;
+        console.log(`Error message: ${error.message}`);
+      } finally {
+        console.log("Send put request for title...");
+      }
+    }
+  };
+
+  const handleTitleInputClose = (ev: React.KeyboardEvent<HTMLInputElement>) => {
+    if (ev.key == "Enter") {
+      setIsTitleInputVisible(false);
+    }
+  };
+
+  const handleClosingModal = () => {
+    const newLists = lists?.map((listObj) => {
+      if (listObj.id != cardDetail.listId) return listObj;
+
+      const updatedCards = listObj.cards?.map((card) => {
+        if (card.id != cardDetail.id) return card;
+        return cardDetail;
+      });
+
+      return { ...listObj, cards: updatedCards };
+    }) as IList[];
+
+    dispatch({ type: "ADD_ALL_LISTS", payload: newLists });
+
+    handleModlaVisibility(false);
+  };
+
   return (
-    <div className="card-modal--container" style={{ zIndex: 2300 }}>
+    <div
+      className="card-modal--container"
+      style={{ zIndex: 2300 }}
+      draggable="true"
+      onDragStart={(ev) => handleDragStart(ev)}
+    >
       <div className="card-modal">
-        <div
-          className="card-modal__btn--close"
-          onClick={() => handleModlaVisibility(false)}
-        >
+        <div className="card-modal__btn--close" onClick={handleClosingModal}>
           <VscClose size={sizeOne} />
         </div>
 
@@ -78,14 +187,54 @@ export default function CardModal({
           <div className="card-modal__heading--icon">
             <FaRegCreditCard size={sizeTwo} />
           </div>
-          <h1>{title}</h1>
+
+          {!isTitleInputVisible && (
+            <div
+              className="edit-btn"
+              onClick={() => setIsTitleInputVisible(true)}
+            >
+              <CiEdit size={sizeOne} />
+            </div>
+          )}
+
+          {isTitleInputVisible ? (
+            <input
+              type="text"
+              value={titleValueOfThisCard}
+              onKeyDown={(ev) => handleTitleInputClose(ev)}
+              autoFocus
+              spellCheck="false"
+              onBlur={handleTitleUpdate}
+              onChange={(e) => {
+                setTitleOfThisCard(e.target.value);
+              }}
+            />
+          ) : (
+            <h1 onClick={() => setIsTitleInputVisible(true)}>
+              {computedTitle}
+            </h1>
+          )}
         </div>
+
+        {/* main */}
+
         <div className="card-modal__main">
           {/* left-bar */}
+
           <div className="card-modal__left-bar">
             <div className="left-bar--container">
               <div className="priority">
                 <h3>Priority</h3>
+                <div
+                  className="priority__box"
+                  style={{
+                    backgroundColor: `${bgColor}`,
+                  }}
+                >
+                  <span>
+                    {!cardDetail.priority ? "None" : cardDetail.priority}
+                  </span>
+                </div>
               </div>
               <div className="description">
                 <div className="description__heading">
@@ -94,7 +243,7 @@ export default function CardModal({
                 </div>
 
                 <div>
-                  <TextEditor description={""} />
+                  <TextEditor cardDetail={cardDetail} />
                 </div>
               </div>
 
@@ -103,86 +252,47 @@ export default function CardModal({
                   <RxActivityLog size={sizeOne} />
                   <h2>Activity</h2>
                 </div>
-                <div className="activity__comment">
-                  {isCommentVisible ? (
-                    <div className="activity__comment--editor">
-                      <textarea
-                        name="comment"
-                        placeholder="Write a comment..."
-                        id="comment"
-                        value={comment}
-                        autoFocus
-                        onChange={(e) => setComment(e.target.value)}
-                      ></textarea>
-                      <div
-                        className="activity__comment--btns"
-                        onClick={() => setIsCommentVisible(false)}
-                      >
-                        <button onClick={handleSave}>Save</button>
-                        <button>Cancel</button>
+                <Comment
+                  isCommentVisible={isCommentVisible}
+                  comment={comment}
+                  handleSave={handleSave}
+                  setComment={setComment}
+                  setIsCommentVisible={setIsCommentVisible}
+                />
+
+                <ul className="comment-list">
+                  {cardDetail.comments?.map((comment) => {
+                    return (
+                      <div className="comment-with-icon">
+                        <MdAccountCircle size={32} />
+                        <li key={comment}>{comment}</li>
                       </div>
-                    </div>
-                  ) : (
-                    <p
-                      onClick={() => setIsCommentVisible(true)}
-                      className="activity__comment--para"
-                    >
-                      Write a comment...
-                    </p>
-                  )}
-                </div>
-                <div className="comment-list"></div>
+                    );
+                  })}
+                </ul>
               </div>
             </div>
           </div>
+
           {/* right-bar */}
+
           <div className="card-modal__right-bar">
             <div className="right-bar--container">
               <h3>Add to card</h3>
-              <div className="priority right-bar__btn">
-                <GiRank3 size={sizeTwo} />
-                <h2>Priority</h2>
-              </div>
-              <div className="dates right-bar__btn">
-                <MdOutlineWatchLater size={sizeTwo} />
-                <h2>Dates</h2>
-              </div>
-              <div className="attachment right-bar__btn">
-                <MdOutlineAttachment size={sizeTwo} />
-                <h2>Attachment</h2>
-              </div>
-              <div className="cover right-bar__btn">
-                <IoMdCard size={sizeTwo} />
-                <h2>Cover</h2>
-              </div>
-              <h3>Actions</h3>
-              <div className="move right-bar__btn">
-                <IoMdArrowRoundForward size={sizeTwo} />
-                <h2>Move</h2>
-              </div>
-              <div className="copy right-bar__btn">
-                <MdContentCopy size={sizeTwo} />
-                <h2>Copy</h2>
-              </div>
-              <div
-                className="archive right-bar__btn"
-                onClick={() => handleCardArchive(id)}
-              >
-                <MdOutlineArchive size={sizeTwo} />
-                <h2>Archive</h2>
-              </div>
             </div>
-          </div>
-          {/* save-change */}
-          <div className="card-modal__save-change">
-            <button>Save changes</button>
+            <ButtonsRight
+              handlePriority={handlePriority}
+              isPriorityPicked={isPriorityPicked}
+              priorities={priorities}
+              priority={priority}
+              handleCardArchive={handleCardArchive}
+              // id={cardDetail.id!}
+              cardDetail={cardDetail}
+            />
           </div>
         </div>
       </div>
-      <div
-        className="card-modal__overlay"
-        onClick={() => handleModlaVisibility(false)}
-      ></div>
+      <div className="card-modal__overlay" onClick={handleClosingModal}></div>
     </div>
   );
 }
