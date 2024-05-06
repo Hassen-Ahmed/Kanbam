@@ -6,6 +6,9 @@ interface IItem {
   listId?: string;
   indexNumber: number;
   title: string;
+  description?: string;
+  priority?: string;
+  comments?: string[];
   isDragging?: boolean;
   cards?: Cards;
   opacity: string;
