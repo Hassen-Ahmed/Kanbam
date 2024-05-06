@@ -3,6 +3,7 @@ import ButtonAccount from "../account/ButtonAccount";
 import MenuAccount from "../account/MenuAccount";
 import Logo from "./Logo";
 import "./NavBar.scss";
+import SearchBox from "./SearchBox";
 
 export default function NavBar() {
   const [isAccountMenuVisible, setIsAccountMenuVisible] =
@@ -11,7 +12,10 @@ export default function NavBar() {
   return (
     <div className="nav-bar">
       <Logo />
-      <ButtonAccount setIsAccountMenuVisible={setIsAccountMenuVisible} />
+      <div className="nav-bar__left">
+        <SearchBox />
+        <ButtonAccount setIsAccountMenuVisible={setIsAccountMenuVisible} />
+      </div>
       <MenuAccount
         isAccountMenuVisible={isAccountMenuVisible}
         setIsAccountMenuVisible={setIsAccountMenuVisible}
