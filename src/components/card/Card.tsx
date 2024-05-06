@@ -6,8 +6,10 @@ import { handleDragstartUtil, handleRemovingCloneElem } from "../../utils/dnd";
 import { useContext, useState } from "react";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import CardModal from "./modal/CardModal";
+import { priorities } from "../../utils/constantDatas/priorities";
+import { BsTextParagraph } from "react-icons/bs";
 
-interface ICardExtended extends ICard {}
+// interface ICardExtended extends ICard {}
 
 const Card = ({
   id,
@@ -16,9 +18,33 @@ const Card = ({
   isDragging,
   indexNumber,
   opacity,
-}: ICardExtended) => {
+  description,
+  comments,
+  priority,
+}: ICard) => {
   const { itemDragging } = useContext(KanbamContext) as IkanbamContext;
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const [cardDetail] = useState<ICard>({
+    id,
+    title,
+    listId,
+    isDragging,
+    indexNumber,
+    opacity,
+    description,
+    comments,
+    priority,
+  });
+
+  // end of hooks
+
+  const bgColor = priority?.length
+    ? `${
+        priorities.filter((priorityObj) => priorityObj.name === priority)[0]
+          .color
+      }`
+    : "#00000033";
 
   const handleModlaVisibility = (value: boolean) => {
     setIsModalVisible(value);
@@ -35,8 +61,6 @@ const Card = ({
     handleRemovingCloneElem();
   };
 
-  const handleDrop = () => {};
-
   const handleDragStart = (ev: DragEventMy) => {
     ev.stopPropagation();
 
@@ -46,6 +70,9 @@ const Card = ({
         listId,
         indexNumber,
         title,
+        description,
+        comments,
+        priority,
         isDragging,
         opacity: ".3",
       },
@@ -65,7 +92,6 @@ const Card = ({
       className="card-container"
       draggable="true"
       onDragStart={(ev) => handleDragStart(ev)}
-      onDrop={() => handleDrop()}
       onDragEnd={(ev) => handleDragEnd(ev)}
       data-id={id}
       data-identity="card"
@@ -73,9 +99,7 @@ const Card = ({
     >
       {isModalVisible && (
         <CardModal
-          id={id!}
-          listId={listId}
-          title={title}
+          cardDetail={cardDetail}
           handleModlaVisibility={handleModlaVisibility}
         />
       )}
@@ -85,9 +109,17 @@ const Card = ({
         onClick={() => setIsModalVisible(true)}
         style={{ opacity: `${opacity}` }}
       >
+        {cardDetail.priority && (
+          <div className="priority" style={{ backgroundColor: bgColor }}></div>
+        )}
         <div className="card__heading">
           <h2>{title} </h2>
         </div>
+        {cardDetail.description && (
+          <div className="discription-icon">
+            <BsTextParagraph size={15} />
+          </div>
+        )}
       </div>
     </div>
   );
