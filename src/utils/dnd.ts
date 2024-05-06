@@ -28,6 +28,7 @@ export const handleDragstartUtil = (
     inner.style.transform = "rotate(7deg)";
     inner.style.width = "27rem";
     inner.style.border = "0.2rem dashed grey";
+    inner.style.boxShadow = ".2rem .2rem 1rem #00000040";
     document.body.appendChild(cloneElem);
     event.dataTransfer.setDragImage(cloneElem, 80, 20);
   }
