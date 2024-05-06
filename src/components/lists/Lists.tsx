@@ -335,7 +335,7 @@ const Lists = ({
       )}
 
       <div className="lists--container--sub">
-        <h1 className="lists__heading">
+        <div className="lists__heading">
           <div className="lists__heading--text">
             {!isTitleInputVisible ? (
               <p onClick={() => setIsTitleInputVisible(true)}>
@@ -358,7 +358,7 @@ const Lists = ({
           <div className="lists__heading--btn" onClick={handleListMenu}>
             <BsThreeDots />
           </div>
-        </h1>
+        </div>
         <div className="lists">
           {cards.map((content) => {
             return <Card {...content} key={content.id} />;
