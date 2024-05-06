@@ -21,3 +21,13 @@
     }
   }
 }
+
+.home-btn {
+  background-color: white;
+  color: var.$bg-home;
+  padding: 0.5rem 2rem;
+  margin-top: 2rem;
+  font-size: var.$fsi-14;
+  font-weight: var.$fwt-600;
+  cursor: pointer;
+}
