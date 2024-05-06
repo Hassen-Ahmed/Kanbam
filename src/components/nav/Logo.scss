@@ -3,9 +3,13 @@
 @use "../../assets/style/base/animation" as *;
 
 .logo-kanbam {
-  @include mixn.flexy(row, center, center);
+  @include mixn.flexy();
   width: 12rem;
   margin-left: 4rem;
+
+  @media screen and (max-width: 600px) {
+    margin-left: 0;
+  }
 
   & h1 {
     margin-left: 1rem;
