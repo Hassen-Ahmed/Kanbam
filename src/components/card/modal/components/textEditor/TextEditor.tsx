@@ -3,11 +3,16 @@ import DOMPurify from "dompurify";
 import { IoMdRedo, IoMdUndo } from "react-icons/io";
 import { VscListOrdered, VscListUnordered } from "react-icons/vsc";
 import "./TextEditor.scss";
+import { ICard } from "../../../../../types/board.type";
+import { IError } from "../../../../../types/status.type";
+import { updateCard } from "../../../../../utils/api/updates";
 
-export default function TextEditor({ description }: { description: string }) {
-  const [html, setHtml] = useState(DOMPurify.sanitize(description));
+export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
+  const [html, setHtml] = useState(DOMPurify.sanitize(cardDetail.description!));
   const [isEditorialOpen, setIsEditorialOpen] = useState(false);
-  const [localDescription, setLocalDescription] = useState(description);
+  const [localDescription, setLocalDescription] = useState(
+    cardDetail.description
+  );
   const paraRef = useRef(null);
 
   useEffect(() => {
@@ -17,12 +22,24 @@ export default function TextEditor({ description }: { description: string }) {
     }
   }, [isEditorialOpen]);
 
-  const handleSave = () => {
-    if (paraRef.current) {
+  const handleSave = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+    if (!paraRef.current) return;
+    try {
       const currentValue = paraRef.current as HTMLElement;
+      cardDetail.description = currentValue.innerHTML;
+
+      await updateCard(cardDetail.id!, cardDetail, token);
+
       setLocalDescription(currentValue.innerHTML);
+      setIsEditorialOpen(false);
+    } catch (err) {
+      const error = err as IError;
+      console.log(`Error message: ${error.message}`);
+    } finally {
+      console.log("Send put request for description...");
     }
-    setIsEditorialOpen(false);
   };
 
   const handleCancel = () => {
@@ -35,7 +52,7 @@ export default function TextEditor({ description }: { description: string }) {
 
   return (
     <div className="text-editor">
-      {!localDescription.length && !isEditorialOpen ? (
+      {!localDescription && !isEditorialOpen ? (
         <div
           className="text-editor__starter"
           onClick={() => setIsEditorialOpen(true)}
@@ -52,7 +69,7 @@ export default function TextEditor({ description }: { description: string }) {
               />
               <button
                 onClick={() => {
-                  setHtml(localDescription);
+                  setHtml(localDescription!);
                   setIsEditorialOpen(true);
                 }}
               >

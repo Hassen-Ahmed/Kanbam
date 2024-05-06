@@ -1,5 +1,5 @@
-@use "../../../assets/style/abstracts/mixins" as mixn;
-@use "../../../assets/style/abstracts/variable" as var;
+@use "../../../../../assets/style/abstracts/mixins" as mixn;
+@use "../../../../../assets/style/abstracts/variable" as var;
 .text-editor {
   padding-left: 4rem;
 
@@ -31,14 +31,14 @@
 
     button {
       position: absolute;
-      top: -3rem;
+      top: 3rem;
       right: 0rem;
       padding: 1rem;
       background-color: rgba(0, 0, 0, 0.05);
       border: none;
       font-size: var.$fsi-16;
       font-weight: var.$fwt-600;
-      border-radius: var.$bor-05;
+      border-radius: var.$bor-015;
       cursor: pointer;
       transition: all 0.2s ease;
 
