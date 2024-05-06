@@ -1,0 +1,40 @@
+@use "../../assets/style/abstracts/variable" as var;
+@use "../../assets/style/abstracts/mixins" as mixn;
+
+.search {
+  &__box {
+    position: relative;
+
+    input {
+      outline: none;
+      border-radius: var.$bor-05;
+      padding: 0.6rem 2.2rem 0.6rem 4rem;
+      font-size: var.$fsi-16;
+      font-weight: var.$fwt-500;
+
+      @media screen and (max-width: 700px) {
+        position: absolute;
+        top: 0;
+        right: 1rem;
+        transform: translateY(-50%);
+        padding: 0.6rem 3rem 0.6rem 2rem;
+        width: 18rem;
+      }
+    }
+
+    label {
+      position: absolute;
+      top: 54%;
+      left: 1rem;
+      transform: translateY(-50%);
+      cursor: pointer;
+      pointer-events: none;
+
+      @media screen and (max-width: 700px) {
+        transform: translate(-75%, -35%);
+        left: -2.2rem;
+        pointer-events: painted;
+      }
+    }
+  }
+}
