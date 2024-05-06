@@ -1,0 +1,23 @@
+@use "../../../../../assets/style/abstracts/mixins" as mixn;
+@use "../../../../../assets/style/abstracts/variable" as var;
+
+ul {
+  list-style-type: none;
+}
+
+.pritority__lists {
+  background-color: rgb(255, 255, 255);
+  padding: 1rem 0;
+  border: 0.1rem solid rgba(0, 0, 0, 0.1);
+  border-radius: var.$bor-02;
+
+  li {
+    @include mixn.flexy(row, flex-start, flex-start, 1rem);
+    padding: 0.5rem 1rem;
+    font-size: var.$fsi-12;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+}
