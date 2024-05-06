@@ -74,6 +74,7 @@
     hr {
       @include border-bottom($theme-name);
     }
+
     .loading {
       @include color-bg-font(
         $theme-name,
@@ -134,6 +135,7 @@
         }
       }
     }
+
     .side-bar-left {
       &,
       &__btn-toggler,
@@ -156,6 +158,7 @@
         }
       }
     }
+
     .card {
       @include color-bg-font(
         $theme-name,
@@ -164,19 +167,81 @@
         var.$font-color-dark-01,
         var.$font-color-light-01
       );
-    }
-    .card-modal {
-      @include color-bg-font(
-        $theme-name,
-        var.$bg-color-dark-card-modal,
-        var.$bg-color-light-lists,
-        var.$font-color-dark-01,
-        var.$font-color-light-04
-      );
-      .activity {
-        &__comment,
-        & {
-          textArea {
+      &-modal {
+        @include color-bg-font(
+          $theme-name,
+          var.$bg-color-dark-card-modal,
+          var.$bg-color-light-lists,
+          var.$font-color-dark-01,
+          var.$font-color-light-04
+        );
+        .activity {
+          &__comment,
+          & {
+            textArea {
+              @include color-bg-font(
+                $theme-name,
+                var.$bg-color-dark-card,
+                var.$bg-color-light-card,
+                var.$font-color-dark-01,
+                var.$font-color-light-04
+              );
+            }
+          }
+          button:not(:first-child) {
+            &:hover {
+              @include bg(
+                $theme-name,
+                var.$bg-color-dark-hover,
+                var.$bg-color-light-hover-02
+              );
+            }
+            @include color-bg-font(
+              $theme-name,
+              transparent,
+              transparent,
+              var.$font-color-dark-01,
+              var.$font-color-light-04
+            );
+          }
+        }
+        .right-bar__btn,
+        .text-editor__edited button {
+          @include color-bg-font(
+            $theme-name,
+            var.$bg-color-dark-hover,
+            var.$bg-color-light-hover,
+            var.$font-color-dark-01,
+            var.$font-color-light-04
+          );
+          &:hover {
+            @include bg(
+              $theme-name,
+              var.$bg-color-dark-hover-03,
+              var.$bg-color-light-hover-03
+            );
+          }
+        }
+        .text-editor {
+          &__save-btn {
+            button:not(:first-child) {
+              &:hover {
+                @include bg(
+                  $theme-name,
+                  var.$bg-color-dark-hover,
+                  var.$bg-color-light-hover-02
+                );
+              }
+              @include color-bg-font(
+                $theme-name,
+                transparent,
+                transparent,
+                var.$font-color-dark-01,
+                var.$font-color-light-04
+              );
+            }
+          }
+          &__editorial-area {
             @include color-bg-font(
               $theme-name,
               var.$bg-color-dark-card,
@@ -185,84 +250,24 @@
               var.$font-color-light-04
             );
           }
-        }
-        button:not(:first-child) {
-          &:hover {
-            @include bg(
-              $theme-name,
-              var.$bg-color-dark-hover,
-              var.$bg-color-light-hover-02
-            );
+          &__btns {
+            button {
+              &:not(:last-child) {
+                border-right: 0.1rem solid #afafaf1a;
+              }
+              @include color-bg-font(
+                $theme-name,
+                var.$bg-color-dark-card,
+                var.$bg-color-light-card,
+                var.$font-color-dark-01,
+                var.$font-color-light-04
+              );
+            }
           }
-          @include color-bg-font(
-            $theme-name,
-            transparent,
-            transparent,
-            var.$font-color-dark-01,
-            var.$font-color-light-04
-          );
-        }
-      }
-      .right-bar__btn {
-        @include color-bg-font(
-          $theme-name,
-          var.$bg-color-dark-hover,
-          var.$bg-color-light-hover,
-          var.$font-color-dark-01,
-          var.$font-color-light-04
-        );
-        &:hover {
-          @include bg(
-            $theme-name,
-            var.$bg-color-dark-hover-03,
-            var.$bg-color-light-hover-03
-          );
         }
       }
     }
-    .text-editor {
-      &__save-btn {
-        button:not(:first-child) {
-          &:hover {
-            @include bg(
-              $theme-name,
-              var.$bg-color-dark-hover,
-              var.$bg-color-light-hover-02
-            );
-          }
-          @include color-bg-font(
-            $theme-name,
-            transparent,
-            transparent,
-            var.$font-color-dark-01,
-            var.$font-color-light-04
-          );
-        }
-      }
-      &__editorial-area {
-        @include color-bg-font(
-          $theme-name,
-          var.$bg-color-dark-card,
-          var.$bg-color-light-card,
-          var.$font-color-dark-01,
-          var.$font-color-light-04
-        );
-      }
-      &__btns {
-        button {
-          &:not(:last-child) {
-            border-right: 0.1rem solid #afafaf1a;
-          }
-          @include color-bg-font(
-            $theme-name,
-            var.$bg-color-dark-card,
-            var.$bg-color-light-card,
-            var.$font-color-dark-01,
-            var.$font-color-light-04
-          );
-        }
-      }
-    }
+
     .lists {
       &--container--sub {
         @include color-bg-font(
@@ -294,6 +299,17 @@
           }
         }
       }
+      &__add-card--container {
+        input {
+          @include color-bg-font(
+            $theme-name,
+            var.$bg-color-dark-lists,
+            var.$bg-color-light-lists,
+            var.$font-color-dark-01,
+            var.$font-color-light-01
+          );
+        }
+      }
       &__btn--add-container {
         @include color-bg-font(
           $theme-name,
@@ -311,6 +327,7 @@
         }
       }
     }
+
     .lists-menu {
       @include border($theme-name, var.$border-color-02, rgba(0, 0, 0, 0.25));
       @include color-bg-font(
@@ -351,6 +368,7 @@
         }
       }
     }
+
     .nav-bar {
       @include color-bg-font(
         $theme-name,
@@ -378,7 +396,36 @@
           );
         }
       }
+      &__left {
+        .search__box {
+          input {
+            @include color-bg-font(
+              $theme-name,
+              transparent,
+              rgba(252, 252, 252, 0.3),
+              white,
+              var.$font-color-light-03
+            );
+            @include border(
+              $theme-name,
+              var.$border-color-02,
+              var.$border-color-02
+            );
+
+            &::placeholder {
+              @include color-bg-font(
+                $theme-name,
+                transparent,
+                transparent,
+                var.$font-color-dark-01,
+                var.$font-color-light-03
+              );
+            }
+          }
+        }
+      }
     }
+
     .menu {
       @include color-bg-font(
         $theme-name,
