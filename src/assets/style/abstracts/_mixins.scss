@@ -265,6 +265,15 @@
             }
           }
         }
+        .pritority__lists {
+          @include color-bg-font(
+            $theme-name,
+            var.$bg-color-dark-hover,
+            var.$bg-color-light-hover,
+            var.$font-color-dark-01,
+            var.$font-color-light-04
+          );
+        }
       }
     }
 
