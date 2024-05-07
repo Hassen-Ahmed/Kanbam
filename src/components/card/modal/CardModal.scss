@@ -175,7 +175,10 @@
         margin: 2rem 0;
 
         .comment-with-icon {
-          @include mixn.flexy(row, flex-start, center, 1rem);
+          display: grid;
+          grid-template-columns: 1fr 12fr;
+          gap: 1rem;
+
           margin: 1rem 0;
           font-size: var.$fsi-16;
           font-weight: var.$fwt-600;
