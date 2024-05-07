@@ -1,15 +1,24 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { IoSearchSharp } from "react-icons/io5";
 
 import "./SearchBox.scss";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { IListsContext, ListsContext } from "../../context/ListsContext";
 
 export default function SearchBox() {
   const [winWidth, setWinWidth] = useState(0);
+  const [value, setValue] = useState("");
+  const { handleSearchTextUpdate } = useContext(ListsContext) as IListsContext;
+
   useEffect(() => {
     setWinWidth(window.innerWidth);
   }, []);
 
   // end of hooks
+
+  useEffect(() => {
+    handleSearchTextUpdate(value);
+  }, [value]);
 
   const handleVisibilityOfInput = (value: number) => {
     setWinWidth(value);
@@ -28,6 +37,8 @@ export default function SearchBox() {
             id="search"
             type="text"
             placeholder="Search Tasks..."
+            value={value}
+            onChange={(ev) => setValue(ev.target.value)}
           />
         ) : null}
       </div>
