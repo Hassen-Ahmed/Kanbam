@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { memo, useContext, useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import BoardNewListCreator from "./BoardNewListCreator";
@@ -11,6 +12,7 @@ import { isTokenAuthenticated } from "../../utils/jwtAuth";
 import { useNavigate } from "react-router-dom";
 import { IError } from "../../types/status.type";
 import "./Board.scss";
+import { handleSearchText } from "../../utils/order";
 
 async function findAllLists(dispatch: React.Dispatch<IActionBoard>) {
   try {
@@ -23,7 +25,9 @@ async function findAllLists(dispatch: React.Dispatch<IActionBoard>) {
 }
 
 const Board = memo(() => {
-  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
+  const { lists, dispatch, searchText } = useContext(
+    ListsContext
+  ) as IListsContext;
   const [isListAdded, setIsListAdded] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -34,6 +38,10 @@ const Board = memo(() => {
       }
     });
   }, []);
+
+  useEffect(() => {
+    handleSearchText(searchText, dispatch);
+  }, [searchText]);
 
   // end of hooks!
 
