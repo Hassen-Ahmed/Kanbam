@@ -1,8 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import "./LogIn.scss";
 import { Link } from "react-router-dom";
 import { postAuthLogin } from "../../../utils/api/posts";
-import { IListsContext, ListsContext } from "../../../context/ListsContext";
 import { fetchAllLists } from "../../../utils/fetchAllLists";
 import { useNavigate } from "react-router-dom";
 import { IError } from "../../../types/status.type";
@@ -16,7 +15,6 @@ export default function LogIn() {
     password: "",
   });
 
-  const { dispatch } = useContext(ListsContext) as IListsContext;
   const [isAuthorizing, setIsAuthorizing] = useState(false);
   const [isWrongUser, setIsWrongUser] = useState(false);
   const navigate = useNavigate();
@@ -39,7 +37,7 @@ export default function LogIn() {
       const { token }: { token: string } = await postAuthLogin(userDetails);
       localStorage.setItem("token", token);
 
-      fetchAllLists({ dispatch });
+      fetchAllLists();
       navigate("/kanbam/board");
     } catch (err) {
       setIsAuthorizing(false);
