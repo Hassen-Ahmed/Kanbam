@@ -7,16 +7,16 @@ import { IListsContext, ListsContext } from "../../context/ListsContext";
 import { createPortal } from "react-dom";
 import Lists from "../lists/Lists";
 import { fetchAllLists } from "../../utils/fetchAllLists";
-import { IActionBoard } from "../../types/actions.type";
 import { isTokenAuthenticated } from "../../utils/jwtAuth";
 import { useNavigate } from "react-router-dom";
 import { IError } from "../../types/status.type";
 import "./Board.scss";
 import { handleSearchText } from "../../utils/order";
+import { BoardType } from "../../types/board.type";
 
-async function findAllLists(dispatch: React.Dispatch<IActionBoard>) {
+async function findAllLists() {
   try {
-    const res = await fetchAllLists({ dispatch });
+    const res = await fetchAllLists();
     return res;
   } catch (err) {
     const error = err as IError;
@@ -32,15 +32,19 @@ const Board = memo(() => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    findAllLists(dispatch).then((data) => {
+    findAllLists().then((data) => {
       if (!isTokenAuthenticated() && data == undefined) {
         navigate("/");
+      } else {
+        dispatch({ type: "ADD_ALL_LISTS", payload: data as BoardType });
+        // save res to localStorage for later we compare this storedLists/res to lists and for PUT request.
+        localStorage.setItem("storedLists", JSON.stringify(data));
       }
     });
   }, []);
 
   useEffect(() => {
-    handleSearchText(searchText, dispatch);
+    if (searchText) handleSearchText(searchText, dispatch);
   }, [searchText]);
 
   // end of hooks!
@@ -48,6 +52,8 @@ const Board = memo(() => {
   const isListAddedSetter = (value: boolean) => {
     setIsListAdded(value);
   };
+
+  console.log("lists", lists);
 
   const newListCreator = isListAdded ? (
     <BoardNewListCreator isListAddedSetter={isListAddedSetter} />
@@ -58,13 +64,13 @@ const Board = memo(() => {
     </div>
   );
 
-  const listsToBeDisplayed = lists?.map((list) => {
+  const listsToBeDisplayed = lists?.map((list, index) => {
     return (
       <Lists
         key={list.id}
         id={list.id!}
         title={list.title}
-        indexNumber={list.indexNumber!}
+        indexNumber={index}
         cards={list.cards!}
         isDragging={list.isDragging!}
         opacity={list.opacity!}
