@@ -16,7 +16,6 @@ const BoardNewListCreator = ({ isListAddedSetter }: isListAddedType) => {
       let newList = {
         title: inputList,
         indexNumber: lists?.length as number,
-        cards: [],
       };
 
       try {

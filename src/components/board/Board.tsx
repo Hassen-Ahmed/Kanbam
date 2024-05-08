@@ -53,8 +53,6 @@ const Board = memo(() => {
     setIsListAdded(value);
   };
 
-  console.log("lists", lists);
-
   const newListCreator = isListAdded ? (
     <BoardNewListCreator isListAddedSetter={isListAddedSetter} />
   ) : (
