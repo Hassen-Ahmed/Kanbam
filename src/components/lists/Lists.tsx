@@ -94,9 +94,15 @@ const Lists = ({
 
         const updatedLists = lists?.map((listObj) => {
           if (listObj.id == id) {
+            const cardsUpdatedWithListId = listOfCards.map((card) => {
+              if (card.listId === undefined) return card;
+              card.listId = listObj.id!;
+              return card;
+            });
+
             return {
               ...listObj,
-              cards: listOfCards,
+              cards: cardsUpdatedWithListId,
             };
           } else {
             const updatedListOfCards = listObj.cards
@@ -131,11 +137,18 @@ const Lists = ({
       // add card to empty list
       if (!cards.length) {
         const updatedLists = lists?.map((listObj) => {
-          if (listObj.id == id)
+          if (listObj.id == id) {
+            const cardUpdatedWithListId = {
+              ...itemDragging.current?.item,
+              listId: listObj.id,
+              opacity: "1",
+            };
+
             return {
               ...listObj,
-              cards: [itemDragging.current?.item],
+              cards: [cardUpdatedWithListId],
             };
+          }
 
           const filteredListOfCards =
             listObj.cards &&
@@ -180,6 +193,7 @@ const Lists = ({
       // update indexNumber of this lists
       const finalLists = filteredLists.map((listObj, i) => {
         listObj.indexNumber = i;
+
         return listObj;
       });
 
