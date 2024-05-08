@@ -43,11 +43,15 @@ export default function ListsMenu({
       await deleteListsById(listId, token);
       handleIsListMenuVisible(false);
 
-      const updatedLists = lists?.filter((listObj) => {
-        return listObj.id != listId;
-      }) as BoardType;
+      const updatedLists = lists
+        ?.filter((listObj) => listObj.id != listId)
+        .map((listObj, index) => {
+          listObj.indexNumber = index;
+          return listObj;
+        });
 
-      dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists });
+      dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists as BoardType });
+      localStorage.setItem("storedLists", JSON.stringify(updatedLists));
     } catch (err) {
       const error = err as IError;
       console.log("Error deleting list, err: ", error.message);
