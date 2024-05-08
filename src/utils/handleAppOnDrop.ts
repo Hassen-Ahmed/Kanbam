@@ -30,8 +30,10 @@ export const handleAppOnDrop = (lists: BoardType | null) => {
   }
 
   // reset localStorage of storedLists with edited lists
+
   if (isThereSomeListsDifference) {
     localStorage.setItem("storedLists", JSON.stringify(lists));
+
     try {
       asyncUpdaterList(listsForPutRequest, token);
     } catch (err) {
@@ -49,18 +51,22 @@ export const handleAppOnDrop = (lists: BoardType | null) => {
       for (let i = 0; i < updatedCardsFromLists?.length; i++) {
         if (updatedCardsFromLists[i].title != cardsFromStoredLists[i]?.title) {
           isThereSomeCardsDiff = true;
+
           cardsForPutRequest.push({
             id: updatedCardsFromLists[i].id,
             listId: lists[j].id as string,
             indexNumber: updatedCardsFromLists[i].indexNumber,
             title: updatedCardsFromLists[i].title,
+            description: updatedCardsFromLists[i].description,
+            comments: updatedCardsFromLists[i].comments,
+            priority: updatedCardsFromLists[i].priority,
           });
         }
       }
     }
     // reset localStorage of storedLists with edited lists
+
     if (isThereSomeCardsDiff) {
-      localStorage.setItem("storedLists", JSON.stringify(lists));
       try {
         asyncUpdateCard(cardsForPutRequest, token);
       } catch (err) {
