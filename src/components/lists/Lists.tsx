@@ -87,10 +87,7 @@ const Lists = ({
 
         const item = itemDragging.current?.item as ICard;
 
-        const itemDraggingIndex = parentTarget.dataset.index;
-        const skipingValue = item.id! > itemDraggingIndex! ? 0 : 1;
-
-        listOfCards.splice(indexOfTargetCard + skipingValue, 0, item);
+        listOfCards.splice(indexOfTargetCard, 0, item);
 
         const updatedLists = lists?.map((listObj) => {
           if (listObj.id == id) {
@@ -275,9 +272,10 @@ const Lists = ({
         const updatedLists = lists?.map((listObj) => {
           if (listObj.id != id) return listObj;
           return updatedListObj;
-        }) as BoardType;
+        });
 
-        dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists });
+        dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists as BoardType });
+        localStorage.setItem("storedLists", JSON.stringify(updatedLists));
 
         setIsNewCardInputVisible(false);
         setTitleValeuOfNewCard("");
@@ -310,6 +308,7 @@ const Lists = ({
         title: titleValueOfThisList,
         indexNumber,
       };
+
       try {
         await updateList(id, newList, token);
       } catch (err) {
