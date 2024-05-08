@@ -38,8 +38,7 @@ const Card = ({
   });
 
   // end of hooks
-
-  const bgColor = priority?.length
+  const bgColor = cardDetail.priority
     ? `${
         priorities.filter((priorityObj) => priorityObj.name === priority)[0]
           .color
