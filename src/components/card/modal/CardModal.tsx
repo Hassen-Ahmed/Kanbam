@@ -50,6 +50,8 @@ export default function CardModal({
 
   // end of hook
 
+  console.log("cardDetail", cardDetail);
+
   const bgColor = cardDetail.priority
     ? `${
         priorities.filter(
@@ -99,9 +101,10 @@ export default function CardModal({
 
         listObj.cards = updatedList;
         return listObj;
-      }) as BoardType;
+      });
 
-      dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists });
+      dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists as BoardType });
+      localStorage.setItem("storedLists", JSON.stringify(updatedLists));
     } catch (err) {
       const error = err as IError;
       console.log("Error deleting card, err: ", error.message);
@@ -154,12 +157,15 @@ export default function CardModal({
     }
   };
 
+  console.log("cardDetail", cardDetail);
+
   const handleClosingModal = () => {
     const newLists = lists?.map((listObj) => {
       if (listObj.id != cardDetail.listId) return listObj;
 
       const updatedCards = listObj.cards?.map((card) => {
         if (card.id != cardDetail.id) return card;
+        cardDetail.opacity = "1";
         return cardDetail;
       });
 
@@ -286,7 +292,6 @@ export default function CardModal({
               priorities={priorities}
               priority={priority}
               handleCardArchive={handleCardArchive}
-              // id={cardDetail.id!}
               cardDetail={cardDetail}
             />
           </div>
