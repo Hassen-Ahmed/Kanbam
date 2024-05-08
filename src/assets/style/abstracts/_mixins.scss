@@ -114,24 +114,15 @@
       }
 
       &__new-list {
-        @include color-bg-font(
-          $theme-name,
-          var.$bg-color-dark-card,
-          var.$bg-color-light-card,
-          var.$font-color-dark-02,
-          var.$font-color-light-01
-        );
-
-        &--input {
-          input {
-            @include color-bg-font(
-              $theme-name,
-              var.$bg-color-dark-card,
-              var.$bg-color-light-card,
-              var.$font-color-dark-02,
-              var.$font-color-light-01
-            );
-          }
+        &,
+        &--input input {
+          @include color-bg-font(
+            $theme-name,
+            var.$bg-color-dark-card,
+            var.$bg-color-light-card,
+            var.$font-color-dark-02,
+            var.$font-color-light-01
+          );
         }
       }
     }
