@@ -17,9 +17,12 @@ export const fetchAllLists = async () => {
       const newCards = newListsObj.cards;
 
       if (newCards == undefined) return;
-      const sortedlist = newCards.sort(
-        (a, b) => a.indexNumber - b.indexNumber
-      ) as IList[];
+      const sortedlist = newCards
+        .sort((a, b) => a.indexNumber - b.indexNumber)
+        .map((card) => {
+          card.opacity = "1";
+          card.isDragging = false;
+        });
 
       return { ...(listsObj as IList), cards: sortedlist };
     });
