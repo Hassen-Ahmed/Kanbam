@@ -56,10 +56,7 @@
     }
 
     hr {
-      margin: 1rem 0;
-      align-self: center;
-      width: 90%;
-      border: none;
+      @include mixn02.hr;
     }
 
     button {
