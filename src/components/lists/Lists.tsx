@@ -129,9 +129,10 @@ const Lists = ({
         });
 
         dispatch({ type: "ADD_ALL_LISTS", payload: finalLists as BoardType });
+        // don't set storedLists here, because in every drop event we need to compare lists and storedList.
       }
 
-      // add card to empty list
+      // add/drop card to empty list
       if (!cards.length) {
         const updatedLists = lists?.map((listObj) => {
           if (listObj.id == id) {
@@ -157,6 +158,7 @@ const Lists = ({
         });
 
         dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists as BoardType });
+        // don't set storedLists here, because in every drop event we need to compare lists and storedList.
       }
     }
 
@@ -195,6 +197,7 @@ const Lists = ({
       });
 
       dispatch({ type: "ADD_ALL_LISTS", payload: finalLists });
+      // don't set storedLists here, because in every drop event we need to compare lists and storedList.
     }
   };
 
@@ -332,6 +335,7 @@ const Lists = ({
       draggable="true"
       onDragStart={(ev) => handleDragStart(ev)}
       onDragEnter={(ev) => handleDragenter(ev)}
+      onTouchStart={(ev) => ev.preventDefault()}
       onDrop={() => handleDrop()}
       onDragOver={(e) => handleDragover(e)}
       onDragEnd={(ev) => handleDragEnd(ev)}
