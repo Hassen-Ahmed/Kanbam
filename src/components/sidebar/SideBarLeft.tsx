@@ -6,7 +6,7 @@ import { MdHelpOutline, MdAccountBox } from "react-icons/md";
 
 import "./SideBarLeft.scss";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function SideBarLeft() {
   const [isDisplay, setIsDisplay] = useState<boolean>(false);
@@ -15,6 +15,10 @@ export default function SideBarLeft() {
     setIsDisplay((preValue) => {
       return preValue ? false : true;
     });
+  };
+
+  const activeButton = ({ isActive }: { isActive: boolean }) => {
+    return isActive ? "side-bar-left__btn-active" : "";
   };
 
   return (
@@ -45,33 +49,33 @@ export default function SideBarLeft() {
         </div>
         <hr />
 
-        <Link to={"/kanbam/board"}>
-          <div className="side-bar-left__btn--board side-bar-left__btn">
+        <NavLink to={"/kanbam/board"} className={activeButton}>
+          <div className=" side-bar-left__btn">
             <FaTrello />
             Board
           </div>
-        </Link>
+        </NavLink>
 
-        <Link to={"/kanbam/table"}>
-          <div className="side-bar-left__btn--table side-bar-left__btn">
+        <NavLink to={"/kanbam/table"} className={activeButton}>
+          <div className="side-bar-left__btn">
             <PiTableLight />
             Table
           </div>
-        </Link>
+        </NavLink>
 
-        <Link to={"/kanbam/calendar"}>
-          <div className="side-bar-left__btn--calender side-bar-left__btn">
+        <NavLink to={"/kanbam/calendar"} className={activeButton}>
+          <div className=" side-bar-left__btn">
             <SlCalender />
             Calender
           </div>
-        </Link>
+        </NavLink>
 
-        <Link to={"/kanbam/dashboard"}>
-          <div className="side-bar-left__btn--dashboard side-bar-left__btn">
+        <NavLink to={"/kanbam/dashboard"} className={activeButton}>
+          <div className="side-bar-left__btn">
             <TfiDashboard />
             Dashboard
           </div>
-        </Link>
+        </NavLink>
 
         <div className="side-bar-left__btn--help side-bar-left__btn">
           <MdHelpOutline />

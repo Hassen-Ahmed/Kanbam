@@ -67,22 +67,15 @@
         font-weight: var.$fwt-400;
       }
     }
-    &--board {
-      cursor: pointer;
-    }
-    &--table {
-      cursor: pointer;
-    }
-    &--calender {
-      cursor: pointer;
-    }
-    &--dashboard {
-      cursor: pointer;
-    }
+
     &--help {
       position: absolute;
       bottom: 1rem;
     }
+  }
+
+  &__btn-active {
+    @include mixn.flexy(row, flex-start, center);
   }
 }
 
