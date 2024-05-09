@@ -7,7 +7,7 @@ import { VscClose } from "react-icons/vsc";
 import { CiEdit } from "react-icons/ci";
 
 import { IListsContext, ListsContext } from "../../../context/ListsContext";
-import { BoardType, ICard, IList } from "../../../types/board.type";
+import { BoardType, ICard } from "../../../types/board.type";
 import { IError } from "../../../types/status.type";
 import { priorities } from "../../../utils/constantDatas/priorities";
 import TextEditor from "./components/textEditor/TextEditor";
@@ -61,8 +61,6 @@ export default function CardModal({
     : "#00000033";
 
   const handleSave = async () => {
-    // cardDetail,
-
     const token = localStorage.getItem("token");
     if (!token) return;
 
@@ -157,8 +155,6 @@ export default function CardModal({
     }
   };
 
-  console.log("cardDetail", cardDetail);
-
   const handleClosingModal = () => {
     const newLists = lists?.map((listObj) => {
       if (listObj.id != cardDetail.listId) return listObj;
@@ -170,9 +166,9 @@ export default function CardModal({
       });
 
       return { ...listObj, cards: updatedCards };
-    }) as IList[];
+    });
 
-    dispatch({ type: "ADD_ALL_LISTS", payload: newLists });
+    dispatch({ type: "ADD_ALL_LISTS", payload: newLists as BoardType });
 
     handleModlaVisibility(false);
   };
