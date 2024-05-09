@@ -1,62 +1,86 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import ErrorPage from "../components/notifications/ErrorRoute";
-import Home from "../routes/home/Home";
-import Auth from "../routes/auth/Auth";
-import Board from "../components/board/Board";
-import Kanbam from "../routes/kanbam/Kanbam";
-import Dashboard from "../components/dashboard/Dashboard";
-import Table from "../components/table/Table";
-import Calendar from "../components/calendar/Calendar";
-import LogIn from "../pages/auth/login/LogIn";
-import SignUp from "../pages/auth/signup/SignUp";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    async lazy() {
+      const Home = await import("../routes/home/Home");
+      return { Component: Home.default };
+    },
     errorElement: <ErrorPage />,
   },
   {
     path: "/auth",
-    element: <Auth />,
+    async lazy() {
+      const Auth = await import("../routes/auth/Auth");
+      return { Component: Auth.default };
+    },
     children: [
       {
         path: "/auth",
-        element: <LogIn />,
+        async lazy() {
+          const LogIn = await import("../pages/auth/login/LogIn");
+          return { Component: LogIn.default };
+        },
       },
       {
         path: "/auth/login",
-        element: <LogIn />,
+        async lazy() {
+          const LogIn = await import("../pages/auth/login/LogIn");
+          return { Component: LogIn.default };
+        },
       },
       {
         path: "/auth/signup",
-        element: <SignUp />,
+        async lazy() {
+          const SignUp = await import("../pages/auth/signup/SignUp");
+          return { Component: SignUp.default };
+        },
       },
     ],
   },
   {
     path: "/kanbam",
-    element: <Kanbam />,
+    async lazy() {
+      const Kanbam = await import("../routes/kanbam/Kanbam");
+      return { Component: Kanbam.default };
+    },
     children: [
       {
         path: "/kanbam/",
-        element: <Board />,
+        async lazy() {
+          const Home = await import("../components/board/Board");
+          return { Component: Home.default };
+        },
       },
       {
         path: "/kanbam/board",
-        element: <Board />,
+        async lazy() {
+          const Board = await import("../components/board/Board");
+          return { Component: Board.default };
+        },
       },
       {
         path: "/kanbam/table",
-        element: <Table />,
+        async lazy() {
+          const Table = await import("../components/table/Table");
+          return { Component: Table.default };
+        },
       },
       {
         path: "/kanbam/calendar",
-        element: <Calendar />,
+        async lazy() {
+          const Calendar = await import("../components/calendar/Calendar");
+          return { Component: Calendar.default };
+        },
       },
       {
         path: "/kanbam/dashboard",
-        element: <Dashboard />,
+        async lazy() {
+          const Dashboard = await import("../components/dashboard/Dashboard");
+          return { Component: Dashboard.default };
+        },
       },
     ],
   },
