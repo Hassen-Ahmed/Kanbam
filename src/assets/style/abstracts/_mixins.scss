@@ -72,7 +72,11 @@
     }
 
     hr {
-      @include border-bottom($theme-name);
+      @include color-bg-font(
+        $theme-name,
+        var.$border-color-01,
+        var.$border-color-02
+      );
     }
 
     .loading {
@@ -139,14 +143,14 @@
           var.$font-color-light-03
         );
       }
-      &__btn {
-        &:hover {
-          @include bg(
-            $theme-name,
-            var.$bg-color-dark-hover,
-            var.$bg-color-light-hover-02
-          );
-        }
+
+      &__btn &:hover,
+      &__btn-active {
+        @include bg(
+          $theme-name,
+          var.$bg-color-dark-hover,
+          var.$bg-color-light-hover-02
+        );
       }
     }
 
