@@ -42,10 +42,10 @@ export default function Home() {
         </main>
         <div className="home__links">
           <a href="https://github.com/Hassen-Ahmed/Kanbam" target="_blank">
-            <FaGithub size={iconsSize} />
+            <FaGithub size={iconsSize} color="white" />
           </a>
           <a href="https://www.linkedin.com/in/hassen-abdela/" target="_blank">
-            <FaLinkedin size={iconsSize} />
+            <FaLinkedin size={iconsSize} color="white" />
           </a>
         </div>
       </div>
