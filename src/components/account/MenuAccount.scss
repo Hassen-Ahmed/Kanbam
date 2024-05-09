@@ -1,5 +1,6 @@
 @use "../../assets/style/abstracts/variable" as var;
 @use "../../assets/style/abstracts/mixins" as mixn;
+@use "../../assets/style/abstracts/mixins02" as mixn02;
 
 .menu-account {
   position: absolute;
@@ -30,9 +31,7 @@
   z-index: var.$z-ix-200;
 
   & hr {
-    width: 100%;
-    border: none;
-    margin: 1rem 0;
+    @include mixn02.hr;
   }
 
   &__heading {
