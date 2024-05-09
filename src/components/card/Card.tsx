@@ -92,6 +92,7 @@ const Card = ({
       draggable="true"
       onDragStart={(ev) => handleDragStart(ev)}
       onDragEnd={(ev) => handleDragEnd(ev)}
+      onTouchStart={(ev) => ev.preventDefault()}
       data-id={id}
       data-identity="card"
       data-index={indexNumber}
