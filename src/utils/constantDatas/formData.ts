@@ -16,7 +16,7 @@ export const loginData = () => {
       placeholder: "Email",
       label: "Email",
       required: true,
-      pattern: "/^[w-]+(?:.[w-]+)*@(?:[w-]+.)+[a-zA-Z]{2,7}$/",
+      pattern: "^[\\w]+(?:\\.[\\w]+)*@(?:[\\w]+\\.)+[\\w]{2,7}$",
     },
     {
       id: "password",
@@ -43,8 +43,9 @@ export const signupData = (userDetails: IUserDetailsSignup) => {
       errormessage: "Wrong email address",
       placeholder: "Username",
       label: "Email",
-      required: true,
-      pattern: "/^[w-]+(?:.[w-]+)*@(?:[w-]+.)+[a-zA-Z]{2,7}$/",
+      required: true, 
+      pattern: "^[\\w]+(?:\\.[\\w]+)*@(?:[\\w]+\\.)+[\\w]{2,7}$",
+
     },
     {
       id: "password",
