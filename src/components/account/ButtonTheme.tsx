@@ -10,14 +10,14 @@ const ButtonTheme = () => {
     <div className="menu__theme">
       <h2 className="menu__theme--heading">Theme </h2>
       <ul className="menu__theme--list">
-        <li onClick={() => themeSetter("theme-light")}>
-          <div className="menu__theme--btn" style={{}}>
+        <li onClick={() => themeSetter("light")}>
+          <div className="menu__theme--btn">
             <img src={themeLight} alt="theme light logo" />
           </div>
           <p>Light</p>
         </li>
 
-        <li onClick={() => themeSetter("theme-dark")}>
+        <li onClick={() => themeSetter("dark")}>
           <div className="menu__theme--btn">
             <img src={themeDark} alt="theme dark logo" />
           </div>
