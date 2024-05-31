@@ -5,7 +5,6 @@ import { KanbamContext, IkanbamContext } from "../../context/kanbamContext";
 
 const ButtonTheme = () => {
   const { themeSetter } = useContext(KanbamContext) as IkanbamContext;
-  console.log("ButtonTheme");
 
   return (
     <div className="menu__theme">
