@@ -50,8 +50,6 @@ export default function CardModal({
 
   // end of hook
 
-  console.log("cardDetail", cardDetail);
-
   const bgColor = cardDetail.priority
     ? `${
         priorities.filter(

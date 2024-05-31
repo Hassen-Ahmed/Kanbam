@@ -21,7 +21,6 @@ const MenuAccount = ({
   const handleLogout = () => {
     localStorage.removeItem("token");
     setTimeout(() => {
-      console.log("loged out!");
       navigate("/");
     }, 100);
   };
