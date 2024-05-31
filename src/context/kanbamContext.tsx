@@ -1,4 +1,4 @@
-import { createContext, useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { Cards } from "../types/board.type";
 
 interface IItem {
@@ -20,7 +20,6 @@ export interface IItemDragging {
 }
 
 export interface IkanbamContext {
-  theme?: string;
   themeSetter: (themeValue: string) => void;
   itemDragging: React.MutableRefObject<IItemDragging | null>;
 }
@@ -31,21 +30,23 @@ const KanbamContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useState("");
   const itemDragging = useRef<IItemDragging | null>(null);
 
-  useEffect(() => {
-    const responseTheme = localStorage.getItem("theme");
-    if (responseTheme?.length) {
-      setTheme(responseTheme);
-      const themeAdd = responseTheme == "light" ? "theme-light" : "theme-dark";
-      const themeRemove =
-        responseTheme == "light" ? "theme-dark" : "theme-light";
-      document.body.classList.add(themeAdd);
-      document.body.classList.remove(themeRemove);
+  const handleAssignTheme = (themValue: string) => {
+    if (themValue == "theme-light") {
+      document.body.classList.add("theme-light");
+      document.body.classList.remove("theme-dark");
+    } else if (themValue == "theme-dark") {
+      document.body.classList.add("theme-dark");
+      document.body.classList.remove("theme-light");
     }
-  }, []);
+  };
 
   useEffect(() => {
     if (theme.length) {
+      handleAssignTheme(theme);
       localStorage.setItem("theme", theme);
+    } else {
+      const responseTheme = localStorage.getItem("theme") as string;
+      handleAssignTheme(responseTheme);
     }
   }, [theme]);
 
