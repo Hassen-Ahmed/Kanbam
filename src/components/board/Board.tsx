@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { memo, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import BoardNewListCreator from "./BoardNewListCreator";
 import Loading from "../notifications/Loading";
@@ -24,7 +24,7 @@ async function findAllLists() {
   }
 }
 
-const Board = memo(() => {
+const Board = () => {
   const { lists, dispatch, searchText } = useContext(
     ListsContext
   ) as IListsContext;
@@ -96,6 +96,6 @@ const Board = memo(() => {
       )}
     </div>
   );
-});
+};
 
 export default Board;
