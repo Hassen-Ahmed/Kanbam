@@ -1,9 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
-// Color
-$bg-image-home: linear-gradient(-45deg, #623ff0, rgba(103, 148, 252, 0.814));
-$bg-home: #623ff0;
-$bg-auth: #ffffff40;
+// Colors
 
 // dark theme
 $bg-color-dark-nav-01: #1d2125;
@@ -54,6 +51,10 @@ $color-grey-02: #545454;
 $border-color-01: #45505b;
 $border-color-02: #abb7c480;
 $border-color-card: #59a4e1;
+
+$bg-image-home: linear-gradient(-45deg, #623ff0, rgba(103, 148, 252, 0.814));
+$bg-home: #623ff0;
+$bg-auth: #ffffff40;
 
 // Typography
 
