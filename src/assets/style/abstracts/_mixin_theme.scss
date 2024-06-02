@@ -1,0 +1,324 @@
+@use "./variable" as var;
+@use "./mixins" as *;
+
+// main theme handler
+
+@mixin handler-theme($theme-name) {
+  .#{$theme-name} {
+    ::-webkit-scrollbar-thumb {
+      border-radius: var.$bor-1;
+      @include bg(
+        $theme-name,
+        var.$bg-color-dark-scroll-01,
+        var.$bg-color-light-scroll-01
+      );
+    }
+
+    hr {
+      @include bg($theme-name, var.$border-color-01, var.$border-color-02);
+    }
+
+    .loading {
+      @include bg-refactor-01($theme-name);
+      @include font(
+        $theme-name,
+        var.$font-color-dark-02,
+        var.$font-color-light-01
+      );
+
+      &__icon {
+        &::before,
+        &::after {
+          @include bg(
+            $theme-name,
+            var.$font-color-dark-02,
+            var.$font-color-light-01
+          );
+        }
+      }
+    }
+
+    .board {
+      &__btn--add {
+        @include bg-with-hover($theme-name);
+        @include bg($theme-name, rgba(0, 0, 0, 0.2), rgba(255, 255, 255, 0.2));
+        @include font(
+          $theme-name,
+          var.$font-color-dark-02,
+          var.$font-color-light-01
+        );
+      }
+
+      &__new-list {
+        &,
+        &--input input {
+          @include bg(
+            $theme-name,
+            var.$bg-color-dark-card,
+            var.$bg-color-light-card
+          );
+          @include font(
+            $theme-name,
+            var.$font-color-dark-02,
+            var.$font-color-light-01
+          );
+        }
+      }
+    }
+
+    .side-bar-left {
+      &,
+      &__btn-toggler,
+      &__container {
+        @include bg(
+          $theme-name,
+          var.$bg-color-dark-side-bar-01,
+          var.$bg-color-light-side-bar-01
+        );
+        @include font(
+          $theme-name,
+          var.$font-color-dark-01,
+          var.$font-color-light-03
+        );
+      }
+
+      &__btn:hover,
+      &__btn-active {
+        @include bg(
+          $theme-name,
+          var.$bg-color-dark-hover,
+          var.$bg-color-light-hover-02
+        );
+      }
+    }
+
+    .card {
+      @include bg-refactor-01($theme-name);
+      @include font-refactor-01($theme-name);
+
+      &-modal {
+        @include bg(
+          $theme-name,
+          var.$bg-color-dark-card-modal,
+          var.$bg-color-light-lists
+        );
+        @include font(
+          $theme-name,
+          var.$font-color-dark-01,
+          var.$font-color-light-04
+        );
+
+        .activity {
+          &__comment,
+          & {
+            textArea {
+              @include bg-refactor-01($theme-name);
+              @include font-refactor-02($theme-name);
+            }
+          }
+          button:not(:first-child) {
+            @include bg-with-hover($theme-name);
+            @include bg($theme-name, transparent, transparent);
+            @include font-refactor-02($theme-name);
+          }
+        }
+        .right-bar__btn,
+        .text-editor__edited button {
+          @include bg-refactor-02($theme-name);
+          @include font-refactor-02($theme-name);
+          &:hover {
+            @include bg(
+              $theme-name,
+              var.$bg-color-dark-hover-03,
+              var.$bg-color-light-hover-03
+            );
+          }
+        }
+        .text-editor {
+          &__save-btn {
+            button:not(:first-child) {
+              @include bg-with-hover($theme-name);
+              @include bg($theme-name, transparent, transparent);
+              @include font-refactor-02($theme-name);
+            }
+          }
+          &__editorial-area {
+            @include bg(
+              $theme-name,
+              var.$bg-color-dark-card,
+              var.$bg-color-light-card
+            );
+
+            @include font-refactor-02($theme-name);
+          }
+          &__btns {
+            button {
+              &:not(:last-child) {
+                border-right: 0.1rem solid #afafaf1a;
+              }
+              @include bg-refactor-01($theme-name);
+              @include font-refactor-02($theme-name);
+            }
+          }
+        }
+        .pritority__lists {
+          @include bg-refactor-02($theme-name);
+          @include font-refactor-02($theme-name);
+        }
+      }
+    }
+
+    .lists {
+      &--container--sub {
+        @include bg-refactor-03($theme-name);
+        @include font(
+          $theme-name,
+          var.$font-color-dark-01,
+          var.$font-color-light-01
+        );
+      }
+      &__heading {
+        &--btn {
+          @include bg-with-hover($theme-name);
+        }
+        &--text input {
+          @if ($theme-name == theme-dark) {
+            color: var.$font-color-dark-01;
+          } @else {
+            color: var.$font-color-light-01;
+          }
+        }
+      }
+      &__add-card--container {
+        input {
+          @include bg(
+            $theme-name,
+            var.$bg-color-dark-lists,
+            var.$bg-color-light-lists
+          );
+          @include font-refactor-01($theme-name);
+        }
+      }
+      &__btn--add-container {
+        @include bg-refactor-03($theme-name);
+      }
+      &__btn--add {
+        @include bg-with-hover($theme-name);
+      }
+      &-menu {
+        @include border($theme-name, var.$border-color-02, rgba(0, 0, 0, 0.25));
+        @include font-refactor-01($theme-name);
+        @include bg(
+          $theme-name,
+          var.$bg-color-dark-card-modal,
+          var.$bg-color-light-lists
+        );
+
+        &__btns {
+          .lists-menu__btn {
+            button {
+              @include bg($theme-name, transparent, transparent);
+              @include font(
+                $theme-name,
+                var.$font-color-dark-01,
+                var.$font-color-light-01
+              );
+            }
+            @include bg-with-hover($theme-name);
+          }
+        }
+        &__btn-close {
+          @include bg-with-hover($theme-name);
+        }
+      }
+    }
+
+    .nav-bar {
+      @include bg(
+        $theme-name,
+        var.$bg-color-dark-nav-01,
+        var.$bg-color-light-nav-01
+      );
+      @include font(
+        $theme-name,
+        var.$font-color-dark-01,
+        var.$font-color-light-03
+      );
+
+      @include border-bottom($theme-name);
+
+      & .logo__icon {
+        @include bg($theme-name, var.$font-color-dark-01, var.$color-white-02);
+
+        &::after,
+        &::before {
+          @include bg(
+            $theme-name,
+            var.$bg-color-dark-nav-01,
+            var.$color-grey-02
+          );
+        }
+      }
+      &__left {
+        .search__box {
+          input {
+            @include bg($theme-name, transparent, rgba(252, 252, 252, 0.3));
+            @include font($theme-name, white, var.$font-color-light-03);
+            @include border(
+              $theme-name,
+              var.$border-color-02,
+              var.$border-color-02
+            );
+
+            &::placeholder {
+              @include bg($theme-name, transparent, transparent);
+              @include font(
+                $theme-name,
+                var.$font-color-dark-01,
+                var.$font-color-light-03
+              );
+            }
+          }
+        }
+      }
+    }
+
+    .menu {
+      @include bg(
+        $theme-name,
+        var.$bg-color-dark-menu,
+        var.$bg-color-light-menu
+      );
+      @include font-refactor-01($theme-name);
+      @include border($theme-name, var.$border-color-02, var.$border-color-02);
+
+      &__theme--list {
+        @if ($theme-name == theme-dark) {
+          border: 0.1rem solid var.$border-color-01;
+        } @else {
+          border: 0.1rem solid var.$border-color-02;
+        }
+      }
+
+      &__theme {
+        @include bg-with-hover($theme-name);
+        &--list {
+          @include bg(
+            $theme-name,
+            var.$bg-color-dark-menu,
+            var.$bg-color-light-menu
+          );
+          @include font-refactor-01($theme-name);
+
+          & li {
+            @include bg-with-hover($theme-name);
+          }
+        }
+      }
+
+      &__logout {
+        @include bg-with-hover($theme-name);
+      }
+    }
+  }
+}

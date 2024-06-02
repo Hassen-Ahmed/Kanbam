@@ -1,5 +1,7 @@
 @use "./variable" as var;
 
+// display flex
+
 @mixin flexy(
   $direction: row,
   $just-content: center,
@@ -13,27 +15,14 @@
   gap: $gap;
 }
 
-// themes maker
+// theme makers
 
-@mixin color-bg-font(
-  $theme-name,
-  $bg-dark,
-  $bg-light,
-  $font-dark: null,
-  $font-light: null
-) {
+@mixin font($theme-name, $dark-col, $light-col) {
   @if ($theme-name == theme-dark) {
-    background-color: $bg-dark;
-    @if ($font-dark != null) {
-      color: $font-dark;
-    }
+    color: $dark-col;
   } @else {
-    background-color: $bg-light;
-    @if ($font-light != null) {
-      color: $font-light;
-    }
+    color: $light-col;
   }
-  transition: all 0.2s ease;
 }
 
 @mixin bg($theme-name, $bg-dark, $bg-light) {
@@ -41,6 +30,16 @@
     background-color: $bg-dark;
   } @else {
     background-color: $bg-light;
+  }
+}
+
+@mixin bg-with-hover($theme-name) {
+  &:hover {
+    @include bg(
+      $theme-name,
+      var.$bg-color-dark-hover,
+      var.$bg-color-light-hover
+    );
   }
 }
 
@@ -60,434 +59,21 @@
   }
 }
 
-@mixin handler-theme($theme-name) {
-  .#{$theme-name} {
-    ::-webkit-scrollbar-thumb {
-      border-radius: var.$bor-1;
-      @if ($theme-name == theme-dark) {
-        background-color: var.$bg-color-dark-scroll-01;
-      } @else {
-        background-color: var.$bg-color-light-scroll-01;
-      }
-    }
+// refactors font
+@mixin font-refactor-01($theme-name) {
+  @include font($theme-name, var.$font-color-dark-01, var.$font-color-light-01);
+}
+@mixin font-refactor-02($theme-name) {
+  @include font($theme-name, var.$font-color-dark-01, var.$font-color-light-04);
+}
 
-    hr {
-      @include color-bg-font(
-        $theme-name,
-        var.$border-color-01,
-        var.$border-color-02
-      );
-    }
-
-    .loading {
-      @include color-bg-font(
-        $theme-name,
-        var.$bg-color-dark-card,
-        var.$bg-color-light-card,
-        var.$font-color-dark-02,
-        var.$font-color-light-01
-      );
-      &__icon {
-        &::before,
-        &::after {
-          @include color-bg-font(
-            $theme-name,
-            var.$font-color-dark-02,
-            var.$font-color-light-01
-          );
-        }
-      }
-    }
-
-    .board {
-      &__btn--add {
-        @include color-bg-font(
-          $theme-name,
-          rgba(0, 0, 0, 0.2),
-          rgba(255, 255, 255, 0.2),
-          var.$font-color-dark-02,
-          var.$font-color-light-01
-        );
-        &:hover {
-          @include bg(
-            $theme-name,
-            rgba(0, 0, 0, 0.5),
-            rgba(255, 255, 255, 0.5)
-          );
-        }
-      }
-
-      &__new-list {
-        &,
-        &--input input {
-          @include color-bg-font(
-            $theme-name,
-            var.$bg-color-dark-card,
-            var.$bg-color-light-card,
-            var.$font-color-dark-02,
-            var.$font-color-light-01
-          );
-        }
-      }
-    }
-
-    .side-bar-left {
-      &,
-      &__btn-toggler,
-      &__container {
-        @include color-bg-font(
-          $theme-name,
-          var.$bg-color-dark-side-bar-01,
-          var.$bg-color-light-side-bar-01,
-          var.$font-color-dark-01,
-          var.$font-color-light-03
-        );
-      }
-
-      &__btn &:hover,
-      &__btn-active {
-        @include bg(
-          $theme-name,
-          var.$bg-color-dark-hover,
-          var.$bg-color-light-hover-02
-        );
-      }
-    }
-
-    .card {
-      @include color-bg-font(
-        $theme-name,
-        var.$bg-color-dark-card,
-        var.$bg-color-light-card,
-        var.$font-color-dark-01,
-        var.$font-color-light-01
-      );
-      &-modal {
-        @include color-bg-font(
-          $theme-name,
-          var.$bg-color-dark-card-modal,
-          var.$bg-color-light-lists,
-          var.$font-color-dark-01,
-          var.$font-color-light-04
-        );
-        .activity {
-          &__comment,
-          & {
-            textArea {
-              @include color-bg-font(
-                $theme-name,
-                var.$bg-color-dark-card,
-                var.$bg-color-light-card,
-                var.$font-color-dark-01,
-                var.$font-color-light-04
-              );
-            }
-          }
-          button:not(:first-child) {
-            &:hover {
-              @include bg(
-                $theme-name,
-                var.$bg-color-dark-hover,
-                var.$bg-color-light-hover-02
-              );
-            }
-            @include color-bg-font(
-              $theme-name,
-              transparent,
-              transparent,
-              var.$font-color-dark-01,
-              var.$font-color-light-04
-            );
-          }
-        }
-        .right-bar__btn,
-        .text-editor__edited button {
-          @include color-bg-font(
-            $theme-name,
-            var.$bg-color-dark-hover,
-            var.$bg-color-light-hover,
-            var.$font-color-dark-01,
-            var.$font-color-light-04
-          );
-          &:hover {
-            @include bg(
-              $theme-name,
-              var.$bg-color-dark-hover-03,
-              var.$bg-color-light-hover-03
-            );
-          }
-        }
-        .text-editor {
-          &__save-btn {
-            button:not(:first-child) {
-              &:hover {
-                @include bg(
-                  $theme-name,
-                  var.$bg-color-dark-hover,
-                  var.$bg-color-light-hover-02
-                );
-              }
-              @include color-bg-font(
-                $theme-name,
-                transparent,
-                transparent,
-                var.$font-color-dark-01,
-                var.$font-color-light-04
-              );
-            }
-          }
-          &__editorial-area {
-            @include color-bg-font(
-              $theme-name,
-              var.$bg-color-dark-card,
-              var.$bg-color-light-card,
-              var.$font-color-dark-01,
-              var.$font-color-light-04
-            );
-          }
-          &__btns {
-            button {
-              &:not(:last-child) {
-                border-right: 0.1rem solid #afafaf1a;
-              }
-              @include color-bg-font(
-                $theme-name,
-                var.$bg-color-dark-card,
-                var.$bg-color-light-card,
-                var.$font-color-dark-01,
-                var.$font-color-light-04
-              );
-            }
-          }
-        }
-        .pritority__lists {
-          @include color-bg-font(
-            $theme-name,
-            var.$bg-color-dark-hover,
-            var.$bg-color-light-hover,
-            var.$font-color-dark-01,
-            var.$font-color-light-04
-          );
-        }
-      }
-    }
-
-    .lists {
-      &--container--sub {
-        @include color-bg-font(
-          $theme-name,
-          var.$bg-color-dark-lists,
-          var.$bg-color-light-lists,
-          var.$font-color-dark-01,
-          var.$font-color-light-01
-        );
-      }
-
-      &__heading {
-        &--btn {
-          &:hover {
-            @include color-bg-font(
-              $theme-name,
-              var.$bg-color-light-hover-02,
-              var.$bg-color-light-hover-02,
-              var.$font-color-dark-01,
-              var.$font-color-light-01
-            );
-          }
-        }
-        &--text input {
-          @if ($theme-name == theme-dark) {
-            color: var.$font-color-dark-01;
-          } @else {
-            color: var.$font-color-light-01;
-          }
-        }
-      }
-      &__add-card--container {
-        input {
-          @include color-bg-font(
-            $theme-name,
-            var.$bg-color-dark-lists,
-            var.$bg-color-light-lists,
-            var.$font-color-dark-01,
-            var.$font-color-light-01
-          );
-        }
-      }
-      &__btn--add-container {
-        @include color-bg-font(
-          $theme-name,
-          var.$bg-color-dark-lists,
-          var.$bg-color-light-lists
-        );
-      }
-      &__btn--add {
-        &:hover {
-          @include bg(
-            $theme-name,
-            var.$bg-color-dark-hover,
-            var.$bg-color-light-hover-02
-          );
-        }
-      }
-    }
-
-    .lists-menu {
-      @include border($theme-name, var.$border-color-02, rgba(0, 0, 0, 0.25));
-      @include color-bg-font(
-        $theme-name,
-        var.$bg-color-dark-card-modal,
-        var.$bg-color-light-lists,
-        var.$font-color-dark-01,
-        var.$font-color-light-01
-      );
-
-      &__btns {
-        .lists-menu__btn {
-          button {
-            @include color-bg-font(
-              $theme-name,
-              transparent,
-              transparent,
-              var.$font-color-dark-01,
-              var.$font-color-light-01
-            );
-          }
-          &:hover {
-            @include bg(
-              $theme-name,
-              var.$bg-color-dark-hover,
-              var.$bg-color-light-hover
-            );
-          }
-        }
-      }
-      &__btn-close {
-        &:hover {
-          @include bg(
-            $theme-name,
-            var.$bg-color-dark-hover,
-            var.$bg-color-light-hover
-          );
-        }
-      }
-    }
-
-    .nav-bar {
-      @include color-bg-font(
-        $theme-name,
-        var.$bg-color-dark-nav-01,
-        var.$bg-color-light-nav-01,
-        var.$font-color-dark-01,
-        var.$font-color-light-03
-      );
-
-      @include border-bottom($theme-name);
-
-      & .logo__icon {
-        @include color-bg-font(
-          $theme-name,
-          var.$font-color-dark-01,
-          var.$color-white-02
-        );
-
-        &::after,
-        &::before {
-          @include color-bg-font(
-            $theme-name,
-            var.$bg-color-dark-nav-01,
-            var.$color-grey-02
-          );
-        }
-      }
-      &__left {
-        .search__box {
-          input {
-            @include color-bg-font(
-              $theme-name,
-              transparent,
-              rgba(252, 252, 252, 0.3),
-              white,
-              var.$font-color-light-03
-            );
-            @include border(
-              $theme-name,
-              var.$border-color-02,
-              var.$border-color-02
-            );
-
-            &::placeholder {
-              @include color-bg-font(
-                $theme-name,
-                transparent,
-                transparent,
-                var.$font-color-dark-01,
-                var.$font-color-light-03
-              );
-            }
-          }
-        }
-      }
-    }
-
-    .menu {
-      @include color-bg-font(
-        $theme-name,
-        var.$bg-color-dark-menu,
-        var.$bg-color-light-menu,
-        var.$font-color-dark-01,
-        var.$font-color-light-01
-      );
-
-      @include border($theme-name, var.$border-color-02, var.$border-color-02);
-
-      &__theme--list {
-        @if ($theme-name == theme-dark) {
-          border: 0.1rem solid var.$border-color-01;
-        } @else {
-          border: 0.1rem solid var.$border-color-02;
-        }
-      }
-
-      &__theme {
-        &:hover {
-          @include bg(
-            $theme-name,
-            var.$bg-color-dark-hover,
-            var.$bg-color-light-hover
-          );
-        }
-
-        &--list {
-          @include color-bg-font(
-            $theme-name,
-            var.$bg-color-dark-menu,
-            var.$bg-color-light-menu,
-            var.$font-color-dark-01,
-            var.$font-color-light-01
-          );
-
-          & li {
-            &:hover {
-              @include bg(
-                $theme-name,
-                var.$bg-color-dark-hover,
-                var.$bg-color-light-hover
-              );
-            }
-          }
-        }
-      }
-
-      &__logout {
-        &:hover {
-          @include bg(
-            $theme-name,
-            var.$bg-color-dark-hover,
-            var.$bg-color-light-hover
-          );
-        }
-      }
-    }
-  }
+// refactors bg
+@mixin bg-refactor-01($theme-name) {
+  @include bg($theme-name, var.$bg-color-dark-card, var.$bg-color-light-card);
+}
+@mixin bg-refactor-02($theme-name) {
+  @include bg($theme-name, var.$bg-color-dark-hover, var.$bg-color-light-hover);
+}
+@mixin bg-refactor-03($theme-name) {
+  @include bg($theme-name, var.$bg-color-dark-lists, var.$bg-color-light-lists);
 }
