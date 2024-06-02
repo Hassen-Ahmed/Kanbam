@@ -1,3 +1,5 @@
+import { IActionBoard } from "./actions.type";
+
 export interface ICard {
   id?: string;
   listId: string;
@@ -22,3 +24,10 @@ export interface IList {
 }
 
 export type BoardType = IList[];
+
+export interface IListsContext {
+  lists: BoardType | null;
+  dispatch: React.Dispatch<IActionBoard>;
+  searchText: string;
+  handleSearchTextUpdate: (text: string) => void;
+}
