@@ -1,9 +1,10 @@
 import { MdOutlineCancel } from "react-icons/md";
 import { useContext, useState } from "react";
 import { postList } from "../../utils/api/posts";
-import { IListsContext, ListsContext } from "../../context/ListsContext";
+import { ListsContext } from "../../context/ListsContext";
 import "./BoardNewListCreator.scss";
 import { IError } from "../../types/status.type";
+import { IListsContext } from "../../types/board.type";
 
 type isListAddedType = { isListAddedSetter: (value: boolean) => void };
 

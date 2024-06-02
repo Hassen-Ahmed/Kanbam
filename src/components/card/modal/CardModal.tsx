@@ -6,8 +6,8 @@ import { deleteCardById } from "../../../utils/api/deletes";
 import { VscClose } from "react-icons/vsc";
 import { CiEdit } from "react-icons/ci";
 
-import { IListsContext, ListsContext } from "../../../context/ListsContext";
-import { BoardType, ICard } from "../../../types/board.type";
+import { ListsContext } from "../../../context/ListsContext";
+import { BoardType, ICard, IListsContext } from "../../../types/board.type";
 import { IError } from "../../../types/status.type";
 import { priorities } from "../../../utils/constantDatas/priorities";
 import TextEditor from "./components/textEditor/TextEditor";

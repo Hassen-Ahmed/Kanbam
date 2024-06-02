@@ -1,4 +1,4 @@
-import { ICard, IList, Cards } from "../../types/board.type";
+import { ICard, IList, Cards, IListsContext } from "../../types/board.type";
 import { BsThreeDots } from "react-icons/bs";
 import { IoMdAdd } from "react-icons/io";
 import { VscClose } from "react-icons/vsc";
@@ -6,7 +6,7 @@ import { useContext, useState } from "react";
 import { handleDragstartUtil, handleRemovingCloneElem } from "../../utils/dnd";
 import { DragEventMy } from "../../types/html.type";
 import { postCard } from "../../utils/api/posts";
-import { IListsContext, ListsContext } from "../../context/ListsContext";
+import { ListsContext } from "../../context/ListsContext";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { BoardType } from "../../types/board.type";
 import Card from "../card/Card";

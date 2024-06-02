@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import BoardNewListCreator from "./BoardNewListCreator";
 import Loading from "../notifications/Loading";
-import { IListsContext, ListsContext } from "../../context/ListsContext";
+import { ListsContext } from "../../context/ListsContext";
 import { createPortal } from "react-dom";
 import Lists from "../lists/Lists";
 import { fetchAllLists } from "../../utils/fetchAllLists";
@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { IError } from "../../types/status.type";
 import "./Board.scss";
 import { handleSearchText } from "../../utils/order";
-import { BoardType } from "../../types/board.type";
+import { BoardType, IListsContext } from "../../types/board.type";
 
 async function findAllLists() {
   try {

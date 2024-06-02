@@ -1,10 +1,11 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "../../components/nav/NavBar";
 import SideBarLeft from "../../components/sidebar/SideBarLeft";
-import { IListsContext, ListsContext } from "../../context/ListsContext";
+import { ListsContext } from "../../context/ListsContext";
 import { useContext } from "react";
 import { handleAppOnDrop } from "../../utils/handleAppOnDrop";
 import "./Kanbam.scss";
+import { IListsContext } from "../../types/board.type";
 
 export default function Kanbam() {
   const { lists } = useContext(ListsContext) as IListsContext;

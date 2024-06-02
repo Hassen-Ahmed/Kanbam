@@ -3,7 +3,8 @@ import { IoSearchSharp } from "react-icons/io5";
 
 import "./SearchBox.scss";
 import { useContext, useEffect, useState } from "react";
-import { IListsContext, ListsContext } from "../../context/ListsContext";
+import { ListsContext } from "../../context/ListsContext";
+import { IListsContext } from "../../types/board.type";
 
 export default function SearchBox() {
   const [winWidth, setWinWidth] = useState(0);

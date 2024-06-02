@@ -2,8 +2,8 @@ import { VscClose } from "react-icons/vsc";
 import "./ListsMenu.scss";
 import { useContext, useEffect, useRef, useState } from "react";
 import { deleteListsById } from "../../utils/api/deletes";
-import { IListsContext, ListsContext } from "../../context/ListsContext";
-import { BoardType } from "../../types/board.type";
+import { ListsContext } from "../../context/ListsContext";
+import { BoardType, IListsContext } from "../../types/board.type";
 import { IError } from "../../types/status.type";
 import { FaArrowRotateLeft } from "react-icons/fa6";
 
