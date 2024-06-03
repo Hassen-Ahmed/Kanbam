@@ -1,23 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from "react";
-import { IoMdAdd } from "react-icons/io";
-import BoardNewListCreator from "./BoardNewListCreator";
-import Loading from "../notifications/Loading";
-import { ListsContext } from "../../context/ListsContext";
 import { createPortal } from "react-dom";
-import Lists from "../lists/Lists";
+import { useNavigate } from "react-router-dom";
+import { IoMdAdd } from "react-icons/io";
+
 import { fetchAllLists } from "../../utils/fetchAllLists";
 import { isTokenAuthenticated } from "../../utils/jwtAuth";
-import { useNavigate } from "react-router-dom";
-import { IError } from "../../types/status.type";
-import "./Board.scss";
 import { handleSearchText } from "../../utils/order";
 import { BoardType, IListsContext } from "../../types/board.type";
+import { IError } from "../../types/status.type";
+
+import { ListsContext } from "../../context/ListsContext";
+import BoardNewListCreator from "./BoardNewListCreator";
+import Loading from "../notifications/Loading";
+import Lists from "../lists/Lists";
+import "./Board.scss";
 
 async function findAllLists() {
   try {
-    const res = await fetchAllLists();
-    return res;
+    return await fetchAllLists();
   } catch (err) {
     const error = err as IError;
     console.log(error.message);
@@ -25,10 +26,10 @@ async function findAllLists() {
 }
 
 const Board = () => {
+  const [isListAdded, setIsListAdded] = useState<boolean>(false);
   const { lists, dispatch, searchText } = useContext(
     ListsContext
   ) as IListsContext;
-  const [isListAdded, setIsListAdded] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
