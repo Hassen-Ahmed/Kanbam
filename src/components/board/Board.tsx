@@ -48,8 +48,6 @@ const Board = () => {
     if (searchText) handleSearchText(searchText, dispatch);
   }, [searchText]);
 
-  // end of hooks!
-
   const isListAddedSetter = (value: boolean) => {
     setIsListAdded(value);
   };
