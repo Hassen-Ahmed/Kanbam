@@ -1,53 +1,31 @@
-import { ICard } from "../../types/board.type";
-import { DragEventMy } from "../../types/html.type";
-import "./Card.scss";
-import { handleDragstartUtil, handleRemovingCloneElem } from "../../utils/dnd";
-// import { createPortal } from "react-dom";
 import { useContext, useState } from "react";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
-import CardModal from "./modal/CardModal";
-import { priorities } from "../../utils/constantDatas/priorities";
+
 import { BsTextParagraph } from "react-icons/bs";
 
-// interface ICardExtended extends ICard {}
+import { priorities } from "../../utils/constantDatas/priorities";
+import { handleDragstartUtil, handleRemovingCloneElem } from "../../utils/dnd";
+import { DragEventMy } from "../../types/html.type";
+import { ICard } from "../../types/board.type";
+import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+import CardModal from "./modal/CardModal";
+import "./Card.scss";
 
-const Card = ({
-  id,
-  title,
-  listId,
-  isDragging,
-  indexNumber,
-  opacity,
-  description,
-  comments,
-  priority,
-}: ICard) => {
+const Card = ({ ...props }: ICard) => {
   const { itemDragging } = useContext(KanbamContext) as IkanbamContext;
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const [cardDetail] = useState<ICard>({
-    id,
-    title,
-    listId,
-    isDragging,
-    indexNumber,
-    opacity,
-    description,
-    comments,
-    priority,
-  });
+  const [cardDetail] = useState<ICard>(props);
 
   // end of hooks
+
   const bgColor = cardDetail.priority
     ? `${
-        priorities.filter((priorityObj) => priorityObj.name === priority)[0]
-          .color
+        priorities.filter(
+          (priorityObj) => priorityObj.name === props.priority
+        )[0].color
       }`
     : "#00000033";
 
-  const handleModlaVisibility = (value: boolean) => {
-    setIsModalVisible(value);
-  };
+  const handleModlaVisibility = (value: boolean) => setIsModalVisible(value);
 
   const handleDragEnd = (ev: DragEventMy) => {
     ev.stopPropagation();
@@ -65,26 +43,36 @@ const Card = ({
 
     itemDragging.current = {
       item: {
-        id,
-        listId,
-        indexNumber,
-        title,
-        description,
-        comments,
-        priority,
-        isDragging,
+        ...props,
         opacity: ".3",
       },
       identity: "card",
     };
 
     if (!(ev.target instanceof HTMLDivElement)) return;
+
     handleDragstartUtil(ev, "card");
     const chilCarddElem = ev.target.childNodes[0] as HTMLElement;
-
     chilCarddElem.style.opacity = ".3";
     chilCarddElem.style.outline = "none";
   };
+
+  const displayCardModal = isModalVisible && (
+    <CardModal
+      cardDetail={cardDetail}
+      handleModlaVisibility={handleModlaVisibility}
+    />
+  );
+
+  const displayDescriptionIcon = cardDetail.description && (
+    <div className="discription-icon">
+      <BsTextParagraph size={15} />
+    </div>
+  );
+
+  const displayPriorityColor = cardDetail.priority && (
+    <div className="priority" style={{ backgroundColor: bgColor }}></div>
+  );
 
   return (
     <div
@@ -93,33 +81,24 @@ const Card = ({
       onDragStart={(ev) => handleDragStart(ev)}
       onDragEnd={(ev) => handleDragEnd(ev)}
       onTouchStart={(ev) => ev.preventDefault()}
-      data-id={id}
+      data-id={props.id}
       data-identity="card"
-      data-index={indexNumber}
+      data-index={props.indexNumber}
     >
-      {isModalVisible && (
-        <CardModal
-          cardDetail={cardDetail}
-          handleModlaVisibility={handleModlaVisibility}
-        />
-      )}
+      {displayCardModal}
 
       <div
         className="card"
         onClick={() => setIsModalVisible(true)}
-        style={{ opacity: `${opacity}` }}
+        style={{ opacity: `${props.opacity}` }}
       >
-        {cardDetail.priority && (
-          <div className="priority" style={{ backgroundColor: bgColor }}></div>
-        )}
+        {displayPriorityColor}
+
         <div className="card__heading">
-          <h2>{title} </h2>
+          <h2>{props.title} </h2>
         </div>
-        {cardDetail.description && (
-          <div className="discription-icon">
-            <BsTextParagraph size={15} />
-          </div>
-        )}
+
+        {displayDescriptionIcon}
       </div>
     </div>
   );
