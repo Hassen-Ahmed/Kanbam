@@ -31,19 +31,19 @@ export default function Priorities({
 
   return (
     <ul className="pritority__lists">
-      {priorities.map(({ name, color, direction }) => {
+      {priorities.map(({ name, color, rotation }) => {
         return (
           <li
             key={name}
             onClick={() => {
-              handlePriority(true, { name, color, direction });
+              handlePriority(true, { name, color, rotation });
               handlePriorityName(name);
             }}
           >
             <FaArrowUp
               size={20}
               color={color}
-              style={{ transform: `rotate(${direction})` }}
+              style={{ transform: `rotate(${rotation})` }}
             />
             {name}
           </li>
