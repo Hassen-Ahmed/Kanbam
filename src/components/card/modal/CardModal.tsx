@@ -1,29 +1,33 @@
 import { useContext, useState } from "react";
+
+import { MdAccountCircle } from "react-icons/md";
 import { FaRegCreditCard } from "react-icons/fa";
 import { BsTextParagraph } from "react-icons/bs";
 import { RxActivityLog } from "react-icons/rx";
-import { deleteCardById } from "../../../utils/api/deletes";
 import { VscClose } from "react-icons/vsc";
 import { CiEdit } from "react-icons/ci";
 
-import { ListsContext } from "../../../context/ListsContext";
 import { BoardType, ICard, IListsContext } from "../../../types/board.type";
-import { IError } from "../../../types/status.type";
+
 import { priorities } from "../../../utils/constantDatas/priorities";
+import { deleteCardById } from "../../../utils/api/deletes";
+import { handleUpdateLists } from "../../../utils/order";
+import { updateCard } from "../../../utils/api/updates";
+import { IError } from "../../../types/status.type";
+
+import { ListsContext } from "../../../context/ListsContext";
 import TextEditor from "./components/textEditor/TextEditor";
 import ButtonsRight from "./components/ButtonsRight";
 import Comment from "./components/Comment";
 import "./CardModal.scss";
-import { updateCard } from "../../../utils/api/updates";
-import { MdAccountCircle } from "react-icons/md";
 
-const sizeOne = 22;
-const sizeTwo = 22;
+const iconSizeOne = 22;
+const iconSizeTwo = 22;
 
 export interface IPriority {
   name: string;
   color: string;
-  direction: string;
+  rotation: string;
 }
 
 export default function CardModal({
@@ -35,20 +39,20 @@ export default function CardModal({
 }) {
   const [comment, setComment] = useState("");
   const [isCommentVisible, setIsCommentVisible] = useState(false);
-  const [priority, setPriority] = useState({
-    name: "",
-    color: "",
-    direction: "0",
-  });
   const [isPriorityPicked, setIsPriorityPicked] = useState(false);
+  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const [titleValueOfThisCard, setTitleOfThisCard] = useState<string>(
     cardDetail.title
   );
   const [isTitleInputVisible, setIsTitleInputVisible] =
     useState<boolean>(false);
-  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
+  const [priority, setPriority] = useState({
+    name: "",
+    color: "",
+    rotation: "0",
+  });
 
-  // end of hook
+  // end of hooks
 
   const bgColor = cardDetail.priority
     ? `${
@@ -78,26 +82,15 @@ export default function CardModal({
     }
   };
 
-  const computedTitle =
-    titleValueOfThisCard?.length > 20
-      ? titleValueOfThisCard.slice(0, 16) + "..."
-      : titleValueOfThisCard;
-
   const handleCardArchive = async (cardId: string) => {
     try {
       const token = localStorage.getItem("token");
+
       if (!token) return;
       await deleteCardById(cardId, token);
       handleModlaVisibility(false);
 
-      const updatedLists = lists?.map((listObj) => {
-        if (listObj.id != cardDetail.listId) return listObj;
-
-        const updatedList = listObj.cards?.filter((card) => card.id != cardId);
-
-        listObj.cards = updatedList;
-        return listObj;
-      });
+      const updatedLists = handleUpdateLists(lists!, cardDetail, cardId);
 
       dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists as BoardType });
       localStorage.setItem("storedLists", JSON.stringify(updatedLists));
@@ -105,11 +98,6 @@ export default function CardModal({
       const error = err as IError;
       console.log("Error deleting card, err: ", error.message);
     }
-  };
-
-  const handleDragStart = (ev: React.DragEvent<HTMLDivElement>) => {
-    ev.stopPropagation();
-    ev.preventDefault();
   };
 
   const handlePriority = (
@@ -154,73 +142,100 @@ export default function CardModal({
   };
 
   const handleClosingModal = () => {
-    const newLists = lists?.map((listObj) => {
-      if (listObj.id != cardDetail.listId) return listObj;
-
-      const updatedCards = listObj.cards?.map((card) => {
-        if (card.id != cardDetail.id) return card;
-        cardDetail.opacity = "1";
-        return cardDetail;
-      });
-
-      return { ...listObj, cards: updatedCards };
-    });
-
-    dispatch({ type: "ADD_ALL_LISTS", payload: newLists as BoardType });
-
+    const updatedLists = handleUpdateLists(lists!, cardDetail);
+    dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists as BoardType });
     handleModlaVisibility(false);
   };
+
+  const handleDragStart = (ev: React.DragEvent<HTMLDivElement>) => {
+    ev.stopPropagation();
+    ev.preventDefault();
+  };
+
+  const computedTitle = (
+    <h1 onClick={() => setIsTitleInputVisible(true)}>
+      {titleValueOfThisCard?.length > 20
+        ? titleValueOfThisCard.slice(0, 16) + "..."
+        : titleValueOfThisCard}
+    </h1>
+  );
+
+  const editIcon = !isTitleInputVisible && (
+    <div className="edit-btn" onClick={() => setIsTitleInputVisible(true)}>
+      <CiEdit size={iconSizeOne} />
+    </div>
+  );
+
+  const textInput = (
+    <input
+      type="text"
+      value={titleValueOfThisCard}
+      onKeyDown={(ev) => handleTitleInputClose(ev)}
+      autoFocus
+      spellCheck="false"
+      onBlur={handleTitleUpdate}
+      onChange={(e) => {
+        setTitleOfThisCard(e.target.value);
+      }}
+    />
+  );
+
+  const commentList = cardDetail.comments?.map((comment) => {
+    return (
+      <div className="comment-with-icon">
+        <MdAccountCircle size={32} />
+        <li key={comment}>{comment}</li>
+      </div>
+    );
+  });
+
+  const commentBox = (
+    <Comment
+      isCommentVisible={isCommentVisible}
+      comment={comment}
+      handleSave={handleSave}
+      setComment={setComment}
+      setIsCommentVisible={setIsCommentVisible}
+    />
+  );
+
+  const buttonList = (
+    <ButtonsRight
+      handlePriority={handlePriority}
+      isPriorityPicked={isPriorityPicked}
+      priorities={priorities}
+      priority={priority}
+      handleCardArchive={handleCardArchive}
+      cardDetail={cardDetail}
+    />
+  );
+
+  //  JSX
 
   return (
     <div
       className="card-modal--container"
-      style={{ zIndex: 2300 }}
       draggable="true"
       onDragStart={(ev) => handleDragStart(ev)}
     >
       <div className="card-modal">
         <div className="card-modal__btn--close" onClick={handleClosingModal}>
-          <VscClose size={sizeOne} />
+          <VscClose size={iconSizeOne} />
         </div>
 
         <div className="card-modal__heading">
           <div className="card-modal__heading--icon">
-            <FaRegCreditCard size={sizeTwo} />
+            <FaRegCreditCard size={iconSizeTwo} />
           </div>
 
-          {!isTitleInputVisible && (
-            <div
-              className="edit-btn"
-              onClick={() => setIsTitleInputVisible(true)}
-            >
-              <CiEdit size={sizeOne} />
-            </div>
-          )}
+          {editIcon}
 
-          {isTitleInputVisible ? (
-            <input
-              type="text"
-              value={titleValueOfThisCard}
-              onKeyDown={(ev) => handleTitleInputClose(ev)}
-              autoFocus
-              spellCheck="false"
-              onBlur={handleTitleUpdate}
-              onChange={(e) => {
-                setTitleOfThisCard(e.target.value);
-              }}
-            />
-          ) : (
-            <h1 onClick={() => setIsTitleInputVisible(true)}>
-              {computedTitle}
-            </h1>
-          )}
+          {isTitleInputVisible ? textInput : computedTitle}
         </div>
 
         {/* main */}
-
         <div className="card-modal__main">
           {/* left-bar */}
-
           <div className="card-modal__left-bar">
             <div className="left-bar--container">
               <div className="priority">
@@ -236,9 +251,10 @@ export default function CardModal({
                   </span>
                 </div>
               </div>
+
               <div className="description">
                 <div className="description__heading">
-                  <BsTextParagraph size={sizeOne} />
+                  <BsTextParagraph size={iconSizeOne} />
                   <h2>Description</h2>
                 </div>
 
@@ -249,27 +265,13 @@ export default function CardModal({
 
               <div className="activity">
                 <div className="activity__heading">
-                  <RxActivityLog size={sizeOne} />
+                  <RxActivityLog size={iconSizeOne} />
                   <h2>Activity</h2>
                 </div>
-                <Comment
-                  isCommentVisible={isCommentVisible}
-                  comment={comment}
-                  handleSave={handleSave}
-                  setComment={setComment}
-                  setIsCommentVisible={setIsCommentVisible}
-                />
 
-                <ul className="comment-list">
-                  {cardDetail.comments?.map((comment) => {
-                    return (
-                      <div className="comment-with-icon">
-                        <MdAccountCircle size={32} />
-                        <li key={comment}>{comment}</li>
-                      </div>
-                    );
-                  })}
-                </ul>
+                {commentBox}
+
+                <ul className="comment-list">{commentList}</ul>
               </div>
             </div>
           </div>
@@ -280,14 +282,8 @@ export default function CardModal({
             <div className="right-bar--container">
               <h3>Add to card</h3>
             </div>
-            <ButtonsRight
-              handlePriority={handlePriority}
-              isPriorityPicked={isPriorityPicked}
-              priorities={priorities}
-              priority={priority}
-              handleCardArchive={handleCardArchive}
-              cardDetail={cardDetail}
-            />
+
+            {buttonList}
           </div>
         </div>
       </div>

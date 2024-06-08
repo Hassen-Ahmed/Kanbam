@@ -17,6 +17,7 @@
   @include mixn.flexy(column, flex-start);
   overflow-y: scroll;
   overflow-x: hidden;
+  z-index: 2300;
 }
 
 .card-modal {
