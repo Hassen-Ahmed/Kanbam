@@ -1,10 +1,12 @@
 import { FaArrowUp } from "react-icons/fa6";
-import "./Priorities.scss";
-import { IPriority } from "../../CardModal";
+
 import { ICard } from "../../../../../types/board.type";
-import { updateCard } from "../../../../../utils/api/updates";
 import { IError } from "../../../../../types/status.type";
+import { updateCard } from "../../../../../utils/api/updates";
 import { priorities } from "../../../../../utils/constantDatas/priorities";
+
+import { IPriority } from "../../CardModal";
+import "./Priorities.scss";
 
 interface IPriorityCollection {
   handlePriority: (ar1: boolean, arg2: IPriority) => void;
@@ -29,26 +31,24 @@ export default function Priorities({
     }
   };
 
-  return (
-    <ul className="pritority__lists">
-      {priorities.map(({ name, color, rotation }) => {
-        return (
-          <li
-            key={name}
-            onClick={() => {
-              handlePriority(true, { name, color, rotation });
-              handlePriorityName(name);
-            }}
-          >
-            <FaArrowUp
-              size={20}
-              color={color}
-              style={{ transform: `rotate(${rotation})` }}
-            />
-            {name}
-          </li>
-        );
-      })}
-    </ul>
-  );
+  const priorityList = priorities.map(({ name, color, rotation }) => {
+    return (
+      <li
+        key={name}
+        onClick={() => {
+          handlePriority(true, { name, color, rotation });
+          handlePriorityName(name);
+        }}
+      >
+        <FaArrowUp
+          size={20}
+          color={color}
+          style={{ transform: `rotate(${rotation})` }}
+        />
+        {name}
+      </li>
+    );
+  });
+
+  return <ul className="pritority__lists">{priorityList}</ul>;
 }
