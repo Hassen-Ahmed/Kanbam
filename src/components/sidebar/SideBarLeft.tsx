@@ -1,31 +1,28 @@
-import { FaTrello, FaChevronRight } from "react-icons/fa";
-import { PiTableLight } from "react-icons/pi";
-import { SlCalender } from "react-icons/sl";
-import { TfiDashboard } from "react-icons/tfi";
-import { MdHelpOutline, MdAccountBox } from "react-icons/md";
-
-import "./SideBarLeft.scss";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
 
-export default function SideBarLeft() {
+import { MdAccountBox } from "react-icons/md";
+import { FaChevronRight } from "react-icons/fa";
+
+import NavLinks from "./NavLinks";
+import "./SideBarLeft.scss";
+
+const SideBarLeft = () => {
   const [isDisplay, setIsDisplay] = useState<boolean>(false);
 
-  const handleDisplay = () => {
-    setIsDisplay((preValue) => {
-      return preValue ? false : true;
-    });
-  };
+  // end of hooks
 
-  const activeButton = ({ isActive }: { isActive: boolean }) => {
-    return isActive ? "side-bar-left__btn-active" : "";
-  };
+  const handleDisplay = () =>
+    setIsDisplay((preValue) => (preValue ? false : true));
+
+  const handleActiveButton = ({ isActive }: { isActive: boolean }) =>
+    isActive ? "side-bar-left__btn-active" : "";
+
+  // JSX
 
   return (
     <div
       className="side-bar-left"
       style={{
-        zIndex: 2000,
         width: isDisplay ? "auto" : "2rem",
       }}
     >
@@ -49,39 +46,10 @@ export default function SideBarLeft() {
         </div>
         <hr />
 
-        <NavLink to={"/kanbam/board"} className={activeButton}>
-          <div className=" side-bar-left__btn">
-            <FaTrello />
-            Board
-          </div>
-        </NavLink>
-
-        <NavLink to={"/kanbam/table"} className={activeButton}>
-          <div className="side-bar-left__btn">
-            <PiTableLight />
-            Table
-          </div>
-        </NavLink>
-
-        <NavLink to={"/kanbam/calendar"} className={activeButton}>
-          <div className=" side-bar-left__btn">
-            <SlCalender />
-            Calender
-          </div>
-        </NavLink>
-
-        <NavLink to={"/kanbam/dashboard"} className={activeButton}>
-          <div className="side-bar-left__btn">
-            <TfiDashboard />
-            Dashboard
-          </div>
-        </NavLink>
-
-        <div className="side-bar-left__btn--help side-bar-left__btn">
-          <MdHelpOutline />
-          Help
-        </div>
+        <NavLinks handleActiveButton={handleActiveButton} />
       </div>
     </div>
   );
-}
+};
+
+export default SideBarLeft;
