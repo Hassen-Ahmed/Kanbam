@@ -1,11 +1,14 @@
-import { VscClose } from "react-icons/vsc";
-import "./ListsMenu.scss";
 import { useContext, useEffect, useRef, useState } from "react";
-import { deleteListsById } from "../../utils/api/deletes";
-import { ListsContext } from "../../context/ListsContext";
-import { BoardType, IListsContext } from "../../types/board.type";
-import { IError } from "../../types/status.type";
+import { VscClose } from "react-icons/vsc";
 import { FaArrowRotateLeft } from "react-icons/fa6";
+
+import { IListsContext } from "../../types/board.type";
+import { IError } from "../../types/status.type";
+import { deleteListsById } from "../../utils/api/deletes";
+
+import { ListsContext } from "../../context/ListsContext";
+import { updatedListByListId } from "./utilsForLists";
+import "./ListsMenu.scss";
 
 export default function ListsMenu({
   handleIsListMenuVisible,
@@ -16,9 +19,9 @@ export default function ListsMenu({
   id: string;
   setIsNewCardInputVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const [isListRemoved, setIsListRemoved] = useState(false);
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const menuListRef = useRef(null);
-  const [isListRemoved, setIsListRemoved] = useState(false);
 
   useEffect(() => {
     if (!menuListRef.current) return;
@@ -43,21 +46,35 @@ export default function ListsMenu({
       await deleteListsById(listId, token);
       handleIsListMenuVisible(false);
 
-      const updatedLists = lists
-        ?.filter((listObj) => listObj.id != listId)
-        .map((listObj, index) => {
-          listObj.indexNumber = index;
-          return listObj;
-        });
-
-      dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists as BoardType });
-      localStorage.setItem("storedLists", JSON.stringify(updatedLists));
+      const finalLists = updatedListByListId(lists!, listId);
+      dispatch({
+        type: "ADD_ALL_LISTS",
+        payload: finalLists,
+      });
+      localStorage.setItem("storedLists", JSON.stringify(finalLists));
     } catch (err) {
       const error = err as IError;
       console.log("Error deleting list, err: ", error.message);
       setIsListRemoved(false);
     }
   };
+
+  const archiveButton = (
+    <div
+      className="lists-menu__btn"
+      onClick={() => handleListArchive(id)}
+      style={{ opacity: `${isListRemoved ? "0.5" : "1"}` }}
+    >
+      <button disabled={isListRemoved ? true : false}>
+        Archive this list
+        {isListRemoved && (
+          <span className="loading-notifiation">
+            <FaArrowRotateLeft />
+          </span>
+        )}
+      </button>
+    </div>
+  );
 
   return (
     <div className="lists-menu-container">
@@ -98,20 +115,8 @@ export default function ListsMenu({
             <button>Move all cards in this list</button>
           </div>
           <hr />
-          <div
-            className="lists-menu__btn"
-            onClick={() => handleListArchive(id)}
-            style={{ opacity: `${isListRemoved ? "0.5" : "1"}` }}
-          >
-            <button disabled={isListRemoved ? true : false}>
-              Archive this list
-              {isListRemoved && (
-                <span className="loading-notifiation">
-                  <FaArrowRotateLeft />
-                </span>
-              )}
-            </button>
-          </div>
+
+          {archiveButton}
         </div>
         <div
           className="lists-menu__btn-close"
