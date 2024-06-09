@@ -6,7 +6,7 @@ import { IoMdAdd } from "react-icons/io";
 
 import { fetchAllLists } from "../../utils/fetchAllLists";
 import { isTokenAuthenticated } from "../../utils/jwtAuth";
-import { handleSearchText } from "../../utils/order";
+import { handleSearchText } from "../../utils/order_and_update";
 import { BoardType, IListsContext } from "../../types/board.type";
 import { IError } from "../../types/status.type";
 

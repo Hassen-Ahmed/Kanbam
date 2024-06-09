@@ -44,7 +44,7 @@ export const handleDragstartUtil = (
   });
 };
 
-export const handleRemovingCloneElem = () => {
+export const handleRemoveCloneElem = () => {
   const cloneElem = document.getElementsByClassName("cloneElem");
   [...cloneElem].forEach((elem) => elem.remove());
 };

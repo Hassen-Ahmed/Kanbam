@@ -1,19 +1,27 @@
-import { ICard, IList, Cards, IListsContext } from "../../types/board.type";
+import { useContext, useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { IoMdAdd } from "react-icons/io";
 import { VscClose } from "react-icons/vsc";
-import { useContext, useState } from "react";
-import { handleDragstartUtil, handleRemovingCloneElem } from "../../utils/dnd";
-import { DragEventMy } from "../../types/html.type";
+
+import { handleDragstartUtil, handleRemoveCloneElem } from "../../utils/dnd";
+import { updateList } from "../../utils/api/updates";
 import { postCard } from "../../utils/api/posts";
-import { ListsContext } from "../../context/ListsContext";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+import { IError } from "../../types/status.type";
+import { DragEventMy } from "../../types/html.type";
 import { BoardType } from "../../types/board.type";
+import { ICard, IList, Cards, IListsContext } from "../../types/board.type";
+
+import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+import { ListsContext } from "../../context/ListsContext";
+import {
+  updatedListOnCardHovered,
+  updatedListOnDrop,
+  updatedListOnEmptyList,
+  updatedListOnListsSwaps,
+} from "./UtilsForLists";
+import ListsMenu from "./ListsMenu";
 import Card from "../card/Card";
 import "./Lists.scss";
-import ListsMenu from "./ListsMenu";
-import { IError } from "../../types/status.type";
-import { updateList } from "../../utils/api/updates";
 
 interface IListLocal {
   id: string;
@@ -34,15 +42,15 @@ const Lists = ({
 }: IListLocal) => {
   const [titleValueOfThisList, setTitleOfThisList] = useState<string>(title);
   const [titleValeuOfNewCard, setTitleValeuOfNewCard] = useState("");
+  const [isListMenuVisible, setIsListMenuVisible] = useState(false);
 
   const [isTitleInputVisible, setIsTitleInputVisible] =
     useState<boolean>(false);
   const [isNewCardInputVisible, setIsNewCardInputVisible] =
     useState<boolean>(false);
-  const [isListMenuVisible, setIsListMenuVisible] = useState(false);
 
-  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const { itemDragging } = useContext(KanbamContext) as IkanbamContext;
+  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
 
   // end of hooks
 
@@ -51,8 +59,7 @@ const Lists = ({
     const targetChildElemt = ev.currentTarget.childNodes[0] as HTMLElement;
     targetChildElemt.style.opacity = "1";
 
-    // remove cloneElem from body
-    handleRemovingCloneElem();
+    handleRemoveCloneElem();
   };
 
   const handleDragenter = (ev: DragEventMy) => {
@@ -67,136 +74,52 @@ const Lists = ({
     if (identityOfItemDragging == "card") {
       // swapping the card position
       if (identityOfTarget == "card" && idOfItemDragging != idOfTarget) {
-        // find Only cards of cards of this lists or column
-        const filteredList = lists?.filter(
-          (cards) => cards.id == id
-        ) as IList[];
+        const finalLists = updatedListOnCardHovered(
+          lists!,
+          id,
+          idOfItemDragging!,
+          idOfTarget!,
+          itemDragging
+        ) as BoardType;
 
-        let listOfCards = filteredList[0].cards as Cards;
-
-        let indexOfTargetCard = 0;
-
-        for (let i = 0; i < listOfCards.length; i++) {
-          if (listOfCards[i].id == idOfTarget) {
-            indexOfTargetCard = i;
-            break;
-          }
-        }
-
-        listOfCards = listOfCards.filter((card) => card.id != idOfItemDragging);
-
-        const item = itemDragging.current?.item as ICard;
-
-        listOfCards.splice(indexOfTargetCard, 0, item);
-
-        const updatedLists = lists?.map((listObj) => {
-          if (listObj.id == id) {
-            const cardsUpdatedWithListId = listOfCards.map((card) => {
-              if (card.listId === undefined) return card;
-              card.listId = listObj.id!;
-              return card;
-            });
-
-            return {
-              ...listObj,
-              cards: cardsUpdatedWithListId,
-            };
-          } else {
-            const updatedListOfCards = listObj.cards
-              ?.filter((card) => card.id != idOfItemDragging)
-              .map((card, i) => {
-                card.indexNumber = i;
-                return card;
-              });
-
-            return {
-              ...listObj,
-              cards: updatedListOfCards,
-            };
-          }
-        }) as BoardType;
-
-        // update indexNumber of this cards/column
-        const finalLists = updatedLists.map((listObj) => {
-          if (listObj.id != id) return listObj;
-
-          const updatedList = listObj.cards?.map((card, i) => {
-            card.indexNumber = i;
-            return card;
-          });
-
-          return { ...listObj, cards: updatedList };
+        dispatch({
+          type: "ADD_ALL_LISTS",
+          payload: finalLists,
         });
-
-        dispatch({ type: "ADD_ALL_LISTS", payload: finalLists as BoardType });
         // don't set storedLists here, because in every drop event we need to compare lists and storedList.
       }
 
       // add/drop card to empty list
       if (!cards.length) {
-        const updatedLists = lists?.map((listObj) => {
-          if (listObj.id == id) {
-            const cardUpdatedWithListId = {
-              ...itemDragging.current?.item,
-              listId: listObj.id,
-              opacity: "1",
-            };
+        const finalLists = updatedListOnEmptyList(lists!, id, itemDragging);
 
-            return {
-              ...listObj,
-              cards: [cardUpdatedWithListId],
-            };
-          }
-
-          const filteredListOfCards =
-            listObj.cards &&
-            listObj.cards.filter(
-              (card) => card.id != itemDragging.current?.item.id
-            );
-
-          return { ...listObj, cards: filteredListOfCards };
+        dispatch({
+          type: "ADD_ALL_LISTS",
+          payload: finalLists,
         });
-
-        dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists as BoardType });
         // don't set storedLists here, because in every drop event we need to compare lists and storedList.
       }
     }
 
+    // swapping the Lists position
     if (
       identityOfItemDragging == "list" &&
       ev.currentTarget.dataset.id != idOfItemDragging
     ) {
       const item = itemDragging?.current?.item as IList;
 
-      const filteredLists = lists?.filter(
-        (listObj) => listObj.id != idOfItemDragging
-      ) as BoardType;
-
-      let indexOfTargetListObj;
-
-      for (let i = 0; i < filteredLists.length; i++) {
-        if (filteredLists[i].id == ev.currentTarget.dataset.id) {
-          indexOfTargetListObj = i;
-          break;
-        }
-      }
-
-      const skipingValue = item.indexNumber! > indexNumber! ? 0 : 1;
-
-      filteredLists.splice(
-        (indexOfTargetListObj as number) + skipingValue,
-        0,
-        item
+      const finalLists = updatedListOnListsSwaps(
+        lists!,
+        idOfItemDragging!,
+        indexNumber,
+        item,
+        ev
       );
 
-      // update indexNumber of this lists
-      const finalLists = filteredLists.map((listObj, i) => {
-        listObj.indexNumber = i;
-
-        return listObj;
+      dispatch({
+        type: "ADD_ALL_LISTS",
+        payload: finalLists,
       });
-
-      dispatch({ type: "ADD_ALL_LISTS", payload: finalLists });
       // don't set storedLists here, because in every drop event we need to compare lists and storedList.
     }
   };
@@ -222,21 +145,8 @@ const Lists = ({
   };
 
   const handleDrop = () => {
-    const updatedLists = lists?.map((listObj) => {
-      listObj.opacity = "1";
-
-      const updatedList = listObj.cards?.map((card) => {
-        card.opacity = "1";
-        return card;
-      });
-
-      return { ...listObj, cards: updatedList };
-    });
-
-    dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists as BoardType });
-
-    // remove cloneElem from body
-    handleRemovingCloneElem();
+    dispatch({ type: "ADD_ALL_LISTS", payload: updatedListOnDrop(lists!) });
+    handleRemoveCloneElem();
   };
 
   const handleDragover = (ev: DragEventMy) => {
@@ -244,9 +154,7 @@ const Lists = ({
   };
 
   const handleTitleInputClose = (ev: React.KeyboardEvent<HTMLInputElement>) => {
-    if (ev.key == "Enter") {
-      setIsTitleInputVisible(false);
-    }
+    if (ev.key == "Enter") setIsTitleInputVisible(false);
   };
 
   const handleAddNewCard = async () => {
@@ -259,10 +167,12 @@ const Lists = ({
           isDragging: false,
           opacity: "1",
         };
-        const token = localStorage.getItem("token");
-        if (!token) return;
-        const data = await postCard(cardToPost, token);
 
+        const token = localStorage.getItem("token");
+
+        if (!token) return;
+
+        const data = await postCard(cardToPost, token);
         const updatedListObj = {
           id,
           title,
@@ -294,13 +204,10 @@ const Lists = ({
     setIsNewCardInputVisible(false);
   };
 
-  const handleIsListMenuVisible = (value: boolean) => {
+  const handleIsListMenuVisible = (value: boolean) =>
     setIsListMenuVisible(value);
-  };
 
-  const handleListMenu = () => {
-    setIsListMenuVisible(true);
-  };
+  const handleListMenu = () => setIsListMenuVisible(true);
 
   const handleTitleUpdate = async () => {
     const token = localStorage.getItem("token");
@@ -329,6 +236,20 @@ const Lists = ({
       ? titleValueOfThisList.slice(0, 16) + "..."
       : titleValueOfThisList;
 
+  const listOfMenu = isListMenuVisible && (
+    <ListsMenu
+      handleIsListMenuVisible={handleIsListMenuVisible}
+      id={id}
+      setIsNewCardInputVisible={setIsNewCardInputVisible}
+    />
+  );
+
+  const cardList = cards.map((content) => (
+    <Card {...content} key={content.id} />
+  ));
+
+  // JSX
+
   return (
     <div
       className="lists--container--main"
@@ -343,13 +264,7 @@ const Lists = ({
       data-identity="list"
       style={{ opacity: `${opacity}` }}
     >
-      {isListMenuVisible && (
-        <ListsMenu
-          handleIsListMenuVisible={handleIsListMenuVisible}
-          id={id}
-          setIsNewCardInputVisible={setIsNewCardInputVisible}
-        />
-      )}
+      {listOfMenu}
 
       <div className="lists--container--sub">
         <div className="lists__heading">
@@ -377,9 +292,7 @@ const Lists = ({
           </div>
         </div>
         <div className="lists">
-          {cards.map((content) => {
-            return <Card {...content} key={content.id} />;
-          })}
+          {cardList}
 
           <div className="lists__add-card--container">
             {isNewCardInputVisible ? (
