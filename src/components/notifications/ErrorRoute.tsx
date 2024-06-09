@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRouteError } from "react-router-dom";
-import "./ErrorPage.scss";
 import { Link } from "react-router-dom";
-export default function ErrorPage() {
+
+import "./ErrorPage.scss";
+
+const ErrorPage = () => {
   const error: any = useRouteError();
-  console.error(error);
 
   return (
     <div className="error-route">
@@ -20,4 +21,6 @@ export default function ErrorPage() {
       </div>
     </div>
   );
-}
+};
+
+export default ErrorPage;
