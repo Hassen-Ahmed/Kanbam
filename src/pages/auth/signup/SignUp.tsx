@@ -1,33 +1,36 @@
-import { Link, useNavigate } from "react-router-dom";
-import "./SignUp.scss";
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FaArrowRotateLeft } from "react-icons/fa6";
+
+import { signupData } from "../../../utils/constantDatas/formData";
 import { postAuthRegistarion } from "../../../utils/api/posts";
 import { IError } from "../../../types/status.type";
-import { FaArrowRotateLeft } from "react-icons/fa6";
+
 import FormInput from "../formInput/FormInput";
-import { signupData } from "../../../utils/constantDatas/formData";
+import "./SignUp.scss";
 
 export default function SignUp() {
+  const [isRegistered, setIsRegistered] = useState(false);
   const [userDetails, setUserDetails] = useState({
     email: "",
     password: "",
     passwordConfirm: "",
   });
   const navigate = useNavigate();
-  const [isRegistered, setIsRegistered] = useState(false);
+
   // end of hooks
 
   const inputs = signupData(userDetails);
 
-  const handleOnChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnChange = (ev: React.ChangeEvent<HTMLInputElement>) =>
     setUserDetails((preValue) => {
       return { ...preValue, [ev.target.name]: ev.target.value };
     });
-  };
 
   const handleSignupForm = async (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     setIsRegistered(true);
+
     try {
       await postAuthRegistarion(userDetails);
       navigate("/auth/login");
@@ -37,6 +40,14 @@ export default function SignUp() {
       console.log(error.message);
     }
   };
+
+  const loadingNotification = isRegistered && (
+    <span className="loading-notifiation">
+      <FaArrowRotateLeft />
+    </span>
+  );
+
+  // JSX
 
   return (
     <form onSubmit={(ev) => handleSignupForm(ev)} className="signup-form">
@@ -57,11 +68,7 @@ export default function SignUp() {
       >
         <button disabled={isRegistered ? true : false}>
           Sign up
-          {isRegistered && (
-            <span className="loading-notifiation">
-              <FaArrowRotateLeft />
-            </span>
-          )}
+          {loadingNotification}
         </button>
       </div>
 
