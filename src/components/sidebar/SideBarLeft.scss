@@ -2,12 +2,10 @@
 @use "../../assets/style/abstracts/variable" as var;
 
 .side-bar-left {
-  // min-width: 20rem;
-  // width: auto;
   height: 100%;
-  // margin-right: 1rem;
   position: relative;
   border-right: 0.1rem solid var.$border-color-02;
+  z-index: 2000;
 
   &__btn-toggler {
     position: absolute;
