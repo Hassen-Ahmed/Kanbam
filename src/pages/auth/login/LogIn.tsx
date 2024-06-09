@@ -1,25 +1,28 @@
 import React, { useState } from "react";
-import "./LogIn.scss";
 import { Link } from "react-router-dom";
-import { postAuthLogin } from "../../../utils/api/posts";
-import { fetchAllLists } from "../../../utils/fetchAllLists";
 import { useNavigate } from "react-router-dom";
-import { IError } from "../../../types/status.type";
 import { FaArrowRotateLeft } from "react-icons/fa6";
-import FormInput from "../formInput/FormInput";
-import { loginData } from "../../../utils/constantDatas/formData";
 
-export default function LogIn() {
+import { loginData } from "../../../utils/constantDatas/formData";
+import { fetchAllLists } from "../../../utils/fetchAllLists";
+import { postAuthLogin } from "../../../utils/api/posts";
+import { IError } from "../../../types/status.type";
+
+import FormInput from "../formInput/FormInput";
+import "./LogIn.scss";
+
+const LogIn = () => {
+  const [isAuthorizing, setIsAuthorizing] = useState(false);
+  const [isWrongUser, setIsWrongUser] = useState(false);
   const [userDetails, setUserDetails] = useState({
     email: "",
     password: "",
   });
 
-  const [isAuthorizing, setIsAuthorizing] = useState(false);
-  const [isWrongUser, setIsWrongUser] = useState(false);
   const navigate = useNavigate();
 
   // end of hooks
+
   const formData = loginData();
 
   const handleOnChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,6 +49,8 @@ export default function LogIn() {
       console.log(error.message);
     }
   };
+
+  // JSX
 
   return (
     <form onSubmit={(ev) => handleLoginForm(ev)} className="login-form">
@@ -77,10 +82,12 @@ export default function LogIn() {
       <div className="wrong-user">
         {isWrongUser && <p>Wrong credential, please try again!</p>}
       </div>
+
       <div className="tips">
         <span>Email: hassen@gmail.com</span>
         <span>PW: #hassenbest1</span>
       </div>
+
       <div className="login__create-account">
         <Link to={"/auth/signup"}>
           <p>Create new account.</p>
@@ -88,4 +95,6 @@ export default function LogIn() {
       </div>
     </form>
   );
-}
+};
+
+export default LogIn;
