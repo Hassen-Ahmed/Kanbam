@@ -18,7 +18,7 @@ import {
   updatedListOnDrop,
   updatedListOnEmptyList,
   updatedListOnListsSwaps,
-} from "./UtilsForLists";
+} from "./utilsForLists";
 import ListsMenu from "./ListsMenu";
 import Card from "../card/Card";
 import "./Lists.scss";

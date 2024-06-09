@@ -147,7 +147,7 @@ export const updatedListOnListsSwaps = (
 };
 
 export const updatedListOnDrop = (lists: BoardType) => {
-  const updatedLists = deepCopiedLists(lists)?.map((listObj) => {
+  const updatedLists = deepCopiedLists(lists).map((listObj) => {
     listObj.opacity = "1";
 
     const updatedList = listObj.cards?.map((card) => {
@@ -157,6 +157,17 @@ export const updatedListOnDrop = (lists: BoardType) => {
 
     return { ...listObj, cards: updatedList };
   });
+
+  return updatedLists as BoardType;
+};
+
+export const updatedListByListId = (lists: BoardType, listId: string) => {
+  const updatedLists = deepCopiedLists(lists)
+    .filter((listObj) => listObj.id != listId)
+    .map((listObj, index) => {
+      listObj.indexNumber = index;
+      return listObj;
+    });
 
   return updatedLists as BoardType;
 };
