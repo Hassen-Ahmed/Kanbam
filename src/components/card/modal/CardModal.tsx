@@ -11,7 +11,7 @@ import { BoardType, ICard, IListsContext } from "../../../types/board.type";
 
 import { priorities } from "../../../utils/constantDatas/priorities";
 import { deleteCardById } from "../../../utils/api/deletes";
-import { handleUpdateLists } from "../../../utils/order";
+import { handleUpdateLists } from "../../../utils/order_and_update";
 import { updateCard } from "../../../utils/api/updates";
 import { IError } from "../../../types/status.type";
 

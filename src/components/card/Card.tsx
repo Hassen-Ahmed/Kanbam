@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { BsTextParagraph } from "react-icons/bs";
 
 import { priorities } from "../../utils/constantDatas/priorities";
-import { handleDragstartUtil, handleRemovingCloneElem } from "../../utils/dnd";
+import { handleDragstartUtil, handleRemoveCloneElem } from "../../utils/dnd";
 import { DragEventMy } from "../../types/html.type";
 import { ICard } from "../../types/board.type";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
@@ -35,7 +35,7 @@ const Card = ({ ...props }: ICard) => {
     targetChildElemt.style.opacity = "1";
 
     // remove cloneElem from body
-    handleRemovingCloneElem();
+    handleRemoveCloneElem();
   };
 
   const handleDragStart = (ev: DragEventMy) => {
