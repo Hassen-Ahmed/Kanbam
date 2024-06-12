@@ -73,6 +73,10 @@ https://learn.microsoft.com/en-us/dotnet/core/install/
 - MongoDB.Driver
 - Swashbuckle.AspNetCore
 
+## Teting configuration
+
+- [Click me for Testing setup](./readme_collection/VITEST.md).
+
 ## Contributing
 
 Contributions are welcome! If you'd like to contribute to Kanbam or KanbamApi, please follow these steps:
