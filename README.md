@@ -14,6 +14,12 @@ Kanbam is a web application inspired by Trello's kanban board and Jira, designed
 - Collaborate with team members by sharing boards and assigning tasks.
 - And more!
 
+##
+
+## Testing configuration
+
+- [Click me for Testing setup](./readme_collection/VITEST.md)
+
 ## Tech Stack
 
 - **Backend**:
@@ -72,10 +78,6 @@ https://learn.microsoft.com/en-us/dotnet/core/install/
 - Microsoft.AspNetCore.OpenApi
 - MongoDB.Driver
 - Swashbuckle.AspNetCore
-
-## Teting configuration
-
-- [Click me for Testing setup](./readme_collection/VITEST.md).
 
 ## Contributing
 

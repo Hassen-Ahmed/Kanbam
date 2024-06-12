@@ -16,9 +16,11 @@
   - react-testing-library (for testing React components)
   - user-event (for event handling)
 
+##
+
 ### 🎯️ Configuration
 
-- tsconfig.json
+#### tsconfig.json
 
 ```js
 
@@ -34,7 +36,7 @@
 
 ```
 
-- Create setup.ts file first before configure vite.config.ts which is looks like this:
+#### Create setup.ts file first before configure vite.config.ts which is looks like this:
 
 ```js
 import "@testing-library/jest-dom/vitest";
@@ -47,7 +49,7 @@ afterEach(() => {
 });
 ```
 
-- vite.config.ts
+#### vite.config.ts
 
 ```js
 /// <reference types="vitest" />
@@ -66,7 +68,7 @@ export default defineConfig({
 });
 ```
 
-- vite.config.ts
+#### vite.config.ts
 
 ```js
 
@@ -77,8 +79,22 @@ export default defineConfig({
 
 ```
 
+##
+
 ### 🎯️ Runing test
 
 ```js
     npm run test
 ```
+
+##
+
+### 🎯️ For extra info visit these links:
+
+- https://vitest.dev/
+- https://testing-library.com/
+- https://github.com/testing-library/dom-testing-library/blob/main/src/event-map.js
+
+##
+
+### Go back to [ README.md](../README.md)
