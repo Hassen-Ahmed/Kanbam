@@ -5,6 +5,7 @@ import { createNewElem } from "./testUtils";
 import MockCloneElement from "./MockCloneElement";
 
 describe("dnd", () => {
+  //
   describe("testing handleRemoveCloneElem func", () => {
     //
     test("display I am clone element properly", () => {
@@ -15,7 +16,7 @@ describe("dnd", () => {
 
       expect(elementOne).toBeInTheDocument();
     });
-
+    //
     test("remove element which has class name cloneElem", () => {
       render(<MockElement />);
       createNewElem();
@@ -33,6 +34,7 @@ describe("dnd", () => {
   });
 
   describe("testing handleDragstartUtil func", () => {
+    //
     test("NO dragStart NO div with className cloneElem ", () => {
       render(<MockCloneElement />);
 
@@ -40,7 +42,7 @@ describe("dnd", () => {
 
       expect(clonedElem).toBeUndefined();
     });
-
+    //
     test("When dragStart THERE is div with className cloneElem", () => {
       render(<MockCloneElement />);
       const outerDiv = document.getElementsByClassName("outer-div")[0];
