@@ -34,40 +34,35 @@ const MenuAccount = ({
             zIndex: isAccountMenuVisible ? 2100 : 0,
           }}
         >
-          {isAccountMenuVisible && (
-            <>
-              <div className="menu">
-                <h2 className="menu__heading">Account</h2>
-                <MenuAccountLogo />
-                <hr />
-                <ButtonTheme />
-                <hr />
+          <div className="menu">
+            <h2 className="menu__heading">Account</h2>
+            <MenuAccountLogo />
+            <hr />
+            <ButtonTheme />
+            <hr />
 
-                <div className="menu__logout" onClick={handleLogout}>
-                  <h2 className="menu__logout--text">Logout</h2>
-                </div>
+            <div className="menu__logout" onClick={handleLogout}>
+              <h2 className="menu__logout--text">Logout</h2>
+            </div>
 
-                {areWeCelebrating &&
-                  createPortal(<ConfettiComp />, document.body)}
+            {areWeCelebrating && createPortal(<ConfettiComp />, document.body)}
 
-                <div
-                  className="menu__donate"
-                  onClick={() => {
-                    setAreWeCelebrating((preValue) => {
-                      return preValue ? false : true;
-                    });
-                  }}
-                >
-                  <h2 className="menu__donate--text">Donate</h2>
-                </div>
-              </div>
+            <div
+              className="menu__donate"
+              onClick={() => {
+                setAreWeCelebrating((preValue) => {
+                  return preValue ? false : true;
+                });
+              }}
+            >
+              <h2 className="menu__donate--text">Donate</h2>
+            </div>
+          </div>
 
-              <div
-                className="menu__overlay"
-                onClick={() => setIsAccountMenuVisible(false)}
-              ></div>
-            </>
-          )}
+          <div
+            className="menu__overlay"
+            onClick={() => setIsAccountMenuVisible(false)}
+          ></div>
         </div>
       )}
     </>
