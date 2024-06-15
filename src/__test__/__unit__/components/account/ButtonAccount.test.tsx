@@ -6,7 +6,7 @@ const sumFunc = (a: number, b: number) => a + b;
 const mockFunc = vi.fn().mockImplementation(sumFunc);
 
 describe("ButtonAccount", () => {
-  test("It has element with text HB", () => {
+  test("It should has element with text HB", () => {
     //
     render(<ButtonAccount setIsAccountMenuVisible={mockFunc} />);
 
