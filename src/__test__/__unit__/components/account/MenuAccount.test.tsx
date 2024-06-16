@@ -25,6 +25,10 @@ const renderWithMemoryRouter = () => {
 };
 
 describe("MenuAccount component", () => {
+  beforeAll(() => {
+    // To ensure each test starts with a clean slate.
+    localStorage.clear();
+  });
   //
   test("It should NOT has html elements with terms Account, Logout and Donate, if isAccountMenuVisible set to false", () => {
     renderWithMemoryRouter();
@@ -74,5 +78,16 @@ describe("MenuAccount component", () => {
     fireEvent.click(overlay);
 
     expect(mockSetIsAccountMenuVisible).toBeCalledTimes(1);
+  });
+  test("It should will clear localStorage token when loggedout", () => {
+    mockIsAccountMenuVisible = true;
+
+    renderWithMemoryRouter();
+
+    const buttonLogout = document.getElementsByClassName("menu__logout")[0];
+
+    fireEvent.click(buttonLogout);
+
+    expect(localStorage.removeItem).toHaveBeenCalledWith("token");
   });
 });
