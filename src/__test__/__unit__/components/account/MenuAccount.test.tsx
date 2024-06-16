@@ -25,10 +25,6 @@ const renderWithMemoryRouter = () => {
 };
 
 describe("MenuAccount component", () => {
-  beforeAll(() => {
-    // To ensure each test starts with a clean slate.
-    localStorage.clear();
-  });
   //
   test("It should NOT has html elements with terms Account, Logout and Donate, if isAccountMenuVisible set to false", () => {
     renderWithMemoryRouter();
