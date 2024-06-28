@@ -1,4 +1,3 @@
-import React from "react";
 import { IoMdRedo, IoMdUndo } from "react-icons/io";
 import { VscListOrdered, VscListUnordered } from "react-icons/vsc";
 
