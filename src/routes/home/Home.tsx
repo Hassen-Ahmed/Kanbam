@@ -56,7 +56,7 @@ export default function Home() {
           Kanbam is a web application inspired by Trello's kanban board,
           designed to help teams manage projects and tasks effectively.
         </p>
-        <span>&copy;Copywrite 2024. By Hassen. </span>
+        <span>&copy; Copywrite 2024. By Hassen. </span>
       </footer>
     </div>
   );
