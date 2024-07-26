@@ -6,6 +6,8 @@
   @include mixn.flexy(column, flex-start);
   width: 100vw;
   min-height: 100vh;
+
+  padding-bottom: 2rem;
 }
 
 .home {
@@ -113,5 +115,8 @@
   span {
     margin: 1rem 0;
     font-family: sans-serif;
+    font-size: var.$fsi-16;
+    font-weight: 100;
+    color: var.$color-grey-02;
   }
 }
