@@ -23,10 +23,10 @@
 
     font-size: var.$fsi-14;
     p {
-      color: #2e33aa;
+      color: var.$color-font-form-01;
     }
     span {
-      color: rgba(24, 24, 225, 0.5);
+      color: rgba(var.$color-font-form-01, 0.5);
     }
   }
 }

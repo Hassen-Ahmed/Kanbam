@@ -10,7 +10,7 @@
   display: none;
   align-self: flex-start;
   font-size: var.$fsi-12;
-  color: #a23811;
+  color: var.$color-font-error-01;
 }
 
 .form-input input:invalid[data-focused="true"] ~ .error-message {

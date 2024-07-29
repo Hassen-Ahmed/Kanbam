@@ -37,7 +37,7 @@
   position: relative;
 
   label {
-    color: #2e33aa;
+    color: var.$color-font-form-01;
     font-size: var.$fsi-16;
     margin-top: 1rem;
   }
@@ -45,7 +45,7 @@
   input {
     border: none;
     border-radius: var.$bor-02;
-    outline-color: #2e32aa95;
+    outline-color: var.$color-font-form-02;
     background-color: white;
     margin: 0.5rem 0;
     padding: 0.5rem;
