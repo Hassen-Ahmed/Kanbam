@@ -18,7 +18,7 @@ const router = createBrowserRouter([
     },
     children: [
       {
-        path: "/auth",
+        index: true,
         async lazy() {
           const LogIn = await import("../pages/auth/login/LogIn");
           return { Component: LogIn.default };
@@ -48,7 +48,7 @@ const router = createBrowserRouter([
     },
     children: [
       {
-        path: "/kanbam/",
+        index: true,
         async lazy() {
           const Home = await import("../components/board/Board");
           return { Component: Home.default };
