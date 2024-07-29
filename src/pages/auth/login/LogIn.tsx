@@ -90,7 +90,9 @@ const LogIn = () => {
 
       <div className="login__create-account">
         <Link to={"/auth/signup"}>
-          <p>Create new account.</p>
+          <p>
+            No account? <span>Create one</span>{" "}
+          </p>
         </Link>
       </div>
     </form>

@@ -5,9 +5,8 @@
 @mixin auth {
   @include mixn.flexy(column, center, flex-start, 1rem);
   background-color: var.$bg-auth;
-  padding: 3rem 6rem;
-  padding-top: 4rem;
-  border-radius: var.$bor-15;
+  padding: 4rem 6rem;
+  border-radius: var.$bor-1;
 
   a {
     &,
@@ -26,8 +25,9 @@
     width: 50%;
   }
   @media screen and (max-width: 700px) {
-    width: 70%;
-    padding: 3rem 3rem;
+    width: 100%;
+    border-radius: 0;
+    padding: 6rem 3rem;
   }
 }
 
@@ -37,12 +37,13 @@
   position: relative;
 
   label {
-    color: var.$color-black-02;
+    color: #2e33aa;
     font-size: var.$fsi-16;
+    margin-top: 1rem;
   }
 
   input {
-    border: 0.1rem solid var.$bg-home;
+    border: none;
     outline: none;
     background-color: white;
     outline: none;
@@ -72,7 +73,7 @@
     background-color: var.$bg-home;
     background-image: var.$bg-image-home;
     color: white;
-    box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.25);
+    box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.15);
     transition: all 0.2s ease;
     position: relative;
 
