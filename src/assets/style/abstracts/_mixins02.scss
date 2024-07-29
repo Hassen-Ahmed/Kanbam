@@ -44,13 +44,13 @@
 
   input {
     border: none;
-    outline: none;
+    border-radius: var.$bor-02;
+    outline-color: #2e32aa95;
     background-color: white;
-    outline: none;
     margin: 0.5rem 0;
     padding: 0.5rem;
     width: 100%;
-    height: 3rem;
+    height: 3.5rem;
 
     @media screen and (max-width: 450px) {
       width: 100%;

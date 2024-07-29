@@ -74,7 +74,9 @@ export default function SignUp() {
 
       <div className="signup__back-login">
         <Link to={"/auth/login"}>
-          <p>Already have an account.</p>
+          <p>
+            Already have an account? <span> Login</span>
+          </p>
         </Link>
       </div>
     </form>
