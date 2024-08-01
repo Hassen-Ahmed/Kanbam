@@ -1,5 +1,5 @@
-import themeLight from "/theme-light.svg";
-import themeDark from "/theme-dark.svg";
+import themeLight from "../../../public/theme-light.svg";
+import themeDark from "../../../public/theme-dark.svg";
 import { useContext } from "react";
 import { KanbamContext, IkanbamContext } from "../../context/kanbamContext";
 
