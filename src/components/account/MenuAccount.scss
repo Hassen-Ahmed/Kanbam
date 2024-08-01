@@ -47,7 +47,6 @@
 
     &--icon {
       @include mixn.flexy();
-      background-color: var.$bg-color-dark-btn-account;
       width: 4rem;
       height: 4rem;
       margin: 2rem 0;
@@ -65,7 +64,6 @@
     &--photo {
       position: absolute;
       @include mixn.flexy();
-      background-color: var.$bg-color-dark-nav-glass;
       width: 4rem;
       height: 4rem;
       margin: 2rem 0;
