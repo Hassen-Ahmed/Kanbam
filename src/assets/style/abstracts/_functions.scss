@@ -1,0 +1,6 @@
+@use "sass:map";
+@use "./themes" as *;
+
+@function theme($theme-name, $category, $key) {
+  @return map.get(map.get(map.get($themes, $theme-name), $category), $key);
+}

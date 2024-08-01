@@ -1,4 +1,5 @@
 @use "./variable" as var;
+@use "./functions" as *;
 
 // display flex
 
@@ -17,14 +18,6 @@
 
 // theme makers
 
-@mixin font($theme-name, $dark-col, $light-col) {
-  @if ($theme-name == theme-dark) {
-    color: $dark-col;
-  } @else {
-    color: $light-col;
-  }
-}
-
 @mixin bg($theme-name, $bg-dark, $bg-light) {
   @if ($theme-name == theme-dark) {
     background-color: $bg-dark;
@@ -35,45 +28,6 @@
 
 @mixin bg-with-hover($theme-name) {
   &:hover {
-    @include bg(
-      $theme-name,
-      var.$bg-color-dark-hover,
-      var.$bg-color-light-hover
-    );
+    background-color: theme($theme-name, "bg", "hover");
   }
-}
-
-@mixin border($theme-name, $bor-01, $bor-02) {
-  @if ($theme-name == theme-dark) {
-    border: 0.1rem solid $bor-01;
-  } @else {
-    border: 0.1rem solid $bor-02;
-  }
-}
-
-@mixin border-bottom($theme-name) {
-  @if ($theme-name == theme-dark) {
-    border-bottom: 0.1rem solid var.$border-color-01;
-  } @else {
-    border-bottom: 0.1rem solid var.$border-color-02;
-  }
-}
-
-// refactors font
-@mixin font-refactor-01($theme-name) {
-  @include font($theme-name, var.$font-color-dark-01, var.$font-color-light-01);
-}
-@mixin font-refactor-02($theme-name) {
-  @include font($theme-name, var.$font-color-dark-01, var.$font-color-light-04);
-}
-
-// refactors bg
-@mixin bg-refactor-01($theme-name) {
-  @include bg($theme-name, var.$bg-color-dark-card, var.$bg-color-light-card);
-}
-@mixin bg-refactor-02($theme-name) {
-  @include bg($theme-name, var.$bg-color-dark-hover, var.$bg-color-light-hover);
-}
-@mixin bg-refactor-03($theme-name) {
-  @include bg($theme-name, var.$bg-color-dark-lists, var.$bg-color-light-lists);
 }

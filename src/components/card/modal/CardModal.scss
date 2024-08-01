@@ -1,5 +1,6 @@
 @use "../../../assets/style/abstracts/mixins" as mixn;
 @use "../../../assets/style/abstracts/variable" as var;
+@use "../../../assets/style/abstracts/functions" as *;
 
 .big {
   font-size: 2rem;
@@ -80,12 +81,6 @@
       font-size: var.$fsi-12;
 
       &__box {
-        // background-color: #944edaa2;
-        // background-color: #ec2a2aa2;
-        // background-color: #da4e4ea2;
-        // background-color: #da7d4ea2;
-        // background-color: #22ce45a2;
-        // background-color: #4eda6aa2;
         width: 10rem;
         @include mixn.flexy();
         margin: 0.5rem 0;
@@ -121,7 +116,6 @@
           textarea {
             outline: none;
             width: 100%;
-            // background-color: white;
             resize: none;
             height: 10rem;
             border: 0.2rem solid var.$border-color-card;
@@ -141,7 +135,7 @@
             cursor: pointer;
 
             &:not(:last-child) {
-              background-color: var.$bg-color-light-btn-account;
+              background-color: theme(theme-light, "bg", "btn-account");
               color: white;
 
               &:hover {

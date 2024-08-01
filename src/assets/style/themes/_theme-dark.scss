@@ -1,3 +1,3 @@
-@use "../abstracts/mixin_theme" as mix_theme;
+@use "../abstracts/theme-handler" as mix_theme;
 
 @include mix_theme.handler-theme(theme-dark);

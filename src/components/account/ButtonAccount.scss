@@ -1,9 +1,10 @@
 @use "../../assets/style/abstracts/variable" as var;
 @use "../../assets/style/abstracts/mixins" as mixn;
+@use "../../assets/style/abstracts/functions" as *;
 
 .account-btn {
   @include mixn.flexy(row, center, center);
-  background-color: var.$bg-color-dark-btn-account;
+  background-color: theme(theme-dark, "bg", "btn-account");
   width: 3rem;
   height: 3rem;
   border-radius: var.$bor-50;

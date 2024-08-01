@@ -108,6 +108,7 @@
       border: 0.2rem solid var.$border-color-card;
       font-size: var.$fsi-14;
     }
+
     .card-input--add-btns {
       width: 100%;
       @include mixn.flexy(row, flex-start, flex-start, 0.5rem);
@@ -115,7 +116,6 @@
       margin-left: 1rem;
 
       button {
-        background-color: var.$bg-color-dark-btn-account;
         color: white;
         border: none;
         border-radius: var.$bor-05;
@@ -129,6 +129,7 @@
           filter: brightness(90%);
         }
       }
+
       .close-btn {
         padding: 0.4rem 1rem;
         font-weight: 600;

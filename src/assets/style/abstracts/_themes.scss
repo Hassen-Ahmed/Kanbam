@@ -1,0 +1,57 @@
+$themes: (
+  theme-dark: (
+    bg: (
+      nav-01: #1d2125,
+      nav-glass: #22272b68,
+      side-bar-01: #1e2429fc,
+      lists: #101204,
+      card: #21262a,
+      card-modal: #323940,
+      menu: #283036,
+      btn-account: #1a66d8,
+      scroll-01: #1e2429fc,
+      hover: #c1d3ef1a,
+      hover-02: #c1d3ef1a,
+      hover-03: #c1d3ef40,
+      transparent: transparent,
+    ),
+    font: (
+      primary: #adbccc,
+      secondary: #ffffff,
+      tertiary: #d8d6d6,
+      quaternary: #adbccc,
+    ),
+    border: (
+      primary: #e9e9e9,
+      secondary: #abb7c480,
+      tertiary: #59a4e1,
+    ),
+  ),
+  theme-light: (
+    bg: (
+      nav-01: #3d567d,
+      nav-glass: #22272b68,
+      side-bar-01: #3d547dfc,
+      lists: #f1f2f4,
+      card: #ffffff,
+      menu: #f1f2f4,
+      btn-account: #1a66d8,
+      scroll-01: #445777fc,
+      hover: #6e849626,
+      hover-02: #8aa2b65a,
+      hover-03: #6e849640,
+      transparent: transparent,
+    ),
+    font: (
+      primary: #5e6c84,
+      secondary: #728393,
+      tertiary: #ffffff,
+      quaternary: #000000b3,
+    ),
+    border: (
+      primary: #45505b,
+      secondary: #abb7c480,
+      tertiary: #59a4e1,
+    ),
+  ),
+);
