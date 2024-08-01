@@ -1,5 +1,6 @@
 @use "../../../../../assets/style/abstracts/mixins" as mixn;
 @use "../../../../../assets/style/abstracts/variable" as var;
+@use "../../../../../assets//style/abstracts/themes" as *;
 .text-editor {
   padding-left: 4rem;
 
@@ -52,7 +53,6 @@
     position: relative;
     border: 0.2rem solid var.$border-color-card;
     border-radius: var.$bor-05;
-    // background-color: white;
     max-height: auto;
   }
 
@@ -100,8 +100,6 @@
     @include mixn.flexy(row, flex-start, center, 1rem);
 
     button {
-      background-color: var.$bg-color-dark-btn-account;
-      color: white;
       border: none;
       border-radius: var.$bor-02;
       padding: 0.7rem 1.5rem;
