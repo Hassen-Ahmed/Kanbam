@@ -1,0 +1,234 @@
+@use "./variable" as var;
+@use "./mixins" as *;
+@use "./functions" as *;
+
+// main theme handler
+@mixin handler-theme($theme-name) {
+  .#{$theme-name} {
+    ::-webkit-scrollbar-thumb {
+      border-radius: var.$bor-1;
+      background-color: theme($theme-name, "bg", "scroll-01");
+    }
+
+    hr {
+      background-color: theme($theme-name, "bg", "hover");
+    }
+
+    .loading {
+      background-color: theme($theme-name, "bg", "card");
+      color: theme($theme-name, "font", "primary");
+
+      &__icon {
+        &::before,
+        &::after {
+          background-color: theme($theme-name, "font", "secondary");
+        }
+      }
+    }
+
+    .board {
+      &__btn--add {
+        @include bg-with-hover($theme-name);
+        @include bg($theme-name, rgba(0, 0, 0, 0.2), rgba(255, 255, 255, 0.2));
+        color: theme($theme-name, "font", "secondary");
+      }
+
+      &__new-list {
+        &,
+        &--input input {
+          background-color: theme($theme-name, "bg", "card");
+          color: theme($theme-name, "font", "secondary");
+        }
+      }
+    }
+
+    .side-bar-left {
+      &,
+      &__btn-toggler,
+      &__container {
+        background-color: theme($theme-name, "bg", "side-bar-01");
+        color: theme($theme-name, "font", "tertiary");
+      }
+
+      &__btn:hover,
+      &__btn-active {
+        background-color: theme($theme-name, "bg", "hover-02");
+      }
+    }
+
+    .card {
+      background-color: theme($theme-name, "bg", "card");
+      color: theme($theme-name, "font", "primary");
+
+      &-modal {
+        @include bg(
+          $theme-name,
+          theme("theme-dark", "bg", "card-modal"),
+          theme("theme-light", "bg", "lists")
+        );
+        color: theme($theme-name, "font", "quaternary");
+
+        .activity {
+          &,
+          &__comment {
+            textArea {
+              background-color: theme($theme-name, "bg", "card");
+              color: theme($theme-name, "font", "quaternary");
+            }
+          }
+          button:not(:first-child) {
+            @include bg-with-hover($theme-name);
+            background-color: theme($theme-name, "bg", "transparent");
+            color: theme($theme-name, "font", "quaternary");
+          }
+        }
+
+        .right-bar__btn,
+        .text-editor__edited button {
+          background-color: theme($theme-name, "bg", "hover");
+          color: theme($theme-name, "font", "quaternary");
+
+          &:hover {
+            background-color: theme($theme-name, "bg", "hover-03");
+          }
+        }
+
+        .text-editor {
+          &__save-btn {
+            button:not(:first-child) {
+              @include bg-with-hover($theme-name);
+              background-color: theme($theme-name, "bg", "transparent");
+              color: theme($theme-name, "font", "quaternary");
+            }
+            background-color: theme($theme-name, "bg", "btn-account");
+          }
+
+          &__editorial-area,
+          &__btns button {
+            background-color: theme($theme-name, "bg", "card");
+            color: theme($theme-name, "font", "quaternary");
+          }
+
+          &__btns button {
+            &:not(:last-child) {
+              border-right: 0.1rem solid #afafaf1a;
+            }
+          }
+        }
+
+        .pritority__lists {
+          background-color: theme($theme-name, "bg", "hover");
+          color: theme($theme-name, "font", "quaternary");
+        }
+      }
+    }
+
+    .lists {
+      &--container--sub,
+      &__add-card--container input,
+      &__btn--add-container {
+        background-color: theme($theme-name, "bg", "lists");
+      }
+
+      &--container--sub,
+      &__add-card--container input,
+      &__heading--text input,
+      &__btn--add-container,
+      &-menu {
+        color: theme($theme-name, "font", "primary");
+      }
+
+      &__heading--btn,
+      &__btn--add,
+      &-menu__btns .lists-menu__btn,
+      &-menu__btn-close {
+        @include bg-with-hover($theme-name);
+      }
+
+      &-menu {
+        border: 0.1rem solid theme($theme-name, "border", "secondary");
+        @include bg(
+          $theme-name,
+          theme($theme-name, "bg", "card-modal"),
+          theme($theme-name, "bg", "lists")
+        );
+
+        &__btns {
+          .lists-menu__btn {
+            button {
+              @include bg($theme-name, transparent, transparent);
+              color: theme($theme-name, "font", "primary");
+            }
+          }
+        }
+      }
+    }
+
+    .nav-bar {
+      background-color: theme($theme-name, "bg", "nav-01");
+      color: theme($theme-name, "font", "tertiary");
+      border-bottom: 0.1rem solid theme($theme-name, "border", "secondary");
+
+      & .logo__icon {
+        @include bg(
+          $theme-name,
+          theme($theme-name, "font", "primary"),
+          var.$color-white-02
+        );
+
+        &::after,
+        &::before {
+          @include bg(
+            $theme-name,
+            theme($theme-name, "bg", "nav-01"),
+            var.$color-grey-02
+          );
+        }
+      }
+
+      &__left {
+        .search__box {
+          input {
+            @include bg($theme-name, transparent, rgba(252, 252, 252, 0.3));
+            color: theme($theme-name, "font", "tertiary");
+            border: 0.1rem solid theme($theme-name, "border", "secondary");
+
+            &::placeholder {
+              @include bg($theme-name, transparent, transparent);
+              color: theme($theme-name, "font", "tertiary");
+            }
+          }
+        }
+      }
+    }
+
+    .menu {
+      color: theme($theme-name, "font", "primary");
+
+      &,
+      &__theme--list {
+        border: 0.1rem solid theme($theme-name, "border", "secondary");
+      }
+
+      &__logo {
+        &--icon {
+          background-color: theme($theme-name, "bg", "btn-account");
+        }
+        &--photo {
+          background-color: theme($theme-name, "bg", "nav-glass");
+        }
+      }
+
+      &,
+      &__theme--list {
+        background-color: theme($theme-name, "bg", "menu");
+      }
+
+      &__logout,
+      &__theme,
+      &__theme--list li {
+        @include bg-with-hover($theme-name);
+      }
+    }
+  }
+}
