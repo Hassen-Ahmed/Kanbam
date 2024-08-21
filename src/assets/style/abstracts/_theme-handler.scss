@@ -100,9 +100,7 @@
               background-color: theme($theme-name, "bg", "transparent");
               color: theme($theme-name, "font", "quaternary");
             }
-            background-color: theme($theme-name, "bg", "btn-account");
           }
-
           &__editorial-area,
           &__btns button {
             background-color: theme($theme-name, "bg", "card");
@@ -136,6 +134,10 @@
       &__btn--add-container,
       &-menu {
         color: theme($theme-name, "font", "primary");
+      }
+
+      &__add-card--container .card-input--add-btns button {
+        background-color: theme($theme-name, "bg", "btn-account");
       }
 
       &__heading--btn,
