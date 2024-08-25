@@ -1,19 +1,18 @@
 @use "../../../assets/style/abstracts/mixins" as mixn;
-@use "../../../assets/style/abstracts/mixins02" as mixn02;
 @use "../../../assets/style/abstracts/variable" as var;
 
 .login {
   &-form {
-    @include mixn02.auth;
+    @include mixn.auth;
   }
 
   &-email,
   &-password {
-    @include mixn02.auth-credential;
+    @include mixn.auth-credential;
   }
 
   &_btn {
-    @include mixn02.auth-btn;
+    @include mixn.auth-btn;
     margin: 1rem 0;
   }
 
