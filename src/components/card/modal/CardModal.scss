@@ -1,6 +1,5 @@
 @use "../../../assets/style/abstracts/mixins" as mixn;
 @use "../../../assets/style/abstracts/variable" as var;
-@use "../../../assets/style/abstracts/functions" as *;
 
 .big {
   font-size: 2rem;
@@ -123,6 +122,7 @@
             padding: 2rem;
           }
         }
+
         &--btns {
           @include mixn.flexy(row, flex-start, center, 1rem);
           button {
@@ -131,11 +131,11 @@
             font-weight: var.$fwt-600;
             border: none;
             margin-top: 0.5rem;
-            background-color: transparent;
+            background-color: #1a66d8;
+            color: white;
             cursor: pointer;
 
             &:not(:last-child) {
-              background-color: theme(theme-light, "bg", "btn-account");
               color: white;
 
               &:hover {
@@ -144,7 +144,7 @@
             }
 
             &:hover:not(:first-child) {
-              background-color: rgba(0, 0, 0, 0.05);
+              background-color: rgba(128, 128, 128, 0.15);
               border-radius: var.$bor-05;
             }
           }
