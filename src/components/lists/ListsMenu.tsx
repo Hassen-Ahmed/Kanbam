@@ -9,6 +9,30 @@ import { deleteListsById } from "../../utils/api/deletes";
 import { ListsContext } from "../../context/ListsContext";
 import { updatedListByListId } from "./utilsForLists";
 import "./ListsMenu.scss";
+import { INewTheme } from "../../types/styledComp";
+import styled from "styled-components";
+import { themes } from "../../utils/constantDatas/themes";
+import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+import { Hr } from "../../utils/constantDatas/styledUtils";
+
+const ListMenuStyled = styled.div<INewTheme>`
+  .lists-menu {
+    border: 0.1rem solid
+      ${({ $newtheme }) => themes[$newtheme].border["secondary"]};
+
+    background-color: ${({ $newtheme }) => themes[$newtheme].bg["card_modal"]};
+
+    &__btns {
+      .lists-menu__btn {
+        button {
+          background-color: ${({ $newtheme }) =>
+            themes[$newtheme].bg["transparent"]};
+          color: ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+        }
+      }
+    }
+  }
+`;
 
 export default function ListsMenu({
   handleIsListMenuVisible,
@@ -21,6 +45,8 @@ export default function ListsMenu({
 }) {
   const [isListRemoved, setIsListRemoved] = useState(false);
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
+  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
+
   const menuListRef = useRef(null);
 
   useEffect(() => {
@@ -77,7 +103,7 @@ export default function ListsMenu({
   );
 
   return (
-    <div className="lists-menu-container">
+    <ListMenuStyled $newtheme={theme2} className="lists-menu-container">
       <div
         className="lists-menu__overlay"
         onClick={() => handleIsListMenuVisible(false)}
@@ -101,20 +127,20 @@ export default function ListsMenu({
             <button>Move list</button>
           </div>
 
-          <hr />
+          <Hr $themename={theme2} $group="hover" />
 
           <div className="lists-menu__btn">
             <button>Sort by...</button>
           </div>
 
-          <hr />
+          <Hr $themename={theme2} $group="hover" />
           <div className="lists-menu__btn">
             <button>Archive all cards in this list</button>
           </div>
           <div className="lists-menu__btn">
             <button>Move all cards in this list</button>
           </div>
-          <hr />
+          <Hr $themename={theme2} $group="hover" />
 
           {archiveButton}
         </div>
@@ -125,6 +151,6 @@ export default function ListsMenu({
           <VscClose size={22} />
         </div>
       </div>
-    </div>
+    </ListMenuStyled>
   );
 }

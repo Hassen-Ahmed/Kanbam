@@ -1,6 +1,5 @@
 @use "../../../../../assets/style/abstracts/mixins" as mixn;
 @use "../../../../../assets/style/abstracts/variable" as var;
-@use "../../../../../assets//style/abstracts/themes" as *;
 .text-editor {
   padding-left: 4rem;
 
@@ -105,6 +104,8 @@
       padding: 0.7rem 1.5rem;
       font-size: var.$fsi-14;
       font-weight: var.$fwt-600;
+      background-color: #1a66d8;
+      color: white;
       cursor: pointer;
       transition: all 0.2s ease;
 

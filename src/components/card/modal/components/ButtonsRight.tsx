@@ -10,6 +10,25 @@ import {
 import { ICard } from "../../../../types/board.type";
 import Priorities from "./priorities/Priorities";
 import { IPriority } from "../CardModal";
+import { INewTheme } from "../../../../types/styledComp";
+import styled from "styled-components";
+import {
+  IkanbamContext,
+  KanbamContext,
+} from "../../../../context/kanbamContext";
+import { useContext } from "react";
+import { themes } from "../../../../utils/constantDatas/themes";
+
+const ButtonRightStyled = styled.div<INewTheme>`
+  .right-bar__btn {
+    background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover"]};
+    color: ${({ $newtheme }) => themes[$newtheme].font["quaternary"]};
+
+    &:hover {
+      background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover_03"]};
+    }
+  }
+`;
 
 const iconSizeTwo = 22;
 
@@ -36,8 +55,10 @@ export default function ButtonsRight({
     <Priorities cardDetail={cardDetail} handlePriority={handlePriority} />
   );
 
+  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
+
   return (
-    <>
+    <ButtonRightStyled $newtheme={theme2}>
       <div
         className="priority right-bar__btn"
         onClick={() => handlePriority(false, priority)}
@@ -76,6 +97,6 @@ export default function ButtonsRight({
         <MdOutlineArchive size={iconSizeTwo} />
         <h2>Archive</h2>
       </div>
-    </>
+    </ButtonRightStyled>
   );
 }

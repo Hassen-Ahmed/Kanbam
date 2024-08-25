@@ -22,6 +22,41 @@ import {
 import ListsMenu from "./ListsMenu";
 import Card from "../card/Card";
 import "./Lists.scss";
+import { INewTheme } from "../../types/styledComp";
+import styled from "styled-components";
+import { themes } from "../../utils/constantDatas/themes";
+
+const ListsStyled = styled.div<INewTheme>`
+  .lists {
+    &--container--sub,
+    &__add-card--container input,
+    &__btn--add-container {
+      background-color: ${({ $newtheme }) => themes[$newtheme].bg["lists"]};
+    }
+
+    &--container--sub,
+    &__add-card--container input,
+    &__heading--text input,
+    &__btn--add-container,
+    &-menu {
+      color: ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+    }
+
+    &__add-card--container .card-input--add-btns button {
+      background-color: ${({ $newtheme }) =>
+        themes[$newtheme].bg["btn_account"]};
+    }
+
+    &__heading--btn,
+    &__btn--add,
+    &-menu__btns .lists-menu__btn,
+    &-menu__btn-close {
+      &:hover {
+        background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover"]};
+      }
+    }
+  }
+`;
 
 interface IListLocal {
   id: string;
@@ -49,7 +84,7 @@ const Lists = ({
   const [isNewCardInputVisible, setIsNewCardInputVisible] =
     useState<boolean>(false);
 
-  const { itemDragging } = useContext(KanbamContext) as IkanbamContext;
+  const { theme2, itemDragging } = useContext(KanbamContext) as IkanbamContext;
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
 
   // end of hooks
@@ -251,7 +286,8 @@ const Lists = ({
   // JSX
 
   return (
-    <div
+    <ListsStyled
+      $newtheme={theme2}
       className="lists--container--main"
       draggable="true"
       onDragStart={(ev) => handleDragStart(ev)}
@@ -325,7 +361,7 @@ const Lists = ({
           </div>
         </div>
       </div>
-    </div>
+    </ListsStyled>
   );
 };
 

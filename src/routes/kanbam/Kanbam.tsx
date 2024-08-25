@@ -6,12 +6,28 @@ import { useContext } from "react";
 import { handleAppOnDrop } from "../../utils/handleAppOnDrop";
 import "./Kanbam.scss";
 import { IListsContext } from "../../types/board.type";
+import styled from "styled-components";
+import { INewTheme } from "../../types/styledComp";
+import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+import { themes } from "../../utils/constantDatas/themes";
+
+export const GlobalStyle = styled.div<INewTheme>`
+  ::-webkit-scrollbar-thumb {
+    border-radius: 1rem;
+    background-color: ${({ $newtheme }) => themes[$newtheme].bg["scroll_01"]};
+  }
+`;
 
 export default function Kanbam() {
   const { lists } = useContext(ListsContext) as IListsContext;
+  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
 
   return (
-    <div className="kanbam" onDrop={() => handleAppOnDrop(lists)}>
+    <GlobalStyle
+      $newtheme={theme2}
+      className="kanbam"
+      onDrop={() => handleAppOnDrop(lists)}
+    >
       <NavBar />
       <div className="kanbam__sub">
         <SideBarLeft />
@@ -19,6 +35,6 @@ export default function Kanbam() {
           <Outlet />
         </div>
       </div>
-    </div>
+    </GlobalStyle>
   );
 }

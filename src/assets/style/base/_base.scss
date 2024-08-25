@@ -1,5 +1,4 @@
 @use "../abstracts/variable" as var;
-@use "../abstracts/functions" as *;
 
 *,
 *::after,
@@ -38,5 +37,5 @@ body {
 ::-webkit-scrollbar {
   width: 5px;
   height: 10px;
-  background-color: theme(theme-light, "bg", "hover");
+  background-color: #6e849626;
 }

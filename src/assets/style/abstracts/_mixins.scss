@@ -1,7 +1,5 @@
 @use "./variable" as var;
-@use "./functions" as *;
-
-// display flex
+@use "../../style/base/animation" as *;
 
 @mixin flexy(
   $direction: row,
@@ -16,18 +14,108 @@
   gap: $gap;
 }
 
-// theme makers
+@mixin auth {
+  @include flexy(column, center, flex-start, 1rem);
+  background-color: var.$bg-auth;
+  padding: 4rem 6rem;
+  border-radius: var.$bor-1;
 
-@mixin bg($theme-name, $bg-dark, $bg-light) {
-  @if ($theme-name == theme-dark) {
-    background-color: $bg-dark;
-  } @else {
-    background-color: $bg-light;
+  a {
+    &,
+    &:active,
+    &:visited {
+      text-decoration: none;
+      color: var.$bg-home;
+    }
+  }
+
+  @media screen and (max-width: 2000px) {
+    width: 30%;
+  }
+
+  @media screen and (max-width: 1000px) {
+    width: 50%;
+  }
+  @media screen and (max-width: 700px) {
+    width: 100%;
+    border-radius: 0;
+    padding: 6rem 3rem;
   }
 }
 
-@mixin bg-with-hover($theme-name) {
-  &:hover {
-    background-color: theme($theme-name, "bg", "hover");
+@mixin auth-credential {
+  @include flexy(column, center, flex-start);
+  width: 100%;
+  position: relative;
+
+  label {
+    color: var.$color-font-form-01;
+    font-size: var.$fsi-16;
+    margin-top: 1rem;
   }
+
+  input {
+    border: none;
+    border-radius: var.$bor-02;
+    outline-color: var.$color-font-form-02;
+    background-color: white;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    width: 100%;
+    height: 3.5rem;
+
+    @media screen and (max-width: 450px) {
+      width: 100%;
+    }
+  }
+}
+
+@mixin auth-btn {
+  @include flexy(column);
+  width: 100%;
+
+  button {
+    width: 100%;
+    align-self: center;
+    cursor: pointer;
+    margin-top: 1rem;
+    padding: 0.5rem 2rem;
+    border-radius: var.$bor-1;
+    border: 0.1rem solid white;
+    background-color: var.$bg-home;
+    background-image: var.$bg-image-home;
+    color: white;
+    box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+    position: relative;
+
+    .loading-notifiation {
+      @include spinner(10%, 30%);
+    }
+
+    &:hover {
+      outline: auto;
+      outline-color: rgba(255, 255, 255, 0.8);
+      outline-offset: 0.5rem;
+      outline-width: 0.1rem;
+      outline-style: dashed;
+      transform: translateY(-0.2rem);
+    }
+  }
+}
+
+@mixin spinner($x-val: 30%, $y-val: -12%) {
+  @include flexy();
+  position: absolute;
+  top: $y-val;
+  left: $x-val;
+  color: white;
+  animation: spinner 1s ease 0s infinite;
+}
+
+@mixin hr {
+  width: 100%;
+  height: 0.1rem;
+  border: none;
+  margin: 1rem 0;
 }

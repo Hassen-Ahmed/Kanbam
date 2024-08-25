@@ -6,11 +6,33 @@ import { IListsContext } from "../../types/board.type";
 
 import { ListsContext } from "../../context/ListsContext";
 import "./SearchBox.scss";
+import { INewTheme } from "../../types/styledComp";
+import styled from "styled-components";
+import { themes } from "../../utils/constantDatas/themes";
+import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+
+const SearchBoxStyled = styled.div<INewTheme>`
+  .search__box {
+    input {
+      background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover_03"]};
+      color: ${({ $newtheme }) => themes[$newtheme].font["tertiary"]};
+      border: 0.1rem solid
+        ${({ $newtheme }) => themes[$newtheme].border["secondary"]};
+
+      &::placeholder {
+        background-color: ${({ $newtheme }) =>
+          themes[$newtheme].bg["transparent"]};
+        color: ${({ $newtheme }) => themes[$newtheme].font["tertiary"]};
+      }
+    }
+  }
+`;
 
 const SearchBox = () => {
   const [value, setValue] = useState("");
   const [winWidth, setWinWidth] = useState(0);
   const { handleSearchTextUpdate } = useContext(ListsContext) as IListsContext;
+  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
 
   useEffect(() => setWinWidth(window.innerWidth), []);
   useEffect(() => handleSearchTextUpdate(value), [value]);
@@ -31,7 +53,7 @@ const SearchBox = () => {
   );
 
   return (
-    <div className="search-container">
+    <SearchBoxStyled $newtheme={theme2} className="search-container">
       <div className="search__box">
         <label htmlFor="search" onClick={() => handleVisibilityOfInput(1000)}>
           <IoSearchSharp size={22} />
@@ -39,7 +61,7 @@ const SearchBox = () => {
 
         {winWidth > 600 ? textInputOfSearchBox : null}
       </div>
-    </div>
+    </SearchBoxStyled>
   );
 };
 
