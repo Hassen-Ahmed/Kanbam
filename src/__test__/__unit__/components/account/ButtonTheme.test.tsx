@@ -5,11 +5,13 @@ import { KanbamContext } from "../../../../context/kanbamContext";
 
 const mockThemeSetter = vi.fn();
 const mockItemDragging = { current: null };
+const mockTheme2 = "dark";
 
 const renderWithContext = (component: React.ReactNode) => {
   return render(
     <KanbamContext.Provider
       value={{
+        theme2: mockTheme2,
         themeSetter: mockThemeSetter,
         itemDragging: mockItemDragging,
       }}

@@ -5,12 +5,14 @@ import { KanbamContext } from "../../../../context/kanbamContext";
 
 let mockIsAccountMenuVisible = false;
 const mockSetIsAccountMenuVisible = vi.fn();
+const mockTheme2 = "dark";
 
 const renderWithMemoryRouter = () => {
   render(
     <MemoryRouter>
       <KanbamContext.Provider
         value={{
+          theme2: mockTheme2,
           themeSetter: vi.fn(),
           itemDragging: { current: null },
         }}
