@@ -15,6 +15,32 @@ import BoardNewListCreator from "./BoardNewListCreator";
 import Loading from "../notifications/Loading";
 import Lists from "../lists/Lists";
 import "./Board.scss";
+import { themes } from "../../utils/constantDatas/themes";
+import styled from "styled-components";
+import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+import { INewTheme } from "../../types/styledComp";
+
+const BoardStyled = styled.div<INewTheme>`
+  .board {
+    &__btn--add {
+      &:hover {
+        background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover"]};
+      }
+
+      background-color: ${({ $newtheme }) =>
+        $newtheme == "dark" ? "#00000033" : "#ffffff33"};
+      color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
+    }
+
+    &__new-list {
+      &,
+      &--input input {
+        background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
+        color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
+      }
+    }
+  }
+`;
 
 async function findAllLists() {
   try {
@@ -31,6 +57,7 @@ const Board = () => {
     ListsContext
   ) as IListsContext;
   const navigate = useNavigate();
+  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
 
   useEffect(() => {
     findAllLists().then((data) => {
@@ -78,22 +105,24 @@ const Board = () => {
   if (lists)
     return (
       <div className="board-container">
-        <div className="board">
+        <BoardStyled $newtheme={theme2} className="board">
           {listsToBeDisplayed}
           {newListCreator}
-        </div>
+        </BoardStyled>
       </div>
     );
 
   return (
-    <div className="board-container">
-      {createPortal(
-        <div className="board__loading">
-          <Loading />
-        </div>,
-        document.body
-      )}
-    </div>
+    <>
+      <div className="board-container ">
+        {createPortal(
+          <div className="board__loading">
+            <Loading />
+          </div>,
+          document.body
+        )}
+      </div>
+    </>
   );
 };
 

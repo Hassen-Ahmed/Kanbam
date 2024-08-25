@@ -9,9 +9,10 @@ import { ICard } from "../../types/board.type";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import CardModal from "./modal/CardModal";
 import "./Card.scss";
+import { BgAndFont } from "../../utils/constantDatas/styledUtils";
 
 const Card = ({ ...props }: ICard) => {
-  const { itemDragging } = useContext(KanbamContext) as IkanbamContext;
+  const { theme2, itemDragging } = useContext(KanbamContext) as IkanbamContext;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [cardDetail] = useState<ICard>(props);
 
@@ -87,7 +88,10 @@ const Card = ({ ...props }: ICard) => {
     >
       {displayCardModal}
 
-      <div
+      <BgAndFont
+        $themename={theme2}
+        $groupbg="card"
+        $groupfont="quaternary"
         className="card"
         onClick={() => setIsModalVisible(true)}
         style={{ opacity: `${props.opacity}` }}
@@ -99,7 +103,7 @@ const Card = ({ ...props }: ICard) => {
         </div>
 
         {displayDescriptionIcon}
-      </div>
+      </BgAndFont>
     </div>
   );
 };

@@ -7,6 +7,12 @@ import { priorities } from "../../../../../utils/constantDatas/priorities";
 
 import { IPriority } from "../../CardModal";
 import "./Priorities.scss";
+import { BgAndFont } from "../../../../../utils/constantDatas/styledUtils";
+import { useContext } from "react";
+import {
+  IkanbamContext,
+  KanbamContext,
+} from "../../../../../context/kanbamContext";
 
 interface IPriorityCollection {
   handlePriority: (ar1: boolean, arg2: IPriority) => void;
@@ -17,6 +23,8 @@ export default function Priorities({
   handlePriority,
   cardDetail,
 }: IPriorityCollection) {
+  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
+
   const handlePriorityName = async (name: string) => {
     const token = localStorage.getItem("token");
     if (!token) return;
@@ -50,5 +58,14 @@ export default function Priorities({
     );
   });
 
-  return <ul className="pritority__lists">{priorityList}</ul>;
+  return (
+    <BgAndFont
+      $themename={theme2}
+      $groupbg="hover"
+      $groupfont="quaternary"
+      className="pritority__lists"
+    >
+      {priorityList}
+    </BgAndFont>
+  );
 }

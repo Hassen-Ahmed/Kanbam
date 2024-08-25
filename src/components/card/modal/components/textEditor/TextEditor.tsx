@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import DOMPurify from "dompurify";
 
 import { updateCard } from "../../../../../utils/api/updates";
@@ -7,6 +7,50 @@ import { IError } from "../../../../../types/status.type";
 
 import EditingButtons from "./EditingButtons";
 import "./TextEditor.scss";
+import { INewTheme } from "../../../../../types/styledComp";
+import styled from "styled-components";
+import {
+  IkanbamContext,
+  KanbamContext,
+} from "../../../../../context/kanbamContext";
+import { themes } from "../../../../../utils/constantDatas/themes";
+
+const TextEditorStyled = styled.div<INewTheme>`
+  .text-editor {
+    &__save-btn {
+      button:not(:first-child) {
+        &:hover {
+          background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover"]};
+        }
+        background-color: ${({ $newtheme }) =>
+          themes[$newtheme].bg["transparent"]};
+        color: ${({ $newtheme }) => themes[$newtheme].font["quaternary"]};
+      }
+    }
+    &__editorial-area,
+    &__btns button {
+      background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
+      color: ${({ $newtheme }) => themes[$newtheme].font["quaternary"]};
+    }
+
+    &__btns button {
+      &:not(:last-child) {
+        border-right: 0.1rem solid #afafaf1a;
+      }
+    }
+  }
+`;
+
+const EditedStyled = styled.div<INewTheme>`
+  button {
+    background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover"]};
+    color: ${({ $newtheme }) => themes[$newtheme].font["quaternary"]};
+
+    &:hover {
+      background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover_03"]};
+    }
+  }
+`;
 
 export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
   const [html, setHtml] = useState(DOMPurify.sanitize(cardDetail.description!));
@@ -14,6 +58,8 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
   const [localDescription, setLocalDescription] = useState(
     cardDetail.description
   );
+  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
+
   const paraRef = useRef(null);
 
   useEffect(() => {
@@ -50,7 +96,7 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
   };
 
   const editedContent = (
-    <div className="text-editor__edited">
+    <EditedStyled $newtheme={theme2} className="text-editor__edited">
       <div
         className="text-editor__edited-content"
         dangerouslySetInnerHTML={{ __html: `${localDescription}` }}
@@ -63,7 +109,7 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
       >
         Edit
       </button>
-    </div>
+    </EditedStyled>
   );
 
   const editingCanvas = (
@@ -79,7 +125,7 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
 
   // JSX
   return (
-    <div className="text-editor">
+    <TextEditorStyled $newtheme={theme2} className="text-editor">
       {!localDescription && !isEditorialOpen ? (
         <div
           className="text-editor__starter"
@@ -103,6 +149,6 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
           )}
         </>
       )}
-    </div>
+    </TextEditorStyled>
   );
 }

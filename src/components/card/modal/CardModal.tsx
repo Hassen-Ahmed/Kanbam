@@ -20,6 +20,30 @@ import TextEditor from "./components/textEditor/TextEditor";
 import ButtonsRight from "./components/ButtonsRight";
 import Comment from "./components/Comment";
 import "./CardModal.scss";
+import { BgAndFont } from "../../../utils/constantDatas/styledUtils";
+import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
+import { INewTheme } from "../../../types/styledComp";
+import styled from "styled-components";
+import { themes } from "../../../utils/constantDatas/themes";
+
+const ActivityStyled = styled.div<INewTheme>`
+  &,
+  &__comment {
+    textArea {
+      background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
+      color: ${({ $newtheme }) => themes[$newtheme].font["quaternary"]};
+    }
+  }
+
+  button:not(:first-child) {
+    &:hover {
+      background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover_03"]};
+    }
+
+    background-color: ${({ $newtheme }) => themes[$newtheme].bg["transparent"]};
+    color: ${({ $newtheme }) => themes[$newtheme].font["quaternary"]};
+  }
+`;
 
 const iconSizeOne = 22;
 const iconSizeTwo = 22;
@@ -51,6 +75,8 @@ export default function CardModal({
     color: "",
     rotation: "0",
   });
+
+  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
 
   // end of hooks
 
@@ -218,7 +244,12 @@ export default function CardModal({
       draggable="true"
       onDragStart={(ev) => handleDragStart(ev)}
     >
-      <div className="card-modal">
+      <BgAndFont
+        $themename={theme2}
+        $groupbg="card_modal"
+        $groupfont="quaternary"
+        className="card-modal"
+      >
         <div className="card-modal__btn--close" onClick={handleClosingModal}>
           <VscClose size={iconSizeOne} />
         </div>
@@ -263,7 +294,7 @@ export default function CardModal({
                 </div>
               </div>
 
-              <div className="activity">
+              <ActivityStyled $newtheme={theme2} className="activity">
                 <div className="activity__heading">
                   <RxActivityLog size={iconSizeOne} />
                   <h2>Activity</h2>
@@ -272,7 +303,7 @@ export default function CardModal({
                 {commentBox}
 
                 <ul className="comment-list">{commentList}</ul>
-              </div>
+              </ActivityStyled>
             </div>
           </div>
 
@@ -286,7 +317,7 @@ export default function CardModal({
             {buttonList}
           </div>
         </div>
-      </div>
+      </BgAndFont>
       <div className="card-modal__overlay" onClick={handleClosingModal}></div>
     </div>
   );
