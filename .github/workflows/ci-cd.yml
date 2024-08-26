@@ -26,9 +26,6 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Install Netlify CLI
-        run: npm install -g netlify-cli
-
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2.0
         with:
