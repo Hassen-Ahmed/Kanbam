@@ -29,13 +29,11 @@ export const handleAppOnDrop = (lists: BoardType | null) => {
     }
   }
 
-  // reset localStorage of storedLists with edited lists
-
   if (isThereSomeListsDifference) {
-    localStorage.setItem("storedLists", JSON.stringify(lists));
-
     try {
       asyncUpdaterList(listsForPutRequest, token);
+      // reset localStorage of storedLists with edited lists
+      localStorage.setItem("storedLists", JSON.stringify(lists));
     } catch (err) {
       const error = err as IError;
       console.log(`Updating List err: ${error.message}`);
@@ -64,11 +62,12 @@ export const handleAppOnDrop = (lists: BoardType | null) => {
         }
       }
     }
-    // reset localStorage of storedLists with edited lists
 
     if (isThereSomeCardsDiff) {
       try {
         asyncUpdateCard(cardsForPutRequest, token);
+        // reset localStorage of storedLists with edited lists
+        localStorage.setItem("storedLists", JSON.stringify(lists));
       } catch (err) {
         const error = err as IError;
         console.log(`Updating cards err: ${error.message}`);
