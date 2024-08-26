@@ -23,7 +23,7 @@ export default function Priorities({
   handlePriority,
   cardDetail,
 }: IPriorityCollection) {
-  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   const handlePriorityName = async (name: string) => {
     const token = localStorage.getItem("token");
@@ -60,7 +60,7 @@ export default function Priorities({
 
   return (
     <BgAndFont
-      $themename={theme2}
+      $themename={theme}
       $groupbg="hover"
       $groupfont="quaternary"
       className="pritority__lists"

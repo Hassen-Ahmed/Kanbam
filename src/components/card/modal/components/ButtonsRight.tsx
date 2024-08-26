@@ -55,10 +55,10 @@ export default function ButtonsRight({
     <Priorities cardDetail={cardDetail} handlePriority={handlePriority} />
   );
 
-  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   return (
-    <ButtonRightStyled $newtheme={theme2}>
+    <ButtonRightStyled $newtheme={theme}>
       <div
         className="priority right-bar__btn"
         onClick={() => handlePriority(false, priority)}

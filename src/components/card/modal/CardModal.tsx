@@ -76,7 +76,7 @@ export default function CardModal({
     rotation: "0",
   });
 
-  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   // end of hooks
 
@@ -245,7 +245,7 @@ export default function CardModal({
       onDragStart={(ev) => handleDragStart(ev)}
     >
       <BgAndFont
-        $themename={theme2}
+        $themename={theme}
         $groupbg="card_modal"
         $groupfont="quaternary"
         className="card-modal"
@@ -294,7 +294,7 @@ export default function CardModal({
                 </div>
               </div>
 
-              <ActivityStyled $newtheme={theme2} className="activity">
+              <ActivityStyled $newtheme={theme} className="activity">
                 <div className="activity__heading">
                   <RxActivityLog size={iconSizeOne} />
                   <h2>Activity</h2>

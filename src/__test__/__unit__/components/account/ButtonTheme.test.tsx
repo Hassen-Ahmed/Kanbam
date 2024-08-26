@@ -11,7 +11,7 @@ const renderWithContext = (component: React.ReactNode) => {
   return render(
     <KanbamContext.Provider
       value={{
-        theme2: mockTheme2,
+        theme: mockTheme2,
         themeSetter: mockThemeSetter,
         itemDragging: mockItemDragging,
       }}

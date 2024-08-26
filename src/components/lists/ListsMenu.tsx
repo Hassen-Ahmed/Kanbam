@@ -45,7 +45,7 @@ export default function ListsMenu({
 }) {
   const [isListRemoved, setIsListRemoved] = useState(false);
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
-  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   const menuListRef = useRef(null);
 
@@ -103,7 +103,7 @@ export default function ListsMenu({
   );
 
   return (
-    <ListMenuStyled $newtheme={theme2} className="lists-menu-container">
+    <ListMenuStyled $newtheme={theme} className="lists-menu-container">
       <div
         className="lists-menu__overlay"
         onClick={() => handleIsListMenuVisible(false)}
@@ -127,20 +127,20 @@ export default function ListsMenu({
             <button>Move list</button>
           </div>
 
-          <Hr $themename={theme2} $group="hover" />
+          <Hr $themename={theme} $group="hover" />
 
           <div className="lists-menu__btn">
             <button>Sort by...</button>
           </div>
 
-          <Hr $themename={theme2} $group="hover" />
+          <Hr $themename={theme} $group="hover" />
           <div className="lists-menu__btn">
             <button>Archive all cards in this list</button>
           </div>
           <div className="lists-menu__btn">
             <button>Move all cards in this list</button>
           </div>
-          <Hr $themename={theme2} $group="hover" />
+          <Hr $themename={theme} $group="hover" />
 
           {archiveButton}
         </div>

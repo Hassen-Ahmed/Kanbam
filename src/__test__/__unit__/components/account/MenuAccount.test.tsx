@@ -12,7 +12,7 @@ const renderWithMemoryRouter = () => {
     <MemoryRouter>
       <KanbamContext.Provider
         value={{
-          theme2: mockTheme2,
+          theme: mockTheme2,
           themeSetter: vi.fn(),
           itemDragging: { current: null },
         }}

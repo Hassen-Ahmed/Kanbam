@@ -20,11 +20,11 @@ export const GlobalStyle = styled.div<INewTheme>`
 
 export default function Kanbam() {
   const { lists } = useContext(ListsContext) as IListsContext;
-  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   return (
     <GlobalStyle
-      $newtheme={theme2}
+      $newtheme={theme}
       className="kanbam"
       onDrop={() => handleAppOnDrop(lists)}
     >
