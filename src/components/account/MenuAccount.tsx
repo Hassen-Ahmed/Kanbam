@@ -62,6 +62,8 @@ const MenuAccount = ({
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("theme");
+    localStorage.removeItem("storedLists");
     setTimeout(() => {
       navigate("/");
     }, 100);
