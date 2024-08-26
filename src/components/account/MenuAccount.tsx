@@ -58,7 +58,7 @@ const MenuAccount = ({
 }: IMenuVisiblity) => {
   const [areWeCelebrating, setAreWeCelebrating] = useState(false);
   const navigate = useNavigate();
-  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -71,7 +71,7 @@ const MenuAccount = ({
     <>
       {!isAccountMenuVisible ? null : (
         <MenuStyled
-          $newtheme={theme2}
+          $newtheme={theme}
           className="menu-account"
           style={{
             zIndex: isAccountMenuVisible ? 2100 : 0,
@@ -80,9 +80,9 @@ const MenuAccount = ({
           <div className="menu">
             <h2 className="menu__heading">Account</h2>
             <MenuAccountLogo />
-            <Hr $themename={theme2} $group="hover" />
+            <Hr $themename={theme} $group="hover" />
             <ButtonTheme />
-            <Hr $themename={theme2} $group="hover" />
+            <Hr $themename={theme} $group="hover" />
 
             <div className="menu__logout" onClick={handleLogout}>
               <h2 className="menu__logout--text">Logout</h2>

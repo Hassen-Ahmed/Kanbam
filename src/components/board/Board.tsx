@@ -57,7 +57,7 @@ const Board = () => {
     ListsContext
   ) as IListsContext;
   const navigate = useNavigate();
-  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   useEffect(() => {
     findAllLists().then((data) => {
@@ -105,7 +105,7 @@ const Board = () => {
   if (lists)
     return (
       <div className="board-container">
-        <BoardStyled $newtheme={theme2} className="board">
+        <BoardStyled $newtheme={theme} className="board">
           {listsToBeDisplayed}
           {newListCreator}
         </BoardStyled>

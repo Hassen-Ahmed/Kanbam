@@ -30,7 +30,7 @@ const SideBarStyled = styled.div<INewTheme>`
 
 const SideBarLeft = () => {
   const [isDisplay, setIsDisplay] = useState<boolean>(false);
-  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   // end of hooks
 
@@ -44,11 +44,11 @@ const SideBarLeft = () => {
 
   return (
     <SideBarStyled
-      $newtheme={theme2}
+      $newtheme={theme}
       className="side-bar-left"
       style={{
         width: isDisplay ? "auto" : "2rem",
-        backgroundColor: `${themes[theme2].bg["side_bar_01"]}`,
+        backgroundColor: `${themes[theme].bg["side_bar_01"]}`,
       }}
     >
       <div
@@ -70,7 +70,7 @@ const SideBarLeft = () => {
           </div>
         </div>
 
-        <Hr $themename={theme2} $group="hover" />
+        <Hr $themename={theme} $group="hover" />
 
         <NavLinks handleActiveButton={handleActiveButton} />
       </div>

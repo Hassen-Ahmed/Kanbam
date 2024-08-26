@@ -12,7 +12,7 @@ import "./Card.scss";
 import { BgAndFont } from "../../utils/constantDatas/styledUtils";
 
 const Card = ({ ...props }: ICard) => {
-  const { theme2, itemDragging } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, itemDragging } = useContext(KanbamContext) as IkanbamContext;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [cardDetail] = useState<ICard>(props);
 
@@ -89,7 +89,7 @@ const Card = ({ ...props }: ICard) => {
       {displayCardModal}
 
       <BgAndFont
-        $themename={theme2}
+        $themename={theme}
         $groupbg="card"
         $groupfont="quaternary"
         className="card"

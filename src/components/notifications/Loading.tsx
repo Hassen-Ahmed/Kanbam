@@ -14,17 +14,17 @@ const LoadinIcongStyled = styled.div<INewTheme>`
 `;
 
 const Loading = () => {
-  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   return (
     <BgAndFont
-      $themename={theme2}
+      $themename={theme}
       $groupbg="card"
       $groupfont="secondary"
       className="loading"
     >
       <LoadinIcongStyled
-        $newtheme={theme2}
+        $newtheme={theme}
         className="loading__icon"
       ></LoadinIcongStyled>
       <p>Loading...</p>

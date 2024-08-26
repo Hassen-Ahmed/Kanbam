@@ -30,10 +30,10 @@ const NavBarStyled = styled.div<INewTheme>`
 const NavBar = () => {
   const [isAccountMenuVisible, setIsAccountMenuVisible] =
     useState<boolean>(false);
-  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   return (
-    <NavBarStyled $newtheme={theme2} className="nav-bar">
+    <NavBarStyled $newtheme={theme} className="nav-bar">
       <Logo />
 
       <div className="nav-bar__left">

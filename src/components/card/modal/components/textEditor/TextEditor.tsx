@@ -58,7 +58,7 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
   const [localDescription, setLocalDescription] = useState(
     cardDetail.description
   );
-  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   const paraRef = useRef(null);
 
@@ -96,7 +96,7 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
   };
 
   const editedContent = (
-    <EditedStyled $newtheme={theme2} className="text-editor__edited">
+    <EditedStyled $newtheme={theme} className="text-editor__edited">
       <div
         className="text-editor__edited-content"
         dangerouslySetInnerHTML={{ __html: `${localDescription}` }}
@@ -125,7 +125,7 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
 
   // JSX
   return (
-    <TextEditorStyled $newtheme={theme2} className="text-editor">
+    <TextEditorStyled $newtheme={theme} className="text-editor">
       {!localDescription && !isEditorialOpen ? (
         <div
           className="text-editor__starter"

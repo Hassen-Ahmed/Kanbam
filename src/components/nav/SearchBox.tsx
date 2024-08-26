@@ -32,7 +32,7 @@ const SearchBox = () => {
   const [value, setValue] = useState("");
   const [winWidth, setWinWidth] = useState(0);
   const { handleSearchTextUpdate } = useContext(ListsContext) as IListsContext;
-  const { theme2 } = useContext(KanbamContext) as IkanbamContext;
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   useEffect(() => setWinWidth(window.innerWidth), []);
   useEffect(() => handleSearchTextUpdate(value), [value]);
@@ -53,7 +53,7 @@ const SearchBox = () => {
   );
 
   return (
-    <SearchBoxStyled $newtheme={theme2} className="search-container">
+    <SearchBoxStyled $newtheme={theme} className="search-container">
       <div className="search__box">
         <label htmlFor="search" onClick={() => handleVisibilityOfInput(1000)}>
           <IoSearchSharp size={22} />

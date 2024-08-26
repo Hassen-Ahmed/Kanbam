@@ -84,7 +84,7 @@ const Lists = ({
   const [isNewCardInputVisible, setIsNewCardInputVisible] =
     useState<boolean>(false);
 
-  const { theme2, itemDragging } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, itemDragging } = useContext(KanbamContext) as IkanbamContext;
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
 
   // end of hooks
@@ -287,7 +287,7 @@ const Lists = ({
 
   return (
     <ListsStyled
-      $newtheme={theme2}
+      $newtheme={theme}
       className="lists--container--main"
       draggable="true"
       onDragStart={(ev) => handleDragStart(ev)}
