@@ -16,8 +16,10 @@ import {
   IkanbamContext,
   KanbamContext,
 } from "../../../../context/kanbamContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { themes } from "../../../../utils/constantDatas/themes";
+import MoveCard from "./move_card/MoveCard";
+import useClickOutside from "../../../../hooks/useClickOutside";
 
 const ButtonRightStyled = styled.div<INewTheme>`
   .right-bar__btn {
@@ -55,7 +57,12 @@ export default function ButtonsRight({
     <Priorities cardDetail={cardDetail} handlePriority={handlePriority} />
   );
 
+  const [isMovePressed, setIsMovePressed] = useState(false);
   const { theme } = useContext(KanbamContext) as IkanbamContext;
+
+  const handleIsMovePressed = (status: boolean) => setIsMovePressed(status);
+
+  const ref = useClickOutside(handleIsMovePressed);
 
   return (
     <ButtonRightStyled $newtheme={theme}>
@@ -82,7 +89,18 @@ export default function ButtonsRight({
         <h2>Cover</h2>
       </div>
       <h3>Actions</h3>
-      <div className="move right-bar__btn">
+      <div
+        className="move right-bar__btn"
+        ref={ref}
+        onClick={() => handleIsMovePressed(true)}
+      >
+        {isMovePressed && (
+          <MoveCard
+            handleIsMovePressed={handleIsMovePressed}
+            cardDetail={cardDetail}
+            isVisible={isMovePressed}
+          />
+        )}
         <IoMdArrowRoundForward size={iconSizeTwo} />
         <h2>Move</h2>
       </div>
