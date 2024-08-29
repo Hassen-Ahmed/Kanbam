@@ -18,7 +18,12 @@ export const fetchAllLists = async () => {
 
       if (newCards == undefined) return;
       const sortedlist = newCards
-        .sort((a, b) => a.indexNumber - b.indexNumber)
+        .sort((a, b) => {
+          if (a.indexNumber == b.indexNumber) {
+            return newCards.indexOf(b) - newCards.indexOf(a);
+          }
+          return a.indexNumber - b.indexNumber;
+        })
         .map((card) => {
           card.opacity = "1";
           card.isDragging = false;
