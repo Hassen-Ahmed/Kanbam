@@ -204,6 +204,9 @@
       width: 20rem;
       cursor: pointer;
     }
+    .move {
+      position: relative;
+    }
   }
 
   &__btn--close {
