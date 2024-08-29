@@ -11,6 +11,36 @@ import {
 } from "../../../../../types/board.type";
 import { updateCard } from "../../../../../utils/api/updates";
 import { VscClose } from "react-icons/vsc";
+import { INewTheme } from "../../../../../types/styledComp";
+import styled from "styled-components";
+import { themes } from "../../../../../utils/constantDatas/themes";
+import {
+  IkanbamContext,
+  KanbamContext,
+} from "../../../../../context/kanbamContext";
+
+const MoveCardStyled = styled.div<INewTheme>`
+  background-color: ${({ $newtheme }) => themes[$newtheme].bg["card_modal"]};
+  border: 0.05rem solid
+    ${({ $newtheme }) => themes[$newtheme].border["secondary"]};
+
+  .card-move__btn--close {
+    color: ${({ $newtheme }) => themes[$newtheme].font["quaternary"]};
+  }
+
+  select {
+    background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
+    color: ${({ $newtheme }) => themes[$newtheme].font["quaternary"]};
+  }
+
+  .card-move__btn {
+    button {
+      background-color: ${({ $newtheme }) =>
+        themes[$newtheme].bg["btn_account"]};
+      color: ${({ $newtheme }) => themes[$newtheme].font["tertiary"]};
+    }
+  }
+`;
 
 interface IMoveCard {
   isVisible: boolean;
@@ -31,6 +61,7 @@ export default function MoveCard({
   const [cardPositions, setCardPositions] = useState<number[]>([]);
 
   const listArray = lists?.map((list) => list.title);
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   useEffect(() => {
     const positions = lists
@@ -92,7 +123,8 @@ export default function MoveCard({
   };
 
   return (
-    <div
+    <MoveCardStyled
+      $newtheme={theme}
       className="card-move"
       style={{ display: isVisible ? "block" : "none" }}
     >
@@ -100,7 +132,7 @@ export default function MoveCard({
         className="card-move__btn--close button-close"
         onClick={() => handleIsMovePressed(false)}
       >
-        <VscClose size={32} />
+        <VscClose size={22} />
       </div>
       <h2 className="card-move__heading">Move card</h2>
       <div className="body">
@@ -138,9 +170,9 @@ export default function MoveCard({
           </select>
         </div>
       </div>
-      <div className="card-move__btn" onClick={handleMoveCard}>
-        <button>Move</button>
+      <div className="card-move__btn">
+        <button onClick={handleMoveCard}>Move</button>
       </div>
-    </div>
+    </MoveCardStyled>
   );
 }
