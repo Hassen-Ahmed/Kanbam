@@ -1,0 +1,59 @@
+@use "../../../../../assets/style/abstracts/mixins" as mixn;
+@use "../../../../../assets/style/abstracts/variable" as var;
+.card-move {
+  @include mixn.flexy(column, center, center);
+  width: auto;
+  background-color: rgb(128, 76, 180);
+  position: absolute;
+  bottom: 4.2rem;
+  left: 0rem;
+  padding: 1rem 3rem;
+  padding-top: 3rem;
+  border-radius: var.$bor-05;
+  cursor: default;
+
+  &__btn--close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    color: #ffffff80;
+    cursor: pointer;
+  }
+
+  &__heading {
+    font-size: var.$fsi-16;
+    text-align: center;
+    font-weight: var.$fwt-600;
+    margin-bottom: 2rem;
+  }
+
+  .body {
+    p {
+      font-size: var.$fsi-14;
+      font-weight: var.$fwt-500;
+      margin-bottom: 1rem;
+    }
+    select {
+      padding: 0.5rem 1rem;
+    }
+    select:not(:first-child) {
+      padding-left: 2rem;
+    }
+
+    @include mixn.flexy(row, left, center, 1rem);
+    margin: 1rem 0;
+    &__left {
+    }
+    &__right {
+    }
+  }
+
+  &__btn {
+    margin: 2rem 0;
+
+    button {
+      padding: 0.5rem 2rem;
+      cursor: pointer;
+    }
+  }
+}
