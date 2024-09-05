@@ -9,7 +9,6 @@ import {
 
 import { ICard } from "../../../../types/board.type";
 import Priorities from "./priorities/Priorities";
-import { IPriority } from "../CardModal";
 import { INewTheme } from "../../../../types/styledComp";
 import styled from "styled-components";
 import {
@@ -35,31 +34,24 @@ const ButtonRightStyled = styled.div<INewTheme>`
 
 const iconSizeTwo = 22;
 
-interface IPriorityCollection {
-  priorities: IPriority[];
-  handlePriority: (ar1: boolean, arg2: IPriority) => void;
-}
-
-interface IButtonRight extends IPriorityCollection {
-  isPriorityPicked: boolean;
-  priority: IPriority;
+interface IButtonRight {
   handleCardArchive: (arg: string) => void;
   cardDetail: ICard;
 }
 
 export default function ButtonsRight({
-  handlePriority,
-  isPriorityPicked,
-  priority,
   handleCardArchive,
   cardDetail,
 }: IButtonRight) {
   const [isMovePressed, setIsMovePressed] = useState(false);
   const [isDatePressed, setIsDatePressed] = useState(false);
+  const [isPriorityPressed, setIsPriorityPressed] = useState(false);
+
   const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   const refDate = useClickOutside(() => handleIsPressed(false, "date"));
   const refMove = useClickOutside(() => handleIsPressed(false, "move"));
+  const refPriority = useClickOutside(() => handleIsPressed(false, "priority"));
 
   function handleIsPressed(status: boolean, type: string | null = null) {
     switch (type) {
@@ -69,28 +61,34 @@ export default function ButtonsRight({
       case "date":
         setIsDatePressed(status);
         break;
+      case "priority":
+        setIsPriorityPressed(status);
+        break;
       default:
         setIsMovePressed(status);
         setIsDatePressed(status);
+        setIsPriorityPressed(status);
         break;
     }
   }
 
-  const priorityList = isPriorityPicked && (
-    <Priorities cardDetail={cardDetail} handlePriority={handlePriority} />
-  );
-
   return (
     <ButtonRightStyled $newtheme={theme}>
       <div
-        className="priority right-bar__btn"
-        onClick={() => handlePriority(false, priority)}
+        className="priority-container right-bar__btn"
+        ref={refPriority}
+        onClick={() => handleIsPressed(true, "priority")}
       >
+        {isPriorityPressed && (
+          <Priorities
+            cardDetail={cardDetail}
+            handleIsPriorityPressed={handleIsPressed}
+            isVisible={isPriorityPressed}
+          />
+        )}
         <GiRank3 size={iconSizeTwo} />
         <h2>Priority</h2>
       </div>
-
-      {priorityList}
 
       <div
         className="dates right-bar__btn"
@@ -100,8 +98,8 @@ export default function ButtonsRight({
         {isDatePressed && (
           <CalendarPicker
             handleIsDatePressed={handleIsPressed}
-            cardDetail={cardDetail}
             isVisible={isDatePressed}
+            cardDetail={cardDetail}
           />
         )}
         <MdOutlineWatchLater size={iconSizeTwo} />
