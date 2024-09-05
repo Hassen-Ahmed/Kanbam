@@ -20,11 +20,9 @@
   }
 
   .priority {
-    background-color: #da7d4ea2;
-    width: 3rem;
-    height: 0.6rem;
-    border-radius: var.$bor-05;
-    margin-bottom: 0.2rem;
+    width: 2rem;
+    height: auto;
+    transform: scale(0.7);
   }
 
   .discription-icon {

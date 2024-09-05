@@ -156,11 +156,8 @@ export default function CalendarPicker({
         <div className="calendar__heading">
           <h1>Dates</h1>
         </div>
-        <div
-          className="calendar__btn--close button-close"
-          onClick={() => handleIsDatePressed(false)}
-        >
-          <VscClose size={22} />
+        <div className="calendar__btn--close button-close">
+          <VscClose size={22} onClick={() => handleIsDatePressed(false)} />
         </div>
         <Calendar onChange={onChange} value={value} />
         <div className="calendar__start-date">

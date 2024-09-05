@@ -82,11 +82,12 @@
 
       &__box {
         width: 10rem;
-        @include mixn.flexy();
+        @include mixn.flexy(row, center, center, 1rem);
         margin: 0.5rem 0;
         padding: 0.5rem 1rem;
         font-weight: var.$fwt-600;
         border-radius: var.$bor-02;
+        background-color: #0000002d;
       }
     }
     .description {
@@ -211,19 +212,21 @@
   }
 
   &__btn--close {
-    // position: absolute;
-    // top: 1rem;
-    // right: 1rem;
-    // width: 4rem;
-    // height: 4rem;
-    // @include mixn.flexy();
-    // cursor: pointer;
-
-    // &:hover {
-    //   border: 0.1rem dashed rgba(255, 255, 255, 0.5);
-    //   border-radius: var.$bor-50;
-    // }
     @include mixn2.close-btn();
+  }
+
+  .priority-container {
+    position: relative;
+  }
+
+  .attachment {
+    cursor: not-allowed;
+  }
+  .cover {
+    cursor: not-allowed;
+  }
+  .copy {
+    cursor: not-allowed;
   }
 }
 

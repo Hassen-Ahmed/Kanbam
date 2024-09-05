@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 
 import { BsTextParagraph } from "react-icons/bs";
 
-import { priorities } from "../../utils/constantDatas/priorities";
 import { handleDragstartUtil, handleRemoveCloneElem } from "../../utils/dnd";
 import { DragEventMy } from "../../types/html.type";
 import { ICard } from "../../types/board.type";
@@ -10,6 +9,7 @@ import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import CardModal from "./modal/CardModal";
 import "./Card.scss";
 import { BgAndFont } from "../../utils/constantDatas/styledUtils";
+import { icons } from "./modal/components/priorities/Priorities";
 
 const Card = ({ ...props }: ICard) => {
   const { theme, itemDragging } = useContext(KanbamContext) as IkanbamContext;
@@ -17,14 +17,6 @@ const Card = ({ ...props }: ICard) => {
   const [cardDetail] = useState<ICard>(props);
 
   // end of hooks
-
-  const bgColor = cardDetail.priority
-    ? `${
-        priorities.filter(
-          (priorityObj) => priorityObj.name === props.priority
-        )[0].color
-      }`
-    : "#00000033";
 
   const handleModlaVisibility = (value: boolean) => setIsModalVisible(value);
 
@@ -72,7 +64,7 @@ const Card = ({ ...props }: ICard) => {
   );
 
   const displayPriorityColor = cardDetail.priority && (
-    <div className="priority" style={{ backgroundColor: bgColor }}></div>
+    <div className="priority">{icons(cardDetail.priority)}</div>
   );
 
   return (

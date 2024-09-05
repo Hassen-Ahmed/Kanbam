@@ -9,7 +9,6 @@ import { CiEdit } from "react-icons/ci";
 
 import { BoardType, ICard, IListsContext } from "../../../types/board.type";
 
-import { priorities } from "../../../utils/constantDatas/priorities";
 import { deleteCardById } from "../../../utils/api/deletes";
 import { handleUpdateLists } from "../../../utils/order_and_update";
 import { updateCard } from "../../../utils/api/updates";
@@ -25,6 +24,7 @@ import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
 import { INewTheme } from "../../../types/styledComp";
 import styled from "styled-components";
 import { themes } from "../../../utils/constantDatas/themes";
+import { icons } from "./components/priorities/Priorities";
 
 const ActivityStyled = styled.div<INewTheme>`
   &,
@@ -48,12 +48,6 @@ const ActivityStyled = styled.div<INewTheme>`
 const iconSizeOne = 22;
 const iconSizeTwo = 22;
 
-export interface IPriority {
-  name: string;
-  color: string;
-  rotation: string;
-}
-
 export default function CardModal({
   handleModlaVisibility,
   cardDetail,
@@ -63,30 +57,16 @@ export default function CardModal({
 }) {
   const [comment, setComment] = useState("");
   const [isCommentVisible, setIsCommentVisible] = useState(false);
-  const [isPriorityPicked, setIsPriorityPicked] = useState(false);
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const [titleValueOfThisCard, setTitleOfThisCard] = useState<string>(
     cardDetail.title
   );
   const [isTitleInputVisible, setIsTitleInputVisible] =
     useState<boolean>(false);
-  const [priority, setPriority] = useState({
-    name: "",
-    color: "",
-    rotation: "0",
-  });
 
   const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   // end of hooks
-
-  const bgColor = cardDetail.priority
-    ? `${
-        priorities.filter(
-          (priorityObj) => priorityObj.name === cardDetail.priority
-        )[0].color
-      }`
-    : "#00000033";
 
   const handleSave = async () => {
     const token = localStorage.getItem("token");
@@ -123,18 +103,6 @@ export default function CardModal({
     } catch (err) {
       const error = err as IError;
       console.log("Error deleting card, err: ", error.message);
-    }
-  };
-
-  const handlePriority = (
-    changePriorityValues: boolean,
-    priority: IPriority
-  ) => {
-    if (changePriorityValues) {
-      setIsPriorityPicked((preValue) => !preValue);
-      setPriority(priority);
-    } else {
-      setIsPriorityPicked((preValue) => !preValue);
     }
   };
 
@@ -227,10 +195,6 @@ export default function CardModal({
 
   const buttonList = (
     <ButtonsRight
-      handlePriority={handlePriority}
-      isPriorityPicked={isPriorityPicked}
-      priorities={priorities}
-      priority={priority}
       handleCardArchive={handleCardArchive}
       cardDetail={cardDetail}
     />
@@ -271,15 +235,13 @@ export default function CardModal({
             <div className="left-bar--container">
               <div className="priority">
                 <h3>Priority</h3>
-                <div
-                  className="priority__box"
-                  style={{
-                    backgroundColor: `${bgColor}`,
-                  }}
-                >
+                <div className="priority__box">
                   <span>
                     {!cardDetail.priority ? "None" : cardDetail.priority}
                   </span>
+                  {cardDetail.priority && (
+                    <div>{icons(cardDetail.priority)}</div>
+                  )}
                 </div>
               </div>
 
