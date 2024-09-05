@@ -1,0 +1,225 @@
+@use "../../../../../assets/style/abstracts/mixins" as mixn;
+@use "../../../../../assets/style/abstracts/mixins_02" as mixn2;
+@use "../../../../../assets/style/abstracts/variable" as var;
+
+.calendar-container {
+  position: absolute;
+  top: 1rem;
+  right: -1rem;
+  width: 35rem;
+  height: 94vh;
+
+  box-shadow: 0.2rem 0.2rem 2rem rgba(0, 0, 0, 0.25);
+  border-radius: var.$bor-1;
+  overflow: hidden;
+  z-index: var.$z-ix-2000;
+}
+
+.calendar {
+  height: 100%;
+  overflow-y: scroll;
+  padding: 8rem 3rem 3rem 3rem;
+  text-align: center;
+  cursor: default;
+
+  &__btn--close {
+    @include mixn2.close-btn();
+  }
+
+  &__heading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 2rem 0;
+    width: 100%;
+  }
+
+  &__start-date {
+    @include mixn.flexy(column, flex-start, flex-start);
+    align-self: flex-start;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+
+    .heading {
+      font-size: var.$fsi-14;
+      margin-bottom: 1rem;
+    }
+
+    //   for chrome and others browsers
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    // for firefox
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+
+    label {
+      font-size: var.$fsi-14;
+      margin-bottom: 1rem;
+    }
+
+    .inputs {
+      @include mixn.flexy(row, center, center, 1rem);
+
+      p {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+      }
+      input {
+        width: 6rem;
+        padding: 0.5rem 0rem;
+        text-align: center;
+        border-radius: var.$bor-05;
+        background-color: rgba(0, 0, 0, 0.2);
+        color: white;
+        border: 0.1rem solid rgb(153, 153, 153);
+
+        &::placeholder {
+          color: rgba(120, 120, 120, 0.5);
+        }
+      }
+    }
+  }
+
+  &__due-date {
+    @include mixn.flexy(column, flex-start, flex-start);
+    align-self: flex-start;
+
+    .heading {
+      font-size: var.$fsi-14;
+      margin-bottom: 1rem;
+    }
+
+    .spans {
+      @include mixn.flexy(row, center, center, 1rem);
+      cursor: not-allowed;
+    }
+
+    .span {
+      @include mixn.flexy(column, center, center, 0.5rem);
+
+      p {
+        font-size: 1rem;
+      }
+
+      span {
+        text-align: center;
+        font-size: var.$fsi-12;
+
+        width: 6rem;
+        height: 3rem;
+        border-radius: var.$bor-05;
+        @include mixn.flexy(column, center, center, 2rem);
+      }
+    }
+  }
+
+  &__due-date--reminder {
+    align-self: flex-start;
+    @include mixn.flexy(column, flex-start, flex-start);
+    margin-top: 3rem;
+
+    .heading {
+      font-size: var.$fsi-14;
+      margin-bottom: 1rem;
+    }
+
+    #reminder {
+      padding: 0.8rem 2rem;
+      border-radius: var.$bor-05;
+      outline-color: transparent;
+      outline-width: 0rem;
+
+      &:hover,
+      &:active {
+        border: 0.2rem solid #348ee8;
+      }
+    }
+  }
+
+  &__btn {
+    box-shadow: 0.2rem 0.2rem 2rem rgba(0, 0, 0, 0.15);
+    border-radius: var.$bor-05;
+    margin: 1rem 0;
+    cursor: pointer;
+
+    &:hover {
+      filter: brightness(110%);
+    }
+
+    button {
+      width: 100%;
+      padding: 1rem;
+      border-radius: var.$bor-05;
+      color: white;
+
+      border: none;
+      font-size: var.$fsi-16;
+      cursor: pointer;
+    }
+  }
+
+  &__save {
+    margin-top: 3rem;
+    background-color: #348ee8;
+  }
+}
+
+.react-calendar {
+  &__navigation {
+    text-align: center;
+    button,
+    &__prev-button,
+    &__next-button {
+      background-color: transparent;
+      border: none;
+      font-size: 2rem;
+      padding: 0.5rem 1.5rem;
+      margin-bottom: 2rem;
+      cursor: pointer;
+    }
+
+    &__prev2-button,
+    &__next2-button {
+      display: none;
+    }
+  }
+
+  &__viewContainer {
+    text-align: center;
+
+    button {
+      padding: 0.5rem 1rem;
+      text-align: center;
+      cursor: pointer;
+    }
+  }
+
+  &__month-view__weekdays {
+    margin: 1rem 0;
+
+    &__weekday {
+      abbr {
+        text-decoration: none;
+      }
+    }
+  }
+
+  &__month-view__days {
+    button {
+      background-color: transparent;
+      border: none;
+      padding: 1rem;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.15);
+      }
+      &:focus-within {
+        background-color: #348ee8;
+      }
+    }
+  }
+}
