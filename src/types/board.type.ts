@@ -10,6 +10,9 @@ export interface ICard {
   priority?: string;
   isDragging?: boolean;
   opacity?: string;
+  startDate?: string;
+  dueDate?: string;
+  dueDateReminder?: string;
 }
 
 export type Cards = ICard[];
