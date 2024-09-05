@@ -64,6 +64,7 @@
     &--btn {
       @include mixn.flexy(row);
       height: 3.5rem;
+      font-size: 1.5rem;
       border-radius: var.$bor-1;
       filter: brightness(120%);
       z-index: var.$z-ix-250;

@@ -208,7 +208,7 @@ export default function CardModal({
 
   const commentList = cardDetail.comments?.map((comment) => {
     return (
-      <div className="comment-with-icon">
+      <div key={comment} className="comment-with-icon">
         <MdAccountCircle size={32} />
         <li key={comment}>{comment}</li>
       </div>
@@ -250,7 +250,7 @@ export default function CardModal({
         $groupfont="quaternary"
         className="card-modal"
       >
-        <div className="card-modal__btn--close" onClick={handleClosingModal}>
+        <div className="card-modal__btn--close " onClick={handleClosingModal}>
           <VscClose size={iconSizeOne} />
         </div>
 

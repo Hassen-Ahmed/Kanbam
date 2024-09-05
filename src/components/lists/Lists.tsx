@@ -49,8 +49,7 @@ const ListsStyled = styled.div<INewTheme>`
 
     &__heading--btn,
     &__btn--add,
-    &-menu__btns .lists-menu__btn,
-    &-menu__btn-close {
+    &-menu__btns .lists-menu__btn {
       &:hover {
         background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover"]};
       }

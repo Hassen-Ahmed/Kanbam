@@ -19,7 +19,10 @@ import {
 import { useContext, useState } from "react";
 import { themes } from "../../../../utils/constantDatas/themes";
 import MoveCard from "./move_card/MoveCard";
+import CalendarPicker from "./calendar/CalendarPicker";
 import useClickOutside from "../../../../hooks/useClickOutside";
+import useClickOutsideMove from "../../../../hooks/useClickOutsideMove";
+import useClickOutsideDate from "../../../../hooks/useClickOutsideDate";
 
 const ButtonRightStyled = styled.div<INewTheme>`
   .right-bar__btn {
@@ -53,16 +56,31 @@ export default function ButtonsRight({
   handleCardArchive,
   cardDetail,
 }: IButtonRight) {
+  const [isMovePressed, setIsMovePressed] = useState(false);
+  const [isDatePressed, setIsDatePressed] = useState(false);
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
+
+  const refDate = useClickOutside(() => handleIsPressed(false, "date"));
+  const refMove = useClickOutside(() => handleIsPressed(false, "move"));
+
+  function handleIsPressed(status: boolean, type: string | null = null) {
+    switch (type) {
+      case "move":
+        setIsMovePressed(status);
+        break;
+      case "date":
+        setIsDatePressed(status);
+        break;
+      default:
+        setIsMovePressed(status);
+        setIsDatePressed(status);
+        break;
+    }
+  }
+
   const priorityList = isPriorityPicked && (
     <Priorities cardDetail={cardDetail} handlePriority={handlePriority} />
   );
-
-  const [isMovePressed, setIsMovePressed] = useState(false);
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
-
-  const handleIsMovePressed = (status: boolean) => setIsMovePressed(status);
-
-  const ref = useClickOutside(handleIsMovePressed);
 
   return (
     <ButtonRightStyled $newtheme={theme}>
@@ -76,7 +94,18 @@ export default function ButtonsRight({
 
       {priorityList}
 
-      <div className="dates right-bar__btn">
+      <div
+        className="dates right-bar__btn"
+        ref={refDate}
+        onClick={() => handleIsPressed(true, "date")}
+      >
+        {isDatePressed && (
+          <CalendarPicker
+            handleIsDatePressed={handleIsPressed}
+            cardDetail={cardDetail}
+            isVisible={isDatePressed}
+          />
+        )}
         <MdOutlineWatchLater size={iconSizeTwo} />
         <h2>Dates</h2>
       </div>
@@ -91,12 +120,12 @@ export default function ButtonsRight({
       <h3>Actions</h3>
       <div
         className="move right-bar__btn"
-        ref={ref}
-        onClick={() => handleIsMovePressed(true)}
+        ref={refMove}
+        onClick={() => handleIsPressed(true, "move")}
       >
         {isMovePressed && (
           <MoveCard
-            handleIsMovePressed={handleIsMovePressed}
+            handleIsMovePressed={handleIsPressed}
             cardDetail={cardDetail}
             isVisible={isMovePressed}
           />

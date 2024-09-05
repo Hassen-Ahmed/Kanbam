@@ -1,4 +1,5 @@
 @use "../../../../../assets/style/abstracts/mixins" as mixn;
+@use "../../../../../assets/style/abstracts/mixins_02" as mixn2;
 @use "../../../../../assets/style/abstracts/variable" as var;
 
 .card-move {
@@ -14,10 +15,7 @@
   cursor: default;
 
   &__btn--close {
-    position: absolute;
-    right: 1.5rem;
-    top: 1.5rem;
-    cursor: pointer;
+    @include mixn2.close-btn();
   }
 
   &__heading {

@@ -128,11 +128,8 @@ export default function MoveCard({
       className="card-move"
       style={{ display: isVisible ? "block" : "none" }}
     >
-      <div
-        className="card-move__btn--close button-close"
-        onClick={() => handleIsMovePressed(false)}
-      >
-        <VscClose size={22} />
+      <div className="card-move__btn--close button-close">
+        <VscClose size={22} onClick={() => handleIsMovePressed(false)} />
       </div>
       <h2 className="card-move__heading">Move card</h2>
       <div className="body">

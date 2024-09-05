@@ -1,4 +1,5 @@
 @use "../../assets/style/abstracts/mixins" as mixn;
+@use "../../assets/style/abstracts/mixins_02" as mixn2;
 @use "../../assets/style/abstracts/variable" as var;
 
 .lists-menu-container {
@@ -71,16 +72,11 @@
       }
     }
   }
+
   &__btn-close {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    height: 4rem;
-    width: 4rem;
-    @include mixn.flexy();
-    border-radius: var.$bor-05;
-    cursor: pointer;
+    @include mixn2.close-btn();
   }
+
   &__overlay {
     position: fixed;
     top: -50%;
