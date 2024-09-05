@@ -1,19 +1,19 @@
 import { useEffect, useRef } from "react";
 
-const useClickOutside = (handler: (status: boolean) => void) => {
+const useClickOutside = (handler: () => void) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const listener = (event: MouseEvent) => {
     const parentElement2 = event?.target as HTMLElement;
     if (parentElement2?.parentElement?.classList.contains("button-close")) {
-      handler(false);
+      handler();
     }
 
     if (!ref.current || ref.current.contains(event.target as Node)) {
       return;
     }
 
-    handler(false);
+    handler();
   };
 
   useEffect(() => {
