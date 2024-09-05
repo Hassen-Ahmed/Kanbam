@@ -21,8 +21,6 @@ import { themes } from "../../../../utils/constantDatas/themes";
 import MoveCard from "./move_card/MoveCard";
 import CalendarPicker from "./calendar/CalendarPicker";
 import useClickOutside from "../../../../hooks/useClickOutside";
-import useClickOutsideMove from "../../../../hooks/useClickOutsideMove";
-import useClickOutsideDate from "../../../../hooks/useClickOutsideDate";
 
 const ButtonRightStyled = styled.div<INewTheme>`
   .right-bar__btn {
