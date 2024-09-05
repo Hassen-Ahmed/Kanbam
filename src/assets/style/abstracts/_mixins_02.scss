@@ -1,0 +1,20 @@
+@use "./variable" as var;
+@use "./mixins" as mixn;
+@use "../../style/base/animation" as *;
+
+@mixin close-btn {
+  position: absolute;
+  right: 1.5rem;
+  top: 1.5rem;
+  width: 3rem;
+  height: 3rem;
+  @include mixn.flexy();
+  cursor: pointer;
+  border-radius: var.$bor-50;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transition: all 0.2s ease;
+    border: 0.1rem dashed grey;
+  }
+}
