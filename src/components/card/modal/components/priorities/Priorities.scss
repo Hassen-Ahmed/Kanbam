@@ -1,4 +1,5 @@
 @use "../../../../../assets/style/abstracts/mixins" as mixn;
+@use "../../../../../assets/style/abstracts/mixins_02" as mixn2;
 @use "../../../../../assets/style/abstracts/variable" as var;
 
 ul {
@@ -6,17 +7,48 @@ ul {
 }
 
 .pritority__lists {
-  padding: 1rem 0;
-  border: 0.1rem solid rgba(0, 0, 0, 0.1);
-  border-radius: var.$bor-02;
+  position: absolute;
+  top: 1rem;
+  width: auto;
+  height: auto;
+  text-align: center;
+
+  background-color: rgb(255, 255, 255);
+  border: 0.1rem solid rgba(11, 11, 11, 0.1);
+  border-radius: var.$bor-05;
+  box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.3);
+
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+
+  .heading {
+    margin-bottom: 2.5rem;
+    margin-right: 2rem;
+    font-size: var.$fsi-16;
+  }
 
   li {
     @include mixn.flexy(row, flex-start, flex-start, 1rem);
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 2rem;
+    padding-right: 15rem;
     font-size: var.$fsi-12;
+    position: relative;
 
     &:hover {
       background-color: rgba(0, 0, 0, 0.05);
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0.3rem;
+        height: 100%;
+        background-color: rgba(62, 142, 246, 0.754);
+      }
     }
   }
+}
+
+.priority__btn--close {
+  @include mixn2.close-btn();
 }
