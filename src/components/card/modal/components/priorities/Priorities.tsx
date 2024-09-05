@@ -3,7 +3,6 @@ import { IError } from "../../../../../types/status.type";
 import { updateCard } from "../../../../../utils/api/updates";
 
 import "./Priorities.scss";
-import { BgAndFont } from "../../../../../utils/constantDatas/styledUtils";
 import { useContext } from "react";
 import {
   IkanbamContext,
