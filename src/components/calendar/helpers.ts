@@ -1,0 +1,140 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IActionBoard } from "../../types/actions.type";
+import { BoardType, ICard } from "../../types/board.type";
+import { IError } from "../../types/status.type";
+import { postCard } from "../../utils/api/posts";
+import { updateCard } from "../../utils/api/updates";
+import { fetchAllLists } from "../../utils/fetchAllLists";
+
+const token = localStorage.getItem("token")!;
+export const createNewTask = async (
+  dispatch: (value: IActionBoard) => void,
+  lists: BoardType,
+  newTask: ICard
+) => {
+  try {
+    const res = (await postCard(newTask, token)) as ICard;
+    const updatedLists = lists?.map((list) => {
+      if (list.id != newTask.listId) return list;
+      return { ...list, cards: [...list.cards!, res] };
+    }) as BoardType;
+
+    dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists });
+    localStorage.setItem("storedLists", JSON.stringify(updatedLists));
+  } catch (err) {
+    const error = err as IError;
+    console.log(`Error message: ${error.message}`);
+  } finally {
+    console.log("Send POST request for new task...");
+  }
+};
+
+export const eventResize = async (
+  info: any,
+  lists: BoardType,
+  cardDetails: ICard[],
+  dispatch: (value: IActionBoard) => void
+) => {
+  const year = info.event.end.getFullYear();
+  const month = info.event.end.getMonth() + 1;
+  const day = info.event.end.getDate() + 1;
+
+  const cardToModify = cardDetails?.filter(
+    (card) => card.id == info.event.id
+  )[0] as ICard;
+
+  cardToModify.dueDate = new Date(`${year}/${month}/${day}`).toISOString();
+
+  try {
+    const res = (await updateCard(info.event.id, cardToModify, token)) as ICard;
+    const updatedLists = lists?.map((list) => {
+      if (list.id != res.listId) return list;
+      return { ...list, cards: [...list.cards!, res] };
+    }) as BoardType;
+    dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists });
+    localStorage.setItem("storedLists", JSON.stringify(updatedLists));
+  } catch (err) {
+    const error = err as IError;
+    console.log(`Error message: ${error.message}`);
+  } finally {
+    console.log("Send update request for a task...");
+  }
+};
+
+export const eventDrop = async (
+  info: any,
+  lists: BoardType,
+  cardDetails: ICard[],
+  dispatch: (value: IActionBoard) => void
+) => {
+  const cardDetail = cardDetails?.filter(
+    (cardDetail) => cardDetail.id == info.event.id
+  )[0] as ICard;
+
+  const setStartAndDue = (position: "start" | "end") => {
+    const year = info.event[position].getFullYear();
+    const month = info.event[position].getMonth() + 1;
+    const day = info.event[position].getDate() + 1;
+
+    return `${year}/${month}/${day}`;
+  };
+
+  cardDetail.startDate = new Date(setStartAndDue("start")).toISOString();
+  cardDetail.dueDate = new Date(setStartAndDue("end")).toISOString();
+
+  try {
+    const responseCardDetail = (await updateCard(
+      info.event.id,
+      cardDetail,
+      token
+    )) as ICard;
+
+    const updatedLists = lists?.map((list) => {
+      if (list.id != responseCardDetail.listId) return list;
+      const newCards = list.cards?.map((card) => {
+        if (card.id != info.event.id) return card;
+        return responseCardDetail;
+      });
+
+      return { ...list, cards: newCards };
+    }) as BoardType;
+
+    dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists });
+    localStorage.setItem("storedLists", JSON.stringify(updatedLists));
+  } catch (err) {
+    const error = err as IError;
+    console.log(`Error message: ${error.message}`);
+  } finally {
+    console.log("Card dates are updating...");
+  }
+};
+
+export const handleGetAllLists = async () => {
+  return await fetchAllLists();
+};
+
+export const events = (cardDetails: ICard[] | null) => {
+  return cardDetails
+    ? cardDetails?.map((card) => {
+        return {
+          id: card.id,
+          listId: card.listId,
+          title: card.title,
+          start: card.startDate?.slice(0, 10),
+          end: card.dueDate?.slice(0, 10),
+          backgroundColor: (() => {
+            switch (card.priority) {
+              case "High":
+                return "#c1121f";
+              case "Medium":
+                return "#ffc300";
+              case "Low":
+                return "#588157";
+              default:
+                return "#0077b6";
+            }
+          })(),
+        };
+      })
+    : [];
+};
