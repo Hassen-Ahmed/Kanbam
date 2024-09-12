@@ -96,7 +96,7 @@ const CalendarFull = () => {
           <IoMdSearch size={22} />
           <input
             type="text"
-            placeholder="Enter some text"
+            placeholder="Search tasks "
             onChange={(ev) => setSearchTerm(ev.target.value)}
           />
         </div>

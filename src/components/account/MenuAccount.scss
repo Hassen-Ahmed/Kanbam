@@ -10,11 +10,13 @@
 }
 .menu__overlay {
   position: absolute;
-  top: -(var.$height-nav-01 + 0.1rem);
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  top: 50%;
+  left: 50%;
+  width: 200vw;
+  height: 200vh;
+  transform: translate(-50%, -50%);
   z-index: var.$z-ix-1;
+  background-color: rgba(0, 0, 0, 0.15);
 }
 
 .menu {
@@ -27,7 +29,7 @@
   padding-bottom: 1rem;
   border-radius: var.$bor-05;
   box-shadow: -0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.15);
-  z-index: var.$z-ix-200;
+  z-index: var.$z-ix-2000;
 
   & hr {
     @include mixn.hr;

@@ -30,20 +30,15 @@ const SearchBoxStyled = styled.div<INewTheme>`
 
 const SearchBox = () => {
   const [value, setValue] = useState("");
-  const [winWidth, setWinWidth] = useState(0);
   const { handleSearchTextUpdate } = useContext(ListsContext) as IListsContext;
   const { theme } = useContext(KanbamContext) as IkanbamContext;
 
-  useEffect(() => setWinWidth(window.innerWidth), []);
   useEffect(() => handleSearchTextUpdate(value), [value]);
 
   // end of hooks
 
-  const handleVisibilityOfInput = (value: number) => setWinWidth(value);
-
   const textInputOfSearchBox = (
     <input
-      onBlur={() => handleVisibilityOfInput(1000)}
       id="search"
       type="text"
       placeholder="Search Tasks..."
@@ -55,11 +50,11 @@ const SearchBox = () => {
   return (
     <SearchBoxStyled $newtheme={theme} className="search-container">
       <div className="search__box">
-        <label htmlFor="search" onClick={() => handleVisibilityOfInput(1000)}>
+        <label htmlFor="search">
           <IoSearchSharp size={22} />
         </label>
 
-        {winWidth > 600 ? textInputOfSearchBox : null}
+        {textInputOfSearchBox}
       </div>
     </SearchBoxStyled>
   );
