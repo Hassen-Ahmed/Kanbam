@@ -27,12 +27,13 @@ export default function CalendarPicker({
   cardDetail,
   handleIsDatePressed,
 }: IDateCard) {
-  const [value, onChange] = useState<Value>(new Date());
+  const [value, onChange] = useState<Value>(null);
   const [startDate, setStartDate] = useState<Record<string, string>>({
     day: `${new Date().getDate()}`,
     month: `${new Date().getMonth() + 1}`,
     year: `${new Date().getFullYear()}`,
   });
+  const [dueDateGets, setDueDateGets] = useState<number[] | null>(null);
 
   const [reminderDay, setReminderDay] = useState<string | number>(0);
 
@@ -40,7 +41,7 @@ export default function CalendarPicker({
 
   useEffect(() => {
     if (cardDetail.startDate && cardDetail.dueDate) {
-      // onChange(new Date(`${cardDetail.dueDate}`));
+      onChange(new Date(`${cardDetail.dueDate}`));
 
       setStartDate(() => {
         return {
@@ -101,15 +102,19 @@ export default function CalendarPicker({
     }
   }, []);
 
+  useEffect(() => {
+    const newValue = !value ? cardDetail.dueDate : value;
+
+    setDueDateGets(() => {
+      return [
+        new Date(`${newValue}`).getDate(),
+        new Date(`${newValue}`).getMonth() + 1,
+        new Date(`${newValue}`).getFullYear(),
+      ];
+    });
+  }, [value]);
+
   // end of hooks
-
-  const newValue = cardDetail.dueDate || value;
-
-  const dueDateGets = [
-    new Date(`${newValue}`).getDate(),
-    new Date(`${newValue}`).getMonth() + 1,
-    new Date(`${newValue}`).getFullYear(),
-  ];
 
   const dateFormats = ["day", "month", "year"];
 
@@ -188,11 +193,11 @@ export default function CalendarPicker({
         <div className="calendar__due-date">
           <h3 className="heading">Due date: </h3>
           <div className="spans">
-            {dueDateGets.map((item, i) => {
+            {dueDateGets?.map((item, i) => {
               return (
-                <div className="span" key={item}>
+                <div className="span" key={i}>
                   <p>{dateFormats[i]}</p>
-                  <span>{item}</span>
+                  <span>{item || "No"}</span>
                 </div>
               );
             })}
