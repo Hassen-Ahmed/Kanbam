@@ -14,36 +14,36 @@ const NavLinks = ({
   handleActiveButton: ActiveButton;
 }) => {
   return (
-    <>
+    <div className="side-bar-left__btns">
       <NavLink to={"/kanbam/board"} className={handleActiveButton}>
-        <div className=" side-bar-left__btn">
+        <div className="side-bar-left__btn">
           <FaTrello />
-          Board
+          <p className="btn-title">Board</p>
         </div>
       </NavLink>
       <NavLink to={"/kanbam/table"} className={handleActiveButton}>
         <div className="side-bar-left__btn">
           <PiTableLight />
-          Table
+          <p className="btn-title">Table</p>
         </div>
       </NavLink>
       <NavLink to={"/kanbam/calendar"} className={handleActiveButton}>
-        <div className=" side-bar-left__btn">
+        <div className="side-bar-left__btn">
           <SlCalender />
-          Calender
+          <p className="btn-title">Calender</p>
         </div>
       </NavLink>
       <NavLink to={"/kanbam/dashboard"} className={handleActiveButton}>
         <div className="side-bar-left__btn">
           <TfiDashboard />
-          Dashboard
+          <p className="btn-title">Dashboard</p>
         </div>
       </NavLink>
-      <div className="side-bar-left__btn--help side-bar-left__btn">
+      <div className="side-bar-left__btn--help  side-bar-left__btn ">
         <MdHelpOutline />
-        Help
+        <p className="btn-title">Help</p>
       </div>
-    </>
+    </div>
   );
 };
 

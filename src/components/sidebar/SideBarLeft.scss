@@ -2,45 +2,34 @@
 @use "../../assets/style/abstracts/variable" as var;
 
 .side-bar-left {
-  height: 100%;
-  position: relative;
-  border-right: 0.1rem solid var.$border-color-02;
+  position: absolute;
+  top: auto;
+  left: 1rem;
+  height: 90vh;
+  margin-right: 1rem;
   z-index: 2000;
 
-  &__btn-toggler {
-    position: absolute;
-    top: 1rem;
-    right: 0;
-    transform: translateX(50%) rotate(0deg);
-    width: 3rem;
-    height: 3rem;
-    border-radius: var.$bor-50;
-    border: 0.1rem solid var.$border-color-02;
-    box-shadow: 0.1rem 0.2rem 0.5rem rgba(1, 1, 1, 0.25);
-    @include mixn.flexy();
-    cursor: pointer;
+  &__container {
+    @include mixn.flexy(column, flex-start, flex-start);
+    height: 96%;
+    width: auto;
+    box-shadow: 1rem 0.2rem 2rem rgba(1, 1, 1, 0.15);
+    border-radius: var.$bor-05;
+    transition: all 0.5s ease;
+    position: relative;
+
+    .btn-title {
+      transition: all 0.2s ease;
+      width: 0;
+      opacity: 0;
+    }
 
     &:hover {
-      filter: brightness(150%);
+      .btn-title {
+        width: 10rem;
+        opacity: 1;
+      }
     }
-  }
-
-  .toggler--on {
-    right: 1rem;
-    transform: translateX(0%) rotate(180deg);
-    border-radius: var.$bor-05;
-    border: none;
-    box-shadow: none;
-  }
-
-  &__container {
-    height: 100%;
-    width: auto;
-    min-width: 25rem;
-    padding-top: 2.2rem;
-    box-shadow: 3rem 0.5rem 3rem rgba(1, 1, 1, 0.15);
-    transition: all 0.5s ease;
-    display: none;
   }
 
   & hr {
@@ -48,22 +37,23 @@
     border: none;
   }
 
+  &__btns {
+    @include mixn.flexy(column, center, center);
+    padding: 1rem;
+  }
+
   &__btn {
-    @include mixn.flexy(row, flex-start, center, 1.5rem);
-    padding: 1rem 2rem;
+    @include mixn.flexy(row, flex-start, flex-start, 1rem);
+    padding: 1rem 0rem 1rem 1rem;
     font-size: var.$fsi-14;
     font-weight: var.$fwt-400;
-    width: 100%;
     cursor: pointer;
 
     &--workspace {
-      @include mixn.flexy(row, flex-start, center, 1rem);
+      @include mixn.flexy(row, center, center, 1rem);
+      width: 100%;
       margin: 2rem 0;
-
-      & h3 {
-        font-size: var.$fsi-12;
-        font-weight: var.$fwt-400;
-      }
+      cursor: pointer;
     }
 
     &--help {
