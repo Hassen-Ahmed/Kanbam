@@ -1,15 +1,12 @@
-import { useContext, useState } from "react";
-
-import { MdAccountBox } from "react-icons/md";
-import { FaChevronRight } from "react-icons/fa";
-
-import NavLinks from "./NavLinks";
-import "./SideBarLeft.scss";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+import { useContext } from "react";
 import styled from "styled-components";
+import NavLinks from "./NavLinks";
+import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { themes } from "../../utils/constantDatas/themes";
 import { INewTheme } from "../../types/styledComp";
 import { Hr } from "../../utils/constantDatas/styledUtils";
+import "./SideBarLeft.scss";
+import { MdAccountCircle } from "react-icons/md";
 
 const SideBarStyled = styled.div<INewTheme>`
   .side-bar-left {
@@ -21,6 +18,11 @@ const SideBarStyled = styled.div<INewTheme>`
       color: ${({ $newtheme }) => themes[$newtheme].font["tertiary"]};
     }
 
+    &__container {
+      border: 0.1rem solid
+        ${({ $newtheme }) => themes[$newtheme].border["secondary"]};
+    }
+
     &__btn:hover,
     &__btn-active {
       background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover_02"]};
@@ -29,45 +31,16 @@ const SideBarStyled = styled.div<INewTheme>`
 `;
 
 const SideBarLeft = () => {
-  const [isDisplay, setIsDisplay] = useState<boolean>(false);
   const { theme } = useContext(KanbamContext) as IkanbamContext;
-
-  // end of hooks
-
-  const handleDisplay = () =>
-    setIsDisplay((preValue) => (preValue ? false : true));
 
   const handleActiveButton = ({ isActive }: { isActive: boolean }) =>
     isActive ? "side-bar-left__btn-active" : "";
 
-  // JSX
-
   return (
-    <SideBarStyled
-      $newtheme={theme}
-      className="side-bar-left"
-      style={{
-        width: isDisplay ? "auto" : "2rem",
-        backgroundColor: `${themes[theme].bg["side_bar_01"]}`,
-      }}
-    >
-      <div
-        className={`side-bar-left__btn-toggler ${isDisplay && "toggler--on"}`}
-        onClick={handleDisplay}
-      >
-        <FaChevronRight />
-      </div>
-
-      <div
-        className="side-bar-left__container"
-        style={{ display: isDisplay ? "block" : "none" }}
-      >
-        <div className="side-bar-left__btn--workspace side-bar-left__btn">
-          <MdAccountBox size={40} />
-          <div>
-            <h3>hassenbet23@gmain.com</h3>
-            <h3>workspace</h3>
-          </div>
+    <SideBarStyled $newtheme={theme} className="side-bar-left">
+      <div className="side-bar-left__container">
+        <div className="side-bar-left__btn--workspace ">
+          <MdAccountCircle size={40} />
         </div>
 
         <Hr $themename={theme} $group="hover" />
