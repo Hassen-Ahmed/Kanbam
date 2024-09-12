@@ -71,7 +71,7 @@ const router = createBrowserRouter([
       {
         path: "/kanbam/calendar",
         async lazy() {
-          const Calendar = await import("../components/calendar/Calendar");
+          const Calendar = await import("../components/calendar/CalendarFull");
           return { Component: Calendar.default };
         },
       },
