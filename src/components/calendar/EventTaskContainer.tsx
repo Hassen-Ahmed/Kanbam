@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { VscClose } from "react-icons/vsc";
 import { ICard } from "../../types/board.type";
 import { IListFewDetail } from "./CalendarFull";
+import styled from "styled-components";
+import { INewTheme } from "../../types/styledComp";
+import { themes } from "../../utils/constantDatas/themes";
+import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 
 interface IEventTaskContainer {
   showAddTask: boolean;
@@ -12,6 +16,19 @@ interface IEventTaskContainer {
   setShowAddTask: (value: React.SetStateAction<boolean>) => void;
 }
 
+const EventTaskStyled = styled.div<INewTheme>`
+  .task {
+    background-color: ${({ $newtheme }) => themes[$newtheme].bg["card_modal"]};
+    color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
+  }
+
+  select,
+  input {
+    background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
+    color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
+  }
+`;
+
 export default function EventTaskContainer({
   showAddTask,
   setNewTask,
@@ -20,8 +37,11 @@ export default function EventTaskContainer({
   handleAddNewTask,
   setShowAddTask,
 }: IEventTaskContainer) {
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
+
   return (
-    <div
+    <EventTaskStyled
+      $newtheme={theme}
       className="calendar-full_add-task-container"
       style={{ display: showAddTask ? "block" : "none" }}
     >
@@ -67,6 +87,6 @@ export default function EventTaskContainer({
         </div>
       </div>
       <div className="task-overlay" onClick={() => setShowAddTask(false)}></div>
-    </div>
+    </EventTaskStyled>
   );
 }
