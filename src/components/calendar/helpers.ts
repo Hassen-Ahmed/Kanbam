@@ -37,7 +37,7 @@ export const eventResize = async (
 ) => {
   const year = info.event.end.getFullYear();
   const month = info.event.end.getMonth() + 1;
-  const day = info.event.end.getDate() + 1;
+  const day = info.event.end.getDate();
 
   const cardToModify = cardDetails?.filter(
     (card) => card.id == info.event.id
@@ -74,13 +74,16 @@ export const eventDrop = async (
   const setStartAndDue = (position: "start" | "end") => {
     const year = info.event[position].getFullYear();
     const month = info.event[position].getMonth() + 1;
-    const day = info.event[position].getDate() + 1;
+    const day = info.event[position].getDate();
 
     return `${year}/${month}/${day}`;
   };
 
   cardDetail.startDate = new Date(setStartAndDue("start")).toISOString();
-  cardDetail.dueDate = new Date(setStartAndDue("end")).toISOString();
+  if (cardDetail.dueDate) {
+    cardDetail.dueDate = new Date(setStartAndDue("end")).toISOString();
+  }
+  console.log(cardDetail);
 
   try {
     const responseCardDetail = (await updateCard(
@@ -120,8 +123,18 @@ export const events = (cardDetails: ICard[] | null) => {
           id: card.id,
           listId: card.listId,
           title: card.title,
-          start: card.startDate?.slice(0, 10),
-          end: card.dueDate?.slice(0, 10),
+          // start: card.startDate?.slice(0, 10),
+          start: new Date(`${card.startDate}`)
+            .toLocaleDateString()
+            .split("/")
+            .reverse()
+            .join("-"),
+          // end: card.dueDate?.slice(0, 10),
+          end: new Date(`${card.dueDate}`)
+            .toLocaleDateString()
+            .split("/")
+            .reverse()
+            .join("-"),
           backgroundColor: (() => {
             switch (card.priority) {
               case "High":
