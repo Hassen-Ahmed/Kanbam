@@ -42,16 +42,18 @@
 
         select {
           padding: 0.5rem 2rem;
+          border-radius: var.$bor-05;
+          border: 0.1rem solid #4f91fc;
+          outline-color: #4f91fc;
           outline-width: 0.1rem;
           outline-offset: 0;
-          border-radius: var.$bor-05;
         }
       }
 
       input {
         width: 30rem;
         padding: 0.5rem;
-        border: 0.2rem solid #4f91fc;
+        border: 0.1rem solid #4f91fc;
         outline-color: #4f91fc;
         border-radius: var.$bor-05;
       }
