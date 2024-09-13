@@ -14,6 +14,7 @@ import {
   KanbamContext,
 } from "../../../../../context/kanbamContext";
 import { themes } from "../../../../../utils/constantDatas/themes";
+import { MdEditNote } from "react-icons/md";
 
 const TextEditorStyled = styled.div<INewTheme>`
   .text-editor {
@@ -107,7 +108,7 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
           setIsEditorialOpen(true);
         }}
       >
-        Edit
+        <MdEditNote size={20} />
       </button>
     </EditedStyled>
   );
