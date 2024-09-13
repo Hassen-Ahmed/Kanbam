@@ -1,7 +1,7 @@
 @use "../../../../../assets/style/abstracts/mixins" as mixn;
 @use "../../../../../assets/style/abstracts/variable" as var;
 .text-editor {
-  padding-left: 4rem;
+  padding-left: 2rem;
 
   &__starter {
     background-color: rgba(0, 0, 0, 0.05);
@@ -21,7 +21,7 @@
     padding-right: 4rem;
 
     &-content {
-      padding-left: 3rem;
+      padding-left: 1rem;
       font-size: var.$fsi-16;
       ul,
       ol {
@@ -31,20 +31,12 @@
 
     button {
       position: absolute;
-      top: 3rem;
+      top: -4rem;
       right: 0rem;
-      padding: 1rem;
-      background-color: rgba(0, 0, 0, 0.05);
-      border: none;
-      font-size: var.$fsi-16;
-      font-weight: var.$fwt-600;
-      border-radius: var.$bor-015;
-      cursor: pointer;
+      padding: 0.4rem;
+      border: 0.1rem solid rgba(82, 82, 82, 0.5);
       transition: all 0.2s ease;
-
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
-      }
+      cursor: pointer;
     }
   }
 
