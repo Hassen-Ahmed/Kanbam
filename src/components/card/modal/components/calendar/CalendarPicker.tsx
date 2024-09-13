@@ -40,9 +40,11 @@ export default function CalendarPicker({
   const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   useEffect(() => {
-    if (cardDetail.startDate && cardDetail.dueDate) {
+    if (cardDetail.dueDate) {
       onChange(new Date(`${cardDetail.dueDate}`));
+    }
 
+    if (cardDetail.startDate) {
       setStartDate(() => {
         return {
           day: `${new Date(`${cardDetail.startDate}`).getDate()}`,
@@ -135,11 +137,13 @@ export default function CalendarPicker({
     }`;
 
     cardDetail.startDate = `${new Date(startedAt).toISOString()}`;
-    cardDetail.dueDate = new Date(`${value}`).toISOString();
+    if (value) {
+      cardDetail.dueDate = new Date(`${value}`).toISOString();
 
-    const setDateReminder = new Date(`${value}`);
-    setDateReminder.setDate(setDateReminder.getDate() - +reminderDay);
-    cardDetail.dueDateReminder = `${setDateReminder.toISOString()}`;
+      const setDateReminder = new Date(`${value}`);
+      setDateReminder.setDate(setDateReminder.getDate() - +reminderDay);
+      cardDetail.dueDateReminder = `${setDateReminder.toISOString()}`;
+    }
 
     try {
       await updateCard(cardDetail.id!, cardDetail, token);
