@@ -10,8 +10,8 @@ export default function MenuAccountLogo() {
         <ImCamera size={16} />
       </div>
       <div className="menu__logo--texts">
-        <h2 className="menu__logo--user">hassen best</h2>
-        <h3 className="menu__logo--email">hassenbet23@gmail.com</h3>
+        <h2 className="menu__logo--user">Test Account</h2>
+        <h3 className="menu__logo--email">test@gmail.com</h3>
       </div>
     </div>
   );
