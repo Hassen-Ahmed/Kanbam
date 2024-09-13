@@ -40,7 +40,6 @@ const CalendarFull = () => {
     title: "",
     listId: "",
     startDate: "",
-    dueDate: "",
     indexNumber: 0,
   });
 
@@ -115,14 +114,12 @@ const CalendarFull = () => {
     const day = new Date(info.dateStr).getDate();
 
     const startDate = new Date(`${year}/${month}/${day}`).toISOString();
-    const dueDate = new Date(`${year}/${month}/${day + 1}`).toISOString();
 
     setListsFewDetail(listsTitle);
     setNewTask((preValue) => {
       return {
         ...preValue,
         startDate,
-        dueDate,
         listId: listsTitle[0].id,
       };
     });
