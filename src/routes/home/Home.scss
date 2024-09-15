@@ -2,24 +2,48 @@
 @use "../../assets/style/abstracts/variable" as var;
 @import url("https://fonts.googleapis.com/css2?family=Freeman&family=Monoton&display=swap");
 
-.home-container {
-  @include mixn.flexy(column, flex-start);
-  width: 100vw;
-  min-height: 100vh;
-
-  padding-bottom: 2rem;
+@mixin heading_2 {
+  font-size: 3rem;
+  font-weight: var.$fwt-400;
+  font-family: "Freeman", sans-serif;
+  background-color: var.$bg-home;
+  color: white;
+  padding: 1rem 5rem;
 }
 
 .home {
-  background-image: var.$bg-image-home;
-  width: 100%;
-  height: 90vh;
-  padding: 0 20%;
-  @include mixn.flexy(column, center, flex-start, 2rem);
+  @include mixn.flexy(column, flex-start);
+  width: 100vw;
+  min-height: 100vh;
   position: relative;
-  color: white;
 
-  &__main {
+  .up-down {
+    @include mixn.flexy(column, center, center, 0.5rem);
+    position: fixed;
+    top: 40%;
+    right: 2rem;
+    z-index: 5000;
+    color: var.$bg-home;
+    background-color: white;
+    border-radius: 2rem;
+    border: 0.1rem solid var.$bg-home;
+
+    hr {
+      border: 0.1rem solid var.$bg-home;
+      width: 100%;
+    }
+  }
+
+  &__headers {
+    background-image: var.$bg-image-home;
+    width: 100%;
+    height: 90vh;
+    padding: 0 20%;
+    @include mixn.flexy(column, center, flex-start, 2rem);
+    position: relative;
+    color: white;
+  }
+  &__header {
     h1 {
       font-size: 5rem;
       font-weight: var.$fwt-400;
@@ -37,6 +61,7 @@
 
     p {
       font-size: var.$fsi-18;
+      font-size: 5rem;
       font-weight: var.$fwt-500;
     }
 
@@ -88,35 +113,69 @@
       outline-style: dashed;
     }
   }
-}
+  &__main {
+    background-color: white;
+    width: 100vw;
+    min-height: 30vh;
+    height: auto;
+    padding: 0 10%;
+    padding-top: 8rem;
 
-.home__footer {
-  background-color: white;
-  @include mixn.flexy(column, center, center, 2rem);
-  width: 100vw;
-  min-height: 30vh;
-  height: auto;
-  padding-top: 8rem;
+    .heading {
+      @include heading_2;
+    }
+    .icon {
+      color: var.$bg-home;
+    }
+    .desc {
+      background-color: rgba(var.$bg-home, 0.05);
+      font-size: var.$fsi-18;
+      font-family: sans-serif;
+      font-weight: var.$fwt-300;
+      line-height: 1.4;
+      padding: 5rem 2rem;
+      border-radius: var.$bor-05;
+      border: 0.1rem solid rgba(var.$bg-home, 0.25);
+    }
 
-  h2 {
-    font-size: 3rem;
-    font-weight: var.$fwt-400;
-    font-family: "Freeman", sans-serif;
-    background-color: var.$bg-home;
-    color: white;
-    padding: 1rem 5rem;
+    .left-container,
+    .right-container {
+      @include mixn.flexy(column, center, center, 2rem);
+      margin: 15rem 0;
+
+      &:first-child {
+        margin-top: 10rem;
+      }
+    }
+
+    .left {
+      @include mixn.flexy(row, flex-start, center, 1rem);
+      width: 80%;
+      .desc {
+        box-shadow: 2rem 2rem 0.2rem rgba(0, 0, 0, 0.05);
+        width: 70%;
+      }
+    }
+
+    .right {
+      @include mixn.flexy(row-reverse, flex-start, center, 1rem);
+      width: 80%;
+      .desc {
+        box-shadow: -2rem 2rem 0.2rem rgba(0, 0, 0, 0.05);
+        width: 70%;
+      }
+    }
   }
-  p {
-    padding: 1rem 5rem;
-    font-size: var.$fsi-18;
-    font-family: sans-serif;
-    font-weight: var.$fwt-300;
-  }
-  span {
-    margin: 1rem 0;
-    font-family: sans-serif;
-    font-size: var.$fsi-16;
-    font-weight: 100;
-    color: var.$color-grey-02;
+
+  &__footer {
+    margin-bottom: 2rem;
+
+    span {
+      margin: 1rem 0;
+      font-family: sans-serif;
+      font-size: var.$fsi-16;
+      font-weight: 100;
+      color: var.$color-grey-02;
+    }
   }
 }
