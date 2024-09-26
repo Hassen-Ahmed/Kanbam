@@ -7,6 +7,7 @@ import { INewTheme } from "../../types/styledComp";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import styled from "styled-components";
 import { themes } from "../../utils/constantDatas/themes";
+import { useLocation } from "react-router-dom";
 import "./NavBar.scss";
 
 const NavBarStyled = styled.div<INewTheme>`
@@ -27,11 +28,12 @@ const NavBar = () => {
   const [isAccountMenuVisible, setIsAccountMenuVisible] =
     useState<boolean>(false);
   const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const location = useLocation();
 
   return (
     <NavBarStyled $newtheme={theme} className="nav-bar">
       <div className="nav-bar__left">
-        <SearchBox />
+        {!location.pathname.includes("dashboard") && <SearchBox />}
         <ButtonAccount setIsAccountMenuVisible={setIsAccountMenuVisible} />
       </div>
 
