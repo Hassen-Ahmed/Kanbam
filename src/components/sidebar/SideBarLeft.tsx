@@ -4,11 +4,24 @@ import NavLinks from "./NavLinks";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { themes } from "../../utils/constantDatas/themes";
 import { INewTheme } from "../../types/styledComp";
-import { Hr } from "../../utils/constantDatas/styledUtils";
 import "./SideBarLeft.scss";
-import { MdAccountCircle } from "react-icons/md";
+import Logo from "./Logo";
 
 const SideBarStyled = styled.div<INewTheme>`
+  opacity: 0.6;
+  transition: all 0.2s ease;
+  &:hover {
+    opacity: 1;
+  }
+  .logo__icon {
+    background-color: ${({ $newtheme }) => themes[$newtheme].font["tertiary"]};
+
+    &::after,
+    &::before {
+      background-color: ${({ $newtheme }) => themes[$newtheme].bg["nav_01"]};
+    }
+  }
+
   .side-bar-left {
     &,
     &__btn-toggler,
@@ -40,10 +53,8 @@ const SideBarLeft = () => {
     <SideBarStyled $newtheme={theme} className="side-bar-left">
       <div className="side-bar-left__container">
         <div className="side-bar-left__btn--workspace ">
-          <MdAccountCircle size={40} />
+          <Logo />
         </div>
-
-        <Hr $themename={theme} $group="hover" />
 
         <NavLinks handleActiveButton={handleActiveButton} />
       </div>
