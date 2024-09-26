@@ -11,6 +11,14 @@
   z-index: var.$z-ix-2000;
   position: relative;
 
+  @media screen and (max-width: 900px) {
+    padding: 1rem;
+    align-self: flex-end;
+    border-radius: var.$bor-4;
+    margin-top: 0.5rem;
+    margin-right: 1rem;
+  }
+
   &__left {
     @include mixn.flexy(row, space-between, center, 1.5rem);
 
