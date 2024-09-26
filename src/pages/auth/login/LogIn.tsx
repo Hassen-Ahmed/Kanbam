@@ -84,8 +84,12 @@ const LogIn = () => {
       </div>
 
       <div className="tips">
-        <span>Email: test@gmail.com</span>
-        <span>Password: #test1234</span>
+        <span>
+          <span className="label">EMAIL</span>: test@gmail.com
+        </span>
+        <span>
+          <span className="label">PASSWORD</span>: #test1234
+        </span>
       </div>
 
       <div className="login__create-account">

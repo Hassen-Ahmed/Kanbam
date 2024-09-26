@@ -35,8 +35,15 @@
   color: #a23811;
 }
 .tips {
+  @include mixn.flexy(row, center, center, 4rem);
   align-self: center;
-  @include mixn.flexy(column, center, center, 1rem);
   color: #2e33aa;
   font-size: var.$fsi-12;
+
+  span {
+    .label {
+      filter: brightness(120%);
+      font-weight: var.$fwt-700;
+    }
+  }
 }
