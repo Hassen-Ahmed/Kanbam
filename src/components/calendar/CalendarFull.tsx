@@ -160,6 +160,10 @@ const CalendarFull = () => {
     setShowAddTask(false);
   };
 
+  if (!lists) {
+    return <Loading />;
+  }
+
   return (
     <CalendarFullStyled
       $newtheme={theme}
