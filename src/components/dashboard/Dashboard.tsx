@@ -203,9 +203,13 @@ export default function Dashboard() {
             <h2>Task for today</h2>
           </div>
           <div className="tasks">
-            {todayTasks.map((task) => {
-              return <Task {...task} key={task.title} />;
-            })}
+            {todayTasks.length ? (
+              todayTasks.map((task) => {
+                return <Task {...task} key={task.title} />;
+              })
+            ) : (
+              <p>Sorry, you don't have tasks for today.</p>
+            )}
           </div>
         </div>
 
