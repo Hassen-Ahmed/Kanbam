@@ -3,45 +3,35 @@ import { useContext, useState } from "react";
 import ButtonAccount from "../account/ButtonAccount";
 import MenuAccount from "../account/MenuAccount";
 import SearchBox from "./SearchBox";
-import Logo from "./Logo";
-import "./NavBar.scss";
 import { INewTheme } from "../../types/styledComp";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import styled from "styled-components";
 import { themes } from "../../utils/constantDatas/themes";
-import { useLocation } from "react-router-dom";
+import "./NavBar.scss";
 
 const NavBarStyled = styled.div<INewTheme>`
+  opacity: 0.6;
+  transition: all 0.2s ease;
+  &:hover {
+    opacity: 1;
+  }
+
   border: 0.1rem solid
     ${({ $newtheme }) => themes[$newtheme].border["secondary"]};
 
   background-color: ${({ $newtheme }) => themes[$newtheme].bg["side_bar_01"]};
   color: ${({ $newtheme }) => themes[$newtheme].font["tertiary"]};
-
-  & .logo__icon {
-    background-color: ${({ $newtheme }) => themes[$newtheme].font["tertiary"]};
-
-    &::after,
-    &::before {
-      background-color: ${({ $newtheme }) => themes[$newtheme].bg["nav_01"]};
-    }
-  }
 `;
-
-// <MdOutlineKeyboardCommandKey />
 
 const NavBar = () => {
   const [isAccountMenuVisible, setIsAccountMenuVisible] =
     useState<boolean>(false);
   const { theme } = useContext(KanbamContext) as IkanbamContext;
-  const location = useLocation();
 
   return (
     <NavBarStyled $newtheme={theme} className="nav-bar">
-      <Logo />
-
       <div className="nav-bar__left">
-        {location.pathname.includes("board") && <SearchBox />}
+        <SearchBox />
         <ButtonAccount setIsAccountMenuVisible={setIsAccountMenuVisible} />
       </div>
 
