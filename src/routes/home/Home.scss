@@ -21,7 +21,7 @@
     @include mixn.flexy(column, center, center, 0.5rem);
     position: fixed;
     top: 40%;
-    right: 2rem;
+    right: 1rem;
     z-index: 5000;
     color: var.$bg-home;
     background-color: white;
@@ -155,18 +155,37 @@
     .left {
       @include mixn.flexy(row, flex-start, center, 1rem);
       width: 80%;
+
+      @media screen and (max-width: 900px) {
+        @include mixn.flexy(column, center, center, 2rem);
+        width: 100%;
+      }
+
       .desc {
         box-shadow: 2rem 2rem 0.2rem rgba(0, 0, 0, 0.05);
         width: 70%;
+
+        @media screen and (max-width: 900px) {
+          width: 100%;
+        }
       }
     }
 
     .right {
       @include mixn.flexy(row-reverse, flex-start, center, 1rem);
       width: 80%;
+
+      @media screen and (max-width: 900px) {
+        @include mixn.flexy(column, center, center, 2rem);
+        width: 100%;
+      }
+
       .desc {
         box-shadow: -2rem 2rem 0.2rem rgba(0, 0, 0, 0.05);
         width: 70%;
+        @media screen and (max-width: 900px) {
+          width: 100%;
+        }
       }
     }
   }
