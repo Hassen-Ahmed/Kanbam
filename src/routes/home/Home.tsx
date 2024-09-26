@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { isTokenAuthenticated } from "../../utils/jwtAuth";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import "./Home.scss";
@@ -21,6 +21,19 @@ export default function Home() {
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
   const navigate = useNavigate();
 
+  const topElem = useRef(null);
+  const bottomElem = useRef(null);
+
+  const handleScrollToTopElem = () => {
+    const current = topElem.current! as HTMLElement;
+    current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleScrollToBottmElem = () => {
+    const current = bottomElem.current! as HTMLElement;
+    current.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
     if (isTokenAuthenticated()) {
       navigate("/kanbam/board");
@@ -40,11 +53,11 @@ export default function Home() {
   return (
     <div className="home">
       <div className="up-down">
-        <IoIosArrowDropupCircle size={20} />
+        <IoIosArrowDropupCircle size={20} onClick={handleScrollToTopElem} />
         <hr />
-        <IoIosArrowDropdownCircle size={20} />
+        <IoIosArrowDropdownCircle size={20} onClick={handleScrollToBottmElem} />
       </div>
-      <header className="home__headers">
+      <header className="home__headers" ref={topElem}>
         <div className="home__header">
           <h2>From Hassen</h2>
           <h1>Welcome to Kanbam!</h1>
@@ -123,7 +136,7 @@ export default function Home() {
           </div>
         </div>
         {/* access */}
-        <div className="left-container">
+        <div className="left-container" ref={bottomElem}>
           <h2 className="heading">How to access it</h2>
           <div className="left">
             <span className="icon">
