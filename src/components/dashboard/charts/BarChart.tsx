@@ -5,7 +5,13 @@ import { IDataBar } from "../Dashboard";
 
 const font_rotate = window.innerWidth < 700 ? 15 : 0;
 
-export default function BarChart({ data }: { data: IDataBar[] }) {
+export default function BarChart({
+  data,
+  legendName,
+}: {
+  data: IDataBar[];
+  legendName: string;
+}) {
   const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   return (
@@ -36,7 +42,7 @@ export default function BarChart({ data }: { data: IDataBar[] }) {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: font_rotate,
-        legend: "Lists",
+        legend: `${legendName}`,
         legendPosition: "middle",
         legendOffset: 42,
       }}

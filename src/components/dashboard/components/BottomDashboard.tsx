@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import BarChart from "../charts/BarChart";
 import { ListsContext } from "../../../context/ListsContext";
 import { BoardType, IListsContext } from "../../../types/board.type";
@@ -15,6 +15,8 @@ export default function BottomDashboard({
 }: IBottomDashboard) {
   const { lists } = useContext(ListsContext) as IListsContext;
 
+  const [legendName, setLegendName] = useState("Lists");
+
   return (
     <div className="bottom">
       <div className="bar">
@@ -23,7 +25,10 @@ export default function BottomDashboard({
           <select
             name="cardby"
             id="cardby"
-            onChange={(ev) => handleBarData(ev.target.value, lists!)}
+            onChange={(ev) => {
+              setLegendName(ev.target.value);
+              handleBarData(ev.target.value, lists!);
+            }}
           >
             <option value="Lists">Lists</option>
             <option value="Priority">Priority</option>
@@ -31,7 +36,7 @@ export default function BottomDashboard({
           </select>
         </div>
         <div className="chart">
-          <BarChart data={dataBar} />
+          <BarChart data={dataBar} legendName={legendName} />
         </div>
       </div>
     </div>
