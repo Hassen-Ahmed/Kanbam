@@ -4,7 +4,7 @@ import { MdHelpOutline } from "react-icons/md";
 import { TfiDashboard } from "react-icons/tfi";
 import { PiTableLight } from "react-icons/pi";
 import { SlCalender } from "react-icons/sl";
-import { FaTrello } from "react-icons/fa";
+import { HiViewBoards } from "react-icons/hi";
 
 type ActiveButton = ({ isActive }: { isActive: boolean }) => string;
 
@@ -17,7 +17,7 @@ const NavLinks = ({
     <div className="side-bar-left__btns">
       <NavLink to={"/kanbam/board"} className={handleActiveButton}>
         <div className="side-bar-left__btn">
-          <FaTrello />
+          <HiViewBoards />
           <p className="btn-title">Board</p>
         </div>
       </NavLink>

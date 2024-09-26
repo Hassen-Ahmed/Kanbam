@@ -8,16 +8,20 @@
   height: 100vh;
   margin-right: 1rem;
   z-index: var.$z-ix-1000;
-  @include mixn.flexy(column, flex-end);
+  @include mixn.flexy(column, center);
 
   &__container {
-    @include mixn.flexy(column, flex-start, flex-start);
-    height: 96%;
+    @include mixn.flexy(column, flex-start, flex-start, 10%);
+    height: 90%;
     width: auto;
     box-shadow: 1rem 0.2rem 2rem rgba(1, 1, 1, 0.15);
-    border-radius: var.$bor-05 var.$bor-05 0 0;
+    border-radius: var.$bor-2;
     transition: all 0.5s ease;
     position: relative;
+
+    @media screen and (max-width: 600px) {
+      height: 90%;
+    }
 
     .btn-title {
       transition: all 0.2s ease;
@@ -37,6 +41,12 @@
         &::after {
           background-color: #3d83eb;
         }
+      }
+
+      .logo__heading {
+        opacity: 1;
+        width: 10rem;
+        margin-left: 1rem;
       }
     }
   }

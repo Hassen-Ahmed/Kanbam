@@ -7,19 +7,14 @@
 
     input {
       outline: none;
-      border-radius: var.$bor-05;
+      border-radius: var.$bor-2;
       padding: 0.6rem 2.2rem 0.6rem 4rem;
       font-size: var.$fsi-16;
       font-weight: var.$fwt-500;
 
       @media screen and (max-width: 700px) {
-        width: 12rem;
+        width: 18rem;
         margin-right: 1rem;
-
-        &:hover,
-        &:focus {
-          width: 18rem;
-        }
       }
     }
 
