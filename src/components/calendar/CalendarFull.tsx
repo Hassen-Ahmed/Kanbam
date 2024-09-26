@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect, useState } from "react";
-import ReactDOM from "react-dom/client";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -9,7 +8,6 @@ import interactionPlugin from "@fullcalendar/interaction";
 
 import { ListsContext } from "../../context/ListsContext";
 import { BoardType, ICard, IListsContext } from "../../types/board.type";
-import { IoMdSearch } from "react-icons/io";
 import Loading from "../notifications/Loading";
 import CardModal from "../card/modal/CardModal";
 import {
@@ -22,15 +20,28 @@ import {
 import "./CalendarFull.scss";
 import Event from "./Event";
 import EventTaskContainer from "./EventTaskContainer";
+import { INewTheme } from "../../types/styledComp";
+import styled from "styled-components";
+import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+import { themes } from "../../utils/constantDatas/themes";
 
 export interface IListFewDetail {
   id: string;
   title: string;
 }
 
+const CalendarFullStyled = styled.div<INewTheme>`
+  .fc {
+    color: ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+  }
+`;
+
 const CalendarFull = () => {
-  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
-  const [searchTerm, setSearchTerm] = useState("");
+  const { lists, dispatch, searchText } = useContext(
+    ListsContext
+  ) as IListsContext;
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
+
   const [cardDetails, setCardDetails] = useState<ICard[] | null>(null);
   const [cardDetail, setCardDetail] = useState<ICard | null>(null);
 
@@ -71,7 +82,7 @@ const CalendarFull = () => {
     });
 
     cardListFiltered = cardList.filter((card) =>
-      card.title.toLocaleLowerCase().includes(searchTerm.trim())
+      card.title.toLocaleLowerCase().includes(searchText.trim())
     );
 
     setCardDetails(cardListFiltered);
@@ -79,31 +90,7 @@ const CalendarFull = () => {
 
   useEffect(() => {
     handleCardDetailsAssignment();
-  }, [searchTerm, lists]);
-
-  useEffect(() => {
-    const searchContainer =
-      document.getElementsByClassName("fc-toolbar-chunk")[1];
-
-    if (searchContainer) {
-      const newDiv = document.createElement("div");
-      searchContainer.appendChild(newDiv);
-
-      const root = ReactDOM.createRoot(newDiv);
-      root.render(
-        <div className="calendar__search-container">
-          <IoMdSearch size={22} />
-          <input
-            type="text"
-            placeholder="Search tasks "
-            onChange={(ev) => setSearchTerm(ev.target.value)}
-          />
-        </div>
-      );
-    }
-
-    searchContainer.classList.add("calendar__search-box-title");
-  }, []);
+  }, [searchText, lists]);
 
   const handleDateClick = (info: any) => {
     const listsTitle = listsFewDetail.filter(
@@ -174,7 +161,13 @@ const CalendarFull = () => {
   };
 
   return (
-    <div className="calendar-full">
+    <CalendarFullStyled
+      $newtheme={theme}
+      className="calendar-full"
+      style={{
+        backgroundColor: theme == "light" ? "#ffffff" : "#3d4349",
+      }}
+    >
       {!cardDetails && (
         <div className="calendar-full__loading">
           <Loading />
@@ -219,7 +212,7 @@ const CalendarFull = () => {
         eventDrop={handleEventDrop}
         eventResize={handleEventResize}
       />
-    </div>
+    </CalendarFullStyled>
   );
 };
 
