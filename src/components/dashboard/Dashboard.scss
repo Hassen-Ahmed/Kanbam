@@ -49,7 +49,7 @@
       grid-template-rows: 1fr;
     }
     @media screen and (max-width: 700px) {
-      @include mixn.flexy(column, center, center);
+      @include mixn.flexy(column, center, center, 5rem);
     }
 
     &__left {
@@ -63,9 +63,11 @@
         place-self: start stretch;
       }
       @media screen and (max-width: 700px) {
-        @include mixn.flexy(column, center, center);
+        @include mixn.flexy(column, flex-start);
         width: 100%;
-        margin-bottom: 4rem;
+        height: auto;
+        max-height: 100%;
+
         padding: 0;
       }
 
@@ -75,10 +77,9 @@
       }
 
       .tasks {
-        width: 90%;
-        max-width: auto;
-        padding: 1rem 1rem 1rem 0;
+        width: 100%;
         height: 100%;
+        padding: 1rem 1rem 1rem 0;
         overflow-y: scroll;
 
         @include mixn.flexy(column, flex-start, center, 2rem);
@@ -96,7 +97,7 @@
         grid-column: 1/2;
       }
       @media screen and (max-width: 700px) {
-        @include mixn.flexy(column, center, center);
+        @include mixn.flexy(column, center, center, 10rem);
         align-self: center;
         width: 100%;
       }
@@ -114,6 +115,10 @@
           grid-template-columns: 1fr;
           grid-template-rows: 1fr 1fr;
         }
+        @media screen and (max-width: 700px) {
+          @include mixn.flexy(column, center, center, 3rem);
+          height: auto;
+        }
 
         .pie {
           grid-column: 1/2;
@@ -125,7 +130,8 @@
             grid-column: 1/2;
           }
           @media screen and (max-width: 700px) {
-            height: 70%;
+            height: 40vh;
+            width: 100%;
           }
 
           .headers {
@@ -141,9 +147,10 @@
             place-self: center stretch;
             width: 90%;
             height: 90%;
+
             @media screen and (max-width: 700px) {
               width: 100%;
-              height: 30vh;
+              height: 100%;
             }
           }
         }
@@ -158,7 +165,10 @@
           @media screen and (max-width: 700px) {
             @include mixn.flexy(column, flex-start, flex-start);
             width: 100%;
-            height: 30vh;
+            height: auto;
+            max-height: 90vh;
+
+            // background-color: rebeccapurple;
           }
 
           .headers {
@@ -177,9 +187,11 @@
           &-wrapper {
             height: 15rem;
             overflow-y: scroll;
+
             @media screen and (max-width: 700px) {
               @include mixn.flexy(column, flex-start, flex-start);
               width: 100%;
+              height: 100%;
             }
           }
 
@@ -215,8 +227,10 @@
           height: 90%;
 
           @media screen and (max-width: 700px) {
+            align-self: flex-start;
             width: 70vw;
-            height: 50vh;
+            height: 60vh;
+            overflow-x: scroll;
           }
 
           .headers {
@@ -239,7 +253,7 @@
               @include mixn.flexy(column, flex-start, flex-start);
               width: 165%;
               height: 50vh;
-              margin-left: -5rem;
+              margin-left: -3.2rem;
             }
           }
         }
