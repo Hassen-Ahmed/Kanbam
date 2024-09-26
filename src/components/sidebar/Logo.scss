@@ -1,0 +1,50 @@
+@use "../../assets/style/abstracts/mixins" as mixn;
+@use "../../assets/style/abstracts/variable" as var;
+@use "../../assets/style/base/animation" as *;
+
+.logo-kanbam {
+  @include mixn.flexy();
+
+  @media screen and (max-width: 600px) {
+    margin-left: 0;
+  }
+}
+
+.logo__icon {
+  width: 3rem;
+  height: 3.2rem;
+  padding: 0.2rem 0;
+  border-radius: var.$bor-02;
+  position: relative;
+
+  @mixin sudo-ele($duration: 0.2s, $delay: 0.2s) {
+    content: "";
+    position: absolute;
+    background-color: rgb(44, 44, 44);
+    top: 0.3rem;
+    width: 0.9rem;
+    border-radius: var.$bor-015;
+
+    animation: logo-up-down $duration ease $delay infinite;
+  }
+
+  &::after {
+    @include sudo-ele(1s, 0.5s);
+    left: 0.34em;
+    height: 70%;
+  }
+
+  &::before {
+    @include sudo-ele(1s, 0.2s);
+    right: 0.34em;
+    height: 50%;
+  }
+}
+
+.logo__heading {
+  font-size: 2.4rem;
+  opacity: 0;
+  width: 0rem;
+  margin-left: 0;
+  transition: all 0.2s ease;
+}
