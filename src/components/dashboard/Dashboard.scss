@@ -10,7 +10,7 @@
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 11fr;
-
+  gap: 2rem;
   margin-top: 1rem;
   margin-left: 7.5rem;
   margin-right: 1rem;
@@ -29,11 +29,13 @@
   &__heading {
     grid-row: 1/2;
     font-size: var.$fsi-14;
+    border-bottom: 0.05rem solid rgba(128, 128, 128, 0.25);
 
     @media screen and (max-width: 700px) {
       @include mixn.flexy(column, flex-start, flex-start);
       margin-bottom: 4rem;
       padding-left: 2rem;
+      padding-bottom: 1rem;
     }
   }
 
