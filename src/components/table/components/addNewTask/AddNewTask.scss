@@ -1,0 +1,76 @@
+@use "../../../../assets/style/abstracts/mixins" as mixn;
+@use "../../../../assets/style/abstracts/variable" as var;
+
+.task-add-new {
+  &__sub {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    @include mixn.flexy(column, center, flex-start, 1rem);
+    width: 40rem;
+    padding: 2rem 3rem;
+    border-radius: var.$bor-05;
+    z-index: var.$z-ix-4500;
+
+    @media screen and (max-width: 900px) {
+      width: 28rem;
+    }
+
+    .task__options {
+      @include mixn.flexy(row, flex-start, center, 2rem);
+      select {
+        padding: 0.2rem 2rem;
+        border-radius: var.$bor-05;
+      }
+    }
+
+    input {
+      width: 100%;
+      padding: 0.5rem 1rem;
+      border-radius: var.$bor-05;
+
+      outline-color: transparent;
+      outline-width: 0.01rem;
+    }
+
+    .task--add-btn {
+      @include mixn.flexy(row, flex-start, center, 1rem);
+      width: auto;
+      height: 3rem;
+
+      button {
+        height: 100%;
+        padding: 0.5rem 2rem;
+        border: none;
+        color: white;
+        background-color: royalblue;
+      }
+      .close-btn {
+        background-color: rgba(255, 255, 255, 0.15);
+        padding: 0 0.8rem;
+        height: 100%;
+        @include mixn.flexy();
+      }
+      .close-btn,
+      button {
+        transition: all 0.1s ease;
+
+        &:hover {
+          filter: brightness(80%);
+        }
+      }
+    }
+  }
+  .task-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.01);
+    z-index: var.$z-ix-100;
+  }
+}

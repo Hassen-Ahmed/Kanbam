@@ -117,8 +117,7 @@ export default function CardModal({
       cardDetail.title = titleValueOfThisCard;
 
       try {
-        const res = await updateCard(cardDetail.id!, cardDetail, token);
-        console.log("res from CardModal:--->>", res);
+        await updateCard(cardDetail.id!, cardDetail, token);
         setIsTitleInputVisible(false);
       } catch (err) {
         const error = err as IError;

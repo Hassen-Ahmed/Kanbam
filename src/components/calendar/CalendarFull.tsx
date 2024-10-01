@@ -24,6 +24,7 @@ import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { themes } from "../../utils/constantDatas/themes";
+import PageReloader from "../../hooks/PageReloader";
 
 export interface IListFewDetail {
   id: string;
@@ -55,6 +56,10 @@ const CalendarFull = () => {
   });
 
   const [listsFewDetail, setListsFewDetail] = useState<IListFewDetail[]>([]);
+
+  //
+  PageReloader();
+  //
 
   const handleCardDetailsAssignment = async () => {
     let newLists: BoardType = [];
@@ -184,6 +189,7 @@ const CalendarFull = () => {
           handleModlaVisibility={handleModlaVisibility}
         />
       )}
+
       {
         <EventTaskContainer
           showAddTask={showAddTask}

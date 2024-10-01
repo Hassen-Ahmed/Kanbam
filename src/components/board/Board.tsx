@@ -19,6 +19,7 @@ import { themes } from "../../utils/constantDatas/themes";
 import styled from "styled-components";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { INewTheme } from "../../types/styledComp";
+import PageReloader from "../../hooks/PageReloader";
 
 const BoardStyled = styled.div<INewTheme>`
   .board {
@@ -58,6 +59,10 @@ const Board = () => {
   ) as IListsContext;
   const navigate = useNavigate();
   const { theme } = useContext(KanbamContext) as IkanbamContext;
+
+  //
+  PageReloader();
+  //
 
   useEffect(() => {
     findAllLists().then((data) => {
