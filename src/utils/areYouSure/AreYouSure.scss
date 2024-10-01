@@ -1,0 +1,45 @@
+@use "../../assets//style/abstracts/mixins" as mixn;
+@use "../../assets//style/abstracts/variable" as var;
+
+.sure-to-del-table {
+  @include mixn.flexy(column, center, center, 2rem);
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  padding: 2rem 5rem;
+  border-radius: var.$bor-05;
+  transform: translate(-50%, -50%);
+  z-index: 8000;
+
+  .overlay-table {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200vw;
+    height: 200vw;
+    z-index: var.$z-ix-500;
+  }
+
+  .btn-del_wrapper {
+    @include mixn.flexy(row, center, center, 1rem);
+    z-index: var.$z-ix-1000;
+    .btn-del {
+      button {
+        padding: 0.5rem 3rem;
+        border: none;
+        text-align: center;
+        cursor: pointer;
+
+        &:hover {
+          filter: brightness(120%);
+        }
+      }
+    }
+
+    .yes button {
+      background-color: royalblue;
+      color: white;
+    }
+  }
+}
