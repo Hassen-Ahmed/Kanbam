@@ -11,6 +11,7 @@ import TopDashboard from "./components/TopDashboard";
 import BottomDashboard from "./components/BottomDashboard";
 import Task from "./Task";
 import "./Dashboard.scss";
+import PageReloader from "../../hooks/PageReloader";
 
 const DashboardStyled = styled.div<INewTheme>`
   color: ${({ $newtheme }) => themes[$newtheme].font["primary"]};
@@ -63,6 +64,10 @@ export default function Dashboard() {
   const [todayTasks, setTodayTasks] = useState<ITodayTasks[]>([]);
   const [dataPie, setDataPie] = useState<IDataPie[] | null>(null);
   const [dataBar, setDataBar] = useState<IDataBar[] | null>(null);
+
+  //
+  PageReloader();
+  //
 
   const handleBarData = (task: string, lists: BoardType) => {
     const collectBarData: IDataBar[] = [];
