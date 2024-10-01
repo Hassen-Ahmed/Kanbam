@@ -1,0 +1,54 @@
+@use "../../../assets/style/abstracts/mixins" as mixn;
+@use "../../../assets/style/abstracts/variable" as var;
+
+.task-table {
+  display: grid;
+  grid-template-columns: 1fr 3fr repeat(4, 2fr);
+  grid-template-rows: 1fr;
+  align-items: center;
+
+  width: 100%;
+  padding: 1rem 2rem;
+  border-bottom: 0.05rem solid rgba(128, 128, 128, 0.25);
+  box-shadow: 0.1rem 0.1rem 1rem rgba(0, 0, 0, 0.08);
+  font-size: var.$fsi-12;
+  font-weight: var.$fwt-400;
+
+  @media screen and (max-width: 900px) {
+    font-size: 0.5rem;
+  }
+
+  .priority span {
+    padding: 0.5rem 3rem 0.5rem 1rem;
+    color: white;
+    border-radius: var.$bor-05;
+
+    @media screen and (max-width: 900px) {
+      padding: 0.5rem;
+    }
+  }
+
+  .action {
+    @include mixn.flexy(row, flex-start, center, 1rem);
+
+    &-btn {
+      @include mixn.flexy();
+      padding: 0.2rem;
+      transition: all 0.2s ease;
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(1.2);
+      }
+    }
+
+    .edit {
+      background-color: rgba(0, 128, 0, 0.25);
+      color: green;
+    }
+    .delete {
+      background-color: rgba(255, 0, 0, 0.25);
+      color: red;
+    }
+  }
+}
