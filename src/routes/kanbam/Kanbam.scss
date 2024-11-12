@@ -10,11 +10,12 @@
   &__sub {
     @include mixn.flexy(row, flex-start, center);
     width: 100%;
-    height: 98%;
+    height: 95%;
   }
 
   &__outlet {
     @include mixn.flexy();
+
     width: 100%;
     height: 100%;
   }
