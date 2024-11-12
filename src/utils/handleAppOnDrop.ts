@@ -1,8 +1,8 @@
-import { BoardType, IList, Cards } from "../types/board.type";
+import { ICard, IList, IListsWithCards } from "../types/kanbam";
 import { IError } from "../types/status.type";
 import { updateCard, updateList } from "./api/updates";
 
-export const handleAppOnDrop = (lists: BoardType | null) => {
+export const handleAppOnDrop = (lists: IListsWithCards[] | null) => {
   const token = localStorage.getItem("token");
   if (!token) return;
   // on this onDrop update reorderd lists and card
@@ -22,8 +22,9 @@ export const handleAppOnDrop = (lists: BoardType | null) => {
       isThereSomeListsDifference = true;
 
       listsForPutRequest.push({
-        title: lists[i].title,
         id: lists[i].id as string,
+        boardId: lists[i].boardId,
+        title: lists[i].title,
         indexNumber: lists[i].indexNumber,
       });
     }
@@ -41,7 +42,7 @@ export const handleAppOnDrop = (lists: BoardType | null) => {
   } else {
     // for cards only if the lists result is ok no difference.
     let isThereSomeCardsDiff = false;
-    const cardsForPutRequest: Cards = [];
+    const cardsForPutRequest: ICard[] = [];
     for (let j = 0; j < lists?.length; j++) {
       const updatedCardsFromLists = lists[j].cards;
       const cardsFromStoredLists = pareseStoredLists[j].cards;
@@ -78,16 +79,19 @@ export const handleAppOnDrop = (lists: BoardType | null) => {
 
 async function asyncUpdaterList(lists: IList[], token: string) {
   return Promise.all(
-    lists.map(async (listObj) => {
-      return await updateList(listObj.id!, listObj, token);
+    lists.map((listObj) => {
+      updateList(listObj.id!, listObj, token).catch((error) => ({
+        error,
+        listObj,
+      }));
     })
   );
 }
 
-async function asyncUpdateCard(cards: Cards, token: string) {
+async function asyncUpdateCard(cards: ICard[], token: string) {
   return Promise.all(
     cards.map((card) => {
-      return updateCard(card.id!, card, token);
+      updateCard(card.id!, card, token).catch((error) => ({ error, card }));
     })
   );
 }
