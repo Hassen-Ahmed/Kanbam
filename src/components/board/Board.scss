@@ -8,13 +8,6 @@
   align-self: flex-start;
 }
 
-.board__loading {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
 .board {
   @include mixn.flexy(row, flex-start, flex-start, 1.4rem);
   padding: 3rem 1rem;
