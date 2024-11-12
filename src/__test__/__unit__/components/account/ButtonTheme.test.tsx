@@ -6,6 +6,21 @@ import { KanbamContext } from "../../../../context/kanbamContext";
 const mockThemeSetter = vi.fn();
 const mockItemDragging = { current: null };
 const mockTheme2 = "dark";
+const paramsWorkspace = {
+  w_id: "string",
+  w_name: "string",
+};
+const paramsBoard = {
+  b_id: "string",
+  b_name: "string",
+};
+const handleSetParamsWorkspace = vi.fn();
+const handleSetParamsBoard = vi.fn();
+const userDetail = {
+  email: "string",
+  userName: "string",
+};
+const setUserDetail = vi.fn();
 
 const renderWithContext = (component: React.ReactNode) => {
   return render(
@@ -14,6 +29,12 @@ const renderWithContext = (component: React.ReactNode) => {
         theme: mockTheme2,
         themeSetter: mockThemeSetter,
         itemDragging: mockItemDragging,
+        paramsWorkspace,
+        paramsBoard,
+        handleSetParamsWorkspace,
+        handleSetParamsBoard,
+        userDetail,
+        setUserDetail,
       }}
     >
       {component}
