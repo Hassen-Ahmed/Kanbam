@@ -10,18 +10,18 @@ export default function Auth() {
 
   useEffect(() => {
     if (isTokenAuthenticated()) {
-      navigate("/kanbam/board");
+      navigate("/");
       setIsUserAuthenticated(true);
     } else {
       setIsUserAuthenticated(false);
     }
-  }, []);
+  }, [navigate]);
 
   if (isUserAuthenticated)
     return (
-      <>
-        <Loading />;
-      </>
+      <div className="loading-notification__container">
+        <Loading />
+      </div>
     );
 
   return (
