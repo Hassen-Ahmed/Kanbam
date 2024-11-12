@@ -29,3 +29,10 @@ body {
   height: 10px;
   background-color: #6e849600;
 }
+
+.loading-notification__container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
