@@ -1,8 +1,8 @@
-import { Outlet, useLocation, useParams } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import NavBar from "../../components/nav/NavBar";
 import SideBarLeft from "../../components/sidebar/SideBarLeft";
 import { ListsContext } from "../../context/ListsContext";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { handleAppOnDrop } from "../../utils/handleAppOnDrop";
 import styled from "styled-components";
 import { INewTheme } from "../../types/styledComp";
@@ -31,17 +31,8 @@ export const GlobalStyle = styled.div<INewTheme>`
 
 export default function Kanbam() {
   const { lists } = useContext(ListsContext) as IListsContext;
-  const { theme, handleSetParamsBoard } = useContext(
-    KanbamContext
-  ) as IkanbamContext;
-  const { b_id, b_name } = useParams<{ b_id: string; b_name: string }>();
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
   const location = useLocation();
-
-  //
-
-  useEffect(() => {
-    if (b_id && b_name) handleSetParamsBoard({ b_id, b_name });
-  }, [b_id, b_name, handleSetParamsBoard]);
 
   return (
     <GlobalStyle
