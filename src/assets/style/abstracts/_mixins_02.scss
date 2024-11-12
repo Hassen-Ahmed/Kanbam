@@ -18,3 +18,119 @@
     border: 0.1rem dashed grey;
   }
 }
+@mixin item {
+  .item {
+    @include mixn.flexy(row, flex-end, center);
+    padding: 1rem 2rem;
+    width: 30rem;
+
+    @media screen and (max-width: 500px) {
+      padding: 1rem;
+      @include mixn.flexy(row, space-between, center);
+      width: 100%;
+    }
+
+    &-name {
+      width: 100%;
+      text-align: left;
+    }
+
+    h4 {
+      font-size: var.$fsi-14;
+      text-transform: capitalize;
+      margin-bottom: 0.4rem;
+    }
+    .desc {
+      opacity: 0.7;
+    }
+
+    &__btns {
+      @include mixn.flexy(row, center, center, 1rem);
+
+      .btn {
+        @include mixn.flexy();
+        padding: 0.5rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+        &:active {
+          transform: scale(1);
+        }
+
+        &__edit {
+          background-color: rgba(0, 128, 0, 0.4);
+          color: white;
+        }
+        &__delete {
+          background-color: rgba(255, 0, 0, 0.5);
+          color: red;
+        }
+      }
+    }
+  }
+}
+
+@mixin bottom_ws_bs {
+  &__bottom {
+    @include mixn.flexy(column, flex-start, flex-start, 1rem);
+    width: 100%;
+    padding: 5rem 10rem;
+
+    @media screen and (max-width: 500px) {
+      @include mixn.flexy(column, center, center, 1rem);
+      padding: 2rem;
+    }
+
+    .heading {
+      font-size: var.$fsi-18;
+      margin-bottom: 2rem;
+    }
+
+    .list {
+      @include mixn.flexy(row, flex-start, center, 4rem);
+      flex-wrap: wrap;
+      width: 100%;
+
+      @media screen and (max-width: 500px) {
+        @include mixn.flexy(row, flex-start, center, 2rem);
+      }
+
+      .empty-data {
+        font-size: var.$fsi-16;
+        margin-top: 2rem;
+        color: yellow;
+      }
+
+      @include item;
+    }
+  }
+}
+
+@mixin create-btn_ws_bs($need_hover: 1) {
+  background-color: royalblue;
+  @include mixn.flexy(row, center, center, 1rem);
+  padding: 1rem 2rem;
+  border-radius: var.$bor-05;
+  box-shadow: 0.1rem 0.1rem 1rem rgba(0, 0, 0, 0.1);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  button {
+    height: 100%;
+    border: none;
+    color: white;
+    background-color: royalblue;
+    cursor: pointer;
+  }
+
+  &:hover {
+    transform: scale($need_hover);
+  }
+  &:active {
+    transform: scale(1);
+  }
+}
