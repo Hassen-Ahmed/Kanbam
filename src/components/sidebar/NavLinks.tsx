@@ -1,16 +1,12 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 
 import { MdGroupAdd, MdHelpOutline } from "react-icons/md";
 import { TfiDashboard } from "react-icons/tfi";
 import { PiTableLight } from "react-icons/pi";
 import { SlCalender } from "react-icons/sl";
 import { HiViewBoards } from "react-icons/hi";
-import { useContext, useEffect, useState } from "react";
-import {
-  IkanbamContext,
-  IParamsBoard,
-  KanbamContext,
-} from "../../context/kanbamContext";
+import { useState } from "react";
+
 import { FaUsersGear } from "react-icons/fa6";
 import { IError } from "../../types/status.type";
 import NewMember, { INewMemberDetail } from "./components/NewMember";
@@ -22,23 +18,8 @@ const NavLinks = ({
 }: {
   handleActiveButton: ActiveButtonType;
 }) => {
-  const { paramsBoard } = useContext(KanbamContext) as IkanbamContext;
-  const [localParams, setLocalParams] = useState({
-    b_id: paramsBoard.b_id,
-    b_name: paramsBoard.b_name,
-  });
+  const { b_id, b_name } = useParams<{ b_id: string; b_name: string }>();
 
-  useEffect(() => {
-    if (!paramsBoard.b_id && !paramsBoard.b_name) {
-      const storedParams = localStorage.getItem("paramsBoardInfo");
-
-      if (storedParams) {
-        const { b_id, b_name } = JSON.parse(storedParams) as IParamsBoard;
-
-        if (b_id && b_name) setLocalParams({ b_id, b_name });
-      }
-    }
-  }, [paramsBoard]);
   const [requestError, setRequestError] = useState(false);
   const [showNewMemberModal, setShowNewMemberModal] = useState(false);
   const handleNewMemberModlaVisibility = (value: boolean) =>
@@ -65,6 +46,8 @@ const NavLinks = ({
       console.log("Error Creating Board: ", error.message);
     }
   };
+
+  // console.log("b_id: ", b_id);
 
   return (
     <div className="side-bar-left__btns">
@@ -93,7 +76,7 @@ const NavLinks = ({
       <br />
       <br />
       <NavLink
-        to={`/kanbam/b/${localParams.b_id}/${localParams.b_name}`}
+        to={`/kanbam/b/${b_id}/${b_name}`}
         className={handleActiveButton}
       >
         <div className="side-bar-left__btn">
@@ -102,7 +85,7 @@ const NavLinks = ({
         </div>
       </NavLink>
       <NavLink
-        to={`/kanbam/tb/${localParams.b_id}/${localParams.b_name}`}
+        to={`/kanbam/tb/${b_id}/${b_name}`}
         className={handleActiveButton}
       >
         <div className="side-bar-left__btn">
@@ -111,7 +94,7 @@ const NavLinks = ({
         </div>
       </NavLink>
       <NavLink
-        to={`/kanbam/cal/${localParams.b_id}/${localParams.b_name}`}
+        to={`/kanbam/cal/${b_id}/${b_name}`}
         className={handleActiveButton}
       >
         <div className="side-bar-left__btn">
@@ -120,7 +103,7 @@ const NavLinks = ({
         </div>
       </NavLink>
       <NavLink
-        to={`/kanbam/ds/${localParams.b_id}/${localParams.b_name}`}
+        to={`/kanbam/ds/${b_id}/${b_name}`}
         className={handleActiveButton}
       >
         <div className="side-bar-left__btn">
