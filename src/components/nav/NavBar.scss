@@ -3,7 +3,7 @@
 
 .nav-bar {
   @include mixn.flexy(row, space-between, center, 1rem);
-  margin-top: 0.2rem;
+  margin: 0.2rem 0;
   padding: 0 1rem;
   height: var.$height-nav-01;
   border-radius: var.$bor-2;
@@ -24,6 +24,13 @@
 
     @media screen and (max-width: 400px) {
       @include mixn.flexy();
+    }
+
+    .nav-link-container {
+      @include mixn.flexy(row, space-between, center, 1.5rem);
+      .nav-link {
+        @include mixn.flexy(row, space-between, center);
+      }
     }
   }
 }
