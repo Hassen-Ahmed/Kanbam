@@ -1,23 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IActionBoard } from "../../types/actions.type";
-import { BoardType, ICard } from "../../types/board.type";
+import { IListsWithCards, ICard, ICardCreate } from "../../types/kanbam";
 import { IError } from "../../types/status.type";
 import { postCard } from "../../utils/api/posts";
 import { updateCard } from "../../utils/api/updates";
-import { fetchAllLists } from "../../utils/fetchAllLists";
 
 const token = localStorage.getItem("token")!;
+
 export const createNewTask = async (
   dispatch: (value: IActionBoard) => void,
-  lists: BoardType,
-  newTask: ICard
+  lists: IListsWithCards[],
+  newTask: ICardCreate
 ) => {
   try {
     const res = (await postCard(newTask, token)) as ICard;
     const updatedLists = lists?.map((list) => {
       if (list.id != newTask.listId) return list;
       return { ...list, cards: [...list.cards!, res] };
-    }) as BoardType;
+    }) as IListsWithCards[];
 
     dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists });
     localStorage.setItem("storedLists", JSON.stringify(updatedLists));
@@ -29,12 +29,7 @@ export const createNewTask = async (
   }
 };
 
-export const eventResize = async (
-  info: any,
-  lists: BoardType,
-  cardDetails: ICard[],
-  dispatch: (value: IActionBoard) => void
-) => {
+export const eventResize = async (info: any, cardDetails: ICard[]) => {
   const year = info.event.end.getFullYear();
   const month = info.event.end.getMonth() + 1;
   const day = info.event.end.getDate();
@@ -46,13 +41,7 @@ export const eventResize = async (
   cardToModify.dueDate = new Date(`${year}/${month}/${day}`).toISOString();
 
   try {
-    const res = (await updateCard(info.event.id, cardToModify, token)) as ICard;
-    const updatedLists = lists?.map((list) => {
-      if (list.id != res.listId) return list;
-      return { ...list, cards: [...list.cards!, res] };
-    }) as BoardType;
-    dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists });
-    localStorage.setItem("storedLists", JSON.stringify(updatedLists));
+    await updateCard(info.event.id, cardToModify, token);
   } catch (err) {
     const error = err as IError;
     console.log(`Error message: ${error.message}`);
@@ -61,12 +50,7 @@ export const eventResize = async (
   }
 };
 
-export const eventDrop = async (
-  info: any,
-  lists: BoardType,
-  cardDetails: ICard[],
-  dispatch: (value: IActionBoard) => void
-) => {
+export const eventDrop = async (info: any, cardDetails: ICard[]) => {
   const cardDetail = cardDetails?.filter(
     (cardDetail) => cardDetail.id == info.event.id
   )[0] as ICard;
@@ -83,37 +67,15 @@ export const eventDrop = async (
   if (cardDetail.dueDate) {
     cardDetail.dueDate = new Date(setStartAndDue("end")).toISOString();
   }
-  console.log(cardDetail);
 
   try {
-    const responseCardDetail = (await updateCard(
-      info.event.id,
-      cardDetail,
-      token
-    )) as ICard;
-
-    const updatedLists = lists?.map((list) => {
-      if (list.id != responseCardDetail.listId) return list;
-      const newCards = list.cards?.map((card) => {
-        if (card.id != info.event.id) return card;
-        return responseCardDetail;
-      });
-
-      return { ...list, cards: newCards };
-    }) as BoardType;
-
-    dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists });
-    localStorage.setItem("storedLists", JSON.stringify(updatedLists));
+    await updateCard(info.event.id, cardDetail, token);
   } catch (err) {
     const error = err as IError;
     console.log(`Error message: ${error.message}`);
   } finally {
     console.log("Card dates are updating...");
   }
-};
-
-export const handleGetAllLists = async () => {
-  return await fetchAllLists();
 };
 
 export const events = (cardDetails: ICard[] | null) => {
