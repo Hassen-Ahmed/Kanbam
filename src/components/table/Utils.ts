@@ -1,6 +1,4 @@
-import { IActionBoard } from "../../types/actions.type";
-import { BoardType, ICard, IList } from "../../types/board.type";
-import { handleGetAllLists } from "../calendar/helpers";
+import { ICard, IListsWithCards } from "../../types/kanbam";
 import { IGroupedContents, ITaskContent } from "./Table";
 
 const createCardGroupContent = (card: ICard): ITaskContent => ({
@@ -11,7 +9,10 @@ const createCardGroupContent = (card: ICard): ITaskContent => ({
   dueDate: card.dueDate || "-",
 });
 
-export const handleFiltering = (filterValue: string, lists: BoardType) => {
+export const handleFiltering = (
+  filterValue: string,
+  lists: IListsWithCards[]
+) => {
   let selectedDate = new Date().getDate();
   let selectedMonth = new Date().getMonth() + 1;
   const selectedYear = new Date().getFullYear();
@@ -64,7 +65,10 @@ export const handleFiltering = (filterValue: string, lists: BoardType) => {
   return filteredTaskContents;
 };
 
-export const handleGrouping = (groupingTerm: string, lists: BoardType) => {
+export const handleGrouping = (
+  groupingTerm: string,
+  lists: IListsWithCards[]
+) => {
   let groupedList: IGroupedContents[] = [];
 
   const groupByPriority = () => {
@@ -94,29 +98,15 @@ export const handleGrouping = (groupingTerm: string, lists: BoardType) => {
   return groupedList;
 };
 
-export const handleFetchData = async (
-  listsArg: BoardType,
-  dispatch: React.Dispatch<IActionBoard>
-) => {
-  const populateData = (data: BoardType) => {
-    dispatch({ type: "ADD_ALL_LISTS", payload: data as BoardType });
-    localStorage.setItem("storedLists", JSON.stringify(data));
-  };
+export const handleDataGrouping = (listsArg: IListsWithCards[]) => {
+  const deepListsCopy = JSON.parse(
+    JSON.stringify(listsArg)
+  ) as IListsWithCards[];
 
-  let newLists: BoardType = [];
   const cards: ITaskContent[] = [];
   const groupedList: IGroupedContents[] = [];
 
-  if (!listsArg) {
-    const data = (await handleGetAllLists()) as IList[];
-    populateData(data);
-    newLists = [...data];
-  } else {
-    newLists = listsArg;
-    populateData(listsArg);
-  }
-
-  newLists.forEach((list) => {
+  deepListsCopy.forEach((list) => {
     const listGroupContent: IGroupedContents = {
       title: list.title,
       taskList: [],
