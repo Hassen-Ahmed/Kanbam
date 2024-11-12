@@ -6,7 +6,7 @@ import { ListsContext } from "../context/ListsContext";
 import { handleReorderingData } from "../utils/order_and_update";
 
 export default function useFetchAllListByBoardId(b_id: string) {
-  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
+  const { dispatch } = useContext(ListsContext) as IListsContext;
   const [data, setData] = useState<IListsWithCards[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -56,21 +56,8 @@ export default function useFetchAllListByBoardId(b_id: string) {
   }, [b_id, dispatch]);
 
   useEffect(() => {
-    if (lists) {
-      const reorderedData = handleReorderingData(lists);
-      setData(reorderedData);
-      setLoading(false);
-      setError(null);
-    } else {
-      fetchListsData();
-    }
-
-    return () => {
-      setData(null);
-      setError(null);
-      setLoading(true);
-    };
-  }, [lists, fetchListsData]);
+    fetchListsData();
+  }, [fetchListsData]);
 
   return { data, loading, error, refetch: fetchListsData };
 }
