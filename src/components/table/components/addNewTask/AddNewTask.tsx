@@ -9,9 +9,9 @@ import {
   KanbamContext,
 } from "../../../../context/kanbamContext";
 import { ListsContext } from "../../../../context/ListsContext";
-import { ICard, IListsContext } from "../../../../types/board.type";
 import "./AddNewTask.scss";
 import { createNewTask } from "../../../calendar/helpers";
+import { IListsContext } from "../../../../types/kanbam";
 
 const AddTaskStyled = styled.div<INewTheme>`
   .task-add-new__sub {
@@ -42,7 +42,7 @@ export default function AddNewTask({
   const { theme } = useContext(KanbamContext) as IkanbamContext;
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
 
-  const [newTask, setNewTask] = useState<ICard>({
+  const [newTask, setNewTask] = useState({
     title: "",
     listId: lists ? lists[0].id! : "",
     startDate: new Date().toISOString(),

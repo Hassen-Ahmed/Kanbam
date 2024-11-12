@@ -7,7 +7,6 @@ import {
   MdOutlineWatchLater,
 } from "react-icons/md";
 
-import { ICard } from "../../../../types/board.type";
 import Priorities from "./priorities/Priorities";
 import { INewTheme } from "../../../../types/styledComp";
 import styled from "styled-components";
@@ -20,6 +19,7 @@ import { themes } from "../../../../utils/constantDatas/themes";
 import MoveCard from "./move_card/MoveCard";
 import CalendarPicker from "./calendar/CalendarPicker";
 import useClickOutside from "../../../../hooks/useClickOutside";
+import { ICard } from "../../../../types/kanbam";
 
 const ButtonRightStyled = styled.div<INewTheme>`
   .right-bar__btn {

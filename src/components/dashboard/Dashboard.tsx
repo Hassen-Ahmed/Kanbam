@@ -1,17 +1,17 @@
 import styled from "styled-components";
 import { INewTheme } from "../../types/styledComp";
 import { themes } from "../../utils/constantDatas/themes";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
-import { ListsContext } from "../../context/ListsContext";
-import { BoardType, IList, IListsContext } from "../../types/board.type";
-import { handleGetAllLists } from "../calendar/helpers";
 import Loading from "../notifications/Loading";
 import TopDashboard from "./components/TopDashboard";
 import BottomDashboard from "./components/BottomDashboard";
 import Task from "./Task";
 import "./Dashboard.scss";
-import PageReloader from "../../hooks/PageReloader";
+import useFetchAllListByBoardId from "../../hooks/useFetchAllListByBoardId";
+import { useParams } from "react-router-dom";
+import { IListsWithCards } from "../../types/kanbam";
+import ErrorMessage from "../notifications/ErrorMessage";
 
 const DashboardStyled = styled.div<INewTheme>`
   color: ${({ $newtheme }) => themes[$newtheme].font["primary"]};
@@ -55,21 +55,21 @@ export interface IDataBar extends Rec {
 
 export default function Dashboard() {
   const { theme } = useContext(KanbamContext) as IkanbamContext;
-  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const [listTitles, setListTitles] = useState<string[]>([]);
+
   const [tableContents, setTableContents] = useState<ITableContents[] | null>(
     null
   );
-
   const [todayTasks, setTodayTasks] = useState<ITodayTasks[]>([]);
   const [dataPie, setDataPie] = useState<IDataPie[] | null>(null);
   const [dataBar, setDataBar] = useState<IDataBar[] | null>(null);
 
-  //
-  PageReloader();
+  const { b_id } = useParams();
+  const { data, loading, error } = useFetchAllListByBoardId(b_id!);
+
   //
 
-  const handleBarData = (task: string, lists: BoardType) => {
+  const handleBarData = (task: string, lists: IListsWithCards[]) => {
     const collectBarData: IDataBar[] = [];
 
     lists?.forEach((list) => {
@@ -95,12 +95,14 @@ export default function Dashboard() {
       });
 
       collectBarData.push(objBarData);
-      setDataBar(collectBarData);
     });
+
+    setDataBar(collectBarData);
   };
 
-  const handlePieData = (priority: string, lists: BoardType) => {
+  const handlePieData = (priority: string, lists: IListsWithCards[]) => {
     const collectPieData: IDataPie[] = [];
+
     lists?.forEach((list) => {
       const objPieData: IDataPie = {
         id: list.title,
@@ -115,42 +117,32 @@ export default function Dashboard() {
       });
 
       collectPieData.push(objPieData);
-      setDataPie(collectPieData);
     });
+
+    setDataPie(collectPieData);
   };
 
-  const handleListTitle = (title: string, lists: BoardType) => {
-    setTableContents(() => {
-      const contents: ITableContents[] = [];
+  const handleListTitle = (title: string, lists: IListsWithCards[]) => {
+    const contents: ITableContents[] = [];
 
-      const filteredLists = lists?.filter((list) => {
-        if (title.length) return list.title == title;
-        return list;
-      }) as IList[];
+    const filteredLists = lists?.filter((list) => {
+      if (title.length) return list.title == title;
+      return list;
+    }) as IListsWithCards[];
 
-      filteredLists[0].cards?.forEach((card) => {
-        contents.push({
-          cardTitle: card.title!,
-          priority: card.priority!,
-          list: filteredLists[0].title,
-        });
+    filteredLists[0].cards?.forEach((card) => {
+      contents.push({
+        cardTitle: card.title!,
+        priority: card.priority!,
+        list: filteredLists[0].title,
       });
-
-      return contents;
     });
+
+    setTableContents(contents);
   };
 
-  const fetchData = async () => {
-    let newLists: BoardType = [];
-
-    if (!lists) {
-      const data = (await handleGetAllLists()) as IList[];
-      dispatch({ type: "ADD_ALL_LISTS", payload: data as BoardType });
-      localStorage.setItem("storedLists", JSON.stringify(data));
-      newLists = [...data];
-    } else {
-      newLists = lists;
-    }
+  const getData = useCallback(async () => {
+    const newLists = JSON.parse(JSON.stringify(data)) as IListsWithCards[];
 
     //
     handlePieData("High", newLists);
@@ -176,20 +168,28 @@ export default function Dashboard() {
     //
 
     handleListTitle("", newLists);
+
     setListTitles(() => {
       const titles: string[] = [];
       newLists.forEach((list) => titles.push(list.title));
       return titles;
     });
-  };
+  }, [data]);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (!loading) {
+      getData();
+    }
+  }, [loading, getData, data]);
 
-  if (!lists) {
-    return <Loading />;
-  }
+  if (loading)
+    return (
+      <div className="loading-notification__container">
+        <Loading />
+      </div>
+    );
+
+  if (error) return <ErrorMessage />;
 
   return (
     <DashboardStyled

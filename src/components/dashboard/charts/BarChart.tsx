@@ -46,6 +46,12 @@ export default function BarChart({
         legendPosition: "middle",
         legendOffset: 42,
       }}
+      axisLeft={{
+        tickSize: 5,
+        tickPadding: 5,
+        tickValues: data ? data.length + 1 : 1,
+        format: (value) => Math.floor(value),
+      }}
       labelTextColor="#1d2125"
       motionConfig="molasses"
     />

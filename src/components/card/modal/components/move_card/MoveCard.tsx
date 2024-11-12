@@ -3,12 +3,7 @@ import { IError } from "../../../../../types/status.type";
 
 import "./MoveCard.scss";
 import { ListsContext } from "../../../../../context/ListsContext";
-import {
-  BoardType,
-  Cards,
-  ICard,
-  IListsContext,
-} from "../../../../../types/board.type";
+
 import { updateCard } from "../../../../../utils/api/updates";
 import { VscClose } from "react-icons/vsc";
 import { INewTheme } from "../../../../../types/styledComp";
@@ -18,6 +13,11 @@ import {
   IkanbamContext,
   KanbamContext,
 } from "../../../../../context/kanbamContext";
+import {
+  ICard,
+  IListsContext,
+  IListsWithCards,
+} from "../../../../../types/kanbam";
 
 const MoveCardStyled = styled.div<INewTheme>`
   background-color: ${({ $newtheme }) => themes[$newtheme].bg["card_modal"]};
@@ -76,7 +76,7 @@ export default function MoveCard({
     }
 
     setCardPositions(positions);
-  }, [listTitle]);
+  }, [listTitle, lists, cardDetail.listId]);
 
   const handleMoveCard = async () => {
     const cardId = cardDetail.id!;
@@ -93,7 +93,7 @@ export default function MoveCard({
         list.cards = filteredCards;
 
         if (list.id == listIdToDrop) {
-          if (+position > (list?.cards as Cards).length) {
+          if (+position > (list?.cards as ICard[]).length) {
             list?.cards?.push(movedCard);
           } else {
             list?.cards?.splice(+position - 1, 0, movedCard);
@@ -101,7 +101,7 @@ export default function MoveCard({
         }
 
         return list;
-      }) as BoardType;
+      }) as IListsWithCards[];
 
       dispatch({
         type: "ADD_ALL_LISTS",
@@ -111,8 +111,9 @@ export default function MoveCard({
     };
 
     try {
-      const responseCard = await updateCard(cardId, cardDetail, token);
-      updatedListsByMovingCard(responseCard);
+      await updateCard(cardId, cardDetail, token);
+
+      updatedListsByMovingCard(cardDetail);
     } catch (err) {
       const error = err as IError;
       console.log(`Error message: ${error.message}`);

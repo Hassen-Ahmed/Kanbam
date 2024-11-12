@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { MdEditNote } from "react-icons/md";
-import { ICard } from "../../types/board.type";
+import { ICard } from "../../types/kanbam";
 
 interface IEvent {
   eventInfo: any;

@@ -131,7 +131,8 @@
       @media screen and (max-width: 900px) {
         width: 100%;
         margin: 0;
-        font-size: 0.5rem;
+        font-size: 1rem;
+        padding: 1rem 1rem;
         @include mixn.flexy(row, space-between, center);
       }
 

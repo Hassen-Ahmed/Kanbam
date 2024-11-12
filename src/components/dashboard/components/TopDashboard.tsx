@@ -2,15 +2,16 @@ import { useContext } from "react";
 import PieChart from "../charts/PieChart";
 import { IDataPie, ITableContents } from "../Dashboard";
 import { ListsContext } from "../../../context/ListsContext";
-import { BoardType, IListsContext } from "../../../types/board.type";
+import { IListsContext, IListsWithCards } from "../../../types/kanbam";
 
 interface ITopDashboard {
   dataPie: IDataPie[];
-  handlePieData: (priority: string, lists: BoardType) => void;
-  handleListTitle: (title: string, lists: BoardType) => void;
+  handlePieData: (priority: string, lists: IListsWithCards[]) => void;
+  handleListTitle: (title: string, lists: IListsWithCards[]) => void;
   listTitles: string[];
   tableContents: ITableContents[];
 }
+
 export default function TopDashboard({
   dataPie,
   handlePieData,
@@ -20,6 +21,8 @@ export default function TopDashboard({
 }: ITopDashboard) {
   const { lists } = useContext(ListsContext) as IListsContext;
 
+  const deepListsCopy = JSON.parse(JSON.stringify(lists)) as IListsWithCards[];
+
   return (
     <div className="top">
       <div className="pie">
@@ -28,7 +31,7 @@ export default function TopDashboard({
           <select
             name="priorities"
             id="priorities"
-            onChange={(ev) => handlePieData(ev.target.value, lists!)}
+            onChange={(ev) => handlePieData(ev.target.value, deepListsCopy)}
           >
             <option value="High">High</option>
             <option value="Medium">Medium</option>
@@ -45,7 +48,7 @@ export default function TopDashboard({
           <select
             name="taskon"
             id="taskon"
-            onChange={(ev) => handleListTitle(ev.target.value, lists!)}
+            onChange={(ev) => handleListTitle(ev.target.value, deepListsCopy)}
           >
             {listTitles.map((title, i) => {
               return (
@@ -72,7 +75,7 @@ export default function TopDashboard({
               {tableContents &&
                 tableContents.map(({ cardTitle, priority, list }, i) => {
                   return (
-                    <tr key={cardTitle}>
+                    <tr key={`${cardTitle + i}`}>
                       <td>{i + 1}</td>
                       <td>
                         {cardTitle.slice(0, 30)}

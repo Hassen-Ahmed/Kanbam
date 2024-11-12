@@ -4,16 +4,16 @@ import { themes } from "../../utils/constantDatas/themes";
 import { useContext, useEffect, useState } from "react";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
-import { BoardType, IList, IListsContext } from "../../types/board.type";
 import { ListsContext } from "../../context/ListsContext";
 import Loading from "../notifications/Loading";
-import PageReloader from "../../hooks/PageReloader";
-import { handleFetchData, handleFiltering, handleGrouping } from "./Utils";
+import { handleDataGrouping, handleFiltering, handleGrouping } from "./Utils";
 import TableBottom from "./components/TableBottom";
 import "./Table.scss";
-import { IActionBoard } from "../../types/actions.type";
-import { handleGetAllLists } from "../calendar/helpers";
 import AddNewTask from "./components/addNewTask/AddNewTask";
+import { IListsContext, IListsWithCards } from "../../types/kanbam";
+import { useParams } from "react-router-dom";
+import useFetchAllListByBoardId from "../../hooks/useFetchAllListByBoardId";
+import ErrorMessage from "../notifications/ErrorMessage";
 
 export interface ITaskContent {
   id: string;
@@ -52,8 +52,9 @@ export default function Table() {
 
   const [showModalNewTask, setShowModalNewTask] = useState(false);
 
-  //
-  PageReloader();
+  const { b_id } = useParams();
+  const { data, loading, error, refetch } = useFetchAllListByBoardId(b_id!);
+
   //
 
   const handleFilter = (filterValue: string) =>
@@ -78,31 +79,34 @@ export default function Table() {
     });
   };
 
-  const fetchData = async (
-    listsArg: BoardType,
-    dispatchArg: React.Dispatch<IActionBoard>
-  ) => {
-    const response = await handleFetchData(listsArg!, dispatchArg);
+  const getData = (listsArg: IListsWithCards[]) => {
+    const response = handleDataGrouping(listsArg!);
     setGroupedContents(response.groupedList);
     setTaskContents(response.cards);
   };
 
-  useEffect(() => {
-    fetchData(lists!, dispatch);
-  }, []);
-
   const handleRefetch = async () => {
-    const responseData = (await handleGetAllLists()) as IList[];
-    fetchData(responseData, dispatch);
+    const responseData = await refetch();
+    if (responseData) getData(responseData);
   };
 
   const handleAddNewTaskShow = (status: boolean) => {
     setShowModalNewTask(status);
   };
 
-  if (!lists) {
-    return <Loading />;
-  }
+  useEffect(() => {
+    const choosenData = lists || data;
+    if (choosenData) getData(choosenData!);
+  }, [lists, dispatch, data]);
+
+  if (loading)
+    return (
+      <div className="loading-notification__container">
+        <Loading />
+      </div>
+    );
+
+  if (error) return <ErrorMessage />;
 
   return (
     <TableStyled $newtheme={theme} className="table">

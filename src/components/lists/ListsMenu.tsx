@@ -2,7 +2,6 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { VscClose } from "react-icons/vsc";
 import { FaArrowRotateLeft } from "react-icons/fa6";
 
-import { IListsContext } from "../../types/board.type";
 import { IError } from "../../types/status.type";
 import { deleteListsById } from "../../utils/api/deletes";
 
@@ -14,6 +13,7 @@ import styled from "styled-components";
 import { themes } from "../../utils/constantDatas/themes";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { Hr } from "../../utils/constantDatas/styledUtils";
+import { IListsContext } from "../../types/kanbam";
 
 const ListMenuStyled = styled.div<INewTheme>`
   .lists-menu {

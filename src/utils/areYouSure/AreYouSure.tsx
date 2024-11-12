@@ -20,17 +20,22 @@ export default function AreYouSure({ handleAreYouSure }: IAreYouSure) {
   const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   return (
-    <AreYouSureStyled $newtheme={theme} className="sure-to-del-table">
-      <div className="overlay-table"></div>
-      <h2>Are you sure?</h2>
-      <div className="btn-del_wrapper">
-        <div className="btn-del yes" onClick={() => handleAreYouSure(true)}>
-          <button>Yes</button>
+    <div className="sure-to-del-container">
+      <AreYouSureStyled $newtheme={theme} className="sure-to-del-table">
+        <h2>Are you sure?</h2>
+        <div className="btn-del_wrapper">
+          <div className="btn-del yes" onClick={() => handleAreYouSure(true)}>
+            <button>Yes</button>
+          </div>
+          <div className="btn-del no" onClick={() => handleAreYouSure(false)}>
+            <button>No</button>
+          </div>
         </div>
-        <div className="btn-del no" onClick={() => handleAreYouSure(false)}>
-          <button>No</button>
-        </div>
-      </div>
-    </AreYouSureStyled>
+      </AreYouSureStyled>
+      <div
+        className="overlay-table"
+        onClick={() => handleAreYouSure(false)}
+      ></div>
+    </div>
   );
 }

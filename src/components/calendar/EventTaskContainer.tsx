@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { VscClose } from "react-icons/vsc";
-import { ICard } from "../../types/board.type";
 import { IListFewDetail } from "./CalendarFull";
 import styled from "styled-components";
 import { INewTheme } from "../../types/styledComp";
 import { themes } from "../../utils/constantDatas/themes";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+import { ICard } from "../../types/kanbam";
 
 interface IEventTaskContainer {
   showAddTask: boolean;
