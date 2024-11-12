@@ -1,0 +1,112 @@
+import { IoMdClose } from "react-icons/io";
+import "./NewMember.scss";
+import { useContext, useState } from "react";
+import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
+import styled from "styled-components";
+import { INewTheme } from "../../../types/styledComp";
+import { themes } from "../../../utils/constantDatas/themes";
+
+const NewMemberStyled = styled.div<INewTheme>`
+  background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
+  color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
+  border: 0.1rem solid ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+
+  .close-modal {
+    background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
+    color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
+    border: 0.1rem solid ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+  }
+`;
+
+export interface INewMemberDetail {
+  email: string;
+  role: string;
+}
+
+interface INewMember {
+  requestError: boolean;
+  handleInviteMember: (item: INewMemberDetail) => void;
+  handleNewMemberModlaVisibility: (value: boolean) => void;
+}
+
+export default function NewMember({
+  requestError,
+  handleInviteMember,
+  handleNewMemberModlaVisibility,
+}: INewMember) {
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const [inputError, setInputError] = useState(false);
+  const [newMemberDetail, setNewMemberDetail] = useState<INewMemberDetail>({
+    email: "",
+    role: "Admin",
+  });
+
+  const handleWriteDetail = (key: string, value: string) => {
+    setNewMemberDetail((preValue) => {
+      return { ...preValue, [key]: value };
+    });
+
+    if (inputError) setInputError(false);
+  };
+
+  const handleInvititation = () => {
+    if (!newMemberDetail.email || !newMemberDetail.role) {
+      setInputError(true);
+    } else {
+      handleInviteMember(newMemberDetail);
+    }
+  };
+
+  return (
+    <div className="new-member-container">
+      <NewMemberStyled $newtheme={theme} className="new-member">
+        <div
+          className="close-modal"
+          onClick={() => handleNewMemberModlaVisibility(false)}
+        >
+          <IoMdClose size={22} />
+        </div>
+        <h1 className="heading">Member</h1>
+        <div className="email input-container">
+          <label htmlFor="email">Email</label>
+          <input
+            type="text"
+            id="email"
+            autoFocus
+            placeholder="Email address"
+            onChange={(ev) => handleWriteDetail("email", ev.target.value)}
+          />
+        </div>
+
+        <div className="role input-container">
+          <label htmlFor="role">Role </label>
+
+          <select
+            name="role"
+            id="role"
+            onChange={(ev) => handleWriteDetail("role", ev.target.value)}
+          >
+            <option value="Admin">Admin</option>
+            <option value="Member">Member</option>
+            <option value="Viewer">Viewer</option>
+          </select>
+        </div>
+        {inputError && <p className="input-error">Input must not be empty!</p>}
+        <div
+          className="invite-btn"
+          style={{ opacity: `${requestError ? ".5" : "1"}` }}
+        >
+          <button onClick={handleInvititation}>Invite</button>
+        </div>
+
+        {requestError && (
+          <p className="request-error">Something went wrong 404!</p>
+        )}
+      </NewMemberStyled>
+      <div
+        className="new-member-overlay"
+        onClick={() => handleNewMemberModlaVisibility(false)}
+      ></div>
+    </div>
+  );
+}

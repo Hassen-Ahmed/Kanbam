@@ -1,0 +1,94 @@
+@use "../../../assets/style/abstracts/variable" as var;
+@use "../../../assets/style/abstracts/mixins" as mixn;
+@use "../../../assets/style/abstracts/mixins_02" as mixn2;
+
+.new-member {
+  &-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    @include mixn.flexy(column);
+    z-index: var.$z-ix-4000;
+  }
+
+  &-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.25);
+    width: 100%;
+    height: 100%;
+    z-index: var.$z-ix-2000;
+  }
+
+  width: auto;
+  height: auto;
+  padding: 4rem 4rem;
+  z-index: var.$z-ix-4000;
+  border-radius: var.$bor-05;
+  @include mixn.flexy(column, center, flex-start, 2rem);
+  position: relative;
+
+  .close-modal {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    width: 2.6rem;
+    height: 2.6rem;
+    padding: 0.2rem;
+    border-radius: 50%;
+    @include mixn.flexy();
+    cursor: pointer;
+  }
+
+  .input-container {
+    @include mixn.flexy(column, center, flex-start, 0.6rem);
+    font-size: var.$fsi-14;
+    input {
+      padding: 0.5rem 0.4rem;
+      width: 30rem;
+    }
+  }
+  .role {
+    width: 100%;
+    select {
+      padding: 0.5rem 0.4rem;
+      width: 30rem;
+    }
+  }
+  .invite-btn {
+    margin-top: 2rem;
+    width: 100%;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.05) translateY(-0.2rem);
+    }
+
+    &:active {
+      transform: scale(1) translateY(0rem);
+    }
+
+    button {
+      background-color: royalblue;
+      color: white;
+      padding: 0.8rem 2rem;
+      width: 100%;
+      border: none;
+      cursor: pointer;
+    }
+  }
+  .input-error {
+    color: red;
+    font-size: var.$fsi-14;
+  }
+
+  .request-error {
+    width: 100%;
+    text-align: center;
+    color: red;
+    font-size: var.$fsi-14;
+  }
+}
