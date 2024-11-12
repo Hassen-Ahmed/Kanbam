@@ -42,7 +42,8 @@
     font-weight: var.$fwt-500;
   }
 
-  &__logo {
+  &__logo,
+  &__workspaces {
     @include mixn.flexy(row, flex-start, center, 1rem);
     padding: 0 2rem;
 
@@ -179,7 +180,8 @@
       display: block;
     }
   }
-  &__logout {
+  &__logout,
+  &__workspaces {
     width: 100%;
     padding: 1rem 2rem;
     cursor: pointer;
