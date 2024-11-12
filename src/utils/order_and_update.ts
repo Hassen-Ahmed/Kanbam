@@ -1,5 +1,5 @@
 import { IActionBoard } from "../types/actions.type";
-import { BoardType, ICard } from "../types/board.type";
+import { ICard, IListsWithCards } from "../types/kanbam";
 
 export const handleSearchText = (
   searchText: string,
@@ -7,7 +7,7 @@ export const handleSearchText = (
 ) => {
   const storedLists = JSON.parse(
     localStorage.getItem("storedLists")!
-  ) as BoardType;
+  ) as IListsWithCards[];
 
   let payload;
 
@@ -27,15 +27,17 @@ export const handleSearchText = (
     payload = updatedLists;
   }
 
-  dispatch({ type: "ADD_ALL_LISTS", payload: payload as BoardType });
+  dispatch({ type: "ADD_ALL_LISTS", payload: payload as IListsWithCards[] });
 };
 
 export const handleUpdateLists = (
-  lists: BoardType,
+  lists: IListsWithCards[],
   cardDetail: ICard,
   cardId: string | null = null
 ) => {
-  const deepCopiedLists = JSON.parse(JSON.stringify(lists)) as BoardType;
+  const deepCopiedLists = JSON.parse(
+    JSON.stringify(lists)
+  ) as IListsWithCards[];
 
   return deepCopiedLists?.map((listObj) => {
     if (listObj.id != cardDetail.listId) return listObj;
@@ -55,4 +57,35 @@ export const handleUpdateLists = (
       return { ...listObj, cards: updatedCards };
     }
   });
+};
+
+export const handleReorderingData = (data: IListsWithCards[]) => {
+  const deepCopiedData = JSON.parse(JSON.stringify(data)) as IListsWithCards[];
+
+  deepCopiedData?.sort((a, b) => a.indexNumber - b.indexNumber);
+
+  deepCopiedData?.map((listsObj) => {
+    if (listsObj === undefined) return;
+
+    const newListsObj = listsObj;
+    const newCards = newListsObj.cards;
+
+    if (newCards == undefined) return;
+
+    const sortedlist = newCards
+      .sort((a, b) => {
+        if (a.indexNumber == b.indexNumber) {
+          return newCards.indexOf(b) - newCards.indexOf(a);
+        }
+        return a.indexNumber - b.indexNumber;
+      })
+      .map((card) => {
+        card.opacity = "1";
+        card.isDragging = false;
+      });
+
+    return { ...(listsObj as IListsWithCards), cards: sortedlist };
+  });
+
+  return deepCopiedData;
 };
