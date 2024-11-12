@@ -1,0 +1,14 @@
+@use "../../assets/style/abstracts/mixins" as mixn;
+@use "../../assets/style/abstracts/variable" as var;
+
+.error-message-container {
+  width: 100%;
+  @include mixn.flexy(column);
+  padding: 2rem;
+  background-color: #623ff0;
+  color: white;
+
+  .logo {
+    color: yellow;
+  }
+}
