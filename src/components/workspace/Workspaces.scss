@@ -1,0 +1,55 @@
+@use "../../assets/style/abstracts/variable" as var;
+@use "../../assets/style/abstracts/mixins" as mixn;
+@use "../../assets/style/abstracts/mixins_02" as mixn2;
+
+.workspaces-contianer {
+  width: 95%;
+  height: 96%;
+  align-self: flex-start;
+  border-radius: var.$bor-2;
+  overflow: hidden;
+}
+
+.workspaces {
+  @include mixn.flexy(column, flex-start, center);
+  width: 100%;
+  height: 100%;
+  padding: 2rem 2rem;
+  padding-top: 2rem;
+  border-radius: var.$bor-2;
+  overflow-y: scroll;
+
+  @media screen and (max-width: 500px) {
+    @include mixn.flexy(column, flex-start, center, 5rem);
+  }
+
+  &__top {
+    @include mixn.flexy(row, space-between, center, 1rem);
+    background-color: rgba(255, 255, 255, 0.06);
+    width: 100%;
+    padding: 5rem 10rem;
+    border-radius: var.$bor-2;
+    box-shadow: 0.1rem 0.1rem 1rem rgba(0, 0, 0, 0.1);
+
+    @media screen and (max-width: 500px) {
+      @include mixn.flexy(column, center, center, 1rem);
+      padding: 2rem;
+    }
+
+    .user-detail {
+      text-transform: capitalize;
+      h3 {
+        font-size: var.$fsi-18;
+      }
+      h4 {
+        font-size: var.$fsi-14;
+      }
+    }
+
+    .create-workspace {
+      @include mixn2.create-btn_ws_bs(1.1);
+    }
+  }
+
+  @include mixn2.bottom_ws_bs;
+}
