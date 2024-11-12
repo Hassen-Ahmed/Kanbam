@@ -3,32 +3,43 @@ import { MdOutlineCancel } from "react-icons/md";
 
 import { postList } from "../../utils/api/posts";
 import { IError } from "../../types/status.type";
-import { IListsContext } from "../../types/board.type";
 
 import { ListsContext } from "../../context/ListsContext";
 import "./BoardNewListCreator.scss";
+import { IListsContext } from "../../types/kanbam";
 
-type isListAddedType = { isListAddedSetter: (value: boolean) => void };
+type isListAddedType = {
+  isListAddedSetter: (value: boolean) => void;
+  boardId: string;
+};
 
-const BoardNewListCreator = ({ isListAddedSetter }: isListAddedType) => {
+const BoardNewListCreator = ({
+  isListAddedSetter,
+  boardId,
+}: isListAddedType) => {
   const [inputList, setInputList] = useState<string>("");
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
 
   const handleAddList = async () => {
     if (!inputList.length) return;
 
-    let newList = {
+    const newList = {
+      boardId,
       title: inputList,
       indexNumber: lists?.length as number,
     };
 
     try {
       const token = localStorage.getItem("token") as string;
-      const data = await postList(newList, token);
+      const resData = await postList(newList, token);
 
-      newList = { ...data, cards: [] };
-      dispatch({ type: "ADD_LIST", payload: [newList] });
-      localStorage.setItem("storedLists", JSON.stringify([...lists!, data]));
+      const modifiedData = { ...resData, cards: [] };
+      dispatch({ type: "ADD_LIST", payload: [modifiedData] });
+
+      localStorage.setItem(
+        "storedLists",
+        JSON.stringify([...lists!, modifiedData])
+      );
       setInputList("");
     } catch (err) {
       const error = err as IError;

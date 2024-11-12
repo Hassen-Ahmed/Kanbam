@@ -1,0 +1,73 @@
+@use "../../assets/style/abstracts/variable" as var;
+@use "../../assets/style/abstracts/mixins" as mixn;
+@use "../../assets/style/abstracts/mixins_02" as mixn2;
+
+.boards-container {
+  width: 95%;
+  height: 96%;
+  align-self: flex-start;
+  border-radius: var.$bor-2;
+  overflow: hidden;
+}
+
+.boards {
+  @include mixn.flexy(column, flex-start, center);
+  width: 100%;
+  height: 100%;
+  padding: 2rem 2rem;
+  padding-top: 2rem;
+  border-radius: var.$bor-2;
+  overflow-y: scroll;
+
+  &__top {
+    @include mixn.flexy(row, space-between, center, 1rem);
+    background-color: rgba(255, 255, 255, 0.06);
+    width: 100%;
+    padding: 5rem 10rem;
+    border-radius: var.$bor-2;
+    box-shadow: 0.1rem 0.1rem 1rem rgba(0, 0, 0, 0.1);
+
+    @media screen and (max-width: 950px) {
+      @include mixn.flexy(column, center, center, 1rem);
+      padding: 2rem;
+    }
+
+    .boards-name {
+      cursor: pointer;
+      @include mixn.flexy(row, space-between, center, 2rem);
+
+      h3 {
+        font-size: var.$fsi-18;
+        text-transform: capitalize;
+        cursor: default;
+      }
+    }
+
+    .top-left {
+    }
+
+    .top-right {
+      @include mixn.flexy(row, center, center, 2rem);
+
+      @media screen and (max-width: 500px) {
+        @include mixn.flexy(column, center, center, 2rem);
+      }
+
+      .members-btn {
+        @include mixn2.create-btn_ws_bs(1.1);
+      }
+      .invite {
+        @include mixn2.create-btn_ws_bs(1.1);
+      }
+      .create-board {
+        @include mixn2.create-btn_ws_bs(1.1);
+      }
+    }
+  }
+
+  .member-list {
+    @include mixn.flexy(column, center, center, 1rem);
+  }
+
+  @include mixn2.bottom_ws_bs;
+}

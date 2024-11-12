@@ -1,13 +1,13 @@
 import { IItemDragging } from "../../context/kanbamContext";
-import { BoardType, Cards, ICard, IList } from "../../types/board.type";
 import { DragEventMy } from "../../types/html.type";
+import { ICard, IListsWithCards } from "../../types/kanbam";
 
-const deepCopiedLists = (lists: BoardType) => {
-  return JSON.parse(JSON.stringify(lists)) as BoardType;
+const deepCopiedLists = (lists: IListsWithCards[]) => {
+  return JSON.parse(JSON.stringify(lists)) as IListsWithCards[];
 };
 
 export const updatedListOnCardHovered = (
-  lists: BoardType,
+  lists: IListsWithCards[],
   id: string,
   idOfItemDragging: string,
   idOfTarget: string,
@@ -18,9 +18,9 @@ export const updatedListOnCardHovered = (
   // find Only cards of cards of this lists or column
   const filteredList = clonedLists?.filter(
     (cards) => cards.id == id
-  ) as IList[];
+  ) as IListsWithCards[];
 
-  let listOfCards = filteredList[0].cards as Cards;
+  let listOfCards = filteredList[0].cards as ICard[];
 
   let indexOfTargetCard = 0;
 
@@ -76,11 +76,11 @@ export const updatedListOnCardHovered = (
     return { ...listObj, cards: updatedList };
   });
 
-  return finalLists as BoardType;
+  return finalLists as IListsWithCards[];
 };
 
 export const updatedListOnEmptyList = (
-  lists: BoardType,
+  lists: IListsWithCards[],
   id: string,
   itemDragging: React.MutableRefObject<IItemDragging | null>
 ) => {
@@ -105,19 +105,19 @@ export const updatedListOnEmptyList = (
     return { ...listObj, cards: filteredListOfCards };
   });
 
-  return updatedLists as BoardType;
+  return updatedLists as IListsWithCards[];
 };
 
 export const updatedListOnListsSwaps = (
-  lists: BoardType,
+  lists: IListsWithCards[],
   idOfItemDragging: string,
   indexNumber: number,
-  item: IList,
+  item: IListsWithCards,
   ev: DragEventMy
 ) => {
   const filteredLists = deepCopiedLists(lists)?.filter(
     (listObj) => listObj.id != idOfItemDragging
-  ) as BoardType;
+  ) as IListsWithCards[];
 
   let indexOfTargetListObj;
 
@@ -146,7 +146,7 @@ export const updatedListOnListsSwaps = (
   return finalLists;
 };
 
-export const updatedListOnDrop = (lists: BoardType) => {
+export const updatedListOnDrop = (lists: IListsWithCards[]) => {
   const updatedLists = deepCopiedLists(lists).map((listObj) => {
     listObj.opacity = "1";
 
@@ -158,10 +158,13 @@ export const updatedListOnDrop = (lists: BoardType) => {
     return { ...listObj, cards: updatedList };
   });
 
-  return updatedLists as BoardType;
+  return updatedLists as IListsWithCards[];
 };
 
-export const updatedListByListId = (lists: BoardType, listId: string) => {
+export const updatedListByListId = (
+  lists: IListsWithCards[],
+  listId: string
+) => {
   const updatedLists = deepCopiedLists(lists)
     .filter((listObj) => listObj.id != listId)
     .map((listObj, index) => {
@@ -169,5 +172,5 @@ export const updatedListByListId = (lists: BoardType, listId: string) => {
       return listObj;
     });
 
-  return updatedLists as BoardType;
+  return updatedLists as IListsWithCards[];
 };

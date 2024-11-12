@@ -8,8 +8,6 @@ import { updateList } from "../../utils/api/updates";
 import { postCard } from "../../utils/api/posts";
 import { IError } from "../../types/status.type";
 import { DragEventMy } from "../../types/html.type";
-import { BoardType } from "../../types/board.type";
-import { ICard, IList, Cards, IListsContext } from "../../types/board.type";
 
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { ListsContext } from "../../context/ListsContext";
@@ -25,6 +23,11 @@ import "./Lists.scss";
 import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
 import { themes } from "../../utils/constantDatas/themes";
+import {
+  ICardCreate,
+  IListsContext,
+  IListsWithCards,
+} from "../../types/kanbam";
 
 const ListsStyled = styled.div<INewTheme>`
   .lists {
@@ -57,23 +60,15 @@ const ListsStyled = styled.div<INewTheme>`
   }
 `;
 
-interface IListLocal {
-  id: string;
-  indexNumber: number;
-  title: string;
-  cards: Cards;
-  isDragging: boolean;
-  opacity: string;
-}
-
 const Lists = ({
   id,
+  boardId,
   cards,
   title,
   indexNumber,
   isDragging,
   opacity,
-}: IListLocal) => {
+}: IListsWithCards) => {
   const [titleValueOfThisList, setTitleOfThisList] = useState<string>(title);
   const [titleValeuOfNewCard, setTitleValeuOfNewCard] = useState("");
   const [isListMenuVisible, setIsListMenuVisible] = useState(false);
@@ -114,7 +109,7 @@ const Lists = ({
           idOfItemDragging!,
           idOfTarget!,
           itemDragging
-        ) as BoardType;
+        ) as IListsWithCards[];
 
         dispatch({
           type: "ADD_ALL_LISTS",
@@ -140,7 +135,7 @@ const Lists = ({
       identityOfItemDragging == "list" &&
       ev.currentTarget.dataset.id != idOfItemDragging
     ) {
-      const item = itemDragging?.current?.item as IList;
+      const item = itemDragging?.current?.item as IListsWithCards;
 
       const finalLists = updatedListOnListsSwaps(
         lists!,
@@ -194,7 +189,7 @@ const Lists = ({
   const handleAddNewCard = async () => {
     if (titleValeuOfNewCard.length > 0) {
       try {
-        const cardToPost: ICard = {
+        const cardToPost: ICardCreate = {
           listId: id,
           title: titleValeuOfNewCard,
           indexNumber: cards.length,
@@ -221,7 +216,10 @@ const Lists = ({
           return updatedListObj;
         });
 
-        dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists as BoardType });
+        dispatch({
+          type: "ADD_ALL_LISTS",
+          payload: updatedLists as IListsWithCards[],
+        });
         localStorage.setItem("storedLists", JSON.stringify(updatedLists));
 
         setIsNewCardInputVisible(false);
@@ -249,6 +247,7 @@ const Lists = ({
     if (titleValueOfThisList.length) {
       const newList = {
         id,
+        boardId: boardId,
         title: titleValueOfThisList,
         indexNumber,
       };

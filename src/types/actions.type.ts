@@ -1,6 +1,6 @@
-import { BoardType } from "./board.type";
+import { IListsWithCards } from "./kanbam";
 
 export type IActionBoard = {
   type: "ADD_LIST" | "ADD_ALL_LISTS" | null;
-  payload: BoardType;
+  payload: IListsWithCards[] | null;
 };

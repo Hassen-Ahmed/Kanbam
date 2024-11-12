@@ -4,7 +4,7 @@ import "./MenuAccount.scss";
 import MenuAccountLogo from "./MenuAccountLogo";
 import { useContext, useState } from "react";
 import ConfettiComp from "../Confetti";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { themes } from "../../utils/constantDatas/themes";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
@@ -38,6 +38,7 @@ const MenuStyled = styled.div<INewTheme>`
     }
 
     &__logout,
+    &__workspaces,
     &__theme,
     &__theme--list li {
       &:hover {
@@ -61,9 +62,7 @@ const MenuAccount = ({
   const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("theme");
-    localStorage.removeItem("storedLists");
+    localStorage.clear();
     setTimeout(() => {
       navigate("/");
     }, 100);
@@ -84,14 +83,21 @@ const MenuAccount = ({
             <MenuAccountLogo />
             <Hr $themename={theme} $group="hover" />
             <ButtonTheme />
+
             <Hr $themename={theme} $group="hover" />
+
+            <Link
+              className="menu__workspaces"
+              to={`/kanbam/w/`}
+              onClick={() => setIsAccountMenuVisible(false)}
+            >
+              <h2 className="menu__workspaces--text">Workspaces</h2>
+            </Link>
 
             <div className="menu__logout" onClick={handleLogout}>
               <h2 className="menu__logout--text">Logout</h2>
             </div>
-
             {areWeCelebrating && createPortal(<ConfettiComp />, document.body)}
-
             <div
               className="menu__donate"
               onClick={() => {

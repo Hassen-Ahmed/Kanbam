@@ -1,0 +1,57 @@
+@use "../../../assets/style/abstracts/variable" as var;
+@use "../../../assets/style/abstracts/mixins" as mixn;
+@use "../../../assets/style/abstracts/mixins_02" as mixn2;
+
+.members {
+  &-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    @include mixn.flexy(column);
+    z-index: var.$z-ix-2000;
+  }
+
+  &-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.25);
+    width: 100%;
+    height: 100%;
+    z-index: var.$z-ix-1000;
+  }
+
+  width: auto;
+  height: auto;
+  padding: 6rem;
+  z-index: var.$z-ix-2000;
+  border-radius: var.$bor-05;
+  @include mixn.flexy(column, center, flex-start, 2rem);
+  position: relative;
+
+  .no-member {
+    font-size: var.$fsi-14;
+  }
+
+  .close-modal {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    width: 2.6rem;
+    height: 2.6rem;
+    padding: 0.2rem;
+    border-radius: 50%;
+    @include mixn.flexy();
+    cursor: pointer;
+  }
+
+  .list-of-item {
+    @include mixn.flexy(column, flex-start, center, 2rem);
+  }
+  .member {
+  }
+
+  @include mixn2.item;
+}

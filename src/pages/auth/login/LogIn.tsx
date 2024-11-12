@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { FaArrowRotateLeft } from "react-icons/fa6";
 
 import { loginData } from "../../../utils/constantDatas/formData";
-import { fetchAllLists } from "../../../utils/fetchAllLists";
 import { postAuthLogin } from "../../../utils/api/posts";
 import { IError } from "../../../types/status.type";
 
@@ -40,8 +39,7 @@ const LogIn = () => {
       const { token }: { token: string } = await postAuthLogin(userDetails);
       localStorage.setItem("token", token);
 
-      fetchAllLists();
-      navigate("/kanbam/board");
+      navigate("/kanbam/w");
     } catch (err) {
       setIsAuthorizing(false);
       setIsWrongUser(true);

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -7,16 +7,9 @@ import multiMonthPlugin from "@fullcalendar/multimonth";
 import interactionPlugin from "@fullcalendar/interaction";
 
 import { ListsContext } from "../../context/ListsContext";
-import { BoardType, ICard, IListsContext } from "../../types/board.type";
 import Loading from "../notifications/Loading";
 import CardModal from "../card/modal/CardModal";
-import {
-  createNewTask,
-  eventDrop,
-  eventResize,
-  events,
-  handleGetAllLists,
-} from "./helpers";
+import { createNewTask, eventDrop, eventResize, events } from "./helpers";
 import "./CalendarFull.scss";
 import Event from "./Event";
 import EventTaskContainer from "./EventTaskContainer";
@@ -24,7 +17,10 @@ import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { themes } from "../../utils/constantDatas/themes";
-import PageReloader from "../../hooks/PageReloader";
+import { ICard, IListsContext, IListsWithCards } from "../../types/kanbam";
+import { useParams } from "react-router-dom";
+import useFetchAllListByBoardId from "../../hooks/useFetchAllListByBoardId";
+import ErrorMessage from "../notifications/ErrorMessage";
 
 export interface IListFewDetail {
   id: string;
@@ -49,26 +45,29 @@ const CalendarFull = () => {
   const [showModalCard, setShowModalCard] = useState(false);
   const [showAddTask, setShowAddTask] = useState(false);
   const [newTask, setNewTask] = useState<ICard>({
+    id: "",
     title: "",
     listId: "",
     startDate: "",
     indexNumber: 0,
+    comments: [],
   });
 
   const [listsFewDetail, setListsFewDetail] = useState<IListFewDetail[]>([]);
 
-  //
-  PageReloader();
-  //
+  const { b_id } = useParams();
 
-  const handleCardDetailsAssignment = async () => {
-    let newLists: BoardType = [];
+  const { data, loading, error } = useFetchAllListByBoardId(b_id!);
+
+  //
+  const handleCardDetailsAssignment = useCallback(async () => {
+    let newLists: IListsWithCards[] = [];
     const cardList: ICard[] = [];
     let cardListFiltered: ICard[] = [];
 
     if (!lists) {
-      const data = await handleGetAllLists();
-      dispatch({ type: "ADD_ALL_LISTS", payload: data as BoardType });
+      // const data = await handleGetAllLists();
+      dispatch({ type: "ADD_ALL_LISTS", payload: data as IListsWithCards[] });
       localStorage.setItem("storedLists", JSON.stringify(data));
       newLists = data!;
     } else {
@@ -82,7 +81,7 @@ const CalendarFull = () => {
       return list?.cards;
     });
 
-    cardsRespone.forEach((cards) => {
+    cardsRespone?.forEach((cards) => {
       cards?.forEach((card) => cardList.push(card));
     });
 
@@ -91,11 +90,11 @@ const CalendarFull = () => {
     );
 
     setCardDetails(cardListFiltered);
-  };
+  }, [lists, dispatch, data, searchText]);
 
   useEffect(() => {
     handleCardDetailsAssignment();
-  }, [searchText, lists]);
+  }, [searchText, lists, handleCardDetailsAssignment]);
 
   const handleDateClick = (info: any) => {
     const listsTitle = listsFewDetail.filter(
@@ -120,11 +119,11 @@ const CalendarFull = () => {
   };
 
   const handleEventDrop = (info: any) => {
-    eventDrop(info, lists!, cardDetails!, dispatch);
+    eventDrop(info, cardDetails!);
   };
 
   const handleEventResize = (info: any) => {
-    eventResize(info, lists!, cardDetails!, dispatch).then(() => {
+    eventResize(info, cardDetails!).then(() => {
       setNewTask((preValue) => ({ ...preValue, title: "" }));
     });
     setShowAddTask(false);
@@ -165,9 +164,14 @@ const CalendarFull = () => {
     setShowAddTask(false);
   };
 
-  if (!lists) {
-    return <Loading />;
-  }
+  if (loading)
+    return (
+      <div className="loading-notification__container">
+        <Loading />
+      </div>
+    );
+
+  if (error) return <ErrorMessage />;
 
   return (
     <CalendarFullStyled

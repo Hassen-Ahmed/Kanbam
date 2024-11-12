@@ -3,12 +3,20 @@ import {
   IAuthRegistarion,
   IAuthRegistarionSuccess,
 } from "../../types/auth.type";
-import { ICard, IList } from "../../types/board.type";
+import {
+  IBoardCreate,
+  ICard,
+  ICardCreate,
+  IList,
+  IListCreate,
+  IWorkspaceCreate,
+  IWorkspaceMemberCreate,
+} from "../../types/kanbam";
 import { kanbamApi } from "./baseApi";
 
 // card
-export const postCard = async (newCard: ICard, token: string) => {
-  const { data } = await kanbamApi.post(
+export const postCard = async (newCard: ICardCreate, token: string) => {
+  const { data } = await kanbamApi.post<ICard>(
     "/Cards",
     { ...newCard },
     {
@@ -21,12 +29,55 @@ export const postCard = async (newCard: ICard, token: string) => {
 };
 
 // lists
-export const postList = async (newList: IList, token: string) => {
-  const { data } = await kanbamApi.post("/Lists", newList, {
+export const postList = async (newList: IListCreate, token: string) => {
+  const { data } = await kanbamApi.post<IList>("/Lists", newList, {
     headers: {
       Authorization: `Bearer  ${token}`,
     },
   });
+  return data;
+};
+
+// Board
+export const postBoard = async (newBoard: IBoardCreate, token: string) => {
+  const { data } = await kanbamApi.post<IBoardCreate>("/Boards", newBoard, {
+    headers: {
+      Authorization: `Bearer  ${token}`,
+    },
+  });
+  return data;
+};
+
+// Workspace
+export const postWorkspace = async (
+  newWorkspace: IWorkspaceCreate,
+  token: string
+) => {
+  const { data } = await kanbamApi.post<IWorkspaceCreate>(
+    "/Workspaces",
+    newWorkspace,
+    {
+      headers: {
+        Authorization: `Bearer  ${token}`,
+      },
+    }
+  );
+  return data;
+};
+// WorkspaceMember
+export const postWorkspaceMemeber = async (
+  newWorkspaceMember: IWorkspaceMemberCreate,
+  token: string
+) => {
+  const { data } = await kanbamApi.post<IWorkspaceMemberCreate>(
+    "/WorkspacesMembers",
+    newWorkspaceMember,
+    {
+      headers: {
+        Authorization: `Bearer  ${token}`,
+      },
+    }
+  );
   return data;
 };
 

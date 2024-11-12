@@ -1,4 +1,4 @@
-import { ICard, IList } from "../../types/board.type";
+import { IBoardCreate, ICard, IList } from "../../types/kanbam";
 import { kanbamApi } from "./baseApi";
 
 // card
@@ -7,27 +7,50 @@ export const updateCard = async (
   updatedCard: ICard,
   token: string
 ) => {
-  const { data } = await kanbamApi.put(`/Cards/${id}`, updatedCard, {
+  await kanbamApi.patch(`/Cards/${id}`, updatedCard, {
     headers: {
       Authorization: `Bearer  ${token}`,
     },
   });
-  return data;
 };
 
 // lists
-
 export const updateList = async (
   id: string,
   updatedList: IList,
   token: string
 ) => {
-  const { data } = await kanbamApi.put(`/Lists/${id}`, updatedList, {
+  await kanbamApi.patch(`/Lists/${id}`, updatedList, {
     headers: {
       Authorization: `Bearer  ${token}`,
     },
   });
-  return data;
+};
+
+// Board
+export const updateBoard = async (
+  id: string,
+  updatedBoard: IBoardCreate,
+  token: string
+) => {
+  await kanbamApi.patch(`/Boards/${id}`, updatedBoard, {
+    headers: {
+      Authorization: `Bearer  ${token}`,
+    },
+  });
+};
+
+// Workspace
+export const updateWorkspace = async (
+  id: string,
+  updatedWorkspace: IBoardCreate,
+  token: string
+) => {
+  await kanbamApi.patch(`/Workspaces/${id}`, updatedWorkspace, {
+    headers: {
+      Authorization: `Bearer  ${token}`,
+    },
+  });
 };
 
 // users

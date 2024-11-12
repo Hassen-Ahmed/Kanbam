@@ -14,6 +14,7 @@ import {
   IoIosArrowDropdownCircle,
   IoIosArrowDropupCircle,
 } from "react-icons/io";
+import { IParamsBoard } from "../../context/kanbamContext";
 
 const iconsSize = 30;
 
@@ -35,19 +36,23 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (isTokenAuthenticated()) {
-      navigate("/kanbam/board");
+    const storedParams = localStorage.getItem("paramsBoardInfo");
+
+    if (isTokenAuthenticated() && storedParams) {
+      const { b_id, b_name } = JSON.parse(storedParams) as IParamsBoard;
+      navigate(`/kanbam/b/${b_id}/${b_name}`);
       setIsUserAuthenticated(true);
     } else {
+      localStorage.clear();
       setIsUserAuthenticated(false);
     }
-  }, []);
+  }, [navigate]);
 
   if (isUserAuthenticated)
     return (
-      <>
-        <Loading />;
-      </>
+      <div className="loading-notification__container">
+        <Loading />
+      </div>
     );
 
   return (

@@ -1,4 +1,3 @@
-import { ICard } from "../../../../../types/board.type";
 import { IError } from "../../../../../types/status.type";
 import { updateCard } from "../../../../../utils/api/updates";
 
@@ -17,6 +16,7 @@ import { VscClose } from "react-icons/vsc";
 import { INewTheme } from "../../../../../types/styledComp";
 import styled from "styled-components";
 import { themes } from "../../../../../utils/constantDatas/themes";
+import { ICard } from "../../../../../types/kanbam";
 
 interface IPriorityCollection {
   cardDetail: ICard;

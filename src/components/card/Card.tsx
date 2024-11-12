@@ -1,15 +1,13 @@
 import { useContext, useState } from "react";
-
 import { BsTextParagraph } from "react-icons/bs";
-
 import { handleDragstartUtil, handleRemoveCloneElem } from "../../utils/dnd";
 import { DragEventMy } from "../../types/html.type";
-import { ICard } from "../../types/board.type";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import CardModal from "./modal/CardModal";
-import "./Card.scss";
 import { BgAndFont } from "../../utils/constantDatas/styledUtils";
 import { icons } from "./modal/components/priorities/Priorities";
+import { ICard } from "../../types/kanbam";
+import "./Card.scss";
 
 const Card = ({ ...props }: ICard) => {
   const { theme, itemDragging } = useContext(KanbamContext) as IkanbamContext;

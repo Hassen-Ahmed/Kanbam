@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "./CalendarPicker.scss";
 import { VscClose } from "react-icons/vsc";
-import { ICard } from "../../../../../types/board.type";
 import { updateCard } from "../../../../../utils/api/updates";
 import { IError } from "../../../../../types/status.type";
 import {
@@ -11,6 +10,7 @@ import {
 } from "../../../../../context/kanbamContext";
 import { CalendarStyled } from "./CalendarStyled";
 import { months } from "../../../../../utils/constantDatas/months";
+import { ICard } from "../../../../../types/kanbam";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -53,7 +53,7 @@ export default function CalendarPicker({
         };
       });
     }
-  }, []);
+  }, [cardDetail.dueDate, cardDetail.startDate]);
 
   useEffect(() => {
     const container = document.querySelector(
@@ -102,7 +102,7 @@ export default function CalendarPicker({
         abbrParentElm.style.border = ".3rem solid #d81a1a95 ";
       }
     }
-  }, []);
+  }, [cardDetail.dueDate, cardDetail.dueDateReminder]);
 
   useEffect(() => {
     const newValue = !value ? cardDetail.dueDate : value;
@@ -114,7 +114,7 @@ export default function CalendarPicker({
         new Date(`${newValue}`).getFullYear(),
       ];
     });
-  }, [value]);
+  }, [value, cardDetail.dueDate]);
 
   // end of hooks
 

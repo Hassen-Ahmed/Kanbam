@@ -2,7 +2,6 @@ import { useContext, useEffect, useRef, useState } from "react";
 import DOMPurify from "dompurify";
 
 import { updateCard } from "../../../../../utils/api/updates";
-import { ICard } from "../../../../../types/board.type";
 import { IError } from "../../../../../types/status.type";
 
 import EditingButtons from "./EditingButtons";
@@ -15,6 +14,7 @@ import {
 } from "../../../../../context/kanbamContext";
 import { themes } from "../../../../../utils/constantDatas/themes";
 import { MdEditNote } from "react-icons/md";
+import { ICard } from "../../../../../types/kanbam";
 
 const TextEditorStyled = styled.div<INewTheme>`
   .text-editor {

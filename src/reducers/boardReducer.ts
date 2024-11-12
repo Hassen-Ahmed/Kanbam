@@ -1,13 +1,16 @@
 import { IActionBoard } from "../types/actions.type";
-import { BoardType } from "../types/board.type";
+import { IListsWithCards } from "../types/kanbam";
 
-export const boardReducer = (state: BoardType | null, action: IActionBoard) => {
+export const boardReducer = (
+  state: IListsWithCards[] | null,
+  action: IActionBoard
+) => {
   switch (action.type) {
     case "ADD_ALL_LISTS":
       return action.payload;
 
     case "ADD_LIST":
-      return [...state!, ...action.payload];
+      return [...state!, ...action.payload!];
 
     default:
       return state;

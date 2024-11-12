@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
 import BarChart from "../charts/BarChart";
 import { ListsContext } from "../../../context/ListsContext";
-import { BoardType, IListsContext } from "../../../types/board.type";
 import { IDataBar } from "../Dashboard";
+import { IListsContext, IListsWithCards } from "../../../types/kanbam";
 
 interface IBottomDashboard {
-  handleBarData: (task: string, lists: BoardType) => void;
+  handleBarData: (task: string, lists: IListsWithCards[]) => void;
   dataBar: IDataBar[];
 }
 
@@ -14,8 +14,9 @@ export default function BottomDashboard({
   dataBar,
 }: IBottomDashboard) {
   const { lists } = useContext(ListsContext) as IListsContext;
-
   const [legendName, setLegendName] = useState("Lists");
+
+  const deepListsCopy = JSON.parse(JSON.stringify(lists)) as IListsWithCards[];
 
   return (
     <div className="bottom">
@@ -27,7 +28,7 @@ export default function BottomDashboard({
             id="cardby"
             onChange={(ev) => {
               setLegendName(ev.target.value);
-              handleBarData(ev.target.value, lists!);
+              handleBarData(ev.target.value, deepListsCopy);
             }}
           >
             <option value="Lists">Lists</option>

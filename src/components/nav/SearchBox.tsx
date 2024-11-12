@@ -2,14 +2,13 @@
 import { useContext, useEffect, useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
 
-import { IListsContext } from "../../types/board.type";
-
 import { ListsContext } from "../../context/ListsContext";
 import "./SearchBox.scss";
 import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
 import { themes } from "../../utils/constantDatas/themes";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+import { IListsContext } from "../../types/kanbam";
 
 const SearchBoxStyled = styled.div<INewTheme>`
   .search__box {

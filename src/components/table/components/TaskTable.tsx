@@ -7,12 +7,12 @@ import { themes } from "../../../utils/constantDatas/themes";
 import { useContext, useState } from "react";
 import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
 import { ITaskContent } from "../Table";
-import { ICard, IListsContext } from "../../../types/board.type";
 import { ListsContext } from "../../../context/ListsContext";
 import CardModal from "../../card/modal/CardModal";
 import AreYouSure from "../../../utils/areYouSure/AreYouSure";
 import { deleteCardById } from "../../../utils/api/deletes";
 import { IError } from "../../../types/status.type";
+import { ICard, IListsContext } from "../../../types/kanbam";
 
 const TaskTableStyled = styled.div<INewTheme>`
   background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};

@@ -33,7 +33,7 @@ const NavBar = () => {
   return (
     <NavBarStyled $newtheme={theme} className="nav-bar">
       <div className="nav-bar__left">
-        {!location.pathname.includes("dashboard") && <SearchBox />}
+        {!location.pathname.includes("kanbam/ds") && <SearchBox />}
         <ButtonAccount setIsAccountMenuVisible={setIsAccountMenuVisible} />
       </div>
 

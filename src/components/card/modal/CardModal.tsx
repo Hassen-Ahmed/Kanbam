@@ -7,8 +7,6 @@ import { RxActivityLog } from "react-icons/rx";
 import { VscClose } from "react-icons/vsc";
 import { CiEdit } from "react-icons/ci";
 
-import { BoardType, ICard, IListsContext } from "../../../types/board.type";
-
 import { deleteCardById } from "../../../utils/api/deletes";
 import { handleUpdateLists } from "../../../utils/order_and_update";
 import { updateCard } from "../../../utils/api/updates";
@@ -25,6 +23,7 @@ import { INewTheme } from "../../../types/styledComp";
 import styled from "styled-components";
 import { themes } from "../../../utils/constantDatas/themes";
 import { icons } from "./components/priorities/Priorities";
+import { ICard, IListsContext, IListsWithCards } from "../../../types/kanbam";
 
 const ActivityStyled = styled.div<INewTheme>`
   &,
@@ -98,7 +97,10 @@ export default function CardModal({
 
       const updatedLists = handleUpdateLists(lists!, cardDetail, cardId);
 
-      dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists as BoardType });
+      dispatch({
+        type: "ADD_ALL_LISTS",
+        payload: updatedLists as IListsWithCards[],
+      });
       localStorage.setItem("storedLists", JSON.stringify(updatedLists));
     } catch (err) {
       const error = err as IError;
@@ -136,7 +138,10 @@ export default function CardModal({
 
   const handleClosingModal = () => {
     const updatedLists = handleUpdateLists(lists!, cardDetail);
-    dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists as BoardType });
+    dispatch({
+      type: "ADD_ALL_LISTS",
+      payload: updatedLists as IListsWithCards[],
+    });
     handleModlaVisibility(false);
   };
 
