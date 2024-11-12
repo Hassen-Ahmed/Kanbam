@@ -22,6 +22,12 @@
     @media screen and (max-width: 600px) {
       height: 90%;
     }
+    .__loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
 
     .btn-title {
       transition: all 0.2s ease;
@@ -31,22 +37,24 @@
     }
 
     &:hover {
-      .btn-title {
-        width: 10rem;
-        opacity: 1;
-        margin: 0 2rem 0 1rem;
-      }
-
-      .side-bar-left__btn-active {
-        &::after {
-          background-color: #3d83eb;
+      @media screen and (min-width: 600px) {
+        .btn-title {
+          width: 10rem;
+          opacity: 1;
+          margin: 0 2rem 0 1rem;
         }
-      }
 
-      .logo__heading {
-        opacity: 1;
-        width: 10rem;
-        margin-left: 1rem;
+        .side-bar-left__btn-active {
+          &::after {
+            background-color: #3d83eb;
+          }
+        }
+
+        .logo__heading {
+          opacity: 1;
+          width: 10rem;
+          margin-left: 1rem;
+        }
       }
     }
   }
