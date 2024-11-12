@@ -1,6 +1,6 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import useFetchAllBoardsByWorkspaceId from "../../hooks/useFetchAllBoardsByWorkspaceId";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import "./Workspace.scss";
 import styled from "styled-components";
@@ -51,9 +51,7 @@ export default function Workspace() {
     w_id!
   );
 
-  const { theme, paramsWorkspace, handleSetParamsWorkspace } = useContext(
-    KanbamContext
-  ) as IkanbamContext;
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   const [showMembers, setShowMembers] = useState(false);
   const [showNewItemModal, setShowNewItemModal] = useState(false);
@@ -72,12 +70,6 @@ export default function Workspace() {
 
   const handleNewMemberModlaVisibility = (value: boolean) =>
     setShowNewMemberModal(value);
-
-  useEffect(() => {
-    if (w_id && w_name && paramsWorkspace.w_id != w_id) {
-      handleSetParamsWorkspace({ w_id, w_name });
-    }
-  }, [w_id, w_name, handleSetParamsWorkspace, paramsWorkspace.w_id]);
 
   const handleItemCreation = async (item: IItemDetail) => {
     try {
