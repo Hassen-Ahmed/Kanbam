@@ -1,6 +1,9 @@
 import { MdDeleteForever, MdEditNote } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { joinString } from "../../../utils/manipulators";
+import { useContext } from "react";
+import { ListsContext } from "../../../context/ListsContext";
+import { IListsContext } from "../../../types/kanbam";
 
 interface IItem {
   type: string;
@@ -25,10 +28,15 @@ export default function Item({
   setRequestError,
   setIdToModify,
 }: IItem) {
+  const { dispatch } = useContext(ListsContext) as IListsContext;
+
   return (
     <div className="item">
       <div className="item-name">
         <Link
+          onClick={() => {
+            dispatch({ type: "ADD_ALL_LISTS", payload: null });
+          }}
           to={{
             pathname: `/kanbam/${type}/${id}/${joinString(name)}`,
             search: `?accessLevel=${boardAccessLevel}`,
