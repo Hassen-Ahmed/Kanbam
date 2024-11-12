@@ -40,6 +40,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+
   {
     path: "/kanbam",
     async lazy() {
@@ -48,35 +49,44 @@ const router = createBrowserRouter([
     },
     children: [
       {
-        index: true,
+        path: "/kanbam/w",
         async lazy() {
-          const Home = await import("../components/board/Board");
-          return { Component: Home.default };
+          const WorkspaceList = await import(
+            "../components/workspace/WorkspaceList"
+          );
+          return { Component: WorkspaceList.default };
         },
       },
       {
-        path: "/kanbam/board",
+        path: "/kanbam/w/:w_id/:w_name",
+        async lazy() {
+          const Workspace = await import("../components/workspace/Workspace");
+          return { Component: Workspace.default };
+        },
+      },
+      {
+        path: "/kanbam/b/:b_id/:b_name/",
         async lazy() {
           const Board = await import("../components/board/Board");
           return { Component: Board.default };
         },
       },
       {
-        path: "/kanbam/table",
+        path: "/kanbam/tb/:b_id/:b_name",
         async lazy() {
           const Table = await import("../components/table/Table");
           return { Component: Table.default };
         },
       },
       {
-        path: "/kanbam/calendar",
+        path: "/kanbam/cal/:b_id/:b_name",
         async lazy() {
           const Calendar = await import("../components/calendar/CalendarFull");
           return { Component: Calendar.default };
         },
       },
       {
-        path: "/kanbam/dashboard",
+        path: "/kanbam/ds/:b_id/:b_name",
         async lazy() {
           const Dashboard = await import("../components/dashboard/Dashboard");
           return { Component: Dashboard.default };
