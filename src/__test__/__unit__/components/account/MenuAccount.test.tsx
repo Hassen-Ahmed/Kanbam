@@ -6,6 +6,21 @@ import { KanbamContext } from "../../../../context/kanbamContext";
 let mockIsAccountMenuVisible = false;
 const mockSetIsAccountMenuVisible = vi.fn();
 const mockTheme2 = "dark";
+const paramsWorkspace = {
+  w_id: "string",
+  w_name: "string",
+};
+const paramsBoard = {
+  b_id: "string",
+  b_name: "string",
+};
+const handleSetParamsWorkspace = vi.fn();
+const handleSetParamsBoard = vi.fn();
+const userDetail = {
+  email: "string",
+  userName: "string",
+};
+const setUserDetail = vi.fn();
 
 const renderWithMemoryRouter = () => {
   render(
@@ -15,6 +30,12 @@ const renderWithMemoryRouter = () => {
           theme: mockTheme2,
           themeSetter: vi.fn(),
           itemDragging: { current: null },
+          paramsWorkspace,
+          paramsBoard,
+          handleSetParamsWorkspace,
+          handleSetParamsBoard,
+          userDetail,
+          setUserDetail,
         }}
       >
         <MenuAccount
@@ -86,6 +107,6 @@ describe("MenuAccount component", () => {
 
     fireEvent.click(buttonLogout);
 
-    expect(localStorage.removeItem).toHaveBeenCalledWith("token");
+    expect(localStorage.clear).toHaveBeenCalledWith();
   });
 });
