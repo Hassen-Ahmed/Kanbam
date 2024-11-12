@@ -12,7 +12,6 @@ import {
   KanbamContext,
 } from "../../context/kanbamContext";
 import { FaUsersGear } from "react-icons/fa6";
-import Loading from "../notifications/Loading";
 import { IError } from "../../types/status.type";
 import NewMember, { INewMemberDetail } from "./components/NewMember";
 
@@ -66,13 +65,6 @@ const NavLinks = ({
       console.log("Error Creating Board: ", error.message);
     }
   };
-
-  if (!localParams.b_id)
-    return (
-      <div className="side-bar-left__loading">
-        <Loading />
-      </div>
-    );
 
   return (
     <div className="side-bar-left__btns">
