@@ -45,7 +45,7 @@ export default function Workspace() {
   const { w_id, w_name } = useParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const accessLevel = queryParams.get("accessLevel");
+  const accessLevel = queryParams.get("al");
 
   const { data, loading, error, refetch } = useFetchAllBoardsByWorkspaceId(
     w_id!
