@@ -29,6 +29,7 @@ export default function Item({
   setIdToModify,
 }: IItem) {
   const { dispatch } = useContext(ListsContext) as IListsContext;
+  const searchQuery = type == "b" ? "" : `?al=${boardAccessLevel}`;
 
   return (
     <div className="item">
@@ -39,7 +40,7 @@ export default function Item({
           }}
           to={{
             pathname: `/kanbam/${type}/${id}/${joinString(name)}`,
-            search: `?accessLevel=${boardAccessLevel}`,
+            search: searchQuery,
           }}
         >
           <h4>{name}</h4>
