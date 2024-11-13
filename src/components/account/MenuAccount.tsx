@@ -94,6 +94,8 @@ const MenuAccount = ({
               <h2 className="menu__workspaces--text">Workspaces</h2>
             </Link>
 
+            <Hr $themename={theme} $group="hover" />
+
             <div className="menu__logout" onClick={handleLogout}>
               <h2 className="menu__logout--text">Logout</h2>
             </div>
