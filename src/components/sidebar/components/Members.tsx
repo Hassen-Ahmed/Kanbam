@@ -1,12 +1,16 @@
 import { MdDeleteForever, MdEditNote } from "react-icons/md";
-import { IWorkspaceMember } from "../../../types/kanbam";
+import { IUserDecodedResult } from "../../../types/kanbam";
 import "./Members.scss";
 import { IoMdClose } from "react-icons/io";
 import { INewTheme } from "../../../types/styledComp";
 import styled from "styled-components";
 import { themes } from "../../../utils/constantDatas/themes";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
+import { jwtDecode } from "jwt-decode";
+import ErrorMessage from "../../notifications/ErrorMessage";
+import Loading from "../../notifications/Loading";
+import useFetchAllBoardMembersByBoardId from "../../../hooks/useFetchAllBoardMembersByBoardId";
 
 const MembersStyled = styled.div<INewTheme>`
   background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
@@ -27,14 +31,43 @@ const MembersStyled = styled.div<INewTheme>`
 `;
 
 interface IMembers {
-  members: IWorkspaceMember[];
+  b_id: string;
   setShowMembers: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Members({ members, setShowMembers }: IMembers) {
+export default function Members({ b_id, setShowMembers }: IMembers) {
   const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [currentUserRole, setCurrentUserRole] = useState<string | null>(null);
 
-  console.log(members);
+  const { dataBoardMembers, loadingBoardMembers, errorBoardMembers } =
+    useFetchAllBoardMembersByBoardId(b_id!);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const { userId } = jwtDecode(token) as IUserDecodedResult;
+      setCurrentUserId(userId);
+
+      if (dataBoardMembers) {
+        const filterMemberByUserId = dataBoardMembers.filter(
+          (m) => m.userId == userId
+        );
+        setCurrentUserRole(filterMemberByUserId[0].role);
+      }
+    }
+  }, [dataBoardMembers]);
+
+  //
+
+  if (loadingBoardMembers)
+    return (
+      <div className="loading-notification__container">
+        <Loading />
+      </div>
+    );
+
+  if (errorBoardMembers) return <ErrorMessage />;
 
   return (
     <div className="members-container">
@@ -44,28 +77,32 @@ export default function Members({ members, setShowMembers }: IMembers) {
         </div>
 
         <div className="list-of-item">
-          {members.length ? null : (
+          {dataBoardMembers?.length ? null : (
             <p className="no-member">You're the only one here for now!</p>
           )}
 
-          {members?.map((member) => {
+          {dataBoardMembers?.map((member, i) => {
             return (
-              <div key={member.id} className="item member">
+              <div key={member.boardId + `${i}`} className="item member">
                 <div className="item-name">
                   <h4>{member.userName}</h4>
                   <p className="desc">{member.email}</p>
                   <p className="desc">{member.role}</p>
                 </div>
 
-                <div className="item__btns">
-                  <div className="btn__edit btn">
-                    <MdEditNote size={20} />
-                  </div>
+                {currentUserId &&
+                  currentUserRole == "Admin" &&
+                  member.userId != currentUserId && (
+                    <div className="item__btns">
+                      <div className="btn__edit btn">
+                        <MdEditNote size={20} />
+                      </div>
 
-                  <div className="btn__delete btn">
-                    <MdDeleteForever size={20} />
-                  </div>
-                </div>
+                      <div className="btn__delete btn">
+                        <MdDeleteForever size={20} />
+                      </div>
+                    </div>
+                  )}
               </div>
             );
           })}

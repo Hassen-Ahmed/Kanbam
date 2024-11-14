@@ -5,6 +5,7 @@ import {
 } from "../../types/auth.type";
 import {
   IBoardCreate,
+  IBoardMember,
   ICard,
   ICardCreate,
   IList,
@@ -48,6 +49,23 @@ export const postBoard = async (newBoard: IBoardCreate, token: string) => {
   return data;
 };
 
+// BoardMember
+export const postBoardMemeber = async (
+  newBoardMember: IBoardMember,
+  token: string
+) => {
+  const { data } = await kanbamApi.post<IBoardMember>(
+    "/BoardsMembers",
+    newBoardMember,
+    {
+      headers: {
+        Authorization: `Bearer  ${token}`,
+      },
+    }
+  );
+  return data;
+};
+
 // Workspace
 export const postWorkspace = async (
   newWorkspace: IWorkspaceCreate,
@@ -64,6 +82,7 @@ export const postWorkspace = async (
   );
   return data;
 };
+
 // WorkspaceMember
 export const postWorkspaceMemeber = async (
   newWorkspaceMember: IWorkspaceMemberCreate,

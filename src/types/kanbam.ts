@@ -50,9 +50,15 @@ export interface IBoard extends IBoardCreate {
 }
 
 // boardMember
-export interface IBoardMembers extends IBoardCreate {
+export interface IBoardMemberCreate {
   boardId: string;
   role: string;
+  email: string;
+}
+
+export interface IBoardMember extends IBoardMemberCreate {
+  userId: string;
+  userName: string;
 }
 
 // workspace
@@ -68,10 +74,6 @@ export interface IWorkspace extends IWorkspaceCreate {
 }
 
 // workspaceMember
-export interface IWorkspaceMember extends IWorkspaceMemberCreate {
-  id: string;
-  userId: string;
-}
 
 export interface IWorkspaceMemberCreate {
   workspaceId: string;
@@ -79,6 +81,11 @@ export interface IWorkspaceMemberCreate {
   userName?: string;
   email?: string;
   role: string;
+}
+
+export interface IWorkspaceMember extends IWorkspaceMemberCreate {
+  id: string;
+  userId: string;
 }
 
 // userDetail
