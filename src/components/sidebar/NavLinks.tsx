@@ -10,6 +10,9 @@ import { useState } from "react";
 import { FaUsersGear } from "react-icons/fa6";
 import { IError } from "../../types/status.type";
 import NewMember, { INewMemberDetail } from "./components/NewMember";
+import { postBoardMemeber } from "../../utils/api/posts";
+import { IBoardMember } from "../../types/kanbam";
+import Members from "./components/Members";
 
 type ActiveButtonType = ({ isActive }: { isActive: boolean }) => string;
 
@@ -21,7 +24,9 @@ const NavLinks = ({
   const { b_id, b_name } = useParams<{ b_id: string; b_name: string }>();
 
   const [requestError, setRequestError] = useState(false);
+  const [showMembers, setShowMembers] = useState(false);
   const [showNewMemberModal, setShowNewMemberModal] = useState(false);
+
   const handleNewMemberModlaVisibility = (value: boolean) =>
     setShowNewMemberModal(value);
 
@@ -33,11 +38,11 @@ const NavLinks = ({
         throw new Error("No token found");
       }
 
-      console.log(item);
+      const modifiedItem = { boardId: b_id!, ...item } as IBoardMember;
 
-      // const modifiedItem = { workspaceId: w_id!, ...item };
+      const response = await postBoardMemeber(modifiedItem, token);
+      console.log("response: ", response);
 
-      // await postWorkspaceMemeber(modifiedItem, token);
       handleNewMemberModlaVisibility(false);
       // refetchWrMembers();
     } catch (err) {
@@ -46,8 +51,6 @@ const NavLinks = ({
       console.log("Error Creating Board: ", error.message);
     }
   };
-
-  // console.log("b_id: ", b_id);
 
   return (
     <div className="side-bar-left__btns">
@@ -59,7 +62,9 @@ const NavLinks = ({
         />
       )}
 
-      <div className="side-bar-left__btn">
+      {showMembers && <Members b_id={b_id!} setShowMembers={setShowMembers} />}
+
+      <div className="side-bar-left__btn" onClick={() => setShowMembers(true)}>
         <FaUsersGear />
         <p className="btn-title">Members</p>
       </div>
