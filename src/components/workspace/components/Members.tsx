@@ -11,6 +11,9 @@ import { jwtDecode } from "jwt-decode";
 import useFetchAllWorkspaceMembersByWorkspaceId from "../../../hooks/useFetchAllWorkspaceMembersByWorkspaceId";
 import ErrorMessage from "../../notifications/ErrorMessage";
 import Loading from "../../notifications/Loading";
+import AreYouSure from "../../../utils/areYouSure/AreYouSure";
+import { IError } from "../../../types/status.type";
+import { deleteWorkspaceMemberById } from "../../../utils/api/deletes";
 
 const MembersStyled = styled.div<INewTheme>`
   background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
@@ -40,7 +43,9 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [currentUserRole, setCurrentUserRole] = useState<string | null>(null);
 
-  const { dataWrMembers, loadingWrMembers, errorWrMembers } =
+  const [showAreYouSureModal, setShowAreYouSureModal] = useState(false);
+  const [IdToModify, setIdToModify] = useState<string | null>(null);
+  const { dataWrMembers, loadingWrMembers, errorWrMembers, refetchWrMembers } =
     useFetchAllWorkspaceMembersByWorkspaceId(w_id!);
 
   useEffect(() => {
@@ -58,6 +63,37 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
     }
   }, [dataWrMembers]);
 
+  const handleMemberDeletion = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("No token found");
+      }
+
+      await deleteWorkspaceMemberById(IdToModify!, token);
+      refetchWrMembers();
+    } catch (err) {
+      const error = err as IError;
+      console.log("Error Creating Board: ", error.message);
+    } finally {
+      setShowAreYouSureModal(false);
+    }
+  };
+
+  const handleAreYouSure = (status: boolean) => {
+    if (!status) {
+      setShowAreYouSureModal(false);
+    } else {
+      handleMemberDeletion();
+    }
+  };
+
+  const clickToDelete = (status: boolean, id: string) => {
+    setShowAreYouSureModal(status);
+    setIdToModify(id);
+  };
+
   //
 
   if (loadingWrMembers || dataWrMembers == null)
@@ -71,6 +107,10 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
 
   return (
     <div className="members-container">
+      {showAreYouSureModal && (
+        <AreYouSure handleAreYouSure={handleAreYouSure} />
+      )}
+
       <MembersStyled $newtheme={theme} className="members">
         <div className="close-modal" onClick={() => setShowMembers(false)}>
           <IoMdClose size={22} />
@@ -98,7 +138,10 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
                         <MdEditNote size={20} />
                       </div>
 
-                      <div className="btn__delete btn">
+                      <div
+                        className="btn__delete btn"
+                        onClick={() => clickToDelete(true, member.id)}
+                      >
                         <MdDeleteForever size={20} />
                       </div>
                     </div>

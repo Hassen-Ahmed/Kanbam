@@ -98,8 +98,7 @@ export default function Workspace() {
       }
 
       const modifiedItem = { workspaceId: w_id!, ...item };
-      console.log("IdToModify: ", IdToModify);
-      console.log("modifiedItem: ", modifiedItem);
+
       await updateBoard(IdToModify, modifiedItem, token);
       handleUpdateItemModlaVisibility(false);
       refetch();
