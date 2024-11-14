@@ -33,11 +33,6 @@ export default function useFetchAllWorkspaceMembersByWorkspaceId(w_id: string) {
 
   useEffect(() => {
     fetchBoardsData();
-    return () => {
-      setDataWrMembers(null);
-      setLoadingWrMembers(false);
-      setErrorWrMembers(null);
-    };
   }, [fetchBoardsData]);
 
   return {
