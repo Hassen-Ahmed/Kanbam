@@ -5,6 +5,7 @@ import {
   IList,
   IWorkspaceMember,
   IUserResponseDetail,
+  IBoardMember,
 } from "../../types/kanbam";
 import { kanbamApi } from "./baseApi";
 
@@ -74,15 +75,15 @@ export const getAllBoardsByWorkspaceId = async (
   return boards;
 };
 
-// BoardMembers By WorkspaceId
-export const getAllBoardMembersByWorkspaceId = async (
+// BoardMembers By BoardId
+export const getAllBoardMembersByBoardId = async (
   token: string,
-  workspaceId: string
+  boardId: string
 ) => {
   const {
-    data: { workspacesMembers },
-  } = await kanbamApi.get<{ workspacesMembers: IWorkspaceMember[] }>(
-    `/WorkspacesMembers/${workspaceId}`,
+    data: { boardMembers },
+  } = await kanbamApi.get<{ boardMembers: IBoardMember[] }>(
+    `/BoardsMembers/${boardId}`,
     {
       headers: {
         Authorization: `Bearer  ${token}`,
@@ -90,7 +91,7 @@ export const getAllBoardMembersByWorkspaceId = async (
     }
   );
 
-  return workspacesMembers;
+  return boardMembers;
 };
 
 // workspaces
