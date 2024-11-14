@@ -44,3 +44,12 @@ export const deleteWorkspaceById = async (id: string, token: string) => {
     },
   });
 };
+
+// workspace Member
+export const deleteWorkspaceMemberById = async (id: string, token: string) => {
+  await kanbamApi.delete(`/WorkspacesMembers/${id}`, {
+    headers: {
+      Authorization: `Bearer  ${token}`,
+    },
+  });
+};
