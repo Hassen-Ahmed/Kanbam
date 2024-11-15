@@ -14,6 +14,8 @@ import Loading from "../../notifications/Loading";
 import AreYouSure from "../../../utils/areYouSure/AreYouSure";
 import { IError } from "../../../types/status.type";
 import { deleteWorkspaceMemberById } from "../../../utils/api/deletes";
+import UpdateMember, { IUpdateMemberDetail } from "./UpdateMember";
+import { updateWorkspaceMember } from "../../../utils/api/updates";
 
 const MembersStyled = styled.div<INewTheme>`
   background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
@@ -43,8 +45,11 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [currentUserRole, setCurrentUserRole] = useState<string | null>(null);
 
+  const [showUpdateMemberModal, setShowUpdateMemberModal] = useState(false);
   const [showAreYouSureModal, setShowAreYouSureModal] = useState(false);
   const [IdToModify, setIdToModify] = useState<string | null>(null);
+  const [requestError, setRequestError] = useState(false);
+
   const { dataWrMembers, loadingWrMembers, errorWrMembers, refetchWrMembers } =
     useFetchAllWorkspaceMembersByWorkspaceId(w_id!);
 
@@ -62,6 +67,27 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
       }
     }
   }, [dataWrMembers]);
+
+  const handleUpdateMemberModlaVisibility = (value: boolean) =>
+    setShowUpdateMemberModal(value);
+
+  const handleUpdateMember = async (item: IUpdateMemberDetail) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("No token found");
+      }
+
+      await updateWorkspaceMember(IdToModify!, item, token);
+      handleUpdateMemberModlaVisibility(false);
+      refetchWrMembers();
+    } catch (err) {
+      setRequestError(true);
+      const error = err as IError;
+      console.log("Error Creating Board: ", error.message);
+    }
+  };
 
   const handleMemberDeletion = async () => {
     try {
@@ -89,6 +115,11 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
     }
   };
 
+  const clickToUpdate = (status: boolean, id: string) => {
+    setShowUpdateMemberModal(status);
+    setIdToModify(id);
+  };
+
   const clickToDelete = (status: boolean, id: string) => {
     setShowAreYouSureModal(status);
     setIdToModify(id);
@@ -109,6 +140,15 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
     <div className="members-container">
       {showAreYouSureModal && (
         <AreYouSure handleAreYouSure={handleAreYouSure} />
+      )}
+
+      {showUpdateMemberModal && (
+        <UpdateMember
+          type={"Workspace"}
+          requestError={requestError}
+          handleUpdateMember={handleUpdateMember}
+          handleUpdateMemberModlaVisibility={handleUpdateMemberModlaVisibility}
+        />
       )}
 
       <MembersStyled $newtheme={theme} className="members">
@@ -135,7 +175,10 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
                   member.userId != currentUserId && (
                     <div className="item__btns">
                       <div className="btn__edit btn">
-                        <MdEditNote size={20} />
+                        <MdEditNote
+                          size={20}
+                          onClick={() => clickToUpdate(true, member.id)}
+                        />
                       </div>
 
                       <div
