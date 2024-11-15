@@ -38,7 +38,7 @@ const NavLinks = ({
         throw new Error("No token found");
       }
 
-      const modifiedItem = { boardId: b_id!, ...item } as IBoardMember;
+      const modifiedItem = { id: b_id!, ...item } as IBoardMember;
 
       const response = await postBoardMemeber(modifiedItem, token);
       console.log("response: ", response);
