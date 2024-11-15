@@ -1,4 +1,10 @@
-import { IBoardCreate, ICard, IList } from "../../types/kanbam";
+import {
+  IBoardCreate,
+  ICard,
+  IList,
+  IWorkspaceMemberUpdate,
+  IWorkspaceUpdate,
+} from "../../types/kanbam";
 import { kanbamApi } from "./baseApi";
 
 // card
@@ -43,10 +49,23 @@ export const updateBoard = async (
 // Workspace
 export const updateWorkspace = async (
   id: string,
-  updatedWorkspace: IBoardCreate,
+  updatedWorkspace: IWorkspaceUpdate,
   token: string
 ) => {
   await kanbamApi.patch(`/Workspaces/${id}`, updatedWorkspace, {
+    headers: {
+      Authorization: `Bearer  ${token}`,
+    },
+  });
+};
+
+// Workspace Member
+export const updateWorkspaceMember = async (
+  id: string,
+  updatedWorkspaceMember: IWorkspaceMemberUpdate,
+  token: string
+) => {
+  await kanbamApi.patch(`/WorkspacesMembers/${id}`, updatedWorkspaceMember, {
     headers: {
       Authorization: `Bearer  ${token}`,
     },

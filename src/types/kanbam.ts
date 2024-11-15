@@ -67,6 +67,12 @@ export interface IWorkspaceCreate {
   description: string;
 }
 
+export interface IWorkspaceUpdate {
+  workspaceId: string;
+  name: string;
+  description: string;
+}
+
 export interface IWorkspace extends IWorkspaceCreate {
   role: string;
   workspaceId: string;
@@ -86,6 +92,10 @@ export interface IWorkspaceMemberCreate {
 export interface IWorkspaceMember extends IWorkspaceMemberCreate {
   id: string;
   userId: string;
+}
+
+export interface IWorkspaceMemberUpdate {
+  role: string;
 }
 
 // userDetail

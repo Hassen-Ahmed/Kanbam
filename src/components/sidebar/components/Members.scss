@@ -25,11 +25,13 @@
 
   width: auto;
   height: auto;
+  max-height: 80%;
   padding: 6rem;
   z-index: var.$z-ix-2000;
   border-radius: var.$bor-05;
-  @include mixn.flexy(column, center, flex-start, 2rem);
+  @include mixn.flexy(column, flex-start, flex-start, 2rem);
   position: relative;
+  overflow-y: scroll;
 
   .no-member {
     font-size: var.$fsi-14;
