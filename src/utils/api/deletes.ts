@@ -36,6 +36,15 @@ export const deleteBoardById = async (id: string, token: string) => {
   });
 };
 
+// board Member
+export const deleteBoardMemberById = async (id: string, token: string) => {
+  await kanbamApi.delete(`/BoardsMembers/${id}`, {
+    headers: {
+      Authorization: `Bearer  ${token}`,
+    },
+  });
+};
+
 // workspace
 export const deleteWorkspaceById = async (id: string, token: string) => {
   await kanbamApi.delete(`/Workspaces/${id}`, {
