@@ -1,5 +1,6 @@
 import {
   IBoardCreate,
+  IBoardMemberUpdate,
   ICard,
   IList,
   IWorkspaceMemberUpdate,
@@ -40,6 +41,19 @@ export const updateBoard = async (
   token: string
 ) => {
   await kanbamApi.patch(`/Boards/${id}`, updatedBoard, {
+    headers: {
+      Authorization: `Bearer  ${token}`,
+    },
+  });
+};
+
+// Board Member
+export const updateBoardMember = async (
+  id: string,
+  updatedBoardMember: IBoardMemberUpdate,
+  token: string
+) => {
+  await kanbamApi.patch(`/BoardsMembers/${id}`, updatedBoardMember, {
     headers: {
       Authorization: `Bearer  ${token}`,
     },
