@@ -16,6 +16,8 @@ import UpdateMember, {
 } from "../../workspace/components/UpdateMember";
 import { IError } from "../../../types/status.type";
 import { updateBoardMember } from "../../../utils/api/updates";
+import AreYouSure from "../../../utils/areYouSure/AreYouSure";
+import { deleteBoardMemberById } from "../../../utils/api/deletes";
 
 const MembersStyled = styled.div<INewTheme>`
   background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
@@ -46,6 +48,8 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
   const [currentUserRole, setCurrentUserRole] = useState<string | null>(null);
 
   const [showUpdateMemberModal, setShowUpdateMemberModal] = useState(false);
+  const [showAreYouSureModal, setShowAreYouSureModal] = useState(false);
+
   const [IdToModify, setIdToModify] = useState<string | null>(null);
   const [requestError, setRequestError] = useState(false);
   const {
@@ -91,8 +95,39 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
     }
   };
 
+  const handleMemberDeletion = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("No token found");
+      }
+
+      await deleteBoardMemberById(IdToModify!, token);
+      refetchBoardMembers();
+    } catch (err) {
+      const error = err as IError;
+      console.log("Error Creating Board: ", error.message);
+    } finally {
+      setShowAreYouSureModal(false);
+    }
+  };
+
+  const handleAreYouSure = (status: boolean) => {
+    if (!status) {
+      setShowAreYouSureModal(false);
+    } else {
+      handleMemberDeletion();
+    }
+  };
+
   const clickToUpdate = (status: boolean, id: string) => {
     setShowUpdateMemberModal(status);
+    setIdToModify(id);
+  };
+
+  const clickToDelete = (status: boolean, id: string) => {
+    setShowAreYouSureModal(status);
     setIdToModify(id);
   };
 
@@ -109,6 +144,10 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
 
   return (
     <div className="members-container">
+      {showAreYouSureModal && (
+        <AreYouSure handleAreYouSure={handleAreYouSure} />
+      )}
+
       {showUpdateMemberModal && (
         <UpdateMember
           type={"Boarddd"}
@@ -148,7 +187,10 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
                         <MdEditNote size={20} />
                       </div>
 
-                      <div className="btn__delete btn">
+                      <div
+                        className="btn__delete btn"
+                        onClick={() => clickToDelete(true, member.id)}
+                      >
                         <MdDeleteForever size={20} />
                       </div>
                     </div>
