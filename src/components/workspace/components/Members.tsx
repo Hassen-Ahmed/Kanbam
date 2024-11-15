@@ -174,11 +174,11 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
                   currentUserRole == "Admin" &&
                   member.userId != currentUserId && (
                     <div className="item__btns">
-                      <div className="btn__edit btn">
-                        <MdEditNote
-                          size={20}
-                          onClick={() => clickToUpdate(true, member.id)}
-                        />
+                      <div
+                        className="btn__edit btn"
+                        onClick={() => clickToUpdate(true, member.id)}
+                      >
+                        <MdEditNote size={20} />
                       </div>
 
                       <div

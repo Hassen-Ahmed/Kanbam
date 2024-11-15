@@ -56,7 +56,13 @@ export interface IBoardMemberCreate {
   email: string;
 }
 
-export interface IBoardMember extends IBoardMemberCreate {
+export interface IBoardMemberUpdate {
+  role: string;
+}
+
+export interface IBoardMember extends IBoardMemberUpdate {
+  id: string;
+  email: string;
   userId: string;
   userName: string;
 }

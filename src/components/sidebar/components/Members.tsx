@@ -11,6 +11,11 @@ import { jwtDecode } from "jwt-decode";
 import ErrorMessage from "../../notifications/ErrorMessage";
 import Loading from "../../notifications/Loading";
 import useFetchAllBoardMembersByBoardId from "../../../hooks/useFetchAllBoardMembersByBoardId";
+import UpdateMember, {
+  IUpdateMemberDetail,
+} from "../../workspace/components/UpdateMember";
+import { IError } from "../../../types/status.type";
+import { updateBoardMember } from "../../../utils/api/updates";
 
 const MembersStyled = styled.div<INewTheme>`
   background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
@@ -40,8 +45,15 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [currentUserRole, setCurrentUserRole] = useState<string | null>(null);
 
-  const { dataBoardMembers, loadingBoardMembers, errorBoardMembers } =
-    useFetchAllBoardMembersByBoardId(b_id!);
+  const [showUpdateMemberModal, setShowUpdateMemberModal] = useState(false);
+  const [IdToModify, setIdToModify] = useState<string | null>(null);
+  const [requestError, setRequestError] = useState(false);
+  const {
+    dataBoardMembers,
+    loadingBoardMembers,
+    errorBoardMembers,
+    refetchBoardMembers,
+  } = useFetchAllBoardMembersByBoardId(b_id!);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -58,6 +70,32 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
     }
   }, [dataBoardMembers]);
 
+  const handleUpdateMemberModlaVisibility = (value: boolean) =>
+    setShowUpdateMemberModal(value);
+
+  const handleUpdateMember = async (item: IUpdateMemberDetail) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("No token found");
+      }
+
+      await updateBoardMember(IdToModify!, item, token);
+      handleUpdateMemberModlaVisibility(false);
+      refetchBoardMembers();
+    } catch (err) {
+      setRequestError(true);
+      const error = err as IError;
+      console.log("Error Creating Board: ", error.message);
+    }
+  };
+
+  const clickToUpdate = (status: boolean, id: string) => {
+    setShowUpdateMemberModal(status);
+    setIdToModify(id);
+  };
+
   //
 
   if (loadingBoardMembers)
@@ -71,6 +109,15 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
 
   return (
     <div className="members-container">
+      {showUpdateMemberModal && (
+        <UpdateMember
+          type={"Boarddd"}
+          requestError={requestError}
+          handleUpdateMember={handleUpdateMember}
+          handleUpdateMemberModlaVisibility={handleUpdateMemberModlaVisibility}
+        />
+      )}
+
       <MembersStyled $newtheme={theme} className="members">
         <div className="close-modal" onClick={() => setShowMembers(false)}>
           <IoMdClose size={22} />
@@ -81,9 +128,9 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
             <p className="no-member">You're the only one here for now!</p>
           )}
 
-          {dataBoardMembers?.map((member, i) => {
+          {dataBoardMembers?.map((member) => {
             return (
-              <div key={member.boardId + `${i}`} className="item member">
+              <div key={member.id} className="item member">
                 <div className="item-name">
                   <h4>{member.userName}</h4>
                   <p className="desc">{member.email}</p>
@@ -94,7 +141,10 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
                   currentUserRole == "Admin" &&
                   member.userId != currentUserId && (
                     <div className="item__btns">
-                      <div className="btn__edit btn">
+                      <div
+                        className="btn__edit btn"
+                        onClick={() => clickToUpdate(true, member.id)}
+                      >
                         <MdEditNote size={20} />
                       </div>
 
