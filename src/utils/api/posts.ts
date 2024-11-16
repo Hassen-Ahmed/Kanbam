@@ -5,7 +5,7 @@ import {
 } from "../../types/auth.type";
 import {
   IBoardCreate,
-  IBoardMember,
+  IBoardMemberCreate,
   ICard,
   ICardCreate,
   IList,
@@ -51,10 +51,10 @@ export const postBoard = async (newBoard: IBoardCreate, token: string) => {
 
 // BoardMember
 export const postBoardMemeber = async (
-  newBoardMember: IBoardMember,
+  newBoardMember: IBoardMemberCreate,
   token: string
 ) => {
-  const { data } = await kanbamApi.post<IBoardMember>(
+  const { data } = await kanbamApi.post<IBoardMemberCreate>(
     "/BoardsMembers",
     newBoardMember,
     {
