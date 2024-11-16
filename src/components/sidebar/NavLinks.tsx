@@ -11,7 +11,7 @@ import { FaUsersGear } from "react-icons/fa6";
 import { IError } from "../../types/status.type";
 import NewMember, { INewMemberDetail } from "./components/NewMember";
 import { postBoardMemeber } from "../../utils/api/posts";
-import { IBoardMember } from "../../types/kanbam";
+import { IBoardMember, IBoardMemberCreate } from "../../types/kanbam";
 import Members from "./components/Members";
 
 type ActiveButtonType = ({ isActive }: { isActive: boolean }) => string;
@@ -38,10 +38,9 @@ const NavLinks = ({
         throw new Error("No token found");
       }
 
-      const modifiedItem = { id: b_id!, ...item } as IBoardMember;
+      const modifiedItem = { boardId: b_id!, ...item } as IBoardMemberCreate;
 
-      const response = await postBoardMemeber(modifiedItem, token);
-      console.log("response: ", response);
+      await postBoardMemeber(modifiedItem, token);
 
       handleNewMemberModlaVisibility(false);
       // refetchWrMembers();
