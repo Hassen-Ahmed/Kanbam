@@ -134,3 +134,22 @@
     transform: scale(1);
   }
 }
+
+@mixin action-btn() {
+  background-color: royalblue;
+  color: white;
+  padding: 0.8rem 2rem;
+  width: 100%;
+  border: none;
+  border-radius: var.$bor-05;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+  &:hover {
+    transform: scale(1.01) translateY(-0.1rem);
+  }
+
+  &:active {
+    transform: scale(1) translateY(0rem);
+  }
+}
