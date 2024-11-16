@@ -11,7 +11,7 @@ import { FaUsersGear } from "react-icons/fa6";
 import { IError } from "../../types/status.type";
 import NewMember, { INewMemberDetail } from "./components/NewMember";
 import { postBoardMemeber } from "../../utils/api/posts";
-import { IBoardMember, IBoardMemberCreate } from "../../types/kanbam";
+import { IBoardMemberCreate } from "../../types/kanbam";
 import Members from "./components/Members";
 
 type ActiveButtonType = ({ isActive }: { isActive: boolean }) => string;
