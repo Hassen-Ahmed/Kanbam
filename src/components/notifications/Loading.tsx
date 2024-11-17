@@ -17,18 +17,20 @@ const Loading = () => {
   const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   return (
-    <BgAndFont
-      $themename={theme}
-      $groupbg="card"
-      $groupfont="secondary"
-      className="loading"
-    >
-      <LoadinIcongStyled
-        $newtheme={theme}
-        className="loading__icon"
-      ></LoadinIcongStyled>
-      <p>Loading...</p>
-    </BgAndFont>
+    <div className="loading-container ">
+      <BgAndFont
+        $themename={theme}
+        $groupbg="card"
+        $groupfont="secondary"
+        className="loading"
+      >
+        <LoadinIcongStyled
+          $newtheme={theme}
+          className="loading__icon"
+        ></LoadinIcongStyled>
+        <p>Loading...</p>
+      </BgAndFont>
+    </div>
   );
 };
 
