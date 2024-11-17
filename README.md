@@ -52,6 +52,7 @@
 ### Testing Guidelines
 
 - **Unit Tests**: Use `npm test` (requires Vitest configuration).
+- **Vitest setup**: **[VITEST.md](./readme_collection/VITEST.md)**
 
 ---
 
