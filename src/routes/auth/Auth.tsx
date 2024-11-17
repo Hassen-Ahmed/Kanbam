@@ -17,12 +17,7 @@ export default function Auth() {
     }
   }, [navigate]);
 
-  if (isUserAuthenticated)
-    return (
-      <div className="loading-notification__container">
-        <Loading />
-      </div>
-    );
+  if (isUserAuthenticated) return <Loading />;
 
   return (
     <div className="auth">

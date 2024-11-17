@@ -133,12 +133,7 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
 
   //
 
-  if (loadingBoardMembers)
-    return (
-      <div className="loading-notification__container">
-        <Loading />
-      </div>
-    );
+  if (loadingBoardMembers) return <Loading />;
 
   if (errorBoardMembers) return <ErrorMessage />;
 
