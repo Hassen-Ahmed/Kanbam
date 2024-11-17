@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import ErrorPage from "../components/notifications/ErrorRoute";
+import ErrorPage from "../components/notifications/ErrorPage";
 
 const router = createBrowserRouter([
   {
