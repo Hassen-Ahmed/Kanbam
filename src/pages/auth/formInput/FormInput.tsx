@@ -48,7 +48,7 @@ export default function FormInput(props: FormInput) {
         </span>
       ) : null}
 
-      <span className="error-message">{inputProps.errormessage}</span>
+      <span className="form-error-message">{inputProps.errormessage}</span>
     </div>
   );
 }
