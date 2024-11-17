@@ -2,6 +2,13 @@
 @use "../../assets/style/abstracts/variable" as var;
 @use "../../assets/style/base/animation" as *;
 
+.loading-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .loading {
   @include mixn.flexy(row, center, center);
   width: 25rem;

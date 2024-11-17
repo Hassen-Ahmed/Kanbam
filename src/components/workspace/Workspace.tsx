@@ -161,12 +161,7 @@ export default function Workspace() {
 
   //
 
-  if (loading)
-    return (
-      <div className="loading-notification__container">
-        <Loading />
-      </div>
-    );
+  if (loading) return <Loading />;
 
   if (error) return <ErrorMessage />;
 

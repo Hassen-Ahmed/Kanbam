@@ -127,12 +127,7 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
 
   //
 
-  if (loadingWrMembers || dataWrMembers == null)
-    return (
-      <div className="loading-notification__container">
-        <Loading />
-      </div>
-    );
+  if (loadingWrMembers || dataWrMembers == null) return <Loading />;
 
   if (errorWrMembers) return <ErrorMessage />;
 

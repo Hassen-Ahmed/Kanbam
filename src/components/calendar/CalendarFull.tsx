@@ -164,12 +164,7 @@ const CalendarFull = () => {
     setShowAddTask(false);
   };
 
-  if (loading)
-    return (
-      <div className="loading-notification__container">
-        <Loading />
-      </div>
-    );
+  if (loading) return <Loading />;
 
   if (error) return <ErrorMessage />;
 
@@ -181,11 +176,7 @@ const CalendarFull = () => {
         backgroundColor: theme == "light" ? "#ffffff" : "#3d4349",
       }}
     >
-      {!cardDetails && (
-        <div className="calendar-full__loading">
-          <Loading />
-        </div>
-      )}
+      {!cardDetails && <Loading />}
 
       {showModalCard && cardDetails && (
         <CardModal
