@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { IError } from "../types/status.type";
-import { getAllBoardMembersByBoardId } from "../utils/api/gets";
 import { IBoardMember } from "../types/kanbam";
+import useGets from "../utils/api/useGets";
 
 export default function useFetchAllBoardMembersByBoardId(b_id: string) {
+  const { getAllBoardMembersByBoardId } = useGets();
   const [dataBoardMembers, setDataBoardMembers] = useState<
     IBoardMember[] | null
   >(null);
@@ -12,17 +13,9 @@ export default function useFetchAllBoardMembersByBoardId(b_id: string) {
     null
   );
 
-  const fetchBoardsData = useCallback(async () => {
+  const fetchBoardsData = async () => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        setErrorBoardMembers("No token found");
-        setLoadingBoardMembers(false);
-        return;
-      }
-
-      const res = await getAllBoardMembersByBoardId(token, b_id);
+      const res = await getAllBoardMembersByBoardId(b_id);
 
       setDataBoardMembers(res);
       setLoadingBoardMembers(false);
@@ -31,11 +24,12 @@ export default function useFetchAllBoardMembersByBoardId(b_id: string) {
       setErrorBoardMembers(errorBoardMembers.message);
       setLoadingBoardMembers(false);
     }
-  }, [b_id]);
+  };
 
   useEffect(() => {
     fetchBoardsData();
-  }, [fetchBoardsData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [b_id]);
 
   return {
     dataBoardMembers,
