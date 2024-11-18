@@ -13,9 +13,9 @@ import ErrorMessage from "../../notifications/ErrorMessage";
 import Loading from "../../notifications/Loading";
 import AreYouSure from "../../../utils/areYouSure/AreYouSure";
 import { IError } from "../../../types/status.type";
-import { deleteWorkspaceMemberById } from "../../../utils/api/deletes";
 import UpdateMember, { IUpdateMemberDetail } from "./UpdateMember";
-import { updateWorkspaceMember } from "../../../utils/api/updates";
+import useUpdates from "../../../utils/api/useUpdates";
+import useDeletes from "../../../utils/api/useDeletes";
 
 const MembersStyled = styled.div<INewTheme>`
   background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
@@ -41,6 +41,8 @@ interface IMembers {
 }
 
 export default function Members({ w_id, setShowMembers }: IMembers) {
+  const { updateWorkspaceMember } = useUpdates();
+  const { deleteWorkspaceMemberById } = useDeletes();
   const { theme } = useContext(KanbamContext) as IkanbamContext;
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [currentUserRole, setCurrentUserRole] = useState<string | null>(null);
@@ -73,13 +75,7 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
 
   const handleUpdateMember = async (item: IUpdateMemberDetail) => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        throw new Error("No token found");
-      }
-
-      await updateWorkspaceMember(IdToModify!, item, token);
+      await updateWorkspaceMember(IdToModify!, item);
       handleUpdateMemberModlaVisibility(false);
       refetchWrMembers();
     } catch (err) {
@@ -91,13 +87,7 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
 
   const handleMemberDeletion = async () => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        throw new Error("No token found");
-      }
-
-      await deleteWorkspaceMemberById(IdToModify!, token);
+      await deleteWorkspaceMemberById(IdToModify!);
       refetchWrMembers();
     } catch (err) {
       const error = err as IError;

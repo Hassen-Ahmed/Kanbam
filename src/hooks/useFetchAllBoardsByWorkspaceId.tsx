@@ -1,24 +1,17 @@
-import { useCallback, useEffect, useState } from "react";
-import { getAllBoardsByWorkspaceId } from "../utils/api/gets";
+import { useEffect, useState } from "react";
 import { IError } from "../types/status.type";
 import { IBoard } from "../types/kanbam";
+import useGets from "../utils/api/useGets";
 
 export default function useFetchAllBoardsByWorkspaceId(w_id: string) {
+  const { getAllBoardsByWorkspaceId } = useGets();
   const [data, setData] = useState<IBoard[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchBoardsData = useCallback(async () => {
+  const fetchBoardsData = async () => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        setError("No token found");
-        setLoading(false);
-        return;
-      }
-
-      const res = await getAllBoardsByWorkspaceId(token, w_id);
+      const res = await getAllBoardsByWorkspaceId(w_id);
 
       setData(res);
       setLoading(false);
@@ -27,16 +20,12 @@ export default function useFetchAllBoardsByWorkspaceId(w_id: string) {
       setError(error.message);
       setLoading(false);
     }
-  }, [w_id]);
+  };
 
   useEffect(() => {
     fetchBoardsData();
-    return () => {
-      setData(null);
-      setLoading(false);
-      setError(null);
-    };
-  }, [fetchBoardsData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [w_id]);
 
   return { data, loading, error, refetch: fetchBoardsData };
 }

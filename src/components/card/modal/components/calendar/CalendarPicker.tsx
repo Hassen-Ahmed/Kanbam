@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "./CalendarPicker.scss";
 import { VscClose } from "react-icons/vsc";
-import { updateCard } from "../../../../../utils/api/updates";
 import { IError } from "../../../../../types/status.type";
 import {
   IkanbamContext,
@@ -11,6 +10,7 @@ import {
 import { CalendarStyled } from "./CalendarStyled";
 import { months } from "../../../../../utils/constantDatas/months";
 import { ICard } from "../../../../../types/kanbam";
+import useUpdates from "../../../../../utils/api/useUpdates";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -27,6 +27,7 @@ export default function CalendarPicker({
   cardDetail,
   handleIsDatePressed,
 }: IDateCard) {
+  const { updateCard } = useUpdates();
   const [value, onChange] = useState<Value>(null);
   const [startDate, setStartDate] = useState<Record<string, string>>({
     day: `${new Date().getDate()}`,
@@ -130,8 +131,6 @@ export default function CalendarPicker({
     setStartDate((preDate) => ({ ...preDate, [type]: value }));
 
   const handleSave = async () => {
-    const token = localStorage.getItem("token")!;
-
     const startedAt = `${
       startDate.year + "/" + startDate.month + "/" + startDate.day
     }`;
@@ -146,7 +145,7 @@ export default function CalendarPicker({
     }
 
     try {
-      await updateCard(cardDetail.id!, cardDetail, token);
+      await updateCard(cardDetail.id!, cardDetail);
     } catch (err) {
       const error = err as IError;
       console.log(`Error message: ${error.message}`);

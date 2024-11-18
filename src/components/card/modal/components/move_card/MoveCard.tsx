@@ -4,7 +4,6 @@ import { IError } from "../../../../../types/status.type";
 import "./MoveCard.scss";
 import { ListsContext } from "../../../../../context/ListsContext";
 
-import { updateCard } from "../../../../../utils/api/updates";
 import { VscClose } from "react-icons/vsc";
 import { INewTheme } from "../../../../../types/styledComp";
 import styled from "styled-components";
@@ -18,6 +17,7 @@ import {
   IListsContext,
   IListsWithCards,
 } from "../../../../../types/kanbam";
+import useUpdates from "../../../../../utils/api/useUpdates";
 
 const MoveCardStyled = styled.div<INewTheme>`
   background-color: ${({ $newtheme }) => themes[$newtheme].bg["card_modal"]};
@@ -53,6 +53,7 @@ export default function MoveCard({
   cardDetail,
   handleIsMovePressed,
 }: IMoveCard) {
+  const { updateCard } = useUpdates();
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const [position, setPosition] = useState("1");
   const [listTitle, setListTittle] = useState<string | null>(
@@ -80,7 +81,6 @@ export default function MoveCard({
 
   const handleMoveCard = async () => {
     const cardId = cardDetail.id!;
-    const token = localStorage.getItem("token")!;
 
     const listIdToDrop = lists?.filter((list) => list.title == listTitle)[0]
       .id as string;
@@ -111,7 +111,7 @@ export default function MoveCard({
     };
 
     try {
-      await updateCard(cardId, cardDetail, token);
+      await updateCard(cardId, cardDetail);
 
       updatedListsByMovingCard(cardDetail);
     } catch (err) {

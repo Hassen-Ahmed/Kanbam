@@ -4,8 +4,6 @@ import { IoMdAdd } from "react-icons/io";
 import { VscClose } from "react-icons/vsc";
 
 import { handleDragstartUtil, handleRemoveCloneElem } from "../../utils/dnd";
-import { updateList } from "../../utils/api/updates";
-import { postCard } from "../../utils/api/posts";
 import { IError } from "../../types/status.type";
 import { DragEventMy } from "../../types/html.type";
 
@@ -28,6 +26,8 @@ import {
   IListsContext,
   IListsWithCards,
 } from "../../types/kanbam";
+import useUpdates from "../../utils/api/useUpdates";
+import usePosts from "../../utils/api/usePosts";
 
 const ListsStyled = styled.div<INewTheme>`
   .lists {
@@ -69,6 +69,8 @@ const Lists = ({
   isDragging,
   opacity,
 }: IListsWithCards) => {
+  const { postCard } = usePosts();
+  const { updateList } = useUpdates();
   const [titleValueOfThisList, setTitleOfThisList] = useState<string>(title);
   const [titleValeuOfNewCard, setTitleValeuOfNewCard] = useState("");
   const [isListMenuVisible, setIsListMenuVisible] = useState(false);
@@ -197,11 +199,7 @@ const Lists = ({
           opacity: "1",
         };
 
-        const token = localStorage.getItem("token");
-
-        if (!token) return;
-
-        const data = await postCard(cardToPost, token);
+        const data = await postCard(cardToPost);
         const updatedListObj = {
           id,
           title,
@@ -242,8 +240,6 @@ const Lists = ({
   const handleListMenu = () => setIsListMenuVisible(true);
 
   const handleTitleUpdate = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
     if (titleValueOfThisList.length) {
       const newList = {
         id,
@@ -253,7 +249,7 @@ const Lists = ({
       };
 
       try {
-        await updateList(id, newList, token);
+        await updateList(id, newList);
       } catch (err) {
         const error = err as IError;
         console.log(`Error message: ${error.message}`);

@@ -7,9 +7,7 @@ import { RxActivityLog } from "react-icons/rx";
 import { VscClose } from "react-icons/vsc";
 import { CiEdit } from "react-icons/ci";
 
-import { deleteCardById } from "../../../utils/api/deletes";
 import { handleUpdateLists } from "../../../utils/order_and_update";
-import { updateCard } from "../../../utils/api/updates";
 import { IError } from "../../../types/status.type";
 
 import { ListsContext } from "../../../context/ListsContext";
@@ -24,6 +22,8 @@ import styled from "styled-components";
 import { themes } from "../../../utils/constantDatas/themes";
 import { icons } from "./components/priorities/Priorities";
 import { ICard, IListsContext, IListsWithCards } from "../../../types/kanbam";
+import useUpdates from "../../../utils/api/useUpdates";
+import useDeletes from "../../../utils/api/useDeletes";
 
 const ActivityStyled = styled.div<INewTheme>`
   &,
@@ -54,6 +54,8 @@ export default function CardModal({
   handleModlaVisibility: (value: boolean) => void;
   cardDetail: ICard;
 }) {
+  const { updateCard } = useUpdates();
+  const { deleteCardById } = useDeletes();
   const [comment, setComment] = useState("");
   const [isCommentVisible, setIsCommentVisible] = useState(false);
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
@@ -68,14 +70,11 @@ export default function CardModal({
   // end of hooks
 
   const handleSave = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
     if (comment.length) {
       cardDetail.comments?.push(comment);
 
       try {
-        await updateCard(cardDetail.id!, cardDetail, token);
+        await updateCard(cardDetail.id!, cardDetail);
         setComment("");
         setIsCommentVisible(false);
       } catch (err) {
@@ -89,10 +88,7 @@ export default function CardModal({
 
   const handleCardArchive = async (cardId: string) => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) return;
-      await deleteCardById(cardId, token);
+      await deleteCardById(cardId);
       handleModlaVisibility(false);
 
       const updatedLists = handleUpdateLists(lists!, cardDetail, cardId);
@@ -109,9 +105,6 @@ export default function CardModal({
   };
 
   const handleTitleUpdate = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
     if (
       titleValueOfThisCard.length &&
       titleValueOfThisCard !== cardDetail.title
@@ -119,7 +112,7 @@ export default function CardModal({
       cardDetail.title = titleValueOfThisCard;
 
       try {
-        await updateCard(cardDetail.id!, cardDetail, token);
+        await updateCard(cardDetail.id!, cardDetail);
         setIsTitleInputVisible(false);
       } catch (err) {
         const error = err as IError;

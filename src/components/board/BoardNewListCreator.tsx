@@ -1,12 +1,12 @@
 import { useContext, useState } from "react";
 import { MdOutlineCancel } from "react-icons/md";
 
-import { postList } from "../../utils/api/posts";
 import { IError } from "../../types/status.type";
 
 import { ListsContext } from "../../context/ListsContext";
 import "./BoardNewListCreator.scss";
 import { IListsContext } from "../../types/kanbam";
+import usePosts from "../../utils/api/usePosts";
 
 type isListAddedType = {
   isListAddedSetter: (value: boolean) => void;
@@ -17,6 +17,7 @@ const BoardNewListCreator = ({
   isListAddedSetter,
   boardId,
 }: isListAddedType) => {
+  const { postList } = usePosts();
   const [inputList, setInputList] = useState<string>("");
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
 
@@ -30,8 +31,7 @@ const BoardNewListCreator = ({
     };
 
     try {
-      const token = localStorage.getItem("token") as string;
-      const resData = await postList(newList, token);
+      const resData = await postList(newList);
 
       const modifiedData = { ...resData, cards: [] };
       dispatch({ type: "ADD_LIST", payload: [modifiedData] });

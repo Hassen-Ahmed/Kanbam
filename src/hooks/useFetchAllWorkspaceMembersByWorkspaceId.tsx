@@ -1,26 +1,19 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { IError } from "../types/status.type";
 import { IWorkspaceMember } from "../types/kanbam";
-import { getAllWorkspaceMembersByWorkspaceId } from "../utils/api/gets";
+import useGets from "../utils/api/useGets";
 
 export default function useFetchAllWorkspaceMembersByWorkspaceId(w_id: string) {
+  const { getAllWorkspaceMembersByWorkspaceId } = useGets();
   const [dataWrMembers, setDataWrMembers] = useState<IWorkspaceMember[] | null>(
     null
   );
   const [loadingWrMembers, setLoadingWrMembers] = useState(true);
   const [errorWrMembers, setErrorWrMembers] = useState<string | null>(null);
 
-  const fetchBoardsData = useCallback(async () => {
+  const fetchBoardsData = async () => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        setErrorWrMembers("No token found");
-        setLoadingWrMembers(false);
-        return;
-      }
-
-      const res = await getAllWorkspaceMembersByWorkspaceId(token, w_id);
+      const res = await getAllWorkspaceMembersByWorkspaceId(w_id);
 
       setDataWrMembers(res);
       setLoadingWrMembers(false);
@@ -29,11 +22,12 @@ export default function useFetchAllWorkspaceMembersByWorkspaceId(w_id: string) {
       setErrorWrMembers(errorWrMembers.message);
       setLoadingWrMembers(false);
     }
-  }, [w_id]);
+  };
 
   useEffect(() => {
     fetchBoardsData();
-  }, [fetchBoardsData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [w_id]);
 
   return {
     dataWrMembers,

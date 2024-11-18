@@ -11,17 +11,17 @@ import { IoMdAdd } from "react-icons/io";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 import NewItem, { IItemDetail } from "./components/NewItem";
 import Loading from "../notifications/Loading";
-import { postBoard, postWorkspaceMemeber } from "../../utils/api/posts";
 import { IError } from "../../types/status.type";
-import { deleteBoardById } from "../../utils/api/deletes";
 import AreYouSure from "../../utils/areYouSure/AreYouSure";
 import Item from "./components/Item";
 import UpdateItem from "./components/UpdateItem";
-import { updateBoard } from "../../utils/api/updates";
 import NewMember, { INewMemberDetail } from "./components/NewMember";
 import Members from "./components/Members";
 import { FaUsersGear } from "react-icons/fa6";
 import ErrorMessage from "../notifications/ErrorMessage";
+import useUpdates from "../../utils/api/useUpdates";
+import usePosts from "../../utils/api/usePosts";
+import useDeletes from "../../utils/api/useDeletes";
 
 const WorkspaceStyled = styled.div<INewTheme>`
   background-color: ${({ $newtheme }) => themes[$newtheme].bg["lists"]};
@@ -42,10 +42,13 @@ const WorkspaceStyled = styled.div<INewTheme>`
 `;
 
 export default function Workspace() {
+  const { updateBoard } = useUpdates();
+  const { deleteBoardById } = useDeletes();
   const { w_id, w_name } = useParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const accessLevel = queryParams.get("al");
+  const { postWorkspaceMemeber, postBoard } = usePosts();
 
   const { data, loading, error, refetch } = useFetchAllBoardsByWorkspaceId(
     w_id!
@@ -62,6 +65,8 @@ export default function Workspace() {
   const [showAreYouSureModal, setShowAreYouSureModal] = useState(false);
   const [IdToModify, setIdToModify] = useState("");
 
+  //
+
   const handleNewItemModlaVisibility = (value: boolean) =>
     setShowNewItemModal(value);
 
@@ -73,14 +78,8 @@ export default function Workspace() {
 
   const handleItemCreation = async (item: IItemDetail) => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        throw new Error("No token found");
-      }
-
       const modifiedItem = { workspaceId: w_id!, ...item };
-      await postBoard(modifiedItem, token);
+      await postBoard(modifiedItem);
       handleNewItemModlaVisibility(false);
       refetch();
     } catch (err) {
@@ -91,15 +90,9 @@ export default function Workspace() {
   };
   const handleItemUpdate = async (item: IItemDetail) => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        throw new Error("No token found");
-      }
-
       const modifiedItem = { workspaceId: w_id!, ...item };
 
-      await updateBoard(IdToModify, modifiedItem, token);
+      await updateBoard(IdToModify, modifiedItem);
       handleUpdateItemModlaVisibility(false);
       refetch();
     } catch (err) {
@@ -111,15 +104,9 @@ export default function Workspace() {
 
   const handleInviteMember = async (item: INewMemberDetail) => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        throw new Error("No token found");
-      }
-
       const modifiedItem = { workspaceId: w_id!, ...item };
 
-      await postWorkspaceMemeber(modifiedItem, token);
+      await postWorkspaceMemeber(modifiedItem);
       handleNewMemberModlaVisibility(false);
     } catch (err) {
       setRequestError(true);
@@ -130,12 +117,7 @@ export default function Workspace() {
 
   const handleItemDeletion = async () => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        throw new Error("No token found");
-      }
-      await deleteBoardById(IdToModify, token);
+      await deleteBoardById(IdToModify);
       refetch();
     } catch (err) {
       setRequestError(true);

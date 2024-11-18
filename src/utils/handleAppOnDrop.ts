@@ -1,10 +1,11 @@
 import { ICard, IList, IListsWithCards } from "../types/kanbam";
 import { IError } from "../types/status.type";
-import { updateCard, updateList } from "./api/updates";
 
-export const handleAppOnDrop = (lists: IListsWithCards[] | null) => {
-  const token = localStorage.getItem("token");
-  if (!token) return;
+export const handleAppOnDrop = (
+  lists: IListsWithCards[] | null,
+  updateList: (id: string, updatedList: IList) => Promise<void>,
+  updateCard: (id: string, updatedCard: ICard) => Promise<void>
+) => {
   // on this onDrop update reorderd lists and card
   const storedLists = localStorage.getItem("storedLists");
 
@@ -32,7 +33,7 @@ export const handleAppOnDrop = (lists: IListsWithCards[] | null) => {
 
   if (isThereSomeListsDifference) {
     try {
-      asyncUpdaterList(listsForPutRequest, token);
+      asyncUpdaterList(listsForPutRequest, updateList);
       // reset localStorage of storedLists with edited lists
       localStorage.setItem("storedLists", JSON.stringify(lists));
     } catch (err) {
@@ -66,7 +67,7 @@ export const handleAppOnDrop = (lists: IListsWithCards[] | null) => {
 
     if (isThereSomeCardsDiff) {
       try {
-        asyncUpdateCard(cardsForPutRequest, token);
+        asyncUpdateCard(cardsForPutRequest, updateCard);
         // reset localStorage of storedLists with edited lists
         localStorage.setItem("storedLists", JSON.stringify(lists));
       } catch (err) {
@@ -77,10 +78,13 @@ export const handleAppOnDrop = (lists: IListsWithCards[] | null) => {
   }
 };
 
-async function asyncUpdaterList(lists: IList[], token: string) {
+async function asyncUpdaterList(
+  lists: IList[],
+  updateList: (id: string, updatedList: IList) => Promise<void>
+) {
   return Promise.all(
     lists.map((listObj) => {
-      updateList(listObj.id!, listObj, token).catch((error) => ({
+      updateList(listObj.id!, listObj).catch((error) => ({
         error,
         listObj,
       }));
@@ -88,10 +92,13 @@ async function asyncUpdaterList(lists: IList[], token: string) {
   );
 }
 
-async function asyncUpdateCard(cards: ICard[], token: string) {
+async function asyncUpdateCard(
+  cards: ICard[],
+  updateCard: (id: string, updatedCard: ICard) => Promise<void>
+) {
   return Promise.all(
     cards.map((card) => {
-      updateCard(card.id!, card, token).catch((error) => ({ error, card }));
+      updateCard(card.id!, card).catch((error) => ({ error, card }));
     })
   );
 }

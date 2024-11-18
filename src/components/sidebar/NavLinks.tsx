@@ -10,9 +10,9 @@ import { useState } from "react";
 import { FaUsersGear } from "react-icons/fa6";
 import { IError } from "../../types/status.type";
 import NewMember, { INewMemberDetail } from "./components/NewMember";
-import { postBoardMemeber } from "../../utils/api/posts";
 import { IBoardMemberCreate } from "../../types/kanbam";
 import Members from "./components/Members";
+import usePosts from "../../utils/api/usePosts";
 
 type ActiveButtonType = ({ isActive }: { isActive: boolean }) => string;
 
@@ -22,6 +22,7 @@ const NavLinks = ({
   handleActiveButton: ActiveButtonType;
 }) => {
   const { b_id, b_name } = useParams<{ b_id: string; b_name: string }>();
+  const { postBoardMemeber } = usePosts();
 
   const [requestError, setRequestError] = useState(false);
   const [showMembers, setShowMembers] = useState(false);
@@ -32,15 +33,9 @@ const NavLinks = ({
 
   const handleInviteMember = async (item: INewMemberDetail) => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        throw new Error("No token found");
-      }
-
       const modifiedItem = { boardId: b_id!, ...item } as IBoardMemberCreate;
 
-      await postBoardMemeber(modifiedItem, token);
+      await postBoardMemeber(modifiedItem);
 
       handleNewMemberModlaVisibility(false);
       // refetchWrMembers();

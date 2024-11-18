@@ -2,18 +2,15 @@
 import { IActionBoard } from "../../types/actions.type";
 import { IListsWithCards, ICard, ICardCreate } from "../../types/kanbam";
 import { IError } from "../../types/status.type";
-import { postCard } from "../../utils/api/posts";
-import { updateCard } from "../../utils/api/updates";
-
-const token = localStorage.getItem("token")!;
 
 export const createNewTask = async (
   dispatch: (value: IActionBoard) => void,
   lists: IListsWithCards[],
-  newTask: ICardCreate
+  newTask: ICardCreate,
+  postCard: (newCard: ICardCreate) => Promise<ICard>
 ) => {
   try {
-    const res = (await postCard(newTask, token)) as ICard;
+    const res = (await postCard(newTask)) as ICard;
     const updatedLists = lists?.map((list) => {
       if (list.id != newTask.listId) return list;
       return { ...list, cards: [...list.cards!, res] };
@@ -29,7 +26,11 @@ export const createNewTask = async (
   }
 };
 
-export const eventResize = async (info: any, cardDetails: ICard[]) => {
+export const eventResize = async (
+  info: any,
+  cardDetails: ICard[],
+  updateCard: (id: string, updatedCard: ICard) => Promise<void>
+) => {
   const year = info.event.end.getFullYear();
   const month = info.event.end.getMonth() + 1;
   const day = info.event.end.getDate();
@@ -41,7 +42,7 @@ export const eventResize = async (info: any, cardDetails: ICard[]) => {
   cardToModify.dueDate = new Date(`${year}/${month}/${day}`).toISOString();
 
   try {
-    await updateCard(info.event.id, cardToModify, token);
+    await updateCard(info.event.id, cardToModify);
   } catch (err) {
     const error = err as IError;
     console.log(`Error message: ${error.message}`);
@@ -50,7 +51,11 @@ export const eventResize = async (info: any, cardDetails: ICard[]) => {
   }
 };
 
-export const eventDrop = async (info: any, cardDetails: ICard[]) => {
+export const eventDrop = async (
+  info: any,
+  cardDetails: ICard[],
+  updateCard: (id: string, updatedCard: ICard) => Promise<void>
+) => {
   const cardDetail = cardDetails?.filter(
     (cardDetail) => cardDetail.id == info.event.id
   )[0] as ICard;
@@ -69,7 +74,7 @@ export const eventDrop = async (info: any, cardDetails: ICard[]) => {
   }
 
   try {
-    await updateCard(info.event.id, cardDetail, token);
+    await updateCard(info.event.id, cardDetail);
   } catch (err) {
     const error = err as IError;
     console.log(`Error message: ${error.message}`);

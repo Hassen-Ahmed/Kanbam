@@ -21,6 +21,8 @@ import { ICard, IListsContext, IListsWithCards } from "../../types/kanbam";
 import { useParams } from "react-router-dom";
 import useFetchAllListByBoardId from "../../hooks/useFetchAllListByBoardId";
 import ErrorMessage from "../notifications/ErrorMessage";
+import useUpdates from "../../utils/api/useUpdates";
+import usePosts from "../../utils/api/usePosts";
 
 export interface IListFewDetail {
   id: string;
@@ -34,11 +36,12 @@ const CalendarFullStyled = styled.div<INewTheme>`
 `;
 
 const CalendarFull = () => {
+  const { postCard } = usePosts();
+  const { updateCard } = useUpdates();
   const { lists, dispatch, searchText } = useContext(
     ListsContext
   ) as IListsContext;
   const { theme } = useContext(KanbamContext) as IkanbamContext;
-
   const [cardDetails, setCardDetails] = useState<ICard[] | null>(null);
   const [cardDetail, setCardDetail] = useState<ICard | null>(null);
 
@@ -119,11 +122,11 @@ const CalendarFull = () => {
   };
 
   const handleEventDrop = (info: any) => {
-    eventDrop(info, cardDetails!);
+    eventDrop(info, cardDetails!, updateCard);
   };
 
   const handleEventResize = (info: any) => {
-    eventResize(info, cardDetails!).then(() => {
+    eventResize(info, cardDetails!, updateCard).then(() => {
       setNewTask((preValue) => ({ ...preValue, title: "" }));
     });
     setShowAddTask(false);
@@ -157,7 +160,7 @@ const CalendarFull = () => {
   };
 
   const handleAddNewTask = async () => {
-    createNewTask(dispatch, lists!, newTask).then(() => {
+    createNewTask(dispatch, lists!, newTask, postCard).then(() => {
       setNewTask((preValue) => ({ ...preValue, title: "" }));
     });
 

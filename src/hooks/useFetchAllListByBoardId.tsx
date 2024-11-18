@@ -1,32 +1,28 @@
-import { useCallback, useContext, useEffect, useState } from "react";
-import { getAllCardsByListId, getAllListByBoardId } from "../utils/api/gets";
+import { useContext, useEffect, useState } from "react";
 import { IError } from "../types/status.type";
 import { IListsContext, IListsWithCards } from "../types/kanbam";
 import { ListsContext } from "../context/ListsContext";
 import { handleReorderingData } from "../utils/order_and_update";
+import useGets from "../utils/api/useGets";
 
 export default function useFetchAllListByBoardId(b_id: string) {
+  const { getAllListByBoardId, getAllCardsByListId } = useGets();
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const [data, setData] = useState<IListsWithCards[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchListsData = useCallback(async () => {
+  const fetchListsData = async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        throw new Error("No token found");
-      }
-
       dispatch({
         type: "ADD_ALL_LISTS",
         payload: null,
       });
 
-      const fetchedLists = await getAllListByBoardId(token, b_id);
+      const fetchedLists = await getAllListByBoardId(b_id);
       const listsWithCards: IListsWithCards[] = await Promise.all(
         fetchedLists.map(async (list) => {
-          const cards = await getAllCardsByListId(token, list.id);
+          const cards = await getAllCardsByListId(list.id);
 
           return {
             ...list,
@@ -53,7 +49,7 @@ export default function useFetchAllListByBoardId(b_id: string) {
     } finally {
       setLoading(false);
     }
-  }, [b_id, dispatch]);
+  };
 
   useEffect(() => {
     if (lists) {
@@ -64,13 +60,8 @@ export default function useFetchAllListByBoardId(b_id: string) {
     } else {
       fetchListsData();
     }
-
-    return () => {
-      setData(null);
-      setError(null);
-      setLoading(true);
-    };
-  }, [lists, fetchListsData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lists, b_id, dispatch]);
 
   return { data, loading, error, refetch: fetchListsData };
 }
