@@ -12,6 +12,7 @@ import { ListsContext } from "../../../../context/ListsContext";
 import "./AddNewTask.scss";
 import { createNewTask } from "../../../calendar/helpers";
 import { IListsContext } from "../../../../types/kanbam";
+import usePosts from "../../../../utils/api/usePosts";
 
 const AddTaskStyled = styled.div<INewTheme>`
   .task-add-new__sub {
@@ -39,6 +40,7 @@ export default function AddNewTask({
   handleAddNewTaskShow,
   handleRefetch,
 }: IAddNewTask) {
+  const { postCard } = usePosts();
   const { theme } = useContext(KanbamContext) as IkanbamContext;
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
 
@@ -50,7 +52,7 @@ export default function AddNewTask({
   });
 
   const handleAddNewTask = async () => {
-    createNewTask(dispatch, lists!, newTask).then(() => {
+    createNewTask(dispatch, lists!, newTask, postCard).then(() => {
       setNewTask((preValue) => ({ ...preValue, title: "" }));
     });
     handleRefetch();
