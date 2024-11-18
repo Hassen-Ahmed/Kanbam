@@ -15,9 +15,9 @@ import UpdateMember, {
   IUpdateMemberDetail,
 } from "../../workspace/components/UpdateMember";
 import { IError } from "../../../types/status.type";
-import { updateBoardMember } from "../../../utils/api/updates";
 import AreYouSure from "../../../utils/areYouSure/AreYouSure";
-import { deleteBoardMemberById } from "../../../utils/api/deletes";
+import useUpdates from "../../../utils/api/useUpdates";
+import useDeletes from "../../../utils/api/useDeletes";
 
 const MembersStyled = styled.div<INewTheme>`
   background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
@@ -43,6 +43,8 @@ interface IMembers {
 }
 
 export default function Members({ b_id, setShowMembers }: IMembers) {
+  const { updateBoardMember } = useUpdates();
+  const { deleteBoardMemberById } = useDeletes();
   const { theme } = useContext(KanbamContext) as IkanbamContext;
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [currentUserRole, setCurrentUserRole] = useState<string | null>(null);
@@ -79,13 +81,7 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
 
   const handleUpdateMember = async (item: IUpdateMemberDetail) => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        throw new Error("No token found");
-      }
-
-      await updateBoardMember(IdToModify!, item, token);
+      await updateBoardMember(IdToModify!, item);
       handleUpdateMemberModlaVisibility(false);
       refetchBoardMembers();
     } catch (err) {
@@ -97,13 +93,7 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
 
   const handleMemberDeletion = async () => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        throw new Error("No token found");
-      }
-
-      await deleteBoardMemberById(IdToModify!, token);
+      await deleteBoardMemberById(IdToModify!);
       refetchBoardMembers();
     } catch (err) {
       const error = err as IError;

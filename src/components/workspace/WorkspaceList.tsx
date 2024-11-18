@@ -8,14 +8,14 @@ import { themes } from "../../utils/constantDatas/themes";
 import { IoMdAdd } from "react-icons/io";
 import NewItem, { IItemDetail } from "./components/NewItem";
 import Loading from "../notifications/Loading";
-import { postWorkspace } from "../../utils/api/posts";
 import { IError } from "../../types/status.type";
 import Item from "./components/Item";
-import { deleteWorkspaceById } from "../../utils/api/deletes";
 import AreYouSure from "../../utils/areYouSure/AreYouSure";
 import UpdateItem from "./components/UpdateItem";
-import { updateWorkspace } from "../../utils/api/updates";
 import ErrorMessage from "../notifications/ErrorMessage";
+import useUpdates from "../../utils/api/useUpdates";
+import usePosts from "../../utils/api/usePosts";
+import useDeletes from "../../utils/api/useDeletes";
 
 const WorkspacesStyled = styled.div<INewTheme>`
   background-color: ${({ $newtheme }) => themes[$newtheme].bg["lists"]};
@@ -31,6 +31,9 @@ const WorkspacesStyled = styled.div<INewTheme>`
 `;
 
 export default function WorkspaceList() {
+  const { postWorkspace } = usePosts();
+  const { updateWorkspace } = useUpdates();
+  const { deleteWorkspaceById } = useDeletes();
   const { theme } = useContext(KanbamContext) as IkanbamContext;
   const { data, loading, error, refetch } = useFetchAllWorkspace();
 
@@ -51,13 +54,7 @@ export default function WorkspaceList() {
 
   const handleItemCreation = async (item: IItemDetail) => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        throw new Error("No token found");
-      }
-
-      await postWorkspace(item, token);
+      await postWorkspace(item);
       handleNewItemModlaVisibility(false);
       refetch();
     } catch (err) {
@@ -69,14 +66,8 @@ export default function WorkspaceList() {
 
   const handleItemUpdate = async (item: IItemDetail) => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        throw new Error("No token found");
-      }
-
       const modifiedItem = { workspaceId: IdToModify!, ...item };
-      await updateWorkspace(IdToModify, modifiedItem, token);
+      await updateWorkspace(IdToModify, modifiedItem);
       handleUpdateItemModlaVisibility(false);
       refetch();
     } catch (err) {
@@ -101,12 +92,7 @@ export default function WorkspaceList() {
 
   const handleItemDeletion = async () => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        throw new Error("No token found");
-      }
-      await deleteWorkspaceById(IdToModify, token);
+      await deleteWorkspaceById(IdToModify);
       refetch();
     } catch (err) {
       setRequestError(true);

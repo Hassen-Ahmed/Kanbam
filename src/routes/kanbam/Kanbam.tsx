@@ -10,6 +10,7 @@ import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { themes } from "../../utils/constantDatas/themes";
 import { IListsContext } from "../../types/kanbam";
 import "./Kanbam.scss";
+import useUpdates from "../../utils/api/useUpdates";
 
 export const GlobalStyle = styled.div<INewTheme>`
   ::-webkit-scrollbar-thumb {
@@ -30,6 +31,7 @@ export const GlobalStyle = styled.div<INewTheme>`
 `;
 
 export default function Kanbam() {
+  const { updateList, updateCard } = useUpdates();
   const { lists } = useContext(ListsContext) as IListsContext;
   const { theme } = useContext(KanbamContext) as IkanbamContext;
   const location = useLocation();
@@ -38,7 +40,7 @@ export default function Kanbam() {
     <GlobalStyle
       $newtheme={theme}
       className="kanbam"
-      onDrop={() => handleAppOnDrop(lists)}
+      onDrop={() => handleAppOnDrop(lists, updateList, updateCard)}
     >
       <NavBar />
       <div className="kanbam__sub">

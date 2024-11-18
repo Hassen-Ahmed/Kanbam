@@ -10,9 +10,9 @@ import { ITaskContent } from "../Table";
 import { ListsContext } from "../../../context/ListsContext";
 import CardModal from "../../card/modal/CardModal";
 import AreYouSure from "../../../utils/areYouSure/AreYouSure";
-import { deleteCardById } from "../../../utils/api/deletes";
 import { IError } from "../../../types/status.type";
 import { ICard, IListsContext } from "../../../types/kanbam";
+import useDeletes from "../../../utils/api/useDeletes";
 
 const TaskTableStyled = styled.div<INewTheme>`
   background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
@@ -28,6 +28,7 @@ export default function TaskTable({
   index: number;
   handleRefetch: () => Promise<void>;
 }) {
+  const { deleteCardById } = useDeletes();
   const { theme } = useContext(KanbamContext) as IkanbamContext;
   const { lists } = useContext(ListsContext) as IListsContext;
 
@@ -71,10 +72,8 @@ export default function TaskTable({
   };
 
   const handleDeleteTask = async () => {
-    const token = localStorage.getItem("token") as string;
-
     try {
-      await deleteCardById(task.id, token);
+      await deleteCardById(task.id);
       handleRefetch();
     } catch (err) {
       const error = err as IError;

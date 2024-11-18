@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { FaArrowRotateLeft } from "react-icons/fa6";
 
 import { loginData } from "../../../utils/constantDatas/formData";
-import { postAuthLogin } from "../../../utils/api/posts";
 import { IError } from "../../../types/status.type";
 
 import FormInput from "../formInput/FormInput";
 import "./LogIn.scss";
+import usePosts from "../../../utils/api/usePosts";
 
 const LogIn = () => {
+  const { postAuthLogin } = usePosts();
   const [isAuthorizing, setIsAuthorizing] = useState(false);
   const [isWrongUser, setIsWrongUser] = useState(false);
   const [userDetails, setUserDetails] = useState({

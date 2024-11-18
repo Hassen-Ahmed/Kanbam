@@ -1,5 +1,4 @@
 import { IError } from "../../../../../types/status.type";
-import { updateCard } from "../../../../../utils/api/updates";
 
 import "./Priorities.scss";
 import { useContext } from "react";
@@ -17,6 +16,7 @@ import { INewTheme } from "../../../../../types/styledComp";
 import styled from "styled-components";
 import { themes } from "../../../../../utils/constantDatas/themes";
 import { ICard } from "../../../../../types/kanbam";
+import useUpdates from "../../../../../utils/api/useUpdates";
 
 interface IPriorityCollection {
   cardDetail: ICard;
@@ -57,14 +57,13 @@ export default function Priorities({
   isVisible,
   handleIsPriorityPressed,
 }: IPriorityCollection) {
+  const { updateCard } = useUpdates();
   const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   const handlePriorityName = async (name: string) => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
     cardDetail.priority = name;
     try {
-      await updateCard(cardDetail.id!, cardDetail, token);
+      await updateCard(cardDetail.id!, cardDetail);
     } catch (err) {
       const error = err as IError;
       console.log(`Error message: ${error.message}`);

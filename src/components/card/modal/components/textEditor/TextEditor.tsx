@@ -1,7 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import DOMPurify from "dompurify";
 
-import { updateCard } from "../../../../../utils/api/updates";
 import { IError } from "../../../../../types/status.type";
 
 import EditingButtons from "./EditingButtons";
@@ -15,6 +14,7 @@ import {
 import { themes } from "../../../../../utils/constantDatas/themes";
 import { MdEditNote } from "react-icons/md";
 import { ICard } from "../../../../../types/kanbam";
+import useUpdates from "../../../../../utils/api/useUpdates";
 
 const TextEditorStyled = styled.div<INewTheme>`
   .text-editor {
@@ -55,6 +55,7 @@ const EditedStyled = styled.div<INewTheme>`
 
 export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
   const [html, setHtml] = useState(DOMPurify.sanitize(cardDetail.description!));
+  const { updateCard } = useUpdates();
   const [isEditorialOpen, setIsEditorialOpen] = useState(false);
   const [localDescription, setLocalDescription] = useState(
     cardDetail.description
@@ -73,14 +74,12 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
   // end of hooks
 
   const handleSave = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
     if (!paraRef.current) return;
     try {
       const currentValue = paraRef.current as HTMLElement;
       cardDetail.description = currentValue.innerHTML;
 
-      await updateCard(cardDetail.id!, cardDetail, token);
+      await updateCard(cardDetail.id!, cardDetail);
 
       setLocalDescription(currentValue.innerHTML);
       setIsEditorialOpen(false);

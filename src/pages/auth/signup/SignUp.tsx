@@ -3,13 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaArrowRotateLeft } from "react-icons/fa6";
 
 import { signupData } from "../../../utils/constantDatas/formData";
-import { postAuthRegistarion } from "../../../utils/api/posts";
 import { IError } from "../../../types/status.type";
 
 import FormInput from "../formInput/FormInput";
 import "./SignUp.scss";
+import usePosts from "../../../utils/api/usePosts";
 
 export default function SignUp() {
+  const { postAuthRegistarion } = usePosts();
+
   const [isRegistered, setIsRegistered] = useState(false);
   const [userDetails, setUserDetails] = useState({
     email: "",

@@ -3,7 +3,6 @@ import { VscClose } from "react-icons/vsc";
 import { FaArrowRotateLeft } from "react-icons/fa6";
 
 import { IError } from "../../types/status.type";
-import { deleteListsById } from "../../utils/api/deletes";
 
 import { ListsContext } from "../../context/ListsContext";
 import { updatedListByListId } from "./utilsForLists";
@@ -14,6 +13,7 @@ import { themes } from "../../utils/constantDatas/themes";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { Hr } from "../../utils/constantDatas/styledUtils";
 import { IListsContext } from "../../types/kanbam";
+import useDeletes from "../../utils/api/useDeletes";
 
 const ListMenuStyled = styled.div<INewTheme>`
   .lists-menu {
@@ -43,6 +43,7 @@ export default function ListsMenu({
   id: string;
   setIsNewCardInputVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const { deleteListsById } = useDeletes();
   const [isListRemoved, setIsListRemoved] = useState(false);
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const { theme } = useContext(KanbamContext) as IkanbamContext;
@@ -67,9 +68,7 @@ export default function ListsMenu({
   const handleListArchive = async (listId: string) => {
     setIsListRemoved(true);
     try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-      await deleteListsById(listId, token);
+      await deleteListsById(listId);
       handleIsListMenuVisible(false);
 
       const finalLists = updatedListByListId(lists!, listId);
