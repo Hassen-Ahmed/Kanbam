@@ -6,7 +6,9 @@ import "./ErrorPage.scss";
 
 const ErrorPage = () => {
   const error: any = useRouteError();
-
+  const clearLocalStorage = () => {
+    localStorage.clear();
+  };
   return (
     <div className="error-route">
       <div className="contents">
@@ -15,7 +17,7 @@ const ErrorPage = () => {
         <p>
           <i>404 {error.statusText || error.message}</i>
         </p>
-        <div className="home-btn">
+        <div className="home-btn" onClick={clearLocalStorage}>
           <Link to={"/"}>Home</Link>
         </div>
       </div>
