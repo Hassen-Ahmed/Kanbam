@@ -37,8 +37,10 @@ const LogIn = () => {
     setIsAuthorizing(true);
 
     try {
-      const { token }: { token: string } = await postAuthLogin(userDetails);
-      localStorage.setItem("token", token);
+      const { accessToken }: { accessToken: string } = await postAuthLogin(
+        userDetails
+      );
+      localStorage.setItem("accessToken", accessToken);
 
       navigate("/kanbam/w");
     } catch (err) {

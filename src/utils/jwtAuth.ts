@@ -1,10 +1,10 @@
 import { jwtDecode } from "jwt-decode";
 
 export const isTokenAuthenticated = () => {
-  const token = localStorage.getItem("token");
+  const accessToken = localStorage.getItem("accessToken");
 
-  if (token) {
-    const decodedToken = jwtDecode(token);
+  if (accessToken) {
+    const decodedToken = jwtDecode(accessToken);
 
     const currentTime = Date.now() / 1000; // in second
 

@@ -62,9 +62,9 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
   } = useFetchAllBoardMembersByBoardId(b_id!);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const { userId } = jwtDecode(token) as IUserDecodedResult;
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      const { userId } = jwtDecode(accessToken) as IUserDecodedResult;
       setCurrentUserId(userId);
 
       if (dataBoardMembers) {
