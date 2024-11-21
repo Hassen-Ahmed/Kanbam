@@ -58,7 +58,7 @@ export default function Home() {
           <h2>From Hassen</h2>
           <h1>Welcome to Kanbam!</h1>
           <div className="home__header--btn">
-            <Link to="/auth">
+            <Link to="/auth/login">
               <button>Get started!</button>
             </Link>
           </div>
