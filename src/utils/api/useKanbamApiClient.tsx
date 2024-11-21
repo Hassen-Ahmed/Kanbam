@@ -10,10 +10,10 @@ export default function useKanbamApiClient() {
   useEffect(() => {
     const requestInterceptor = kanbamApi.interceptors.request.use(
       function (config) {
-        const token = localStorage.getItem("token");
+        const accessToken = localStorage.getItem("accessToken");
 
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
+        if (accessToken) {
+          config.headers.Authorization = `Bearer ${accessToken}`;
         }
         return config;
       },

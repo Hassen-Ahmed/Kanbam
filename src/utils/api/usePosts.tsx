@@ -23,7 +23,7 @@ export default function usePosts() {
   const postAuthRegistarion = useCallback(
     async (registarionDetail: IAuthRegistarion) => {
       const { data }: { data: IAuthRegistarionSuccess } = await kanbamApi.post(
-        "/auth/registarion",
+        "/auth/registration",
         registarionDetail
       );
 

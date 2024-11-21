@@ -56,9 +56,9 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
     useFetchAllWorkspaceMembersByWorkspaceId(w_id!);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const { userId } = jwtDecode(token) as IUserDecodedResult;
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      const { userId } = jwtDecode(accessToken) as IUserDecodedResult;
       setCurrentUserId(userId);
 
       if (dataWrMembers) {

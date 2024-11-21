@@ -85,7 +85,7 @@ describe("MenuAccount component", () => {
 
     expect(mockSetIsAccountMenuVisible).toBeCalledTimes(1);
   });
-  test("It should will clear localStorage token when loggedout", () => {
+  test("It should will clear localStorage accessToken when loggedout", () => {
     mockIsAccountMenuVisible = true;
 
     renderWithMemoryRouter();
