@@ -31,7 +31,7 @@ export default function useKanbamApiClient() {
         console.log("Unauthorized. Redirecting to login...");
 
         if (error.response && error.response.status === 401) {
-          window.location.href = "/login";
+          // window.location.href = "/auth/login";
         }
 
         return Promise.reject(error);
