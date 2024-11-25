@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { IoMdAdd } from "react-icons/io";
 
-import { isTokenAuthenticated } from "../../utils/jwtAuth";
 import { handleSearchText } from "../../utils/order_and_update";
 
 import { ListsContext } from "../../context/ListsContext";
@@ -44,7 +43,6 @@ const BoardStyled = styled.div<INewTheme>`
 const Board = () => {
   const [isListAdded, setIsListAdded] = useState<boolean>(false);
   const { dispatch, searchText } = useContext(ListsContext) as IListsContext;
-  const navigate = useNavigate();
   const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   const { b_id } = useParams();
@@ -52,12 +50,6 @@ const Board = () => {
   const { data, loading, error } = useFetchAllListByBoardId(b_id!);
 
   //
-
-  useEffect(() => {
-    if (!isTokenAuthenticated() && data == undefined) {
-      navigate("/");
-    }
-  }, []);
 
   useEffect(() => {
     if (searchText) handleSearchText(searchText, dispatch);
@@ -94,7 +86,10 @@ const Board = () => {
 
   if (loading) return <Loading />;
 
-  if (error) return <ErrorMessage />;
+  if (error)
+    return (
+      <ErrorMessage message={error.message} statusCode={error.statusCode} />
+    );
 
   return (
     <div className="board-container">
