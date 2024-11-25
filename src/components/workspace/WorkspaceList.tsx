@@ -12,10 +12,10 @@ import { IError } from "../../types/status.type";
 import Item from "./components/Item";
 import AreYouSure from "../../utils/areYouSure/AreYouSure";
 import UpdateItem from "./components/UpdateItem";
-import ErrorMessage from "../notifications/ErrorMessage";
 import useUpdates from "../../utils/api/useUpdates";
 import usePosts from "../../utils/api/usePosts";
 import useDeletes from "../../utils/api/useDeletes";
+import ErrorMessage from "../notifications/ErrorMessage";
 
 const WorkspacesStyled = styled.div<INewTheme>`
   background-color: ${({ $newtheme }) => themes[$newtheme].bg["lists"]};
@@ -104,10 +104,12 @@ export default function WorkspaceList() {
   };
 
   //
-
   if (loading) return <Loading />;
 
-  if (error) return <ErrorMessage />;
+  if (error)
+    return (
+      <ErrorMessage message={error.message} statusCode={error.statusCode} />
+    );
 
   return (
     <div className="workspaces-contianer">

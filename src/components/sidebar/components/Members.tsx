@@ -18,6 +18,7 @@ import { IError } from "../../../types/status.type";
 import AreYouSure from "../../../utils/areYouSure/AreYouSure";
 import useUpdates from "../../../utils/api/useUpdates";
 import useDeletes from "../../../utils/api/useDeletes";
+import { ITokenContext, TokenContext } from "../../../context/TokenContext";
 
 const MembersStyled = styled.div<INewTheme>`
   background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
@@ -43,9 +44,10 @@ interface IMembers {
 }
 
 export default function Members({ b_id, setShowMembers }: IMembers) {
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { tokenInCtx } = useContext(TokenContext) as ITokenContext;
   const { updateBoardMember } = useUpdates();
   const { deleteBoardMemberById } = useDeletes();
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [currentUserRole, setCurrentUserRole] = useState<string | null>(null);
 
@@ -62,9 +64,8 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
   } = useFetchAllBoardMembersByBoardId(b_id!);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-    if (accessToken) {
-      const { userId } = jwtDecode(accessToken) as IUserDecodedResult;
+    if (tokenInCtx) {
+      const { userId } = jwtDecode(tokenInCtx) as IUserDecodedResult;
       setCurrentUserId(userId);
 
       if (dataBoardMembers) {
@@ -74,7 +75,7 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
         setCurrentUserRole(filterMemberByUserId[0].role);
       }
     }
-  }, [dataBoardMembers]);
+  }, [dataBoardMembers, tokenInCtx]);
 
   const handleUpdateMemberModlaVisibility = (value: boolean) =>
     setShowUpdateMemberModal(value);
@@ -125,7 +126,13 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
 
   if (loadingBoardMembers) return <Loading />;
 
-  if (errorBoardMembers) return <ErrorMessage />;
+  if (errorBoardMembers)
+    return (
+      <ErrorMessage
+        message={errorBoardMembers.message}
+        statusCode={errorBoardMembers.statusCode}
+      />
+    );
 
   return (
     <div className="members-container">

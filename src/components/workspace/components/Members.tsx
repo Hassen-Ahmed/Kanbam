@@ -16,6 +16,7 @@ import { IError } from "../../../types/status.type";
 import UpdateMember, { IUpdateMemberDetail } from "./UpdateMember";
 import useUpdates from "../../../utils/api/useUpdates";
 import useDeletes from "../../../utils/api/useDeletes";
+import { ITokenContext, TokenContext } from "../../../context/TokenContext";
 
 const MembersStyled = styled.div<INewTheme>`
   background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
@@ -44,6 +45,7 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
   const { updateWorkspaceMember } = useUpdates();
   const { deleteWorkspaceMemberById } = useDeletes();
   const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { tokenInCtx } = useContext(TokenContext) as ITokenContext;
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [currentUserRole, setCurrentUserRole] = useState<string | null>(null);
 
@@ -56,9 +58,8 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
     useFetchAllWorkspaceMembersByWorkspaceId(w_id!);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-    if (accessToken) {
-      const { userId } = jwtDecode(accessToken) as IUserDecodedResult;
+    if (tokenInCtx) {
+      const { userId } = jwtDecode(tokenInCtx) as IUserDecodedResult;
       setCurrentUserId(userId);
 
       if (dataWrMembers) {
@@ -68,7 +69,7 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
         setCurrentUserRole(filterMemberByUserId[0].role);
       }
     }
-  }, [dataWrMembers]);
+  }, [dataWrMembers, tokenInCtx]);
 
   const handleUpdateMemberModlaVisibility = (value: boolean) =>
     setShowUpdateMemberModal(value);
@@ -119,7 +120,13 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
 
   if (loadingWrMembers || dataWrMembers == null) return <Loading />;
 
-  if (errorWrMembers) return <ErrorMessage />;
+  if (errorWrMembers)
+    return (
+      <ErrorMessage
+        message={errorWrMembers.message}
+        statusCode={errorWrMembers.statusCode}
+      />
+    );
 
   return (
     <div className="members-container">

@@ -101,7 +101,10 @@ export default function Table() {
 
   if (loading) return <Loading />;
 
-  if (error) return <ErrorMessage />;
+  if (error)
+    return (
+      <ErrorMessage message={error.message} statusCode={error.statusCode} />
+    );
 
   return (
     <TableStyled $newtheme={theme} className="table">
