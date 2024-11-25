@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import "./Home.scss";
 
-import Loading from "../../components/notifications/Loading";
 import { BsPatchQuestionFill } from "react-icons/bs";
 import { RiFunctionAddLine } from "react-icons/ri";
 import { MdOutlineFeaturedPlayList } from "react-icons/md";
