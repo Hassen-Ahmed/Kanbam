@@ -1,6 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import { isTokenAuthenticated } from "../../utils/jwtAuth";
+import { Link } from "react-router-dom";
+import { useRef, useState } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import "./Home.scss";
 
@@ -18,9 +17,6 @@ import {
 const iconsSize = 30;
 
 export default function Home() {
-  const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
-  const navigate = useNavigate();
-
   const topElem = useRef(null);
   const bottomElem = useRef(null);
 
@@ -33,18 +29,6 @@ export default function Home() {
     const current = bottomElem.current! as HTMLElement;
     current.scrollIntoView({ behavior: "smooth" });
   };
-
-  useEffect(() => {
-    if (isTokenAuthenticated()) {
-      navigate(`/kanbam/w`);
-      setIsUserAuthenticated(true);
-    } else {
-      localStorage.clear();
-      setIsUserAuthenticated(false);
-    }
-  }, [navigate]);
-
-  if (isUserAuthenticated) return <Loading />;
 
   return (
     <div className="home">
