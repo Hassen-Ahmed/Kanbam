@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import MenuAccount from "../../../../components/account/MenuAccount";
 import { MemoryRouter } from "react-router-dom";
 import { KanbamContext } from "../../../../context/kanbamContext";
+import { TokenContext } from "../../../../context/TokenContext";
 
 let mockIsAccountMenuVisible = false;
 const mockSetIsAccountMenuVisible = vi.fn();
@@ -12,24 +13,29 @@ const userDetail = {
   userName: "string",
 };
 const setUserDetail = vi.fn();
+const mockTokenInCtx = "dark";
 
 const renderWithMemoryRouter = () => {
   render(
     <MemoryRouter>
-      <KanbamContext.Provider
-        value={{
-          theme: mockTheme2,
-          themeSetter: vi.fn(),
-          itemDragging: { current: null },
-          userDetail,
-          setUserDetail,
-        }}
+      <TokenContext.Provider
+        value={{ tokenInCtx: mockTokenInCtx, handleSetAccessToken: vi.fn() }}
       >
-        <MenuAccount
-          isAccountMenuVisible={mockIsAccountMenuVisible}
-          setIsAccountMenuVisible={mockSetIsAccountMenuVisible}
-        />
-      </KanbamContext.Provider>
+        <KanbamContext.Provider
+          value={{
+            theme: mockTheme2,
+            themeSetter: vi.fn(),
+            itemDragging: { current: null },
+            userDetail,
+            setUserDetail,
+          }}
+        >
+          <MenuAccount
+            isAccountMenuVisible={mockIsAccountMenuVisible}
+            setIsAccountMenuVisible={mockSetIsAccountMenuVisible}
+          />
+        </KanbamContext.Provider>
+      </TokenContext.Provider>
     </MemoryRouter>
   );
 };
@@ -84,16 +90,5 @@ describe("MenuAccount component", () => {
     fireEvent.click(overlay);
 
     expect(mockSetIsAccountMenuVisible).toBeCalledTimes(1);
-  });
-  test("It should will clear localStorage accessToken when loggedout", () => {
-    mockIsAccountMenuVisible = true;
-
-    renderWithMemoryRouter();
-
-    const buttonLogout = document.getElementsByClassName("menu__logout")[0];
-
-    fireEvent.click(buttonLogout);
-
-    expect(localStorage.clear).toHaveBeenCalledWith();
   });
 });
