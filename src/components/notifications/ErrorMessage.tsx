@@ -1,26 +1,23 @@
 import { BiSolidError } from "react-icons/bi";
 import "./ErrorMessage.scss";
-import { useNavigate } from "react-router-dom";
 
-export default function ErrorMessage() {
-  const navigate = useNavigate();
+interface IErrorMessage {
+  message: string;
+  statusCode: number;
+}
 
-  const handleNavigation = () => {
-    localStorage.clear();
-    navigate("/");
-  };
+export default function ErrorMessage({ message, statusCode }: IErrorMessage) {
+  const color = statusCode == 404 ? "yellow" : "#e3342e";
 
   return (
-    <div className="error-message-container">
-      <div className="error-message">
-        <div className="logo">
-          <BiSolidError size={50} />
-        </div>
-        <h1>Sorry, something went wrong!</h1>
-        <h3>Try Logout, and Login again.</h3>
-        <div className="error-message__logout-btn">
-          <button onClick={handleNavigation}>Logout!</button>
-        </div>
+    <div className="error-message">
+      <div className="logo">
+        <BiSolidError size={50} color={color} />
+      </div>
+      <h1>Sorry, something went wrong!</h1>
+      <div className="errors" style={{ color: color }}>
+        <h3 className="message">{message}</h3>
+        <h1 className="status-code">{statusCode}</h1>
       </div>
     </div>
   );

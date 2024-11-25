@@ -145,7 +145,10 @@ export default function Workspace() {
 
   if (loading) return <Loading />;
 
-  if (error) return <ErrorMessage />;
+  if (error)
+    return (
+      <ErrorMessage message={error.message} statusCode={error.statusCode} />
+    );
 
   return (
     <div className="boards-container">

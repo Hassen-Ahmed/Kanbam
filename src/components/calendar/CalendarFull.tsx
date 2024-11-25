@@ -169,7 +169,10 @@ const CalendarFull = () => {
 
   if (loading) return <Loading />;
 
-  if (error) return <ErrorMessage />;
+  if (error)
+    return (
+      <ErrorMessage message={error.message} statusCode={error.statusCode} />
+    );
 
   return (
     <CalendarFullStyled

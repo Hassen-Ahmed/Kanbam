@@ -4,13 +4,15 @@ import { IListsContext, IListsWithCards } from "../types/kanbam";
 import { ListsContext } from "../context/ListsContext";
 import { handleReorderingData } from "../utils/order_and_update";
 import useGets from "../utils/api/useGets";
+import axios from "axios";
+import { handlingAxioxError } from "../utils/errorHandling";
 
 export default function useFetchAllListByBoardId(b_id: string) {
-  const { getAllListByBoardId, getAllCardsByListId } = useGets();
+  const { getAllListWithCardsByBoardId } = useGets();
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const [data, setData] = useState<IListsWithCards[] | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<IError | null>(null);
 
   const fetchListsData = async () => {
     try {
@@ -19,33 +21,25 @@ export default function useFetchAllListByBoardId(b_id: string) {
         payload: null,
       });
 
-      const fetchedLists = await getAllListByBoardId(b_id);
-      const listsWithCards: IListsWithCards[] = await Promise.all(
-        fetchedLists.map(async (list) => {
-          const cards = await getAllCardsByListId(list.id);
+      const fetchedLists = await getAllListWithCardsByBoardId(b_id);
 
-          return {
-            ...list,
-            cards,
-          };
-        })
-      );
-
-      const reorderedData = handleReorderingData(listsWithCards);
+      const reorderedData = handleReorderingData(fetchedLists);
 
       dispatch({
         type: "ADD_ALL_LISTS",
         payload: reorderedData,
       });
+
       localStorage.setItem("storedLists", JSON.stringify(reorderedData));
 
-      setData(listsWithCards);
+      setData(fetchedLists);
 
-      return listsWithCards;
+      return fetchedLists;
     } catch (err) {
-      const error = err as IError;
-      setError(error.message);
-      setLoading(false);
+      if (axios.isAxiosError(err)) {
+        const error = handlingAxioxError(err.response?.status) as IError;
+        setError(error);
+      }
     } finally {
       setLoading(false);
     }
@@ -61,7 +55,7 @@ export default function useFetchAllListByBoardId(b_id: string) {
       fetchListsData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lists, b_id, dispatch]);
+  }, [lists, b_id]);
 
   return { data, loading, error, refetch: fetchListsData };
 }

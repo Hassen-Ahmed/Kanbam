@@ -43,6 +43,11 @@ export default function usePosts() {
     [kanbamApi]
   );
 
+  // Auth login
+  const postAuthRevoke = useCallback(async () => {
+    await kanbamApi.post("/auth/RevokeRefreshToken");
+  }, [kanbamApi]);
+
   // WorkspaceMember
   const postWorkspaceMemeber = useCallback(
     async (newWorkspaceMember: IWorkspaceMemberCreate) => {
@@ -115,6 +120,7 @@ export default function usePosts() {
   return {
     postAuthRegistarion,
     postAuthLogin,
+    postAuthRevoke,
     postWorkspaceMemeber,
     postWorkspace,
     postBoardMemeber,

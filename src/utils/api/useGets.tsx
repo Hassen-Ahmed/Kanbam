@@ -5,6 +5,7 @@ import {
   IBoardMember,
   ICard,
   IList,
+  IListsWithCards,
   IUserResponseDetail,
   IWorkspace,
   IWorkspaceMember,
@@ -69,17 +70,20 @@ export default function useGets() {
   );
 
   // lists by BoardId
-  const getAllListByBoardId = useCallback(
+  const getAllListWithCardsByBoardId = useCallback(
     async (boardId: string) => {
       const {
         data: { lists },
-      } = await kanbamApi.get<{ lists: IList[] }>(`/Lists/${boardId}`);
+      } = await kanbamApi.get<{ lists: IListsWithCards[] }>(
+        `/Lists/${boardId}`
+      );
 
       return lists;
     },
 
     [kanbamApi]
   );
+
   // lists
   const getAllLists = useCallback(async () => {
     const { data } = await kanbamApi.get<IList[]>("/Lists");
@@ -115,7 +119,7 @@ export default function useGets() {
     getAllWorkspaceMembersByWorkspaceId,
     getAllBoardMembersByBoardId,
     getAllBoardsByWorkspaceId,
-    getAllListByBoardId,
+    getAllListWithCardsByBoardId,
     getAllLists,
     getAllCardsByListId,
     getCardByCardId,
