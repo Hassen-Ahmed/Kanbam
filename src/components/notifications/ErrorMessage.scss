@@ -2,45 +2,18 @@
 @use "../../assets/style/abstracts/variable" as var;
 
 .error-message {
-  &-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    @include mixn.flexy(column, center, center);
-    z-index: 9998;
-    background-color: #cbc7dd;
-  }
-
   width: 100%;
   @include mixn.flexy(column);
   padding: 2rem;
   background-color: #623ff0;
   color: white;
-  z-index: 9998;
 
-  .logo {
-    color: yellow;
+  .errors {
+    @include mixn.flexy(column);
   }
-
-  &__logout-btn {
-    margin: 2rem;
-
-    button {
-      padding: 0.5rem 2rem;
-      border-radius: var.$bor-05;
-      border: none;
-      font-size: var.$fsi-14;
-      cursor: pointer;
-      transition: all 0.2s ease;
-
-      &:hover {
-        transform: scale(1.1) translateY(-0.2rem);
-      }
-      &:active {
-        transform: scale(1) translateY(0);
-      }
-    }
+  .message,
+  .status-code {
+    text-transform: capitalize;
+    margin: 0.5rem;
   }
 }
