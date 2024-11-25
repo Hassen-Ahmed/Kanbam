@@ -10,6 +10,7 @@ import { themes } from "../../utils/constantDatas/themes";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { INewTheme } from "../../types/styledComp";
 import { Hr } from "../../utils/constantDatas/styledUtils";
+import usePosts from "../../utils/api/usePosts";
 
 const MenuStyled = styled.div<INewTheme>`
   .menu {
@@ -57,15 +58,14 @@ const MenuAccount = ({
   isAccountMenuVisible,
   setIsAccountMenuVisible,
 }: IMenuVisiblity) => {
+  const { postAuthRevoke } = usePosts();
   const [areWeCelebrating, setAreWeCelebrating] = useState(false);
   const navigate = useNavigate();
   const { theme } = useContext(KanbamContext) as IkanbamContext;
 
-  const handleLogout = () => {
-    localStorage.clear();
-    setTimeout(() => {
-      navigate("/");
-    }, 100);
+  const handleLogout = async () => {
+    navigate("/auth/login");
+    await postAuthRevoke();
   };
 
   return (
