@@ -3,6 +3,8 @@ import { IError } from "../types/status.type";
 import { IUserResponseDetail, IWorkspace } from "../types/kanbam";
 import { IkanbamContext, KanbamContext } from "../context/kanbamContext";
 import useGets from "../utils/api/useGets";
+import axios from "axios";
+import { handlingAxioxError } from "../utils/errorHandling";
 
 interface IUseFetchAllWorkspace {
   workspaces: IWorkspace[];
@@ -14,16 +16,19 @@ export default function useFetchAllWorkspace() {
   const { setUserDetail } = useContext(KanbamContext) as IkanbamContext;
   const [data, setData] = useState<IUseFetchAllWorkspace | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<IError | null>(null);
 
   const fetchWorkspacesData = async () => {
     try {
       const response = await getAllWorkspace();
+
       setData(response);
       setUserDetail(response.userDetail);
     } catch (err) {
-      const error = err as IError;
-      setError(error.message);
+      if (axios.isAxiosError(err)) {
+        const error = handlingAxioxError(err.response?.status) as IError;
+        setError(error);
+      }
     } finally {
       setLoading(false);
     }

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { IError } from "../types/status.type";
 import { IWorkspaceMember } from "../types/kanbam";
 import useGets from "../utils/api/useGets";
+import axios from "axios";
+import { handlingAxioxError } from "../utils/errorHandling";
 
 export default function useFetchAllWorkspaceMembersByWorkspaceId(w_id: string) {
   const { getAllWorkspaceMembersByWorkspaceId } = useGets();
@@ -9,17 +11,18 @@ export default function useFetchAllWorkspaceMembersByWorkspaceId(w_id: string) {
     null
   );
   const [loadingWrMembers, setLoadingWrMembers] = useState(true);
-  const [errorWrMembers, setErrorWrMembers] = useState<string | null>(null);
+  const [errorWrMembers, setErrorWrMembers] = useState<IError | null>(null);
 
   const fetchBoardsData = async () => {
     try {
       const res = await getAllWorkspaceMembersByWorkspaceId(w_id);
-
       setDataWrMembers(res);
-      setLoadingWrMembers(false);
     } catch (err) {
-      const errorWrMembers = err as IError;
-      setErrorWrMembers(errorWrMembers.message);
+      if (axios.isAxiosError(err)) {
+        const error = handlingAxioxError(err.response?.status) as IError;
+        setErrorWrMembers(error);
+      }
+    } finally {
       setLoadingWrMembers(false);
     }
   };

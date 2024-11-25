@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { IError } from "../types/status.type";
 import { IBoardMember } from "../types/kanbam";
 import useGets from "../utils/api/useGets";
+import axios from "axios";
+import { handlingAxioxError } from "../utils/errorHandling";
 
 export default function useFetchAllBoardMembersByBoardId(b_id: string) {
   const { getAllBoardMembersByBoardId } = useGets();
@@ -9,7 +11,7 @@ export default function useFetchAllBoardMembersByBoardId(b_id: string) {
     IBoardMember[] | null
   >(null);
   const [loadingBoardMembers, setLoadingBoardMembers] = useState(true);
-  const [errorBoardMembers, setErrorBoardMembers] = useState<string | null>(
+  const [errorBoardMembers, setErrorBoardMembers] = useState<IError | null>(
     null
   );
 
@@ -18,10 +20,12 @@ export default function useFetchAllBoardMembersByBoardId(b_id: string) {
       const res = await getAllBoardMembersByBoardId(b_id);
 
       setDataBoardMembers(res);
-      setLoadingBoardMembers(false);
     } catch (err) {
-      const errorBoardMembers = err as IError;
-      setErrorBoardMembers(errorBoardMembers.message);
+      if (axios.isAxiosError(err)) {
+        const error = handlingAxioxError(err.response?.status) as IError;
+        setErrorBoardMembers(error);
+      }
+    } finally {
       setLoadingBoardMembers(false);
     }
   };
