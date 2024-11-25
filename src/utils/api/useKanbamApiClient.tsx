@@ -1,7 +1,12 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { ITokenContext, TokenContext } from "../../context/TokenContext";
 
 export default function useKanbamApiClient() {
+  const { tokenInCtx, handleSetAccessToken } = useContext(
+    TokenContext
+  ) as ITokenContext;
+
   const kanbamApi = axios.create({
     baseURL: `${import.meta.env.VITE_KANBAM_API_URL}`,
     withCredentials: true,
@@ -9,29 +14,44 @@ export default function useKanbamApiClient() {
 
   useEffect(() => {
     const requestInterceptor = kanbamApi.interceptors.request.use(
-      function (config) {
-        const accessToken = localStorage.getItem("accessToken");
-
-        if (accessToken) {
-          config.headers.Authorization = `Bearer ${accessToken}`;
+      (config) => {
+        if (tokenInCtx) {
+          config.headers.Authorization = `Bearer ${tokenInCtx}`;
         }
+
         return config;
       },
-      function (error) {
-        return Promise.reject(error);
-      }
+      (error) => Promise.reject(error)
     );
 
     const responseInterceptor = kanbamApi.interceptors.response.use(
-      function (res) {
-        return res;
-      },
+      (res) => res,
 
-      function (error) {
-        console.log("Unauthorized. Redirecting to login...");
+      async (error) => {
+        const originalRequest = error.config;
 
-        if (error.response && error.response.status === 401) {
-          // window.location.href = "/auth/login";
+        if (error?.response?.status === 401 && !originalRequest?._retry) {
+          originalRequest._retry = true;
+
+          try {
+            const {
+              data: { accessToken },
+            } = await kanbamApi.post("/auth/RefreshToken");
+
+            handleSetAccessToken(accessToken);
+            // To create time gap between two requests
+            await new Promise((resolve) => setTimeout(resolve, 100));
+            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+            // This need to wait 100ms after new accessToken setted to TokenContext
+            return kanbamApi(originalRequest);
+            //
+          } catch (error) {
+            handleSetAccessToken(null);
+            window.location.href = "/auth/login";
+            await kanbamApi.post("/auth/RevokeRefreshToken");
+
+            return Promise.reject(error);
+          }
         }
 
         return Promise.reject(error);
@@ -42,7 +62,13 @@ export default function useKanbamApiClient() {
       kanbamApi.interceptors.request.eject(requestInterceptor);
       kanbamApi.interceptors.response.eject(responseInterceptor);
     };
-  }, [kanbamApi.interceptors.request, kanbamApi.interceptors.response]);
+  }, [
+    kanbamApi,
+    kanbamApi.interceptors.request,
+    kanbamApi.interceptors.response,
+    tokenInCtx,
+    handleSetAccessToken,
+  ]);
 
   return kanbamApi;
 }
