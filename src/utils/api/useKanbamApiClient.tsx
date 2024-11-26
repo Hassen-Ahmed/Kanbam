@@ -40,7 +40,7 @@ export default function useKanbamApiClient() {
 
             handleSetAccessToken(accessToken);
             // To create time gap between two requests
-            await new Promise((resolve) => setTimeout(resolve, 100));
+            await new Promise((resolve) => setTimeout(resolve, 500));
             originalRequest.headers.Authorization = `Bearer ${accessToken}`;
             // This need to wait 100ms after new accessToken setted to TokenContext
             return kanbamApi(originalRequest);
