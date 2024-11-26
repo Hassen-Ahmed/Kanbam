@@ -8,7 +8,7 @@ export default function useKanbamApiClient() {
   ) as ITokenContext;
 
   const kanbamApi = axios.create({
-    baseURL: `${import.meta.env.VITE_KANBAM_API_URL}`,
+    baseURL: "https://kanbamapi.onrender.com/api",
     withCredentials: true,
   });
 
@@ -40,13 +40,10 @@ export default function useKanbamApiClient() {
 
             handleSetAccessToken(accessToken);
             // To create time gap between two requests
-            await new Promise((resolve) => setTimeout(resolve, 2000));
             originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-            // This need to wait 100ms after new accessToken setted to TokenContext
             return kanbamApi(originalRequest);
             //
           } catch (error) {
-            handleSetAccessToken(null);
             window.location.href = "/auth/login";
             await kanbamApi.post("/auth/RevokeRefreshToken");
 
