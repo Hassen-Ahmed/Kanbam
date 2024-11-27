@@ -18,12 +18,12 @@ export const GlobalStyle = styled.div<INewTheme>`
     background-color: ${({ $newtheme }) => themes[$newtheme].bg["scroll_01"]};
   }
 
-  // background-image: linear-gradient(
-  //     180deg,
-  //     ${({ $newtheme }) => themes[$newtheme].bg["scroll_01"]},
-  //     ${({ $newtheme }) => themes[$newtheme].bg["scroll_01"]}
-  //   ),
-  //   url("/images/trello-bg-03.jpg");
+  background-image: linear-gradient(
+      180deg,
+      ${({ $newtheme }) => themes[$newtheme].bg["scroll_01"]},
+      ${({ $newtheme }) => themes[$newtheme].bg["scroll_01"]}
+    ),
+    url("/images/trello-bg-03.jpg");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
