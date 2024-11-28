@@ -1,22 +1,22 @@
-import axios from "axios";
 import { useContext, useEffect } from "react";
 import { ITokenContext, TokenContext } from "../../context/TokenContext";
+import kanbamApi from "./axiosBase";
 
 export default function useKanbamApiClient() {
   const { tokenInCtx, handleSetAccessToken } = useContext(
     TokenContext
   ) as ITokenContext;
 
-  const kanbamApi = axios.create({
-    baseURL: `${import.meta.env.VITE_KANBAM_API_URL}`,
-    withCredentials: true,
-  });
+  // const kanbamApi = axios.create({
+  //   baseURL: `${import.meta.env.VITE_KANBAM_API_URL}`,
+  //   withCredentials: true,
+  // });
 
   useEffect(() => {
     const requestInterceptor = kanbamApi.interceptors.request.use(
       (config) => {
-        if (tokenInCtx) {
-          config.headers.Authorization = `Bearer ${tokenInCtx}`;
+        if (!config.headers["Authorization"]) {
+          config.headers["Authorization"] = `Bearer ${tokenInCtx}`;
         }
 
         return config;
@@ -41,8 +41,7 @@ export default function useKanbamApiClient() {
             );
 
             handleSetAccessToken(accessToken);
-
-            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+            originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
             return kanbamApi(originalRequest);
             //
           } catch (error) {
@@ -61,13 +60,7 @@ export default function useKanbamApiClient() {
       kanbamApi.interceptors.request.eject(requestInterceptor);
       kanbamApi.interceptors.response.eject(responseInterceptor);
     };
-  }, [
-    kanbamApi,
-    kanbamApi.interceptors.request,
-    kanbamApi.interceptors.response,
-    tokenInCtx,
-    handleSetAccessToken,
-  ]);
+  }, [tokenInCtx, handleSetAccessToken]);
 
   return kanbamApi;
 }
