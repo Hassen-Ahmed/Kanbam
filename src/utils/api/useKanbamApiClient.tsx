@@ -1,16 +1,16 @@
 import { useContext, useEffect } from "react";
 import { ITokenContext, TokenContext } from "../../context/TokenContext";
-import kanbamApi from "./axiosBase";
+import axios from "axios";
 
 export default function useKanbamApiClient() {
   const { tokenInCtx, handleSetAccessToken } = useContext(
     TokenContext
   ) as ITokenContext;
 
-  // const kanbamApi = axios.create({
-  //   baseURL: `${import.meta.env.VITE_KANBAM_API_URL}`,
-  //   withCredentials: true,
-  // });
+  const kanbamApi = axios.create({
+    baseURL: `${import.meta.env.VITE_KANBAM_API_URL}`,
+    withCredentials: true,
+  });
 
   useEffect(() => {
     const requestInterceptor = kanbamApi.interceptors.request.use(
