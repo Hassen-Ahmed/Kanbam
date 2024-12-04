@@ -27,7 +27,7 @@ export default function useSignalRConnection({
       .withUrl(url, { accessTokenFactory: () => `${tokenInCtx}` })
       .withAutomaticReconnect()
       .configureLogging(
-        !isProduction ? signalR.LogLevel.None : signalR.LogLevel.Information
+        isProduction ? signalR.LogLevel.None : signalR.LogLevel.Information
       )
       .build();
 
