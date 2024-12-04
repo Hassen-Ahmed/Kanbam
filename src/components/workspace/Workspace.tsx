@@ -1,6 +1,6 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import useFetchAllBoardsByWorkspaceId from "../../hooks/useFetchAllBoardsByWorkspaceId";
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import "./Workspace.scss";
 import styled from "styled-components";
@@ -22,6 +22,7 @@ import ErrorMessage from "../notifications/ErrorMessage";
 import useUpdates from "../../utils/api/useUpdates";
 import usePosts from "../../utils/api/usePosts";
 import useDeletes from "../../utils/api/useDeletes";
+import useSignalRConnection from "../../hooks/useSignalRConnection";
 
 const WorkspaceStyled = styled.div<INewTheme>`
   background-color: ${({ $newtheme }) => themes[$newtheme].bg["lists"]};
@@ -54,6 +55,16 @@ export default function Workspace() {
     w_id!
   );
 
+  const configureOnHandler = useCallback(
+    async (connection: signalR.HubConnection) => {
+      connection.on("ReceiveWorkspaceUpdate", (items) => {
+        console.log("connection.on", items.name, items.description);
+        // setItems((prevItems) => [...prevItems, items.name]);
+      });
+    },
+    []
+  );
+
   const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   const [showMembers, setShowMembers] = useState(false);
@@ -63,7 +74,14 @@ export default function Workspace() {
 
   const [requestError, setRequestError] = useState(false);
   const [showAreYouSureModal, setShowAreYouSureModal] = useState(false);
+
   const [IdToModify, setIdToModify] = useState("");
+
+  // SignalR connections
+  useSignalRConnection({
+    url: `${import.meta.env.VITE_KANBAM_HUB_URL}/workspaceHub?groupId=${w_id}`,
+    configureOnHandler,
+  });
 
   //
 
