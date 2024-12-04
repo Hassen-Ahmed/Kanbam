@@ -1,6 +1,7 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import * as signalR from "@microsoft/signalr";
 import { ITokenContext, TokenContext } from "../context/TokenContext";
+import { logger } from "../utils/logger";
 
 interface IUseSignalRConnection {
   url: string;
@@ -20,9 +21,14 @@ export default function useSignalRConnection({
   const handleConnection = useCallback(async () => {
     if (!tokenInCtx) return;
 
+    const isProduction = process.env.NODE_ENV === "production";
+
     const connect = new signalR.HubConnectionBuilder()
       .withUrl(url, { accessTokenFactory: () => `${tokenInCtx}` })
       .withAutomaticReconnect()
+      .configureLogging(
+        !isProduction ? signalR.LogLevel.None : signalR.LogLevel.Information
+      )
       .build();
 
     await configureOnHandler(connect);
@@ -32,9 +38,9 @@ export default function useSignalRConnection({
 
     try {
       await connect.start();
-      console.log("Connectted to SignalR server!");
+      logger("Connectted to SignalR server!", "info");
     } catch (error) {
-      console.log(`Error when starting connection: ${error}`);
+      logger(`Error when starting connection: ${error}`, "error");
     }
   }, [url, configureOnHandler, tokenInCtx]);
 
