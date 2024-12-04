@@ -41,6 +41,7 @@ export default function useKanbamApiClient() {
             );
 
             handleSetAccessToken(accessToken);
+
             originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
             return kanbamApi(originalRequest);
             //
@@ -60,7 +61,7 @@ export default function useKanbamApiClient() {
       kanbamApi.interceptors.request.eject(requestInterceptor);
       kanbamApi.interceptors.response.eject(responseInterceptor);
     };
-  }, [tokenInCtx, handleSetAccessToken]);
+  }, [kanbamApi, tokenInCtx, handleSetAccessToken]);
 
   return kanbamApi;
 }
