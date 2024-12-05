@@ -30,5 +30,5 @@ export default function useFetchAllBoardsByWorkspaceId(w_id: string) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [w_id]);
 
-  return { data, loading, error, refetch: fetchBoardsData };
+  return { data, loading, error, setData };
 }

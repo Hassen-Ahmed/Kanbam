@@ -30,8 +30,8 @@ export default function useDeletes() {
 
   // board
   const deleteBoardById = useCallback(
-    async (id: string) => {
-      await kanbamApi.delete(`/Boards/${id}`);
+    async (id: string, workspaceId: string) => {
+      await kanbamApi.delete(`/Boards/${id}/${workspaceId}`);
     },
     [kanbamApi]
   );

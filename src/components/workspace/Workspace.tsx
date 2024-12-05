@@ -23,6 +23,8 @@ import useUpdates from "../../utils/api/useUpdates";
 import usePosts from "../../utils/api/usePosts";
 import useDeletes from "../../utils/api/useDeletes";
 import useSignalRConnection from "../../hooks/useSignalRConnection";
+import { IBoard } from "../../types/kanbam";
+import { logger } from "../../utils/logger";
 
 const WorkspaceStyled = styled.div<INewTheme>`
   background-color: ${({ $newtheme }) => themes[$newtheme].bg["lists"]};
@@ -43,6 +45,7 @@ const WorkspaceStyled = styled.div<INewTheme>`
 `;
 
 export default function Workspace() {
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
   const { updateBoard } = useUpdates();
   const { deleteBoardById } = useDeletes();
   const { w_id, w_name } = useParams();
@@ -51,21 +54,47 @@ export default function Workspace() {
   const accessLevel = queryParams.get("al");
   const { postWorkspaceMemeber, postBoard } = usePosts();
 
-  const { data, loading, error, refetch } = useFetchAllBoardsByWorkspaceId(
+  const { data, loading, error, setData } = useFetchAllBoardsByWorkspaceId(
     w_id!
   );
 
   const configureOnHandler = useCallback(
     async (connection: signalR.HubConnection) => {
-      connection.on("ReceiveWorkspaceUpdate", (items) => {
-        console.log("connection.on", items.name, items.description);
-        // setItems((prevItems) => [...prevItems, items.name]);
+      connection.on("ReceiveBoardCreated", (newItem: IBoard) => {
+        setData(
+          (prevItems) =>
+            prevItems &&
+            (prevItems.some((prevItem) => prevItem.boardId == newItem.boardId)
+              ? prevItems
+              : [...prevItems, newItem])
+        );
       });
+
+      connection.on("ReceiveBoardUpdate", (updatedItem: IBoard) => {
+        setData(
+          (prevItems) =>
+            prevItems &&
+            prevItems.map((item) => {
+              if (item.boardId != updatedItem.boardId) return item;
+              return {
+                ...item,
+                name: updatedItem.name,
+                description: updatedItem.description,
+              };
+            })
+        );
+      });
+
+      connection.on("ReceiveBoardDelete", (boardId: string) =>
+        setData(
+          (prevItems) =>
+            prevItems && prevItems.filter((item) => item.boardId != boardId)
+        )
+      );
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
-
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   const [showMembers, setShowMembers] = useState(false);
   const [showNewItemModal, setShowNewItemModal] = useState(false);
@@ -79,7 +108,7 @@ export default function Workspace() {
 
   // SignalR connections
   useSignalRConnection({
-    url: `${import.meta.env.VITE_KANBAM_HUB_URL}/workspaceHub?groupId=${w_id}`,
+    url: `${import.meta.env.VITE_KANBAM_HUB_URL}/boardHub?groupId=${w_id}`,
     configureOnHandler,
   });
 
@@ -99,48 +128,48 @@ export default function Workspace() {
       const modifiedItem = { workspaceId: w_id!, ...item };
       await postBoard(modifiedItem);
       handleNewItemModlaVisibility(false);
-      refetch();
     } catch (err) {
       setRequestError(true);
       const error = err as IError;
-      console.log("Error Creating Board: ", error.message);
+      logger("error", `Error Creating Board: ${error.message}`);
     }
   };
-  const handleItemUpdate = async (item: IItemDetail) => {
-    try {
-      const modifiedItem = { workspaceId: w_id!, ...item };
 
+  const handleItemUpdate = async (updatedItem: IItemDetail) => {
+    try {
+      const modifiedItem = { workspaceId: w_id!, ...updatedItem };
       await updateBoard(IdToModify, modifiedItem);
       handleUpdateItemModlaVisibility(false);
-      refetch();
     } catch (err) {
       setRequestError(true);
       const error = err as IError;
-      console.log("Error Creating Board: ", error.message);
+      logger("error", `Error updating Board: ${error.message}`);
     }
   };
 
   const handleInviteMember = async (item: INewMemberDetail) => {
     try {
       const modifiedItem = { workspaceId: w_id!, ...item };
-
       await postWorkspaceMemeber(modifiedItem);
       handleNewMemberModlaVisibility(false);
     } catch (err) {
       setRequestError(true);
       const error = err as IError;
-      console.log("Error Creating Board: ", error.message);
+      logger("error", `Error inviing Board memeber: ${error.message}`);
     }
   };
 
   const handleItemDeletion = async () => {
     try {
-      await deleteBoardById(IdToModify);
-      refetch();
+      await deleteBoardById(IdToModify, w_id!);
+      setData(
+        (prevItems) =>
+          prevItems && prevItems.filter((item) => item.boardId != IdToModify)
+      );
     } catch (err) {
       setRequestError(true);
       const error = err as IError;
-      console.log("Error Creating Board: ", error.message);
+      logger("error", `Error deleting Board: ${error.message}`);
     } finally {
       setShowAreYouSureModal(false);
     }
