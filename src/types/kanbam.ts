@@ -46,7 +46,6 @@ export interface IBoardCreate {
 
 export interface IBoard extends IBoardCreate {
   boardId: string;
-  role: string;
 }
 
 // boardMember
