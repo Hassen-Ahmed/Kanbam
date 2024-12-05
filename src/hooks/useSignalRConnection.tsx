@@ -38,9 +38,9 @@ export default function useSignalRConnection({
 
     try {
       await connect.start();
-      logger("Connectted to SignalR server!", "info");
+      logger("info", "Connectted to SignalR server!");
     } catch (error) {
-      logger(`Error when starting connection: ${error}`, "error");
+      logger("info", `Error when starting connection: ${error}`);
     }
   }, [url, configureOnHandler, tokenInCtx]);
 
