@@ -1,9 +1,15 @@
 type LogType = "success" | "error" | "info" | "table";
 
-export const logger = (message: string | object, type: LogType = "info") => {
+export const logger = (type: LogType = "info", message: string | object) => {
   // process.env.NODE_ENV will have checked by vites.
   // Skip logging in production environments.
   if (process.env.NODE_ENV === "production") return;
+
+  // Stack trace for caller of this logger
+  const error = new Error();
+  const stack = error.stack || "";
+  const stackLines = stack.split("\n");
+  const callerLine = stackLines[2]?.trim();
 
   const timestamp = new Date().toISOString();
   const logMessage =
@@ -18,5 +24,5 @@ export const logger = (message: string | object, type: LogType = "info") => {
     table: console.table,
   };
 
-  logFunctions[type](logMessage);
+  logFunctions[type](logMessage + callerLine);
 };
