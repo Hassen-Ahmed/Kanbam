@@ -135,7 +135,7 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
     );
 
   return (
-    <div className="members-container">
+    <div className="board-members-container">
       {showAreYouSureModal && (
         <AreYouSure handleAreYouSure={handleAreYouSure} />
       )}
@@ -149,7 +149,7 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
         />
       )}
 
-      <MembersStyled $newtheme={theme} className="members">
+      <MembersStyled $newtheme={theme} className="board-members">
         <div className="close-modal" onClick={() => setShowMembers(false)}>
           <IoMdClose size={22} />
         </div>
@@ -193,7 +193,7 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
         </div>
       </MembersStyled>
       <div
-        className="members-overlay"
+        className="board-members-overlay"
         onClick={() => setShowMembers(false)}
       ></div>
     </div>

@@ -110,6 +110,7 @@ const NavLinks = ({
           <p className="btn-title">Dashboard</p>
         </div>
       </NavLink>
+
       <div className="side-bar-left__btn--help  side-bar-left__btn ">
         <MdHelpOutline />
         <p className="btn-title">Help</p>

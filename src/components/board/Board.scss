@@ -6,6 +6,11 @@
   width: 99vw;
   margin-left: 6rem;
   align-self: flex-start;
+
+  @media screen and (max-width: 600px) {
+    height: auto;
+    margin: 0rem;
+  }
 }
 
 .board {
@@ -15,6 +20,12 @@
   width: 100%;
   overflow-x: auto;
   z-index: var.$z-ix-300;
+
+  @media screen and (max-width: 600px) {
+    padding: 0.5rem;
+    height: 85vh;
+    overflow-y: hidden;
+  }
 
   &__btn--add {
     @include mixn.flexy(row, flex-start, center);

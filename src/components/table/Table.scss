@@ -10,18 +10,30 @@
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 11fr;
+
   margin-top: 1rem;
   margin-left: 7.5rem;
   margin-right: 1rem;
+
   border-radius: var.$bor-05;
   overflow: hidden;
   position: relative;
+
+  @media screen and (max-width: 600px) {
+    height: 82vh;
+    min-height: 50vh;
+    margin: 0.5rem;
+  }
 
   &__sub {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 8fr;
     height: auto;
+
+    @media screen and (max-width: 900px) {
+      @include mixn.flexy(column, center, center);
+    }
   }
 
   &__top {
@@ -115,6 +127,12 @@
       @include mixn.flexy(column, flex-start, center);
     }
 
+    @media screen and (max-width: 600px) {
+      width: 100%;
+      height: auto;
+      padding: 0;
+    }
+
     .headers {
       width: 100%;
       margin: 2rem 0;
@@ -150,6 +168,12 @@
       width: 100%;
       height: 65vh;
       overflow-y: scroll;
+
+      @media screen and (max-width: 600px) {
+        width: 100%;
+        padding: 0.5rem;
+        padding-bottom: 12rem;
+      }
 
       &__sub {
         width: 100%;

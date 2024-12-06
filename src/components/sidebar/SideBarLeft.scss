@@ -8,7 +8,14 @@
   height: 100vh;
   margin-right: 1rem;
   z-index: var.$z-ix-1000;
+  opacity: 0.6;
   @include mixn.flexy(column, center);
+
+  @media screen and (max-width: 600px) {
+    opacity: 1;
+    left: 0;
+    margin: 0;
+  }
 
   &__container {
     @include mixn.flexy(column, flex-start, flex-start, 10%);
@@ -20,8 +27,15 @@
     position: relative;
 
     @media screen and (max-width: 600px) {
-      height: 90%;
+      position: fixed;
+      bottom: 0.5rem;
+      left: 50%;
+      transform: translate(-50%, 0);
+      height: auto;
+      width: 98%;
+      @include mixn.flexy(row, center, center);
     }
+
     .__loading {
       position: absolute;
       top: 50%;
@@ -67,6 +81,11 @@
   &__btns {
     @include mixn.flexy(column, center, center);
     padding: 1rem;
+
+    @media screen and (max-width: 600px) {
+      @include mixn.flexy(row, center, center, 1.5rem);
+      width: 100%;
+    }
   }
 
   &__btn {
@@ -76,16 +95,34 @@
     font-weight: var.$fwt-400;
     cursor: pointer;
 
+    @media screen and (max-width: 600px) {
+      @include mixn.flexy(row, center, center, 1rem);
+      font-size: 1.5rem;
+      padding: 1rem;
+
+      .btn-title {
+        display: none;
+      }
+    }
+
     &--workspace {
       @include mixn.flexy(row, center, center, 1rem);
       width: 100%;
       margin: 2rem 0;
       cursor: pointer;
+
+      @media screen and (max-width: 600px) {
+        display: none;
+      }
     }
 
     &--help {
       position: absolute;
       bottom: 1rem;
+
+      @media screen and (max-width: 600px) {
+        display: none;
+      }
     }
   }
 

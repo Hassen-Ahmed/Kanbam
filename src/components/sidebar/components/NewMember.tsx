@@ -63,8 +63,8 @@ export default function NewMember({
   };
 
   return (
-    <div className="new-member-container">
-      <NewMemberStyled $newtheme={theme} className="new-member">
+    <div className="board-new-member-container">
+      <NewMemberStyled $newtheme={theme} className="board-new-member">
         <div
           className="close-modal"
           onClick={() => handleNewMemberModlaVisibility(false)}
@@ -111,7 +111,7 @@ export default function NewMember({
         )}
       </NewMemberStyled>
       <div
-        className="new-member-overlay"
+        className="board-new-member-overlay"
         onClick={() => handleNewMemberModlaVisibility(false)}
       ></div>
     </div>
