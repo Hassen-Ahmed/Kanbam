@@ -2,7 +2,7 @@
 @use "../../../assets/style/abstracts/mixins" as mixn;
 @use "../../../assets/style/abstracts/mixins_02" as mixn2;
 
-.members {
+.board-members {
   &-container {
     position: fixed;
     top: 0;
@@ -11,16 +11,27 @@
     height: 100vh;
     @include mixn.flexy(column);
     z-index: var.$z-ix-2000;
+
+    @media screen and (max-width: 600px) {
+      top: 0;
+      transform: translateY(-50%);
+    }
   }
 
   &-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.25);
     width: 100%;
     height: 100%;
     z-index: var.$z-ix-1000;
+
+    @media screen and (max-width: 600px) {
+      width: 200%;
+      height: 200%;
+    }
   }
 
   width: auto;
@@ -32,6 +43,11 @@
   @include mixn.flexy(column, flex-start, flex-start, 2rem);
   position: relative;
   overflow-y: scroll;
+
+  @media screen and (max-width: 600px) {
+    top: -50%;
+    padding: 6rem 1rem;
+  }
 
   .no-member {
     font-size: var.$fsi-14;
@@ -52,8 +68,13 @@
   .list-of-item {
     @include mixn.flexy(column, flex-start, center, 2rem);
   }
-  .member {
-  }
 
   @include mixn2.item;
+
+  @media screen and (max-width: 600px) {
+    .member {
+      width: 90vw;
+      padding: 0.5rem;
+    }
+  }
 }

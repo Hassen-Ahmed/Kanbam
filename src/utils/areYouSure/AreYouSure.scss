@@ -14,6 +14,11 @@
   transform: translate(-50%, -50%);
   z-index: 9999;
 
+  @media screen and (max-width: 600px) {
+    top: 0;
+    transform: translateY(-50%, -50%);
+  }
+
   .btn-del_wrapper {
     @include mixn.flexy(row, center, center, 1rem);
     z-index: 9999;
@@ -45,4 +50,9 @@
   width: 200vw;
   height: 200vw;
   z-index: 9998;
+
+  @media screen and (max-width: 600px) {
+    width: 200%;
+    height: 200%;
+  }
 }

@@ -26,6 +26,12 @@
     padding: 2rem 0;
   }
 
+  @media screen and (max-width: 600px) {
+    margin: 0.5rem;
+    height: 85%;
+    min-height: 85%;
+  }
+
   &__heading {
     grid-row: 1/2;
     font-size: var.$fsi-14;
@@ -50,6 +56,7 @@
       grid-template-columns: 1fr 2fr;
       grid-template-rows: 1fr;
     }
+
     @media screen and (max-width: 700px) {
       @include mixn.flexy(column, center, center, 5rem);
     }

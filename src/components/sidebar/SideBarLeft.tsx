@@ -8,7 +8,6 @@ import "./SideBarLeft.scss";
 import Logo from "./Logo";
 
 const SideBarStyled = styled.div<INewTheme>`
-  opacity: 0.6;
   transition: all 0.2s ease;
   &:hover {
     opacity: 1;
