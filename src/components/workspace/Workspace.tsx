@@ -58,8 +58,9 @@ export default function Workspace() {
     w_id!
   );
 
-  const configureOnHandler = useCallback(
+  const configureOnConnections = useCallback(
     async (connection: signalR.HubConnection) => {
+      // create
       connection.on("ReceiveBoardCreated", (newItem: IBoard) => {
         setData(
           (prevItems) =>
@@ -69,7 +70,7 @@ export default function Workspace() {
               : [...prevItems, newItem])
         );
       });
-
+      // update
       connection.on("ReceiveBoardUpdate", (updatedItem: IBoard) => {
         setData(
           (prevItems) =>
@@ -84,7 +85,7 @@ export default function Workspace() {
             })
         );
       });
-
+      // delete
       connection.on("ReceiveBoardDelete", (boardId: string) =>
         setData(
           (prevItems) =>
@@ -109,7 +110,7 @@ export default function Workspace() {
   // SignalR connections
   useSignalRConnection({
     url: `${import.meta.env.VITE_KANBAM_HUB_URL}/boardHub?groupId=${w_id}`,
-    configureOnHandler,
+    configureOnConnections,
   });
 
   //
