@@ -7,6 +7,7 @@ import { ListsContext } from "../../context/ListsContext";
 import "./BoardNewListCreator.scss";
 import { IListsContext } from "../../types/kanbam";
 import usePosts from "../../utils/api/usePosts";
+import { logger } from "../../utils/logger";
 
 type isListAddedType = {
   isListAddedSetter: (value: boolean) => void;
@@ -19,7 +20,9 @@ const BoardNewListCreator = ({
 }: isListAddedType) => {
   const { postList } = usePosts();
   const [inputList, setInputList] = useState<string>("");
-  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
+  const { lists } = useContext(ListsContext) as IListsContext;
+
+  //
 
   const handleAddList = async () => {
     if (!inputList.length) return;
@@ -31,21 +34,14 @@ const BoardNewListCreator = ({
     };
 
     try {
-      const resData = await postList(newList);
+      await postList(newList);
 
-      const modifiedData = { ...resData, cards: [] };
-      dispatch({ type: "ADD_LIST", payload: [modifiedData] });
-
-      localStorage.setItem(
-        "storedLists",
-        JSON.stringify([...lists!, modifiedData])
-      );
       setInputList("");
     } catch (err) {
       const error = err as IError;
-      console.log(`Error message: ${error.message}`);
+      logger("error", `Error message: ${error.message}`);
     } finally {
-      console.log("Send POST request for new list...");
+      logger("info", "Send POST request for new list...");
     }
   };
 

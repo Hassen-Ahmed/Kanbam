@@ -2,7 +2,7 @@ import { IItemDragging } from "../../context/kanbamContext";
 import { DragEventMy } from "../../types/html.type";
 import { ICard, IListsWithCards } from "../../types/kanbam";
 
-const deepCopiedLists = (lists: IListsWithCards[]) => {
+export const deepCopiedLists = (lists: IListsWithCards[]) => {
   return JSON.parse(JSON.stringify(lists)) as IListsWithCards[];
 };
 
@@ -161,11 +161,11 @@ export const updatedListOnDrop = (lists: IListsWithCards[]) => {
   return updatedLists as IListsWithCards[];
 };
 
-export const updatedListByListId = (
-  lists: IListsWithCards[],
+export const updatedListsByListId = (
+  copyOfLists: IListsWithCards[],
   listId: string
 ) => {
-  const updatedLists = deepCopiedLists(lists)
+  const updatedLists = deepCopiedLists(copyOfLists)
     .filter((listObj) => listObj.id != listId)
     .map((listObj, index) => {
       listObj.indexNumber = index;

@@ -38,8 +38,8 @@ export default function useDeletes() {
 
   // lists
   const deleteListsById = useCallback(
-    async (id: string) => {
-      await kanbamApi.delete(`/Lists/${id}`);
+    async (id: string, boardId: string) => {
+      await kanbamApi.delete(`/Lists/${id}/${boardId}`);
     },
     [kanbamApi]
   );

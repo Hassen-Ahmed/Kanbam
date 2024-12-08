@@ -13,7 +13,7 @@ export const loginData = () => {
       name: "email",
       type: "email",
       errormessage: "Wrong email address",
-      placeholder: "Email",
+      placeholder: "example@gmail.com",
       label: "Email",
       required: true,
       pattern: "^[\\w]+(?:\\.[\\w]+)*@(?:[\\w]+\\.)+[\\w]{2,7}$",
@@ -24,7 +24,7 @@ export const loginData = () => {
       type: "text",
       errormessage:
         "Password should be 8-20 character and should include at list 1 letter, 1 number and only 1 spcecial character.",
-      placeholder: "Password",
+      placeholder: "#test1234",
       label: "Password",
       required: true,
       pattern:
@@ -41,11 +41,10 @@ export const signupData = (userDetails: IUserDetailsSignup) => {
       name: "email",
       type: "email",
       errormessage: "Wrong email address",
-      placeholder: "Username",
+      placeholder: "example@gmail.com",
       label: "Email",
-      required: true, 
+      required: true,
       pattern: "^[\\w]+(?:\\.[\\w]+)*@(?:[\\w]+\\.)+[\\w]{2,7}$",
-
     },
     {
       id: "password",
@@ -53,7 +52,7 @@ export const signupData = (userDetails: IUserDetailsSignup) => {
       type: "text",
       errormessage:
         "Password should be 8-20 character and should include at list 1 letter, 1 number and only 1 spcecial character.",
-      placeholder: "Password",
+      placeholder: "#test1234",
       label: "Password",
       required: true,
       pattern:
@@ -64,7 +63,7 @@ export const signupData = (userDetails: IUserDetailsSignup) => {
       name: "passwordConfirm",
       type: "text",
       errormessage: "Password does not match!",
-      placeholder: "ConfirmPassword",
+      placeholder: "#test1234",
       label: "ConfirmPassword",
       required: true,
       pattern: userDetails.password,

@@ -36,12 +36,10 @@ export default function Kanbam() {
   const { theme } = useContext(KanbamContext) as IkanbamContext;
   const location = useLocation();
 
+  const onDropHandler = () => handleAppOnDrop(lists, updateList, updateCard);
+
   return (
-    <GlobalStyle
-      $newtheme={theme}
-      className="kanbam"
-      onDrop={() => handleAppOnDrop(lists, updateList, updateCard)}
-    >
+    <GlobalStyle $newtheme={theme} className="kanbam" onDrop={onDropHandler}>
       <NavBar />
       <div className="kanbam__sub">
         {!location.pathname.includes("kanbam/w") && <SideBarLeft />}

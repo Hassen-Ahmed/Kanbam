@@ -4,16 +4,14 @@ import { FaArrowRotateLeft } from "react-icons/fa6";
 
 import { IError } from "../../types/status.type";
 
-import { ListsContext } from "../../context/ListsContext";
-import { updatedListByListId } from "./utilsForLists";
 import "./ListsMenu.scss";
 import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
 import { themes } from "../../utils/constantDatas/themes";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { Hr } from "../../utils/constantDatas/styledUtils";
-import { IListsContext } from "../../types/kanbam";
 import useDeletes from "../../utils/api/useDeletes";
+import { logger } from "../../utils/logger";
 
 const ListMenuStyled = styled.div<INewTheme>`
   .lists-menu {
@@ -37,15 +35,16 @@ const ListMenuStyled = styled.div<INewTheme>`
 export default function ListsMenu({
   handleIsListMenuVisible,
   id,
+  boardId,
   setIsNewCardInputVisible,
 }: {
   handleIsListMenuVisible: (value: boolean) => void;
   id: string;
+  boardId: string;
   setIsNewCardInputVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const { deleteListsById } = useDeletes();
   const [isListRemoved, setIsListRemoved] = useState(false);
-  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const { theme } = useContext(KanbamContext) as IkanbamContext;
 
   const menuListRef = useRef(null);
@@ -68,18 +67,11 @@ export default function ListsMenu({
   const handleListArchive = async (listId: string) => {
     setIsListRemoved(true);
     try {
-      await deleteListsById(listId);
+      await deleteListsById(listId, boardId);
       handleIsListMenuVisible(false);
-
-      const finalLists = updatedListByListId(lists!, listId);
-      dispatch({
-        type: "ADD_ALL_LISTS",
-        payload: finalLists,
-      });
-      localStorage.setItem("storedLists", JSON.stringify(finalLists));
     } catch (err) {
       const error = err as IError;
-      console.log("Error deleting list, err: ", error.message);
+      logger("error", `Error deleting list, err:  ${error.message}`);
       setIsListRemoved(false);
     }
   };

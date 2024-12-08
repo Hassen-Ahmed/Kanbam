@@ -24,5 +24,5 @@ export const logger = (type: LogType = "info", message: string | object) => {
     table: console.table,
   };
 
-  logFunctions[type](logMessage + callerLine);
+  logFunctions[type](logMessage + "\n" + callerLine);
 };
