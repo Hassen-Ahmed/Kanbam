@@ -1,5 +1,6 @@
 import { ICard, IList, IListsWithCards } from "../types/kanbam";
 import { IError } from "../types/status.type";
+import { logger } from "./logger";
 
 export const handleAppOnDrop = (
   lists: IListsWithCards[] | null,
@@ -38,7 +39,7 @@ export const handleAppOnDrop = (
       localStorage.setItem("storedLists", JSON.stringify(lists));
     } catch (err) {
       const error = err as IError;
-      console.log(`Updating List err: ${error.message}`);
+      logger("error", `Updating List err: ${error.message}`);
     }
   } else {
     // for cards only if the lists result is ok no difference.
@@ -72,7 +73,7 @@ export const handleAppOnDrop = (
         localStorage.setItem("storedLists", JSON.stringify(lists));
       } catch (err) {
         const error = err as IError;
-        console.log(`Updating cards err: ${error.message}`);
+        logger("error", `Updating cards err: ${error.message}`);
       }
     }
   }
@@ -83,11 +84,13 @@ async function asyncUpdaterList(
   updateList: (id: string, updatedList: IList) => Promise<void>
 ) {
   return Promise.all(
-    lists.map((listObj) => {
-      updateList(listObj.id!, listObj).catch((error) => ({
-        error,
-        listObj,
-      }));
+    lists.map(async (listObj) => {
+      try {
+        await updateList(listObj.id!, listObj);
+        logger("success", `Successful updated!`);
+      } catch (error) {
+        logger("error", `Error when updating list : ${error}`);
+      }
     })
   );
 }
@@ -97,8 +100,13 @@ async function asyncUpdateCard(
   updateCard: (id: string, updatedCard: ICard) => Promise<void>
 ) {
   return Promise.all(
-    cards.map((card) => {
-      updateCard(card.id!, card).catch((error) => ({ error, card }));
+    cards.map(async (card) => {
+      try {
+        await updateCard(card.id!, card);
+        logger("success", `Successful updated!`);
+      } catch (error) {
+        logger("error", `Error when updating card : ${error}`);
+      }
     })
   );
 }
