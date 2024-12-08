@@ -5,12 +5,12 @@ import { logger } from "../utils/logger";
 
 interface IUseSignalRConnection {
   url: string;
-  configureOnHandler: (connection: signalR.HubConnection) => Promise<void>;
+  configureOnConnections: (connection: signalR.HubConnection) => Promise<void>;
 }
 
 export default function useSignalRConnection({
   url,
-  configureOnHandler,
+  configureOnConnections,
 }: IUseSignalRConnection) {
   const { tokenInCtx } = useContext(TokenContext) as ITokenContext;
   const [connection, setConnection] = useState<signalR.HubConnection | null>(
@@ -21,28 +21,24 @@ export default function useSignalRConnection({
   const handleConnection = useCallback(async () => {
     if (!tokenInCtx) return;
 
-    const isProduction = process.env.NODE_ENV === "production";
-
     const connect = new signalR.HubConnectionBuilder()
       .withUrl(url, { accessTokenFactory: () => `${tokenInCtx}` })
       .withAutomaticReconnect()
-      .configureLogging(
-        isProduction ? signalR.LogLevel.None : signalR.LogLevel.Information
-      )
+      .configureLogging(signalR.LogLevel.None)
       .build();
 
-    await configureOnHandler(connect);
+    await configureOnConnections(connect);
 
     connectionRef.current = connect;
     setConnection(connect);
 
     try {
       await connect.start();
-      logger("info", "Connectted to SignalR server!");
+      logger("info", `Connectted to SignalR server! \nUrl: (${url})\n`);
     } catch (error) {
-      logger("info", `Error when starting connection: ${error}`);
+      logger("error", `Error when starting connection: ${error}`);
     }
-  }, [url, configureOnHandler, tokenInCtx]);
+  }, [url, configureOnConnections, tokenInCtx]);
 
   useEffect(() => {
     handleConnection();
@@ -51,12 +47,15 @@ export default function useSignalRConnection({
       if (connectionRef.current) {
         connectionRef.current
           .stop()
+          .then(() =>
+            logger("success", `Stoped the connectin for Hub Url: ${url}`)
+          )
           .catch((error) =>
-            console.error("Error stopping SignalR connection:", error)
+            logger("error", `Error stopping SignalR connection: ${error}`)
           );
       }
     };
-  }, [handleConnection]);
+  }, [handleConnection, url]);
 
   return connection;
 }
