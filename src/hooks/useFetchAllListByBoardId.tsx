@@ -57,5 +57,5 @@ export default function useFetchAllListByBoardId(b_id: string) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lists, b_id]);
 
-  return { data, loading, error, refetch: fetchListsData };
+  return { data, loading, error, setData };
 }
