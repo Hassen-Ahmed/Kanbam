@@ -6,6 +6,7 @@ type Theme = "light" | "dark";
 interface IItem {
   id?: string;
   listId?: string;
+  boardId?: string;
   indexNumber: number;
   title: string;
   description?: string;
