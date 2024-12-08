@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { IoMdAdd } from "react-icons/io";
 import { VscClose } from "react-icons/vsc";
@@ -28,6 +28,7 @@ import {
 } from "../../types/kanbam";
 import useUpdates from "../../utils/api/useUpdates";
 import usePosts from "../../utils/api/usePosts";
+import { logger } from "../../utils/logger";
 
 const ListsStyled = styled.div<INewTheme>`
   .lists {
@@ -83,6 +84,9 @@ const Lists = ({
   const { theme, itemDragging } = useContext(KanbamContext) as IkanbamContext;
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
 
+  useEffect(() => {
+    setTitleOfThisList(title);
+  }, [title]);
   // end of hooks
 
   const handleDragEnd = (ev: DragEventMy) => {
@@ -159,6 +163,7 @@ const Lists = ({
     itemDragging.current = {
       item: {
         id,
+        boardId,
         indexNumber,
         title,
         isDragging,
@@ -224,7 +229,7 @@ const Lists = ({
         setTitleValeuOfNewCard("");
       } catch (err) {
         const error = err as IError;
-        console.log("Error on creating new card, err:", error.message);
+        logger("error", `Error on creating new card, err: ${error.message}`);
       }
     }
   };
@@ -252,9 +257,9 @@ const Lists = ({
         await updateList(id, newList);
       } catch (err) {
         const error = err as IError;
-        console.log(`Error message: ${error.message}`);
+        logger("error", `Error message: ${error.message}`);
       } finally {
-        console.log("Send POST request for new list...");
+        logger("info", "Send POST request for new list...");
         setIsTitleInputVisible(false);
       }
     }
@@ -269,6 +274,7 @@ const Lists = ({
     <ListsMenu
       handleIsListMenuVisible={handleIsListMenuVisible}
       id={id}
+      boardId={boardId}
       setIsNewCardInputVisible={setIsNewCardInputVisible}
     />
   );
