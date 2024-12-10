@@ -59,6 +59,13 @@ export default function useDeletes() {
     },
     [kanbamApi]
   );
+  // card comment by commentId
+  const deleteCardCommentByCommentId = useCallback(
+    async (cardId: string, commentId: string) => {
+      await kanbamApi.delete(`/Cards/${cardId}/${commentId}/comment`);
+    },
+    [kanbamApi]
+  );
 
   return {
     deleteWorkspaceMemberById,
@@ -68,5 +75,6 @@ export default function useDeletes() {
     deleteListsById,
     deleteCardByListId,
     deleteCardById,
+    deleteCardCommentByCommentId,
   };
 }
