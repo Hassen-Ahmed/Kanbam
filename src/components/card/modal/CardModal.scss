@@ -169,16 +169,52 @@
         }
       }
       .comment-list {
-        margin: 2rem 0;
+        margin: 4rem 0 2rem 0;
 
         .comment-with-icon {
-          display: grid;
-          grid-template-columns: 1fr 12fr;
-          gap: 1rem;
+          margin: 1rem;
+          @include mixn.flexy(column, center, flex-start, 0.2rem);
 
-          margin: 1rem 0;
-          font-size: var.$fsi-16;
-          font-weight: var.$fwt-600;
+          .author {
+            @include mixn.flexy();
+            margin: 0.5rem 0;
+            padding: 0 0;
+            font-size: var.$fsi-16;
+            font-weight: var.$fwt-600;
+            text-transform: capitalize;
+          }
+
+          .desc {
+            width: 100%;
+            padding: 1rem;
+            border: 0.1rem solid grey;
+            border-radius: var.$bor-05;
+            background-color: rgba(77, 77, 77, 0.2);
+          }
+
+          .bottom {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            @include mixn.flexy(row, space-between, center);
+
+            .created_at {
+              font-size: 1rem;
+            }
+
+            &-right-comment {
+              color: #c02a2a;
+              cursor: pointer;
+              transition: all 0.2s ease;
+
+              &:hover {
+                transform: scale(1.2);
+              }
+
+              &:active {
+                transform: scale(0.9);
+              }
+            }
+          }
         }
       }
     }
