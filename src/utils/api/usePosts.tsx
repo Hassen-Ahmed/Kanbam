@@ -10,6 +10,7 @@ import {
   IBoardMemberCreate,
   ICard,
   ICardCreate,
+  IComment,
   IList,
   IListCreate,
   IWorkspaceCreate,
@@ -117,6 +118,21 @@ export default function usePosts() {
     [kanbamApi]
   );
 
+  // card comment
+  const postCardComment = useCallback(
+    async (cardId: string, comment: IComment) => {
+      const {
+        data: { newComment },
+      } = await kanbamApi.post(`/Cards/${cardId}/comment`, {
+        ...comment,
+      });
+
+      return newComment;
+    },
+
+    [kanbamApi]
+  );
+
   return {
     postAuthRegistarion,
     postAuthLogin,
@@ -127,5 +143,6 @@ export default function usePosts() {
     postBoard,
     postList,
     postCard,
+    postCardComment,
   };
 }
