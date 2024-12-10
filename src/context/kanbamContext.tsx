@@ -1,5 +1,5 @@
 import { createContext, useEffect, useRef, useState } from "react";
-import { ICard, IUserResponseDetail } from "../types/kanbam";
+import { ICard, IComment, IUserResponseDetail } from "../types/kanbam";
 
 type Theme = "light" | "dark";
 
@@ -11,7 +11,7 @@ interface IItem {
   title: string;
   description?: string;
   priority?: string;
-  comments?: string[];
+  comments?: IComment[];
   isDragging?: boolean;
   cards?: ICard[];
   opacity: string;
