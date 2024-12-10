@@ -1,12 +1,22 @@
 import { IActionBoard } from "./actions.type";
 
+// comment
+export interface IComment {
+  id?: string;
+  description: string;
+  author: string;
+  createdAt?: string;
+  userId: string;
+  cardId: string;
+}
+
 // cards
 export interface ICardCreate {
   listId: string;
   title: string;
   indexNumber: number;
   description?: string;
-  comments?: string[];
+  comments?: IComment[];
   priority?: string;
   isDragging?: boolean;
   opacity?: string;
@@ -17,7 +27,7 @@ export interface ICardCreate {
 
 export interface ICard extends ICardCreate {
   id: string;
-  comments: string[];
+  comments: IComment[];
 }
 
 // lists
@@ -120,6 +130,7 @@ export interface IListsContext {
 
 export interface IUserDecodedResult {
   userId: string;
+  unique_name: string;
   role: string;
   exp: number;
 }

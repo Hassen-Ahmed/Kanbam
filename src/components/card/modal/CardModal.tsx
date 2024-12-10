@@ -1,6 +1,5 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-import { MdAccountCircle } from "react-icons/md";
 import { FaRegCreditCard } from "react-icons/fa";
 import { BsTextParagraph } from "react-icons/bs";
 import { RxActivityLog } from "react-icons/rx";
@@ -21,10 +20,20 @@ import { INewTheme } from "../../../types/styledComp";
 import styled from "styled-components";
 import { themes } from "../../../utils/constantDatas/themes";
 import { icons } from "./components/priorities/Priorities";
-import { ICard, IListsContext, IListsWithCards } from "../../../types/kanbam";
+import {
+  ICard,
+  IComment,
+  IListsContext,
+  IListsWithCards,
+  IUserDecodedResult,
+} from "../../../types/kanbam";
 import useUpdates from "../../../utils/api/useUpdates";
 import useDeletes from "../../../utils/api/useDeletes";
-
+import { ITokenContext, TokenContext } from "../../../context/TokenContext";
+import { jwtDecode } from "jwt-decode";
+import { logger } from "../../../utils/logger";
+import { MdDeleteForever } from "react-icons/md";
+import usePosts from "../../../utils/api/usePosts";
 const ActivityStyled = styled.div<INewTheme>`
   &,
   &__comment {
@@ -54,34 +63,69 @@ export default function CardModal({
   handleModlaVisibility: (value: boolean) => void;
   cardDetail: ICard;
 }) {
-  const { updateCard } = useUpdates();
-  const { deleteCardById } = useDeletes();
-  const [comment, setComment] = useState("");
-  const [isCommentVisible, setIsCommentVisible] = useState(false);
+  const { tokenInCtx } = useContext(TokenContext) as ITokenContext;
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
+  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { updateCard } = useUpdates();
+  const { postCardComment } = usePosts();
+  const { deleteCardById, deleteCardCommentByCommentId } = useDeletes();
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState<IComment[]>([]);
+  const [isCommentVisible, setIsCommentVisible] = useState(false);
   const [titleValueOfThisCard, setTitleOfThisCard] = useState<string>(
     cardDetail.title
   );
+
   const [isTitleInputVisible, setIsTitleInputVisible] =
     useState<boolean>(false);
 
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { userId, unique_name } = jwtDecode(tokenInCtx!) as IUserDecodedResult;
+
+  useEffect(() => {
+    setComments(() => {
+      return cardDetail.comments;
+    });
+  }, []);
 
   // end of hooks
 
+  const deleteComment = async (commentId: string) => {
+    try {
+      await deleteCardCommentByCommentId(cardDetail.id, commentId);
+
+      setComments((prevComments) =>
+        prevComments.filter((comment) => comment.id != commentId)
+      );
+    } catch (err) {
+      const error = err as IError;
+      logger("error", `Error message: ${error.message}`);
+    } finally {
+      logger("info", "Send delete request for Comment...");
+    }
+  };
+
   const handleSave = async () => {
     if (comment.length) {
-      cardDetail.comments?.push(comment);
+      const createdComment = {
+        author: unique_name,
+        description: comment,
+        userId: userId,
+        cardId: cardDetail.id,
+      };
 
       try {
-        await updateCard(cardDetail.id!, cardDetail);
+        const responseComment = await postCardComment(
+          cardDetail.id,
+          createdComment
+        );
+        setComments((prevComments) => [responseComment, ...prevComments]);
         setComment("");
         setIsCommentVisible(false);
       } catch (err) {
         const error = err as IError;
-        console.log(`Error message: ${error.message}`);
+        logger("error", `Error message: ${error.message}`);
       } finally {
-        console.log("Send put request for Comment...");
+        logger("info", "Send put request for Comment...");
       }
     }
   };
@@ -100,7 +144,7 @@ export default function CardModal({
       localStorage.setItem("storedLists", JSON.stringify(updatedLists));
     } catch (err) {
       const error = err as IError;
-      console.log("Error deleting card, err: ", error.message);
+      logger("error", `Error deleting card, err: ${error.message}`);
     }
   };
 
@@ -116,9 +160,9 @@ export default function CardModal({
         setIsTitleInputVisible(false);
       } catch (err) {
         const error = err as IError;
-        console.log(`Error message: ${error.message}`);
+        logger("error", `Error message: ${error.message}`);
       } finally {
-        console.log("Send put request for title...");
+        logger("info", "Send put request for title...");
       }
     }
   };
@@ -143,7 +187,7 @@ export default function CardModal({
     ev.preventDefault();
   };
 
-  const computedTitle = (
+  const computedTitle = () => (
     <h1 onClick={() => setIsTitleInputVisible(true)}>
       {titleValueOfThisCard?.length > 20
         ? titleValueOfThisCard.slice(0, 16) + "..."
@@ -151,13 +195,14 @@ export default function CardModal({
     </h1>
   );
 
-  const editIcon = !isTitleInputVisible && (
-    <div className="edit-btn" onClick={() => setIsTitleInputVisible(true)}>
-      <CiEdit size={iconSizeOne} />
-    </div>
-  );
+  const editIcon = () =>
+    !isTitleInputVisible && (
+      <div className="edit-btn" onClick={() => setIsTitleInputVisible(true)}>
+        <CiEdit size={iconSizeOne} />
+      </div>
+    );
 
-  const textInput = (
+  const textInput = () => (
     <input
       type="text"
       value={titleValueOfThisCard}
@@ -171,16 +216,36 @@ export default function CardModal({
     />
   );
 
-  const commentList = cardDetail.comments?.map((comment) => {
-    return (
-      <div key={comment} className="comment-with-icon">
-        <MdAccountCircle size={32} />
-        <li key={comment}>{comment}</li>
-      </div>
-    );
-  });
+  const commentList = () =>
+    comments?.map((comment, i) => {
+      return (
+        <div key={comment.id + `${i}`} className="comment-with-icon">
+          <div className="author">
+            <p>{comment.author}</p>
+          </div>
+          <div className="desc">
+            <p>{comment.description}</p>
+          </div>
 
-  const commentBox = (
+          <div className="bottom">
+            <p className="created_at">
+              {new Date(comment.createdAt!).toLocaleDateString()}
+            </p>
+
+            {userId == comment.userId && (
+              <div
+                className="bottom-right-comment"
+                onClick={() => deleteComment(comment.id!)}
+              >
+                <MdDeleteForever size={iconSizeTwo} />
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    });
+
+  const commentBox = () => (
     <Comment
       isCommentVisible={isCommentVisible}
       comment={comment}
@@ -190,7 +255,7 @@ export default function CardModal({
     />
   );
 
-  const buttonList = (
+  const buttonList = () => (
     <ButtonsRight
       handleCardArchive={handleCardArchive}
       cardDetail={cardDetail}
@@ -220,9 +285,9 @@ export default function CardModal({
             <FaRegCreditCard size={iconSizeTwo} />
           </div>
 
-          {editIcon}
+          {editIcon()}
 
-          {isTitleInputVisible ? textInput : computedTitle}
+          {isTitleInputVisible ? textInput() : computedTitle()}
         </div>
 
         {/* main */}
@@ -259,9 +324,9 @@ export default function CardModal({
                   <h2>Activity</h2>
                 </div>
 
-                {commentBox}
+                {commentBox()}
 
-                <ul className="comment-list">{commentList}</ul>
+                <ul className="comment-list">{commentList()}</ul>
               </ActivityStyled>
             </div>
           </div>
@@ -273,7 +338,7 @@ export default function CardModal({
               <h3>Add to card</h3>
             </div>
 
-            {buttonList}
+            {buttonList()}
           </div>
         </div>
       </BgAndFont>
