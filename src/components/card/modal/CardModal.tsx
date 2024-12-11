@@ -124,10 +124,6 @@ export default function CardModal({
           createdComment
         );
         setComments((prevComments) => {
-          console.log("[responseComment, ...prevComments]", [
-            responseComment,
-            ...prevComments,
-          ]);
           cardDetail.comments = [responseComment, ...prevComments];
           return [responseComment, ...prevComments];
         });
@@ -141,8 +137,6 @@ export default function CardModal({
       }
     }
   };
-
-  console.log("cardDetail: ", cardDetail);
 
   const handleCardArchive = async (cardId: string) => {
     try {
