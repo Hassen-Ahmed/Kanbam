@@ -85,6 +85,7 @@ export default function CardModal({
     setComments(() => {
       return cardDetail.comments;
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // end of hooks
@@ -93,9 +94,13 @@ export default function CardModal({
     try {
       await deleteCardCommentByCommentId(cardDetail.id, commentId);
 
-      setComments((prevComments) =>
-        prevComments.filter((comment) => comment.id != commentId)
-      );
+      setComments((prevComments) => {
+        const filtredComments = prevComments.filter(
+          (comment) => comment.id != commentId
+        );
+        cardDetail.comments = filtredComments;
+        return filtredComments;
+      });
     } catch (err) {
       const error = err as IError;
       logger("error", `Error message: ${error.message}`);
@@ -118,7 +123,14 @@ export default function CardModal({
           cardDetail.id,
           createdComment
         );
-        setComments((prevComments) => [responseComment, ...prevComments]);
+        setComments((prevComments) => {
+          console.log("[responseComment, ...prevComments]", [
+            responseComment,
+            ...prevComments,
+          ]);
+          cardDetail.comments = [responseComment, ...prevComments];
+          return [responseComment, ...prevComments];
+        });
         setComment("");
         setIsCommentVisible(false);
       } catch (err) {
@@ -129,6 +141,8 @@ export default function CardModal({
       }
     }
   };
+
+  console.log("cardDetail: ", cardDetail);
 
   const handleCardArchive = async (cardId: string) => {
     try {
