@@ -35,7 +35,7 @@ export interface IkanbamContext {
 export const KanbamContext = createContext<IkanbamContext | null>(null);
 
 const KanbamContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme2] = useState<Theme>("dark");
+  const [theme, setTheme2] = useState<Theme>("light");
   const itemDragging = useRef<IItemDragging | null>(null);
   const [userDetail, setUserDetail] = useState<IUserResponseDetail | null>(
     null
@@ -45,7 +45,7 @@ const KanbamContextProvider = ({ children }: { children: React.ReactNode }) => {
     const responseTheme = localStorage.getItem("theme") as Theme;
 
     if (!responseTheme) {
-      localStorage.setItem("theme", "dark");
+      localStorage.setItem("theme", "light");
     } else {
       setTheme2(responseTheme);
     }
