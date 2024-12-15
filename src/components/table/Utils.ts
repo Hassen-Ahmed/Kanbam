@@ -7,6 +7,7 @@ const createCardGroupContent = (card: ICard): ITaskContent => ({
   priority: card.priority || "-",
   startDate: card.startDate || "-",
   dueDate: card.dueDate || "-",
+  listId: card.listId,
 });
 
 export const handleFiltering = (
@@ -119,6 +120,7 @@ export const handleDataGrouping = (listsArg: IListsWithCards[]) => {
         priority: card.priority || "-",
         startDate: card.startDate || "-",
         dueDate: card.dueDate || "-",
+        listId: card.listId,
       };
 
       listGroupContent.taskList.push(cardGroupContent);
