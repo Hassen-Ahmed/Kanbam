@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { IoMdAdd } from "react-icons/io";
 import { VscClose } from "react-icons/vsc";
@@ -10,6 +10,7 @@ import { DragEventMy } from "../../types/html.type";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { ListsContext } from "../../context/ListsContext";
 import {
+  deepCopiedLists,
   updatedListOnCardHovered,
   updatedListOnDrop,
   updatedListOnEmptyList,
@@ -22,13 +23,19 @@ import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
 import { themes } from "../../utils/constantDatas/themes";
 import {
+  ICard,
   ICardCreate,
+  IComment,
   IListsContext,
   IListsWithCards,
+  IUserDecodedResult,
 } from "../../types/kanbam";
 import useUpdates from "../../utils/api/useUpdates";
 import usePosts from "../../utils/api/usePosts";
 import { logger } from "../../utils/logger";
+import useSignalRConnection from "../../hooks/useSignalRConnection";
+import { ITokenContext, TokenContext } from "../../context/TokenContext";
+import { jwtDecode } from "jwt-decode";
 
 const ListsStyled = styled.div<INewTheme>`
   .lists {
@@ -70,6 +77,9 @@ const Lists = ({
   isDragging,
   opacity,
 }: IListsWithCards) => {
+  const { tokenInCtx } = useContext(TokenContext) as ITokenContext;
+  const { theme, itemDragging } = useContext(KanbamContext) as IkanbamContext;
+  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const { postCard } = usePosts();
   const { updateList } = useUpdates();
   const [titleValueOfThisList, setTitleOfThisList] = useState<string>(title);
@@ -81,12 +91,112 @@ const Lists = ({
   const [isNewCardInputVisible, setIsNewCardInputVisible] =
     useState<boolean>(false);
 
-  const { theme, itemDragging } = useContext(KanbamContext) as IkanbamContext;
-  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
+  const { userId } = jwtDecode(tokenInCtx!) as IUserDecodedResult;
+
+  const configureOnConnections = useCallback(
+    async (connection: signalR.HubConnection) => {
+      let copyOfLists = deepCopiedLists(lists!);
+      // create
+      connection.on("ReceiveCardCreated", (newCard: ICard) => {
+        copyOfLists = copyOfLists.map((list) => {
+          if (list.id != id) return list;
+          return { ...list, cards: [...list.cards, newCard] };
+        });
+
+        updateListsAndStoredLists(copyOfLists);
+      });
+      // create comment
+      connection.on("ReceiveCardCommentCreated", (newCardComment: IComment) => {
+        if (newCardComment.userId == userId) return;
+
+        const updatedList = lists?.map((list) => {
+          const updatedCards = list.cards.map((card) => {
+            if (card.id != newCardComment.cardId) return card;
+            return { ...card, comments: [newCardComment, ...card.comments] };
+          });
+
+          return { ...list, cards: updatedCards };
+        });
+
+        updateListsAndStoredLists(updatedList!);
+      });
+      // update
+      connection.on(
+        "ReceiveCardUpdate",
+        (updatedCardReceived: ICard, userIdOfSender: string) => {
+          if (!tokenInCtx) return;
+
+          if (userIdOfSender == userId) return;
+
+          copyOfLists = copyOfLists?.map((list) => {
+            const updatedCards = list.cards.map((card) =>
+              card.id != updatedCardReceived.id ? card : updatedCardReceived
+            );
+
+            return { ...list, cards: updatedCards };
+          });
+
+          updateListsAndStoredLists(copyOfLists);
+        }
+      );
+      // delete
+      connection.on("ReceiveCardDelete", (cardId: string) => {
+        const modifiedLists = copyOfLists.map((list) => {
+          if (list.id != id) return list;
+          const updatedCards = list.cards.filter((card) => card.id != cardId);
+          return { ...list, cards: updatedCards };
+        });
+
+        updateListsAndStoredLists(modifiedLists);
+      });
+      // delete comments
+      connection.on(
+        "ReceiveCardCommentDelete",
+        (commentId: string, cardId: string, userIdOfSender: string) => {
+          if (userIdOfSender == userId) return;
+
+          const modifiedLists = copyOfLists.map((list) => {
+            if (list.id != id) return list;
+
+            const updatedCards = list.cards.map((card) => {
+              if (card.id != cardId) return card;
+
+              const filtredComments = card.comments.filter(
+                (cm) => cm.id != commentId
+              );
+
+              return { ...card, comments: filtredComments };
+            });
+
+            return { ...list, cards: updatedCards };
+          }) as IListsWithCards[];
+
+          updateListsAndStoredLists(modifiedLists);
+        }
+      );
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [lists]
+  );
+
+  // SignalR connections
+  useSignalRConnection({
+    url: `${import.meta.env.VITE_KANBAM_HUB_URL}/cardHub?groupId=${id}`,
+    configureOnConnections,
+  });
 
   useEffect(() => {
     setTitleOfThisList(title);
   }, [title]);
+
+  const updateListsAndStoredLists = (payload: IListsWithCards[]) => {
+    dispatch({
+      type: "ADD_ALL_LISTS",
+      payload,
+    });
+
+    localStorage.setItem("storedLists", JSON.stringify(payload));
+  };
   // end of hooks
 
   const handleDragEnd = (ev: DragEventMy) => {
@@ -204,26 +314,7 @@ const Lists = ({
           opacity: "1",
         };
 
-        const data = await postCard(cardToPost);
-        const updatedListObj = {
-          id,
-          title,
-          indexNumber,
-          cards: [...cards, data],
-          isDragging,
-          opacity,
-        };
-
-        const updatedLists = lists?.map((listObj) => {
-          if (listObj.id != id) return listObj;
-          return updatedListObj;
-        });
-
-        dispatch({
-          type: "ADD_ALL_LISTS",
-          payload: updatedLists as IListsWithCards[],
-        });
-        localStorage.setItem("storedLists", JSON.stringify(updatedLists));
+        await postCard(cardToPost);
 
         setIsNewCardInputVisible(false);
         setTitleValeuOfNewCard("");

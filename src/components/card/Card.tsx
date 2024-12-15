@@ -9,10 +9,9 @@ import { icons } from "./modal/components/priorities/Priorities";
 import { ICard } from "../../types/kanbam";
 import "./Card.scss";
 
-const Card = ({ ...props }: ICard) => {
+const Card = ({ ...cardDetail }: ICard) => {
   const { theme, itemDragging } = useContext(KanbamContext) as IkanbamContext;
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [cardDetail] = useState<ICard>(props);
 
   // end of hooks
 
@@ -34,7 +33,7 @@ const Card = ({ ...props }: ICard) => {
 
     itemDragging.current = {
       item: {
-        ...props,
+        ...cardDetail,
         opacity: ".3",
       },
       identity: "card",
@@ -50,19 +49,19 @@ const Card = ({ ...props }: ICard) => {
 
   const displayCardModal = isModalVisible && (
     <CardModal
-      cardDetail={cardDetail}
+      cardDetail={cardDetail!}
       handleModlaVisibility={handleModlaVisibility}
     />
   );
 
-  const displayDescriptionIcon = cardDetail.description && (
+  const displayDescriptionIcon = cardDetail?.description && (
     <div className="discription-icon">
       <BsTextParagraph size={15} />
     </div>
   );
 
-  const displayPriorityColor = cardDetail.priority && (
-    <div className="priority">{icons(cardDetail.priority)}</div>
+  const displayPriorityColor = cardDetail?.priority && (
+    <div className="priority">{icons(cardDetail?.priority)}</div>
   );
 
   return (
@@ -72,9 +71,9 @@ const Card = ({ ...props }: ICard) => {
       onDragStart={(ev) => handleDragStart(ev)}
       onDragEnd={(ev) => handleDragEnd(ev)}
       onTouchStart={(ev) => ev.preventDefault()}
-      data-id={props.id}
+      data-id={cardDetail.id}
       data-identity="card"
-      data-index={props.indexNumber}
+      data-index={cardDetail.indexNumber}
     >
       {displayCardModal}
 
@@ -84,12 +83,12 @@ const Card = ({ ...props }: ICard) => {
         $groupfont="quaternary"
         className="card"
         onClick={() => setIsModalVisible(true)}
-        style={{ opacity: `${props.opacity}` }}
+        style={{ opacity: `${cardDetail.opacity}` }}
       >
         {displayPriorityColor}
 
         <div className="card__heading">
-          <h2>{props.title} </h2>
+          <h2>{cardDetail.title} </h2>
         </div>
 
         {displayDescriptionIcon}

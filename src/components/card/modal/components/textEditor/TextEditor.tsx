@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import DOMPurify from "dompurify";
 
 import { IError } from "../../../../../types/status.type";
@@ -15,6 +15,8 @@ import { themes } from "../../../../../utils/constantDatas/themes";
 import { MdEditNote } from "react-icons/md";
 import { ICard } from "../../../../../types/kanbam";
 import useUpdates from "../../../../../utils/api/useUpdates";
+import useSignalRConnection from "../../../../../hooks/useSignalRConnection";
+import { logger } from "../../../../../utils/logger";
 
 const TextEditorStyled = styled.div<INewTheme>`
   .text-editor {
@@ -64,6 +66,25 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
 
   const paraRef = useRef(null);
 
+  const configureOnConnections = useCallback(
+    async (connection: signalR.HubConnection) => {
+      // update
+      connection.on("ReceiveCardUpdate", (updatedCardReceived: ICard) => {
+        setLocalDescription(() => updatedCardReceived.description);
+      });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  // SignalR connections
+  useSignalRConnection({
+    url: `${import.meta.env.VITE_KANBAM_HUB_URL}/cardHub?groupId=${
+      cardDetail.listId
+    }`,
+    configureOnConnections,
+  });
+
   useEffect(() => {
     if (paraRef.current) {
       const elemRef = paraRef?.current as HTMLElement;
@@ -85,9 +106,9 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
       setIsEditorialOpen(false);
     } catch (err) {
       const error = err as IError;
-      console.log(`Error message: ${error.message}`);
+      logger("error", `Error message: ${error.message}`);
     } finally {
-      console.log("Send put request for description...");
+      logger("info", "Send put request for description...");
     }
   };
 
