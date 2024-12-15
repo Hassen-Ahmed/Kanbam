@@ -21,6 +21,7 @@ export interface ITaskContent {
   priority: string;
   startDate: string;
   dueDate: string;
+  listId: string;
 }
 
 export interface IGroupedContents {

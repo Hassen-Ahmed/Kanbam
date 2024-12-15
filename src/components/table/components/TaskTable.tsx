@@ -73,7 +73,7 @@ export default function TaskTable({
 
   const handleDeleteTask = async () => {
     try {
-      await deleteCardById(task.id);
+      await deleteCardById(task.id, task.listId);
       handleRefetch();
     } catch (err) {
       const error = err as IError;
