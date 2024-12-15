@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 
 import { FaRegCreditCard } from "react-icons/fa";
 import { BsTextParagraph } from "react-icons/bs";
@@ -34,6 +34,8 @@ import { jwtDecode } from "jwt-decode";
 import { logger } from "../../../utils/logger";
 import { MdDeleteForever } from "react-icons/md";
 import usePosts from "../../../utils/api/usePosts";
+import useSignalRConnection from "../../../hooks/useSignalRConnection";
+import { deepCopiedLists } from "../../lists/utilsForLists";
 const ActivityStyled = styled.div<INewTheme>`
   &,
   &__comment {
@@ -70,7 +72,7 @@ export default function CardModal({
   const { postCardComment } = usePosts();
   const { deleteCardById, deleteCardCommentByCommentId } = useDeletes();
   const [comment, setComment] = useState("");
-  const [comments, setComments] = useState<IComment[]>([]);
+  const [comments, setComments] = useState<IComment[]>(cardDetail.comments);
   const [isCommentVisible, setIsCommentVisible] = useState(false);
   const [titleValueOfThisCard, setTitleOfThisCard] = useState<string>(
     cardDetail.title
@@ -81,26 +83,66 @@ export default function CardModal({
 
   const { userId, unique_name } = jwtDecode(tokenInCtx!) as IUserDecodedResult;
 
-  useEffect(() => {
-    setComments(() => {
-      return cardDetail.comments;
-    });
+  const configureOnConnections = useCallback(
+    async (connection: signalR.HubConnection) => {
+      let copyOfLists = deepCopiedLists(lists!);
+      // create
+      connection.on("ReceiveCardCommentCreated", (newCardComment: IComment) => {
+        copyOfLists = copyOfLists?.map((list) => {
+          const updatedCards = list.cards.map((card) => {
+            if (card.id != newCardComment.cardId) return card;
+            return { ...card, comments: [newCardComment, ...card.comments] };
+          });
+
+          return { ...list, cards: updatedCards };
+        });
+
+        updateListsAndStoredLists(copyOfLists);
+
+        setComments((prevComments) => {
+          return [newCardComment, ...prevComments];
+        });
+      });
+      // update
+      connection.on("ReceiveCardUpdate", (updatedCardReceived: ICard) => {
+        if (!tokenInCtx) return;
+
+        setTitleOfThisCard(() => updatedCardReceived.title);
+        setComments(() => updatedCardReceived.comments);
+      });
+      // delete
+      connection.on("ReceiveCardCommentDelete", (commentId: string) => {
+        setComments((prevComments) =>
+          prevComments.filter((comment) => comment.id != commentId)
+        );
+      });
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    []
+  );
+
+  // SignalR connections
+  useSignalRConnection({
+    url: `${import.meta.env.VITE_KANBAM_HUB_URL}/cardHub?groupId=${
+      cardDetail.listId
+    }`,
+    configureOnConnections,
+  });
+
+  const updateListsAndStoredLists = (payload: IListsWithCards[]) => {
+    dispatch({
+      type: "ADD_ALL_LISTS",
+      payload,
+    });
+
+    localStorage.setItem("storedLists", JSON.stringify(payload));
+  };
 
   // end of hooks
 
   const deleteComment = async (commentId: string) => {
     try {
       await deleteCardCommentByCommentId(cardDetail.id, commentId);
-
-      setComments((prevComments) => {
-        const filtredComments = prevComments.filter(
-          (comment) => comment.id != commentId
-        );
-        cardDetail.comments = filtredComments;
-        return filtredComments;
-      });
     } catch (err) {
       const error = err as IError;
       logger("error", `Error message: ${error.message}`);
@@ -119,14 +161,8 @@ export default function CardModal({
       };
 
       try {
-        const responseComment = await postCardComment(
-          cardDetail.id,
-          createdComment
-        );
-        setComments((prevComments) => {
-          cardDetail.comments = [responseComment, ...prevComments];
-          return [responseComment, ...prevComments];
-        });
+        await postCardComment(cardDetail.id, createdComment);
+
         setComment("");
         setIsCommentVisible(false);
       } catch (err) {
@@ -140,16 +176,8 @@ export default function CardModal({
 
   const handleCardArchive = async (cardId: string) => {
     try {
-      await deleteCardById(cardId);
+      await deleteCardById(cardId, cardDetail.listId);
       handleModlaVisibility(false);
-
-      const updatedLists = handleUpdateLists(lists!, cardDetail, cardId);
-
-      dispatch({
-        type: "ADD_ALL_LISTS",
-        payload: updatedLists as IListsWithCards[],
-      });
-      localStorage.setItem("storedLists", JSON.stringify(updatedLists));
     } catch (err) {
       const error = err as IError;
       logger("error", `Error deleting card, err: ${error.message}`);

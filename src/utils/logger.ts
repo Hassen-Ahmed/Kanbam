@@ -1,4 +1,4 @@
-type LogType = "success" | "error" | "info" | "table";
+type LogType = "success" | "error" | "info" | "table" | "warn";
 
 export const logger = (type: LogType = "info", message: string | object) => {
   // process.env.NODE_ENV will have checked by vites.
@@ -15,14 +15,15 @@ export const logger = (type: LogType = "info", message: string | object) => {
   const logMessage =
     typeof message == "string"
       ? `[${timestamp}] ${message} `
-      : { timestamp, ...message };
+      : { timestamp, ...message, caller: callerLine };
 
   const logFunctions: Record<LogType, (msg: string | object) => void> = {
-    info: console.info,
     success: console.log,
     error: console.error,
+    info: console.info,
+    warn: console.warn,
     table: console.table,
   };
 
-  logFunctions[type](logMessage + "\n" + callerLine);
+  logFunctions[type](logMessage);
 };
