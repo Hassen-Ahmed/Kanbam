@@ -1,0 +1,67 @@
+@use "../../../assets/style/abstracts/variable" as var;
+@use "../../../assets/style/abstracts/mixins" as mixn;
+@use "../../../assets/style/base/animation" as *;
+
+.theme-list-container {
+  .theme--list {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 20rem;
+    transform: translate(-80%, -50%);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+
+    list-style: none;
+    border-radius: var.$bor-05;
+    box-shadow: 1rem -1rem 1rem rgba(0, 0, 0, 0.04);
+    z-index: 9999;
+
+    @media screen and (max-width: 450px) {
+      transform: translate(-40%, -50%);
+    }
+
+    &--btn {
+      @include mixn.flexy(row, flex-start, center, 1rem);
+      width: 50px;
+      height: 30px;
+      border-radius: var.$bor-1;
+      box-shadow: 0rem 0.2rem 0.1rem rgba(0, 0, 0, 0.15);
+
+      & img {
+        object-fit: cover;
+        width: 40%;
+      }
+    }
+
+    li {
+      @include mixn.flexy(row, flex-start, center, 1.5rem);
+      width: 100%;
+      padding: 1rem 3rem;
+      font-size: var.$fsi-14;
+      font-weight: var.$fwt-500;
+      position: relative;
+      cursor: pointer;
+
+      // For animation.
+      opacity: 0;
+      transform: translatey(2rem);
+      animation: fadeInUp 0.5s ease-in-out forwards;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0.2rem;
+        height: 100%;
+        background-color: var.$border-color-card;
+        display: none;
+      }
+
+      &:hover::before {
+        display: block;
+      }
+    }
+  }
+}
