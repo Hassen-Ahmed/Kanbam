@@ -1,7 +1,9 @@
 import { createContext, useEffect, useRef, useState } from "react";
 import { ICard, IComment, IUserResponseDetail } from "../types/kanbam";
+import { themes } from "../utils/constantDatas/themes";
+import { Theme } from "../types/theme.type";
 
-type Theme = "light" | "dark";
+export type ThemeName = "light" | "dark" | "aiTheme";
 
 interface IItem {
   id?: string;
@@ -23,8 +25,14 @@ export interface IItemDragging {
 }
 
 export interface IkanbamContext {
-  theme: Theme;
-  themeSetter: (themeValue: Theme) => void;
+  theme: ThemeName;
+  themeList: {
+    light: Theme;
+    dark: Theme;
+    aiTheme: Theme;
+  };
+  themeSetter: (themeValue: ThemeName) => void;
+  setRandomNum: React.Dispatch<React.SetStateAction<number>>;
   itemDragging: React.MutableRefObject<IItemDragging | null>;
   userDetail: IUserResponseDetail | null;
   setUserDetail: React.Dispatch<
@@ -35,14 +43,28 @@ export interface IkanbamContext {
 export const KanbamContext = createContext<IkanbamContext | null>(null);
 
 const KanbamContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme2] = useState<Theme>("light");
+  const [theme, setTheme2] = useState<ThemeName>("light");
+  const [randomNum, setRandomNum] = useState(0);
+  const [themeList, setThemeList] = useState(themes);
   const itemDragging = useRef<IItemDragging | null>(null);
   const [userDetail, setUserDetail] = useState<IUserResponseDetail | null>(
     null
   );
 
   useEffect(() => {
-    const responseTheme = localStorage.getItem("theme") as Theme;
+    const storedThemesString = localStorage.getItem("aiTheme");
+
+    if (storedThemesString) {
+      const parsedTheme = JSON.parse(storedThemesString);
+
+      setThemeList((prevThemes) => {
+        return { ...prevThemes, aiTheme: parsedTheme };
+      });
+    }
+  }, [randomNum]);
+
+  useEffect(() => {
+    const responseTheme = localStorage.getItem("theme") as ThemeName;
 
     if (!responseTheme) {
       localStorage.setItem("theme", "light");
@@ -51,7 +73,7 @@ const KanbamContextProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
-  const themeSetter = (themeValue: Theme) => {
+  const themeSetter = (themeValue: ThemeName) => {
     localStorage.setItem("theme", themeValue);
     setTheme2(themeValue);
   };
@@ -60,7 +82,9 @@ const KanbamContextProvider = ({ children }: { children: React.ReactNode }) => {
     <KanbamContext.Provider
       value={{
         theme,
+        themeList,
         themeSetter,
+        setRandomNum,
         itemDragging,
         userDetail,
         setUserDetail,
