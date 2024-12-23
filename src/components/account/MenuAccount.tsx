@@ -1,49 +1,45 @@
 import { createPortal } from "react-dom";
-import ButtonTheme from "./ButtonTheme";
-import "./MenuAccount.scss";
 import MenuAccountLogo from "./MenuAccountLogo";
 import { useContext, useState } from "react";
 import ConfettiComp from "../Confetti";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { themes } from "../../utils/constantDatas/themes";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { INewTheme } from "../../types/styledComp";
 import { Hr } from "../../utils/constantDatas/styledUtils";
 import usePosts from "../../utils/api/usePosts";
+import ThemeList from "./components/ThemeList";
+import "./MenuAccount.scss";
 
 const MenuStyled = styled.div<INewTheme>`
   .menu {
-    color: ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+    color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].font["primary"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["menu"]};
 
-    &,
-    &__theme--list {
-      border: 0.1rem solid
-        ${({ $newtheme }) => themes[$newtheme].border["secondary"]};
-    }
+    border: 0.1rem solid
+      ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].border["secondary"]};
 
     &__logo {
       &--icon {
-        background-color: ${({ $newtheme }) =>
-          themes[$newtheme].bg["btn_account"]};
+        background-color: ${({ $themeList, $newtheme }) =>
+          $themeList[$newtheme].bg["buttonAccount"]};
       }
       &--photo {
-        background-color: ${({ $newtheme }) =>
-          themes[$newtheme].bg["nav_glass"]};
+        background-color: ${({ $themeList, $newtheme }) =>
+          $themeList[$newtheme].bg["navGlass"]};
       }
-    }
-
-    &,
-    &__theme--list {
-      background-color: ${({ $newtheme }) => themes[$newtheme].bg["menu"]};
     }
 
     &__logout,
     &__workspaces,
-    &__theme,
+    .theme-btn-container,
     &__theme--list li {
       &:hover {
-        background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover"]};
+        background-color: ${({ $themeList, $newtheme }) =>
+          $themeList[$newtheme].bg["hover"]};
       }
     }
   }
@@ -61,10 +57,11 @@ const MenuAccount = ({
   const { postAuthRevoke } = usePosts();
   const [areWeCelebrating, setAreWeCelebrating] = useState(false);
   const navigate = useNavigate();
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
 
   const handleLogout = async () => {
     navigate("/auth/login");
+    localStorage.clear();
     await postAuthRevoke();
   };
 
@@ -72,6 +69,7 @@ const MenuAccount = ({
     <>
       {!isAccountMenuVisible ? null : (
         <MenuStyled
+          $themeList={themeList}
           $newtheme={theme}
           className="menu-account"
           style={{
@@ -81,10 +79,22 @@ const MenuAccount = ({
           <div className="menu">
             <h2 className="menu__heading">Account</h2>
             <MenuAccountLogo />
-            <Hr $themename={theme} $group="hover" />
-            <ButtonTheme />
+            <Hr $themeList={themeList} $themename={theme} $group="secondary" />
 
-            <Hr $themename={theme} $group="hover" />
+            <div className="theme-btn-container">
+              <label htmlFor="menu-theme">
+                <div className="theme-btn-main">
+                  <h2 className="heading">Theme </h2>
+                </div>
+              </label>
+            </div>
+            <input type="checkbox" name="menu-theme" id="menu-theme" />
+
+            <div id="themes">
+              <ThemeList />
+            </div>
+
+            {/* <Hr $themeList={themeList} $themename={theme} $group="secondary" /> */}
 
             <Link
               className="menu__workspaces"
@@ -93,8 +103,6 @@ const MenuAccount = ({
             >
               <h2 className="menu__workspaces--text">Workspaces</h2>
             </Link>
-
-            <Hr $themename={theme} $group="hover" />
 
             <div className="menu__logout" onClick={handleLogout}>
               <h2 className="menu__logout--text">Logout</h2>
