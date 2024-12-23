@@ -1,11 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
-import ButtonTheme from "../../../../components/account/ButtonTheme";
+import ButtonTheme from "../../../../components/account/components/ThemeList";
 import { KanbamContext } from "../../../../context/kanbamContext";
+import { themes } from "../../../../utils/constantDatas/themes";
 
 const mockThemeSetter = vi.fn();
 const mockItemDragging = { current: null };
 const mockTheme2 = "dark";
+const themeList = themes;
+const setRandomNum = vi.fn();
 const userDetail = {
   email: "string",
   userName: "string",
@@ -17,7 +20,9 @@ const renderWithContext = (component: React.ReactNode) => {
     <KanbamContext.Provider
       value={{
         theme: mockTheme2,
+        themeList: themeList,
         themeSetter: mockThemeSetter,
+        setRandomNum: setRandomNum,
         itemDragging: mockItemDragging,
         userDetail,
         setUserDetail,
