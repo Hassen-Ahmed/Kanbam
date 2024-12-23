@@ -10,7 +10,9 @@ import { ICard } from "../../types/kanbam";
 import "./Card.scss";
 
 const Card = ({ ...cardDetail }: ICard) => {
-  const { theme, itemDragging } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList, itemDragging } = useContext(
+    KanbamContext
+  ) as IkanbamContext;
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   // end of hooks
@@ -78,6 +80,7 @@ const Card = ({ ...cardDetail }: ICard) => {
       {displayCardModal}
 
       <BgAndFont
+        $themeList={themeList}
         $themename={theme}
         $groupbg="card"
         $groupfont="quaternary"

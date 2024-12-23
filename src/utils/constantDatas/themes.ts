@@ -3,18 +3,18 @@
 export const themes = {
   light: {
     bg: {
-      nav_01: "#3d567d",
-      nav_glass: "#22272b68",
-      side_bar_01: "#3d547dfc",
+      navBar: "#3d567d",
+      navGlass: "#22272b68",
+      sideBar: "#3d547dfc",
       lists: "#f1f2f4",
       card: "#ffffff",
-      card_modal: "#ffffff",
+      cardModal: "#ffffff",
       menu: "#f1f2f4",
-      btn_account: "#1a66d8",
-      scroll_01: "#445777fc",
+      buttonAccount: "#1a66d8",
+      scrollTrack: "#445777fc",
       hover: "#6e849626",
-      hover_02: "#8aa2b65a",
-      hover_03: "#6e849640",
+      hoverSecondar: "#8aa2b65a",
+      hoverTertiary: "#6e849640",
       transparent: "transparent",
     },
 
@@ -33,18 +33,18 @@ export const themes = {
 
   dark: {
     bg: {
-      nav_01: "#1d2125",
-      nav_glass: "#22272b68",
-      side_bar_01: "#1e2429fc",
+      navBar: "#1d2125",
+      navGlass: "#22272b68",
+      sideBar: "#1e2429fc",
       lists: "#101204",
       card: "#21262a",
-      card_modal: "#323940",
+      cardModal: "#323940",
       menu: "#283036",
-      btn_account: "#1a66d8",
-      scroll_01: "#1e2429fc",
+      buttonAccount: "#1a66d8",
+      scrollTrack: "#1e2429fc",
       hover: "#c1d3ef1a",
-      hover_02: "#c1d3ef1a",
-      hover_03: "#c1d3ef40",
+      hoverSecondar: "#c1d3ef1a",
+      hoverTertiary: "#c1d3ef40",
       transparent: "transparent",
     },
 
@@ -60,6 +60,43 @@ export const themes = {
       tertiary: "#59a4e1",
     },
   },
-} as const;
 
-export type Theme = typeof themes;
+  aiTheme: {
+    bg: {
+      navBar: "#1d2125",
+      navGlass: "#22272b68",
+      sideBar: "#1e2429fc",
+      lists: "#101204",
+      card: "#21262a",
+      cardModal: "#323940",
+      menu: "#283036",
+      buttonAccount: "#1a66d8",
+      scrollTrack: "#1e2429fc",
+      hover: "#c1d3ef1a",
+      hoverSecondar: "#c1d3ef1a",
+      hoverTertiary: "#c1d3ef40",
+      transparent: "transparent",
+    },
+
+    font: {
+      primary: "#adbccc",
+      secondary: "#ffffff",
+      tertiary: "#d8d6d6",
+      quaternary: "#adbccc",
+    },
+    border: {
+      primary: "#e9e9e9",
+      secondary: "#abb7c480",
+      tertiary: "#59a4e1",
+    },
+  },
+};
+
+const storedThemesString = localStorage.getItem("themeAi");
+
+if (storedThemesString) {
+  const parsedTheme = JSON.parse(storedThemesString);
+  themes.aiTheme = parsedTheme;
+}
+
+export type ThemeGeneral = typeof themes;

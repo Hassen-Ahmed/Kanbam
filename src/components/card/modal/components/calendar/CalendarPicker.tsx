@@ -38,7 +38,7 @@ export default function CalendarPicker({
 
   const [reminderDay, setReminderDay] = useState<string | number>(0);
 
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
 
   useEffect(() => {
     if (cardDetail.dueDate) {
@@ -156,7 +156,11 @@ export default function CalendarPicker({
   };
 
   return (
-    <CalendarStyled $newtheme={theme} className="calendar-container">
+    <CalendarStyled
+      $themeList={themeList}
+      $newtheme={theme}
+      className="calendar-container"
+    >
       <div
         className="calendar"
         style={{ display: isVisible ? "block" : "none" }}

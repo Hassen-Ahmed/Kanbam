@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { INewTheme } from "../../types/styledComp";
-import { themes } from "../../utils/constantDatas/themes";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import Loading from "../notifications/Loading";
@@ -14,16 +13,20 @@ import { IListsWithCards } from "../../types/kanbam";
 import ErrorMessage from "../notifications/ErrorMessage";
 
 const DashboardStyled = styled.div<INewTheme>`
-  color: ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+  color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].font["primary"]};
 
   select {
-    background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
-    color: ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["card"]};
+    color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].font["primary"]};
   }
 
   text {
     background-color: grey;
-    color: ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+    color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].font["primary"]};
   }
 `;
 
@@ -54,7 +57,7 @@ export interface IDataBar extends Rec {
 }
 
 export default function Dashboard() {
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
   const [listTitles, setListTitles] = useState<string[]>([]);
 
   const [tableContents, setTableContents] = useState<ITableContents[] | null>(
@@ -191,6 +194,7 @@ export default function Dashboard() {
 
   return (
     <DashboardStyled
+      $themeList={themeList}
       $newtheme={theme}
       className="dashboard"
       style={{

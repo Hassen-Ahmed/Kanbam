@@ -21,7 +21,6 @@ import Card from "../card/Card";
 import "./Lists.scss";
 import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
-import { themes } from "../../utils/constantDatas/themes";
 import {
   ICard,
   ICardCreate,
@@ -42,7 +41,8 @@ const ListsStyled = styled.div<INewTheme>`
     &--container--sub,
     &__add-card--container input,
     &__btn--add-container {
-      background-color: ${({ $newtheme }) => themes[$newtheme].bg["lists"]};
+      background-color: ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].bg["lists"]};
     }
 
     &--container--sub,
@@ -50,19 +50,21 @@ const ListsStyled = styled.div<INewTheme>`
     &__heading--text input,
     &__btn--add-container,
     &-menu {
-      color: ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+      color: ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].font["primary"]};
     }
 
     &__add-card--container .card-input--add-btns button {
-      background-color: ${({ $newtheme }) =>
-        themes[$newtheme].bg["btn_account"]};
+      background-color: ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].bg["buttonAccount"]};
     }
 
     &__heading--btn,
     &__btn--add,
     &-menu__btns .lists-menu__btn {
       &:hover {
-        background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover"]};
+        background-color: ${({ $themeList, $newtheme }) =>
+          $themeList[$newtheme].bg["hover"]};
       }
     }
   }
@@ -78,7 +80,9 @@ const Lists = ({
   opacity,
 }: IListsWithCards) => {
   const { tokenInCtx } = useContext(TokenContext) as ITokenContext;
-  const { theme, itemDragging } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList, itemDragging } = useContext(
+    KanbamContext
+  ) as IkanbamContext;
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const { postCard } = usePosts();
   const { updateList } = useUpdates();
@@ -378,6 +382,7 @@ const Lists = ({
 
   return (
     <ListsStyled
+      $themeList={themeList}
       $newtheme={theme}
       className="lists--container--main"
       draggable="true"

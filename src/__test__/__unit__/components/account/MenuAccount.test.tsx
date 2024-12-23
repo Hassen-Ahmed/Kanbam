@@ -3,6 +3,7 @@ import MenuAccount from "../../../../components/account/MenuAccount";
 import { MemoryRouter } from "react-router-dom";
 import { KanbamContext } from "../../../../context/kanbamContext";
 import { TokenContext } from "../../../../context/TokenContext";
+import { themes } from "../../../../utils/constantDatas/themes";
 
 let mockIsAccountMenuVisible = false;
 const mockSetIsAccountMenuVisible = vi.fn();
@@ -14,6 +15,8 @@ const userDetail = {
 };
 const setUserDetail = vi.fn();
 const mockTokenInCtx = "dark";
+const themeList = themes;
+const setRandomNum = vi.fn();
 
 const renderWithMemoryRouter = () => {
   render(
@@ -24,7 +27,9 @@ const renderWithMemoryRouter = () => {
         <KanbamContext.Provider
           value={{
             theme: mockTheme2,
+            themeList: themeList,
             themeSetter: vi.fn(),
+            setRandomNum: setRandomNum,
             itemDragging: { current: null },
             userDetail,
             setUserDetail,

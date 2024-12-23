@@ -4,18 +4,23 @@ import { useContext, useState } from "react";
 import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
 import styled from "styled-components";
 import { INewTheme } from "../../../types/styledComp";
-import { themes } from "../../../utils/constantDatas/themes";
 import { validateEmail } from "../../../utils/validations";
 
 const NewMemberStyled = styled.div<INewTheme>`
-  background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
-  color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
-  border: 0.1rem solid ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+  background-color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].bg["card"]};
+  color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].font["secondary"]};
+  border: 0.1rem solid
+    ${({ $themeList, $newtheme }) => $themeList[$newtheme].font["primary"]};
 
   .close-modal {
-    background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
-    color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
-    border: 0.1rem solid ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["card"]};
+    color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].font["secondary"]};
+    border: 0.1rem solid
+      ${({ $themeList, $newtheme }) => $themeList[$newtheme].font["primary"]};
   }
 `;
 
@@ -35,7 +40,7 @@ export default function NewMember({
   handleInviteMember,
   handleNewMemberModlaVisibility,
 }: INewMember) {
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
   const [inputError, setInputError] = useState(false);
   const [newMemberDetail, setNewMemberDetail] = useState<INewMemberDetail>({
     email: "",
@@ -64,7 +69,11 @@ export default function NewMember({
 
   return (
     <div className="board-new-member-container">
-      <NewMemberStyled $newtheme={theme} className="board-new-member">
+      <NewMemberStyled
+        $themeList={themeList}
+        $newtheme={theme}
+        className="board-new-member"
+      >
         <div
           className="close-modal"
           onClick={() => handleNewMemberModlaVisibility(false)}

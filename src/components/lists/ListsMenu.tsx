@@ -7,7 +7,6 @@ import { IError } from "../../types/status.type";
 import "./ListsMenu.scss";
 import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
-import { themes } from "../../utils/constantDatas/themes";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { Hr } from "../../utils/constantDatas/styledUtils";
 import useDeletes from "../../utils/api/useDeletes";
@@ -16,16 +15,19 @@ import { logger } from "../../utils/logger";
 const ListMenuStyled = styled.div<INewTheme>`
   .lists-menu {
     border: 0.1rem solid
-      ${({ $newtheme }) => themes[$newtheme].border["secondary"]};
+      ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].border["secondary"]};
 
-    background-color: ${({ $newtheme }) => themes[$newtheme].bg["card_modal"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["cardModal"]};
 
     &__btns {
       .lists-menu__btn {
         button {
-          background-color: ${({ $newtheme }) =>
-            themes[$newtheme].bg["transparent"]};
-          color: ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+          background-color: ${({ $themeList, $newtheme }) =>
+            $themeList[$newtheme].bg["transparent"]};
+          color: ${({ $themeList, $newtheme }) =>
+            $themeList[$newtheme].font["primary"]};
         }
       }
     }
@@ -45,7 +47,7 @@ export default function ListsMenu({
 }) {
   const { deleteListsById } = useDeletes();
   const [isListRemoved, setIsListRemoved] = useState(false);
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
 
   const menuListRef = useRef(null);
 
@@ -94,7 +96,11 @@ export default function ListsMenu({
   );
 
   return (
-    <ListMenuStyled $newtheme={theme} className="lists-menu-container">
+    <ListMenuStyled
+      $themeList={themeList}
+      $newtheme={theme}
+      className="lists-menu-container"
+    >
       <div
         className="lists-menu__overlay"
         onClick={() => handleIsListMenuVisible(false)}
@@ -118,20 +124,20 @@ export default function ListsMenu({
             <button>Move list</button>
           </div>
 
-          <Hr $themename={theme} $group="hover" />
+          <Hr $themeList={themeList} $themename={theme} $group="primary" />
 
           <div className="lists-menu__btn">
             <button>Sort by...</button>
           </div>
 
-          <Hr $themename={theme} $group="hover" />
+          <Hr $themeList={themeList} $themename={theme} $group="primary" />
           <div className="lists-menu__btn">
             <button>Archive all cards in this list</button>
           </div>
           <div className="lists-menu__btn">
             <button>Move all cards in this list</button>
           </div>
-          <Hr $themename={theme} $group="hover" />
+          <Hr $themeList={themeList} $themename={theme} $group="primary" />
 
           {archiveButton}
         </div>

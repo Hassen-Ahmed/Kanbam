@@ -4,7 +4,6 @@ import "./Members.scss";
 import { IoMdClose } from "react-icons/io";
 import { INewTheme } from "../../../types/styledComp";
 import styled from "styled-components";
-import { themes } from "../../../utils/constantDatas/themes";
 import { useContext, useEffect, useState } from "react";
 import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
 import { jwtDecode } from "jwt-decode";
@@ -19,20 +18,27 @@ import useDeletes from "../../../utils/api/useDeletes";
 import { ITokenContext, TokenContext } from "../../../context/TokenContext";
 
 const MembersStyled = styled.div<INewTheme>`
-  background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
-  color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
-  border: 0.1rem solid ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+  background-color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].bg["card"]};
+  color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].font["secondary"]};
+  border: 0.1rem solid
+    ${({ $themeList, $newtheme }) => $themeList[$newtheme].font["primary"]};
 
   .close-modal {
-    background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
-    color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["card"]};
+    color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].font["secondary"]};
     border: 0.1rem solid
-      ${({ $newtheme }) => themes[$newtheme].border["secondary"]};
+      ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].border["secondary"]};
   }
 
   .member {
     border: 0.1rem solid
-      ${({ $newtheme }) => themes[$newtheme].border["secondary"]};
+      ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].border["secondary"]};
   }
 `;
 
@@ -44,7 +50,7 @@ interface IMembers {
 export default function Members({ w_id, setShowMembers }: IMembers) {
   const { updateWorkspaceMember } = useUpdates();
   const { deleteWorkspaceMemberById } = useDeletes();
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
   const { tokenInCtx } = useContext(TokenContext) as ITokenContext;
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [currentUserRole, setCurrentUserRole] = useState<string | null>(null);
@@ -143,7 +149,11 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
         />
       )}
 
-      <MembersStyled $newtheme={theme} className="members">
+      <MembersStyled
+        $themeList={themeList}
+        $newtheme={theme}
+        className="members"
+      >
         <div className="close-modal" onClick={() => setShowMembers(false)}>
           <IoMdClose size={22} />
         </div>

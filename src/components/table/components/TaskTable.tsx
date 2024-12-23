@@ -3,7 +3,6 @@ import { MdDeleteForever, MdEditNote } from "react-icons/md";
 import "./TaskTable.scss";
 import styled from "styled-components";
 import { INewTheme } from "../../../types/styledComp";
-import { themes } from "../../../utils/constantDatas/themes";
 import { useContext, useState } from "react";
 import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
 import { ITaskContent } from "../Table";
@@ -15,8 +14,10 @@ import { ICard, IListsContext } from "../../../types/kanbam";
 import useDeletes from "../../../utils/api/useDeletes";
 
 const TaskTableStyled = styled.div<INewTheme>`
-  background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
-  color: ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+  background-color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].bg["card"]};
+  color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].font["primary"]};
 `;
 
 export default function TaskTable({
@@ -29,7 +30,7 @@ export default function TaskTable({
   handleRefetch: () => Promise<void>;
 }) {
   const { deleteCardById } = useDeletes();
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
   const { lists } = useContext(ListsContext) as IListsContext;
 
   const [showModalCard, setShowModalCard] = useState(false);
@@ -92,7 +93,11 @@ export default function TaskTable({
   };
 
   return (
-    <TaskTableStyled $newtheme={theme} className="task-table">
+    <TaskTableStyled
+      $themeList={themeList}
+      $newtheme={theme}
+      className="task-table"
+    >
       {showModalCard && (
         <CardModal
           cardDetail={cardDetail!}

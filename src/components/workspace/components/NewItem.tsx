@@ -2,19 +2,24 @@ import { IoMdClose } from "react-icons/io";
 import "./NewItem.scss";
 import { INewTheme } from "../../../types/styledComp";
 import styled from "styled-components";
-import { themes } from "../../../utils/constantDatas/themes";
 import { useContext, useState } from "react";
 import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
 
 const NewItemStyled = styled.div<INewTheme>`
-  background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
-  color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
-  border: 0.1rem solid ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+  background-color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].bg["card"]};
+  color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].font["secondary"]};
+  border: 0.1rem solid
+    ${({ $themeList, $newtheme }) => $themeList[$newtheme].font["primary"]};
 
   .close-modal {
-    background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
-    color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
-    border: 0.1rem solid ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["card"]};
+    color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].font["secondary"]};
+    border: 0.1rem solid
+      ${({ $themeList, $newtheme }) => $themeList[$newtheme].font["primary"]};
   }
 `;
 
@@ -36,7 +41,7 @@ export default function NewItem({
   handleItemCreation,
   handleNewItemModlaVisibility,
 }: INewItem) {
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
   const [itemDetail, setItemDetail] = useState<IItemDetail>({
     name: "",
     description: "",
@@ -62,7 +67,11 @@ export default function NewItem({
 
   return (
     <div className="new-item-container">
-      <NewItemStyled $newtheme={theme} className="new-item">
+      <NewItemStyled
+        $themeList={themeList}
+        $newtheme={theme}
+        className="new-item"
+      >
         <div
           className="close-modal"
           onClick={() => handleNewItemModlaVisibility(false)}

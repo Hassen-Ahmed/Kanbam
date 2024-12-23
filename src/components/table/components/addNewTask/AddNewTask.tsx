@@ -3,7 +3,6 @@ import { useContext, useState } from "react";
 import { VscClose } from "react-icons/vsc";
 import styled from "styled-components";
 import { INewTheme } from "../../../../types/styledComp";
-import { themes } from "../../../../utils/constantDatas/themes";
 import {
   IkanbamContext,
   KanbamContext,
@@ -17,17 +16,21 @@ import usePosts from "../../../../utils/api/usePosts";
 const AddTaskStyled = styled.div<INewTheme>`
   .task-add-new__sub {
     border: 0.1rem solid
-      ${({ $newtheme }) => themes[$newtheme].font["quaternary"]};
-    background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
-    color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
+      ${({ $themeList, $newtheme }) => $themeList[$newtheme].font["quaternary"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["card"]};
+    color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].font["secondary"]};
   }
 
   select,
   input {
     border: 0.1rem solid
-      ${({ $newtheme }) => themes[$newtheme].font["quaternary"]};
-    background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
-    color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
+      ${({ $themeList, $newtheme }) => $themeList[$newtheme].font["quaternary"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["card"]};
+    color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].font["secondary"]};
   }
 `;
 
@@ -41,7 +44,7 @@ export default function AddNewTask({
   handleRefetch,
 }: IAddNewTask) {
   const { postCard } = usePosts();
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
 
   const [newTask, setNewTask] = useState({
@@ -60,7 +63,11 @@ export default function AddNewTask({
   };
 
   return (
-    <AddTaskStyled $newtheme={theme} className="task-add-new">
+    <AddTaskStyled
+      $themeList={themeList}
+      $newtheme={theme}
+      className="task-add-new"
+    >
       <div className="task-add-new__sub">
         <div className="task__options">
           <h2>Lists: </h2>

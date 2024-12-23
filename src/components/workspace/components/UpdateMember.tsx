@@ -2,20 +2,25 @@ import { IoMdClose } from "react-icons/io";
 import "./NewItem.scss";
 import { INewTheme } from "../../../types/styledComp";
 import styled from "styled-components";
-import { themes } from "../../../utils/constantDatas/themes";
 import { useContext, useState } from "react";
 import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
 import "./UpdateMember.scss";
 
 const UpdateMemberStyled = styled.div<INewTheme>`
-  background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
-  color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
-  border: 0.1rem solid ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+  background-color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].bg["card"]};
+  color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].font["secondary"]};
+  border: 0.1rem solid
+    ${({ $themeList, $newtheme }) => $themeList[$newtheme].font["primary"]};
 
   .close-modal {
-    background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
-    color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
-    border: 0.1rem solid ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["card"]};
+    color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].font["secondary"]};
+    border: 0.1rem solid
+      ${({ $themeList, $newtheme }) => $themeList[$newtheme].font["primary"]};
   }
 `;
 
@@ -36,7 +41,7 @@ export default function UpdateMember({
   handleUpdateMember,
   handleUpdateMemberModlaVisibility,
 }: INewItem) {
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
   const [itemDetail, setItemDetail] = useState<IUpdateMemberDetail>({
     role: "Admin",
   });
@@ -55,7 +60,11 @@ export default function UpdateMember({
 
   return (
     <div className="update-member-container">
-      <UpdateMemberStyled $newtheme={theme} className="update-member">
+      <UpdateMemberStyled
+        $themeList={themeList}
+        $newtheme={theme}
+        className="update-member"
+      >
         <div
           className="close-modal"
           onClick={() => handleUpdateMemberModlaVisibility(false)}

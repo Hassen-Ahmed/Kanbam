@@ -7,7 +7,6 @@ import { handleAppOnDrop } from "../../utils/handleAppOnDrop";
 import styled from "styled-components";
 import { INewTheme } from "../../types/styledComp";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
-import { themes } from "../../utils/constantDatas/themes";
 import { IListsContext } from "../../types/kanbam";
 import "./Kanbam.scss";
 import useUpdates from "../../utils/api/useUpdates";
@@ -15,13 +14,14 @@ import useUpdates from "../../utils/api/useUpdates";
 export const GlobalStyle = styled.div<INewTheme>`
   ::-webkit-scrollbar-thumb {
     border-radius: 1rem;
-    background-color: ${({ $newtheme }) => themes[$newtheme].bg["scroll_01"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["scrollTrack"]};
   }
 
   background-image: linear-gradient(
       180deg,
-      ${({ $newtheme }) => themes[$newtheme].bg["scroll_01"]},
-      ${({ $newtheme }) => themes[$newtheme].bg["scroll_01"]}
+      ${({ $themeList, $newtheme }) => $themeList[$newtheme].bg["scrollTrack"]},
+      ${({ $themeList, $newtheme }) => $themeList[$newtheme].bg["scrollTrack"]}
     ),
     url("/images/trello-bg-03.jpg");
   background-position: center;
@@ -33,13 +33,18 @@ export const GlobalStyle = styled.div<INewTheme>`
 export default function Kanbam() {
   const { updateList, updateCard } = useUpdates();
   const { lists } = useContext(ListsContext) as IListsContext;
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
   const location = useLocation();
 
   const onDropHandler = () => handleAppOnDrop(lists, updateList, updateCard);
 
   return (
-    <GlobalStyle $newtheme={theme} className="kanbam" onDrop={onDropHandler}>
+    <GlobalStyle
+      $themeList={themeList}
+      $newtheme={theme}
+      className="kanbam"
+      onDrop={onDropHandler}
+    >
       <NavBar />
       <div className="kanbam__sub">
         {!location.pathname.includes("kanbam/w") && <SideBarLeft />}

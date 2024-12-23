@@ -11,7 +11,6 @@ import {
   IkanbamContext,
   KanbamContext,
 } from "../../../../../context/kanbamContext";
-import { themes } from "../../../../../utils/constantDatas/themes";
 import { MdEditNote } from "react-icons/md";
 import { ICard } from "../../../../../types/kanbam";
 import useUpdates from "../../../../../utils/api/useUpdates";
@@ -23,17 +22,21 @@ const TextEditorStyled = styled.div<INewTheme>`
     &__save-btn {
       button:not(:first-child) {
         &:hover {
-          background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover"]};
+          background-color: ${({ $themeList, $newtheme }) =>
+            $themeList[$newtheme].bg["hover"]};
         }
-        background-color: ${({ $newtheme }) =>
-          themes[$newtheme].bg["transparent"]};
-        color: ${({ $newtheme }) => themes[$newtheme].font["quaternary"]};
+        background-color: ${({ $themeList, $newtheme }) =>
+          $themeList[$newtheme].bg["transparent"]};
+        color: ${({ $themeList, $newtheme }) =>
+          $themeList[$newtheme].font["quaternary"]};
       }
     }
     &__editorial-area,
     &__btns button {
-      background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
-      color: ${({ $newtheme }) => themes[$newtheme].font["quaternary"]};
+      background-color: ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].bg["card"]};
+      color: ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].font["quaternary"]};
     }
 
     &__btns button {
@@ -46,11 +49,14 @@ const TextEditorStyled = styled.div<INewTheme>`
 
 const EditedStyled = styled.div<INewTheme>`
   button {
-    background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover"]};
-    color: ${({ $newtheme }) => themes[$newtheme].font["quaternary"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["hover"]};
+    color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].font["quaternary"]};
 
     &:hover {
-      background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover_03"]};
+      background-color: ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].bg["hoverTertiary"]};
     }
   }
 `;
@@ -62,7 +68,7 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
   const [localDescription, setLocalDescription] = useState(
     cardDetail.description
   );
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
 
   const paraRef = useRef(null);
 
@@ -117,7 +123,11 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
   };
 
   const editedContent = (
-    <EditedStyled $newtheme={theme} className="text-editor__edited">
+    <EditedStyled
+      $themeList={themeList}
+      $newtheme={theme}
+      className="text-editor__edited"
+    >
       <div
         className="text-editor__edited-content"
         dangerouslySetInnerHTML={{ __html: `${localDescription}` }}
@@ -146,7 +156,11 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
 
   // JSX
   return (
-    <TextEditorStyled $newtheme={theme} className="text-editor">
+    <TextEditorStyled
+      $themeList={themeList}
+      $newtheme={theme}
+      className="text-editor"
+    >
       {!localDescription && !isEditorialOpen ? (
         <div
           className="text-editor__starter"

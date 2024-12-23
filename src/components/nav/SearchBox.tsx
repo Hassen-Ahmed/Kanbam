@@ -6,22 +6,25 @@ import { ListsContext } from "../../context/ListsContext";
 import "./SearchBox.scss";
 import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
-import { themes } from "../../utils/constantDatas/themes";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { IListsContext } from "../../types/kanbam";
 
 const SearchBoxStyled = styled.div<INewTheme>`
   .search__box {
     input {
-      background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover_03"]};
-      color: ${({ $newtheme }) => themes[$newtheme].font["tertiary"]};
+      background-color: ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].bg["hoverTertiary"]};
+      color: ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].font["tertiary"]};
       border: 0.1rem solid
-        ${({ $newtheme }) => themes[$newtheme].border["secondary"]};
+        ${({ $themeList, $newtheme }) =>
+          $themeList[$newtheme].border["secondary"]};
 
       &::placeholder {
-        background-color: ${({ $newtheme }) =>
-          themes[$newtheme].bg["transparent"]};
-        color: ${({ $newtheme }) => themes[$newtheme].font["tertiary"]};
+        background-color: ${({ $themeList, $newtheme }) =>
+          $themeList[$newtheme].bg["transparent"]};
+        color: ${({ $themeList, $newtheme }) =>
+          $themeList[$newtheme].font["tertiary"]};
       }
     }
   }
@@ -30,7 +33,7 @@ const SearchBoxStyled = styled.div<INewTheme>`
 const SearchBox = () => {
   const [value, setValue] = useState("");
   const { handleSearchTextUpdate } = useContext(ListsContext) as IListsContext;
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
 
   useEffect(() => handleSearchTextUpdate(value), [value]);
 
@@ -47,7 +50,11 @@ const SearchBox = () => {
   );
 
   return (
-    <SearchBoxStyled $newtheme={theme} className="search-container">
+    <SearchBoxStyled
+      $themeList={themeList}
+      $newtheme={theme}
+      className="search-container"
+    >
       <div className="search__box">
         <label htmlFor="search">
           <IoSearchSharp size={22} />

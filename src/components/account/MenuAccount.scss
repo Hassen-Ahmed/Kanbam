@@ -98,87 +98,36 @@
     }
   }
 
-  &__theme {
+  #menu-theme {
+    display: none;
+  }
+  #themes {
+    display: none;
+  }
+
+  #menu-theme:checked ~ #themes {
+    display: block;
+  }
+
+  .theme-btn-container {
     width: 100%;
-    padding: 1rem 2rem;
     transition: all 0.2s ease;
-    position: relative;
-    cursor: pointer;
+
+    .theme-btn-main {
+      @include mixn.flexy(row, flex-start);
+      padding: 1rem;
+      padding-left: 2rem;
+      width: 100%;
+      cursor: pointer;
+
+      .heading {
+        font-size: var.$fsi-14;
+        font-weight: var.$fwt-500;
+      }
+    }
 
     &:hover {
       border-right: 0.2rem solid var.$border-color-card;
-    }
-
-    &--btn {
-      @include mixn.flexy(row, flex-start, center, 1rem);
-      width: 70px;
-      height: 50px;
-      border-radius: var.$bor-1;
-      box-shadow: 0rem 0.2rem 0.1rem rgba(0, 0, 0, 0.15);
-
-      & img {
-        object-fit: cover;
-        width: 100%;
-      }
-    }
-
-    &--heading {
-      font-size: var.$fsi-14;
-      font-weight: var.$fwt-500;
-    }
-
-    &--list {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 20rem;
-      transform: translate(-100%, -6.5%);
-      padding-top: 1rem;
-      padding-bottom: 1rem;
-
-      list-style: none;
-      border-top-left-radius: 1rem;
-      border-bottom-left-radius: 1rem;
-      box-shadow: -0.5rem 0rem 0.5rem rgba(0, 0, 0, 0.05) inset;
-      display: none;
-
-      @media screen and (max-width: 450px) {
-        top: 50%;
-        left: 40%;
-        box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.15);
-      }
-
-      & li {
-        width: 100%;
-        padding: 1rem 3rem;
-        font-size: var.$fsi-14;
-        font-weight: var.$fwt-500;
-        @include mixn.flexy(row, flex-start, center, 1.5rem);
-        position: relative;
-
-        &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 0.2rem;
-          height: 100%;
-          background-color: var.$border-color-card;
-          display: none;
-        }
-
-        &:hover::before {
-          display: block;
-        }
-      }
-
-      & li:first-child {
-        border-bottom: 0.1rem solid var.$border-color-02;
-      }
-    }
-
-    &:hover &--list {
-      display: block;
     }
   }
   &__logout,

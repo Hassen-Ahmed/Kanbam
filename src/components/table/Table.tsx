@@ -1,6 +1,5 @@
 import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
-import { themes } from "../../utils/constantDatas/themes";
 import { useContext, useEffect, useState } from "react";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
@@ -30,17 +29,21 @@ export interface IGroupedContents {
 }
 
 const TableStyled = styled.div<INewTheme>`
-  color: ${({ $newtheme }) => themes[$newtheme].font["primary"]};
-  background-color: ${({ $newtheme }) => themes[$newtheme].bg["lists"]};
+  color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].font["primary"]};
+  background-color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].bg["lists"]};
 
   select {
-    background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
-    color: ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["card"]};
+    color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].font["primary"]};
   }
 `;
 
 export default function Table() {
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
 
   const [isAsceSort, setIsAsceSort] = useState({ title: true, priority: true });
@@ -108,7 +111,7 @@ export default function Table() {
     );
 
   return (
-    <TableStyled $newtheme={theme} className="table">
+    <TableStyled $themeList={themeList} $newtheme={theme} className="table">
       {showModalNewTask && (
         <AddNewTask
           handleAddNewTaskShow={handleAddNewTaskShow}
