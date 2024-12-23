@@ -1,29 +1,30 @@
 import styled from "styled-components";
-import { themes } from "./themes";
 import { IBg, IBgAndFont, IBorder, IFont } from "../../types/styledComp";
 
 export const Bg = styled.div<IBg>`
-  background-color: ${({ $themename, $group }) =>
-    themes[$themename].bg[$group]};
+  background-color: ${({ $themeList, $themename, $group }) =>
+    $themeList[$themename].bg[$group]};
 `;
 
 export const Font = styled.div<IFont>`
-  color: ${({ $themename, $group }) => themes[$themename].font[$group]};
+  color: ${({ $themeList, $themename, $group }) =>
+    $themeList[$themename].font[$group]};
 `;
 
 export const BgAndFont = styled.div<IBgAndFont>`
-  background-color: ${({ $themename, $groupbg }) =>
-    themes[$themename].bg[$groupbg]};
+  background-color: ${({ $themeList, $themename, $groupbg }) =>
+    $themeList[$themename].bg[$groupbg]};
 
-  color: ${({ $themename, $groupfont }) => themes[$themename].font[$groupfont]};
+  color: ${({ $themeList, $themename, $groupfont }) =>
+    $themeList[$themename].font[$groupfont]};
 `;
 
 export const Border = styled.div<IBorder>`
-  border-color: ${({ $themename, $group }) =>
-    themes[$themename].border[$group]};
+  border-color: ${({ $themeList, $themename, $group }) =>
+    $themeList[$themename].border[$group]};
 `;
 
-export const Hr = styled.hr<IBg>`
-  background-color: ${({ $themename, $group }) =>
-    themes[$themename].bg[$group]};
+export const Hr = styled.hr<IBorder>`
+  background-color: ${({ $themeList, $themename, $group }) =>
+    $themeList[$themename].border[$group]};
 `;

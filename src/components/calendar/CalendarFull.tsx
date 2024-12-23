@@ -16,7 +16,6 @@ import EventTaskContainer from "./EventTaskContainer";
 import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
-import { themes } from "../../utils/constantDatas/themes";
 import { ICard, IListsContext, IListsWithCards } from "../../types/kanbam";
 import { useParams } from "react-router-dom";
 import useFetchAllListByBoardId from "../../hooks/useFetchAllListByBoardId";
@@ -31,7 +30,8 @@ export interface IListFewDetail {
 
 const CalendarFullStyled = styled.div<INewTheme>`
   .fc {
-    color: ${({ $newtheme }) => themes[$newtheme].font["primary"]};
+    color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].font["primary"]};
   }
 `;
 
@@ -41,7 +41,7 @@ const CalendarFull = () => {
   const { lists, dispatch, searchText } = useContext(
     ListsContext
   ) as IListsContext;
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
   const [cardDetails, setCardDetails] = useState<ICard[] | null>(null);
   const [cardDetail, setCardDetail] = useState<ICard | null>(null);
 
@@ -176,6 +176,7 @@ const CalendarFull = () => {
 
   return (
     <CalendarFullStyled
+      $themeList={themeList}
       $newtheme={theme}
       className="calendar-full"
       style={{

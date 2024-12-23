@@ -3,7 +3,6 @@ import { VscClose } from "react-icons/vsc";
 import { IListFewDetail } from "./CalendarFull";
 import styled from "styled-components";
 import { INewTheme } from "../../types/styledComp";
-import { themes } from "../../utils/constantDatas/themes";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { ICard } from "../../types/kanbam";
 
@@ -18,14 +17,18 @@ interface IEventTaskContainer {
 
 const EventTaskStyled = styled.div<INewTheme>`
   .task {
-    background-color: ${({ $newtheme }) => themes[$newtheme].bg["card_modal"]};
-    color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["cardModal"]};
+    color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].font["secondary"]};
   }
 
   select,
   input {
-    background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
-    color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["card"]};
+    color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].font["secondary"]};
   }
 `;
 
@@ -37,10 +40,11 @@ export default function EventTaskContainer({
   handleAddNewTask,
   setShowAddTask,
 }: IEventTaskContainer) {
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
 
   return (
     <EventTaskStyled
+      $themeList={themeList}
       $newtheme={theme}
       className="calendar-full_add-task-container"
       style={{ display: showAddTask ? "block" : "none" }}

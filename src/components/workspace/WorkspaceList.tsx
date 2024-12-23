@@ -4,7 +4,6 @@ import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
 import { useContext, useState } from "react";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
-import { themes } from "../../utils/constantDatas/themes";
 import { IoMdAdd } from "react-icons/io";
 import NewItem, { IItemDetail } from "./components/NewItem";
 import Loading from "../notifications/Loading";
@@ -18,15 +17,19 @@ import useDeletes from "../../utils/api/useDeletes";
 import ErrorMessage from "../notifications/ErrorMessage";
 
 const WorkspacesStyled = styled.div<INewTheme>`
-  background-color: ${({ $newtheme }) => themes[$newtheme].bg["lists"]};
-  color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
+  background-color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].bg["lists"]};
+  color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].font["secondary"]};
 
   .workspaces__top {
-    background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["card"]};
   }
   .item {
     border: 0.2rem solid
-      ${({ $newtheme }) => themes[$newtheme].border["secondary"]};
+      ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].border["secondary"]};
   }
 `;
 
@@ -34,7 +37,7 @@ export default function WorkspaceList() {
   const { postWorkspace } = usePosts();
   const { updateWorkspace } = useUpdates();
   const { deleteWorkspaceById } = useDeletes();
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
   const { data, loading, error, refetch } = useFetchAllWorkspace();
 
   const [showNewItemModal, setShowNewItemModal] = useState(false);
@@ -113,7 +116,11 @@ export default function WorkspaceList() {
 
   return (
     <div className="workspaces-contianer">
-      <WorkspacesStyled $newtheme={theme} className="workspaces">
+      <WorkspacesStyled
+        $themeList={themeList}
+        $newtheme={theme}
+        className="workspaces"
+      >
         <div className="workspaces__top">
           <div className="user-detail">
             <h3>{data?.userDetail.userName}</h3>

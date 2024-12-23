@@ -9,7 +9,6 @@ import { ListsContext } from "../../context/ListsContext";
 import BoardNewListCreator from "./BoardNewListCreator";
 import Loading from "../notifications/Loading";
 import Lists from "../lists/Lists";
-import { themes } from "../../utils/constantDatas/themes";
 import styled from "styled-components";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { INewTheme } from "../../types/styledComp";
@@ -32,19 +31,23 @@ const BoardStyled = styled.div<INewTheme>`
   .board {
     &__btn--add {
       &:hover {
-        background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover"]};
+        background-color: ${({ $themeList, $newtheme }) =>
+          $themeList[$newtheme].bg["hover"]};
       }
 
       background-color: ${({ $newtheme }) =>
         $newtheme == "dark" ? "#00000033" : "#ffffff33"};
-      color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
+      color: ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].font["secondary"]};
     }
 
     &__new-list {
       &,
       &--input input {
-        background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
-        color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
+        background-color: ${({ $themeList, $newtheme }) =>
+          $themeList[$newtheme].bg["card"]};
+        color: ${({ $themeList, $newtheme }) =>
+          $themeList[$newtheme].font["secondary"]};
       }
     }
   }
@@ -56,7 +59,7 @@ const Board = () => {
   const { lists, dispatch, searchText } = useContext(
     ListsContext
   ) as IListsContext;
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
 
   const { b_id } = useParams();
 
@@ -159,8 +162,6 @@ const Board = () => {
     );
   };
 
-  // JSX
-
   if (loading) return <Loading />;
 
   if (error)
@@ -170,7 +171,7 @@ const Board = () => {
 
   return (
     <div className="board-container">
-      <BoardStyled $newtheme={theme} className="board">
+      <BoardStyled $themeList={themeList} $newtheme={theme} className="board">
         {renderLists()}
         {renderNewListCreator()}
       </BoardStyled>

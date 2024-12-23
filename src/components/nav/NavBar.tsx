@@ -6,7 +6,6 @@ import SearchBox from "./SearchBox";
 import { INewTheme } from "../../types/styledComp";
 import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import styled from "styled-components";
-import { themes } from "../../utils/constantDatas/themes";
 import { useLocation } from "react-router-dom";
 import "./NavBar.scss";
 
@@ -18,20 +17,22 @@ const NavBarStyled = styled.div<INewTheme>`
   }
 
   border: 0.1rem solid
-    ${({ $newtheme }) => themes[$newtheme].border["secondary"]};
+    ${({ $themeList, $newtheme }) => $themeList[$newtheme].border["secondary"]};
 
-  background-color: ${({ $newtheme }) => themes[$newtheme].bg["side_bar_01"]};
-  color: ${({ $newtheme }) => themes[$newtheme].font["tertiary"]};
+  background-color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].bg["sideBar"]};
+  color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].font["tertiary"]};
 `;
 
 const NavBar = () => {
   const [isAccountMenuVisible, setIsAccountMenuVisible] =
     useState<boolean>(false);
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
   const location = useLocation();
 
   return (
-    <NavBarStyled $newtheme={theme} className="nav-bar">
+    <NavBarStyled $themeList={themeList} $newtheme={theme} className="nav-bar">
       <div className="nav-bar__left">
         {!location.pathname.includes("kanbam/ds") && <SearchBox />}
         <ButtonAccount setIsAccountMenuVisible={setIsAccountMenuVisible} />

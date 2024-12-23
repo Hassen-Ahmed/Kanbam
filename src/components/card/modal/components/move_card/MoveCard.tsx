@@ -7,7 +7,6 @@ import { ListsContext } from "../../../../../context/ListsContext";
 import { VscClose } from "react-icons/vsc";
 import { INewTheme } from "../../../../../types/styledComp";
 import styled from "styled-components";
-import { themes } from "../../../../../utils/constantDatas/themes";
 import {
   IkanbamContext,
   KanbamContext,
@@ -20,24 +19,29 @@ import {
 import useUpdates from "../../../../../utils/api/useUpdates";
 
 const MoveCardStyled = styled.div<INewTheme>`
-  background-color: ${({ $newtheme }) => themes[$newtheme].bg["card_modal"]};
+  background-color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].bg["cardModal"]};
   border: 0.05rem solid
-    ${({ $newtheme }) => themes[$newtheme].border["secondary"]};
+    ${({ $themeList, $newtheme }) => $themeList[$newtheme].border["secondary"]};
 
   .card-move__btn--close {
-    color: ${({ $newtheme }) => themes[$newtheme].font["quaternary"]};
+    color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].font["quaternary"]};
   }
 
   select {
-    background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
-    color: ${({ $newtheme }) => themes[$newtheme].font["quaternary"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["card"]};
+    color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].font["quaternary"]};
   }
 
   .card-move__btn {
     button {
-      background-color: ${({ $newtheme }) =>
-        themes[$newtheme].bg["btn_account"]};
-      color: ${({ $newtheme }) => themes[$newtheme].font["tertiary"]};
+      background-color: ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].bg["buttonAccount"]};
+      color: ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].font["tertiary"]};
     }
   }
 `;
@@ -62,7 +66,7 @@ export default function MoveCard({
   const [cardPositions, setCardPositions] = useState<number[]>([]);
 
   const listArray = lists?.map((list) => list.title);
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
 
   useEffect(() => {
     const positions = lists
@@ -125,6 +129,7 @@ export default function MoveCard({
 
   return (
     <MoveCardStyled
+      $themeList={themeList}
       $newtheme={theme}
       className="card-move"
       style={{ display: isVisible ? "block" : "none" }}

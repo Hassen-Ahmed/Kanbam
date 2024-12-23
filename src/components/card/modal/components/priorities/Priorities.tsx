@@ -14,7 +14,6 @@ import {
 import { VscClose } from "react-icons/vsc";
 import { INewTheme } from "../../../../../types/styledComp";
 import styled from "styled-components";
-import { themes } from "../../../../../utils/constantDatas/themes";
 import { ICard } from "../../../../../types/kanbam";
 import useUpdates from "../../../../../utils/api/useUpdates";
 
@@ -25,12 +24,14 @@ interface IPriorityCollection {
 }
 
 const PriorityStyled = styled.div<INewTheme>`
-  background-color: ${({ $newtheme }) => themes[$newtheme].bg["card_modal"]};
+  background-color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].bg["cardModal"]};
   border: 0.05rem solid
-    ${({ $newtheme }) => themes[$newtheme].border["secondary"]};
+    ${({ $themeList, $newtheme }) => $themeList[$newtheme].border["secondary"]};
 
   .card-move__btn--close {
-    color: ${({ $newtheme }) => themes[$newtheme].font["quaternary"]};
+    color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].font["quaternary"]};
   }
 `;
 
@@ -58,7 +59,7 @@ export default function Priorities({
   handleIsPriorityPressed,
 }: IPriorityCollection) {
   const { updateCard } = useUpdates();
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
 
   const handlePriorityName = async (name: string) => {
     cardDetail.priority = name;
@@ -78,6 +79,7 @@ export default function Priorities({
 
   return (
     <PriorityStyled
+      $themeList={themeList}
       $newtheme={theme}
       className="pritority__lists"
       style={{ display: isVisible ? "block" : "none" }}

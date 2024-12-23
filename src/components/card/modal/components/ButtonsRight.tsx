@@ -15,7 +15,6 @@ import {
   KanbamContext,
 } from "../../../../context/kanbamContext";
 import { useContext, useState } from "react";
-import { themes } from "../../../../utils/constantDatas/themes";
 import MoveCard from "./move_card/MoveCard";
 import CalendarPicker from "./calendar/CalendarPicker";
 import useClickOutside from "../../../../hooks/useClickOutside";
@@ -23,11 +22,14 @@ import { ICard } from "../../../../types/kanbam";
 
 const ButtonRightStyled = styled.div<INewTheme>`
   .right-bar__btn {
-    background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover"]};
-    color: ${({ $newtheme }) => themes[$newtheme].font["quaternary"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["hover"]};
+    color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].font["quaternary"]};
 
     &:hover {
-      background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover_03"]};
+      background-color: ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].bg["hoverTertiary"]};
     }
   }
 `;
@@ -47,7 +49,7 @@ export default function ButtonsRight({
   const [isDatePressed, setIsDatePressed] = useState(false);
   const [isPriorityPressed, setIsPriorityPressed] = useState(false);
 
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
 
   const refDate = useClickOutside(() => handleIsPressed(false, "date"));
   const refMove = useClickOutside(() => handleIsPressed(false, "move"));
@@ -73,7 +75,7 @@ export default function ButtonsRight({
   }
 
   return (
-    <ButtonRightStyled $newtheme={theme}>
+    <ButtonRightStyled $themeList={themeList} $newtheme={theme}>
       <div
         className="priority-container right-bar__btn"
         ref={refPriority}

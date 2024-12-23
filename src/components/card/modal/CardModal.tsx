@@ -18,7 +18,6 @@ import { BgAndFont } from "../../../utils/constantDatas/styledUtils";
 import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
 import { INewTheme } from "../../../types/styledComp";
 import styled from "styled-components";
-import { themes } from "../../../utils/constantDatas/themes";
 import { icons } from "./components/priorities/Priorities";
 import {
   ICard,
@@ -40,18 +39,23 @@ const ActivityStyled = styled.div<INewTheme>`
   &,
   &__comment {
     textArea {
-      background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
-      color: ${({ $newtheme }) => themes[$newtheme].font["quaternary"]};
+      background-color: ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].bg["card"]};
+      color: ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].font["quaternary"]};
     }
   }
 
   button:not(:first-child) {
     &:hover {
-      background-color: ${({ $newtheme }) => themes[$newtheme].bg["hover_03"]};
+      background-color: ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].bg["hoverTertiary"]};
     }
 
-    background-color: ${({ $newtheme }) => themes[$newtheme].bg["transparent"]};
-    color: ${({ $newtheme }) => themes[$newtheme].font["quaternary"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["transparent"]};
+    color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].font["quaternary"]};
   }
 `;
 
@@ -67,7 +71,7 @@ export default function CardModal({
 }) {
   const { tokenInCtx } = useContext(TokenContext) as ITokenContext;
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
   const { updateCard } = useUpdates();
   const { postCardComment } = usePosts();
   const { deleteCardById, deleteCardCommentByCommentId } = useDeletes();
@@ -307,8 +311,9 @@ export default function CardModal({
       onDragStart={(ev) => handleDragStart(ev)}
     >
       <BgAndFont
+        $themeList={themeList}
         $themename={theme}
-        $groupbg="card_modal"
+        $groupbg="cardModal"
         $groupfont="quaternary"
         className="card-modal"
       >
@@ -354,7 +359,11 @@ export default function CardModal({
                 </div>
               </div>
 
-              <ActivityStyled $newtheme={theme} className="activity">
+              <ActivityStyled
+                $themeList={themeList}
+                $newtheme={theme}
+                className="activity"
+              >
                 <div className="activity__heading">
                   <RxActivityLog size={iconSizeOne} />
                   <h2>Activity</h2>

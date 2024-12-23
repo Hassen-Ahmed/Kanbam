@@ -5,7 +5,6 @@ import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import "./Workspace.scss";
 import styled from "styled-components";
 import { INewTheme } from "../../types/styledComp";
-import { themes } from "../../utils/constantDatas/themes";
 import { MdGroupAdd } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
@@ -27,25 +26,30 @@ import { IBoard } from "../../types/kanbam";
 import { logger } from "../../utils/logger";
 
 const WorkspaceStyled = styled.div<INewTheme>`
-  background-color: ${({ $newtheme }) => themes[$newtheme].bg["lists"]};
-  color: ${({ $newtheme }) => themes[$newtheme].font["secondary"]};
+  background-color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].bg["lists"]};
+  color: ${({ $themeList, $newtheme }) =>
+    $themeList[$newtheme].font["secondary"]};
 
   .boards__top {
-    background-color: ${({ $newtheme }) => themes[$newtheme].bg["card"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["card"]};
   }
 
   .members__list {
-    background-color: ${({ $newtheme }) => themes[$newtheme].bg["lists"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["lists"]};
   }
 
   .item {
     border: 0.2rem solid
-      ${({ $newtheme }) => themes[$newtheme].border["secondary"]};
+      ${({ $themeList, $newtheme }) =>
+        $themeList[$newtheme].border["secondary"]};
   }
 `;
 
 export default function Workspace() {
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
   const { updateBoard } = useUpdates();
   const { deleteBoardById } = useDeletes();
   const { w_id, w_name } = useParams();
@@ -200,7 +204,11 @@ export default function Workspace() {
 
   return (
     <div className="boards-container">
-      <WorkspaceStyled $newtheme={theme} className="boards">
+      <WorkspaceStyled
+        $themeList={themeList}
+        $newtheme={theme}
+        className="boards"
+      >
         <div className="boards__top">
           <div className="top-left">
             <div className="boards-name">
