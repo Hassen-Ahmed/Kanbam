@@ -20,14 +20,23 @@
 }
 @mixin item {
   .item {
-    @include mixn.flexy(row, flex-end, center);
-    padding: 1rem 2rem;
-    width: 30rem;
+    background-repeat: repeat;
+    background-color: #dfdbe5;
+    border-radius: var.$bor-05 var.$bor-05 0 0;
+    overflow: hidden;
+    padding-top: 10rem;
 
-    @media screen and (max-width: 500px) {
-      padding: 1rem;
-      @include mixn.flexy(row, space-between, center);
-      width: 100%;
+    &-sub {
+      @include mixn.flexy(row, flex-end, center);
+      padding: 1rem 2rem;
+      width: 30rem;
+      box-shadow: 0rem -1rem 1rem rgba(255, 255, 255, 0.25);
+
+      @media screen and (max-width: 500px) {
+        padding: 1rem;
+        @include mixn.flexy(row, space-between, center);
+        width: 100%;
+      }
     }
 
     &-name {

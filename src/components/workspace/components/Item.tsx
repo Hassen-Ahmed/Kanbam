@@ -4,6 +4,7 @@ import { joinString } from "../../../utils/manipulators";
 import { useContext } from "react";
 import { ListsContext } from "../../../context/ListsContext";
 import { IListsContext } from "../../../types/kanbam";
+import { svgList } from "../../../utils/constantDatas/svg-list";
 
 interface IItem {
   type: string;
@@ -31,40 +32,49 @@ export default function Item({
   const { dispatch } = useContext(ListsContext) as IListsContext;
   const searchQuery = type == "b" ? "" : `?al=${boardAccessLevel}`;
 
-  return (
-    <div className="item">
-      <div className="item-name">
-        <Link
-          onClick={() => {
-            dispatch({ type: "ADD_ALL_LISTS", payload: null });
-          }}
-          to={{
-            pathname: `/kanbam/${type}/${id}/${joinString(name)}`,
-            search: searchQuery,
-          }}
-        >
-          <h4>{name}</h4>
-          <p className="desc">{description}</p>
-        </Link>
-      </div>
+  const randomSvgIcon = svgList[Math.floor(Math.random() * svgList.length)];
 
-      <div className="item__btns">
-        <div className="btn__edit btn">
-          <MdEditNote
-            size={20}
+  return (
+    <div
+      className="item"
+      style={{
+        backgroundImage: `url("${randomSvgIcon}")`,
+      }}
+    >
+      <div className="item-sub">
+        <div className="item-name">
+          <Link
             onClick={() => {
-              handleUpdateItemModlaVisibility(true);
-              setRequestError(false);
-              setIdToModify(id);
+              dispatch({ type: "ADD_ALL_LISTS", payload: null });
             }}
-          />
+            to={{
+              pathname: `/kanbam/${type}/${id}/${joinString(name)}`,
+              search: searchQuery,
+            }}
+          >
+            <h4>{name}</h4>
+            <p className="desc">{description}</p>
+          </Link>
         </div>
 
-        <div
-          className="btn__delete btn"
-          onClick={() => clickToDelete(true, id)}
-        >
-          <MdDeleteForever size={20} />
+        <div className="item__btns">
+          <div className="btn__edit btn">
+            <MdEditNote
+              size={20}
+              onClick={() => {
+                handleUpdateItemModlaVisibility(true);
+                setRequestError(false);
+                setIdToModify(id);
+              }}
+            />
+          </div>
+
+          <div
+            className="btn__delete btn"
+            onClick={() => clickToDelete(true, id)}
+          >
+            <MdDeleteForever size={20} />
+          </div>
         </div>
       </div>
     </div>
