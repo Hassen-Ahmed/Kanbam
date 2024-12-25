@@ -41,10 +41,12 @@ const WorkspaceStyled = styled.div<INewTheme>`
       $themeList[$newtheme].bg["lists"]};
   }
 
-  .item {
-    border: 0.2rem solid
+  .item-sub {
+    border: 0.1rem solid
       ${({ $themeList, $newtheme }) =>
         $themeList[$newtheme].border["secondary"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["lists"]};
   }
 `;
 
