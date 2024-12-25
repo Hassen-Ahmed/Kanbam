@@ -23,7 +23,7 @@ export const GlobalStyle = styled.div<INewTheme>`
       ${({ $themeList, $newtheme }) => $themeList[$newtheme].bg["scrollTrack"]},
       ${({ $themeList, $newtheme }) => $themeList[$newtheme].bg["scrollTrack"]}
     ),
-    url("/images/trello-bg-03.jpg");
+    url("/images/home-bg-01.jpg");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;

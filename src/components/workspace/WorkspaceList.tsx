@@ -26,10 +26,13 @@ const WorkspacesStyled = styled.div<INewTheme>`
     background-color: ${({ $themeList, $newtheme }) =>
       $themeList[$newtheme].bg["card"]};
   }
-  .item {
-    border: 0.2rem solid
+
+  .item-sub {
+    border: 0.1rem solid
       ${({ $themeList, $newtheme }) =>
         $themeList[$newtheme].border["secondary"]};
+    background-color: ${({ $themeList, $newtheme }) =>
+      $themeList[$newtheme].bg["lists"]};
   }
 `;
 
