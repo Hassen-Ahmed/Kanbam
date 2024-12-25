@@ -25,11 +25,12 @@
     border-radius: var.$bor-05 var.$bor-05 0 0;
     overflow: hidden;
     padding-top: 10rem;
+    width: 30rem;
 
     &-sub {
       @include mixn.flexy(row, flex-end, center);
+      width: 100%;
       padding: 1rem 2rem;
-      width: 30rem;
       box-shadow: 0rem -1rem 1rem rgba(255, 255, 255, 0.25);
 
       @media screen and (max-width: 500px) {
