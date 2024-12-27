@@ -1,6 +1,12 @@
 @use "../../assets/style/abstracts/variable" as var;
+@use "../../assets/style/base/animation" as *;
+
 .card-container {
   width: 100%;
+  // For animation.
+  animation-name: fadeInUp;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-in-out;
 }
 .card {
   width: 100%;
