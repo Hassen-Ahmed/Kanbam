@@ -22,6 +22,7 @@ export default function TableContents({
               task={task}
               index={i}
               handleRefetch={handleRefetch}
+              animationDelay={i}
             />
           ))
         : groupedContents?.map((content, i) => {
@@ -36,6 +37,7 @@ export default function TableContents({
                     task={task}
                     index={i}
                     handleRefetch={handleRefetch}
+                    animationDelay={i}
                   />
                 ))}
               </div>
