@@ -3,7 +3,7 @@ import { MdDeleteForever, MdEditNote } from "react-icons/md";
 import "./TaskTable.scss";
 import styled from "styled-components";
 import { INewTheme } from "../../../types/styledComp";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
 import { ITaskContent } from "../Table";
 import { ListsContext } from "../../../context/ListsContext";
@@ -12,6 +12,7 @@ import AreYouSure from "../../../utils/areYouSure/AreYouSure";
 import { IError } from "../../../types/status.type";
 import { ICard, IListsContext } from "../../../types/kanbam";
 import useDeletes from "../../../utils/api/useDeletes";
+import useAnimatekComp from "../../../hooks/useAnimatekComp";
 
 const TaskTableStyled = styled.div<INewTheme>`
   background-color: ${({ $themeList, $newtheme }) =>
@@ -38,26 +39,7 @@ export default function TaskTable({
   const [showModalCard, setShowModalCard] = useState(false);
   const [showAreYouSure, setShowAreYouSure] = useState(false);
   const [cardDetail, setCardDetail] = useState<ICard | null>(null);
-
-  const [animObj, setAnimObj] = useState({
-    animationDelay: `${animationDelay / 10}s`,
-    animationFillMode: "forwards",
-    opacity: "0",
-    transform: "2rem",
-  });
-
-  useEffect(() => {
-    setTimeout(() => {
-      setAnimObj((preValue) => {
-        return {
-          ...preValue,
-          animationFillMode: "none",
-          opacity: "1",
-          transform: "0rem",
-        };
-      });
-    }, 1500);
-  }, []);
+  const animObj = useAnimatekComp(animationDelay);
 
   const priorityColorBg = (priority: string) => {
     switch (priority) {
