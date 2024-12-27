@@ -39,6 +39,11 @@
         width: 100%;
       }
     }
+    &-member {
+      @include mixn.flexy(row, flex-end, center);
+      padding: 1rem 2rem;
+      width: 30rem;
+    }
 
     &-name {
       width: 100%;

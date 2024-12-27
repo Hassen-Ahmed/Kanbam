@@ -171,7 +171,7 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
 
           {dataBoardMembers?.map((member) => {
             return (
-              <div key={member.id} className="item member">
+              <div key={member.id} className="item-member member">
                 <div className="item-name">
                   <h4>{member.userName}</h4>
                   <p className="desc">{member.email}</p>
