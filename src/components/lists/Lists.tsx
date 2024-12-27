@@ -374,8 +374,8 @@ const Lists = ({
     />
   );
 
-  const cardList = cards.map((content) => (
-    <Card {...content} key={content.id} />
+  const cardList = cards.map((content, i) => (
+    <Card key={content.id} cardDetail={content} animationDelay={i} />
   ));
 
   // JSX
