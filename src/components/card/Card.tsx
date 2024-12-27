@@ -8,12 +8,19 @@ import { BgAndFont } from "../../utils/constantDatas/styledUtils";
 import { icons } from "./modal/components/priorities/Priorities";
 import { ICard } from "../../types/kanbam";
 import "./Card.scss";
+import useAnimatekComp from "../../hooks/useAnimatekComp";
 
-const Card = ({ ...cardDetail }: ICard) => {
+interface ICardComp {
+  cardDetail: ICard;
+  animationDelay: number;
+}
+
+const Card = ({ cardDetail, animationDelay }: ICardComp) => {
   const { theme, themeList, itemDragging } = useContext(
     KanbamContext
   ) as IkanbamContext;
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const animObj = useAnimatekComp(animationDelay);
 
   // end of hooks
 
@@ -76,6 +83,9 @@ const Card = ({ ...cardDetail }: ICard) => {
       data-id={cardDetail.id}
       data-identity="card"
       data-index={cardDetail.indexNumber}
+      style={{
+        ...animObj,
+      }}
     >
       {displayCardModal}
 
