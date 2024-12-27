@@ -1,5 +1,6 @@
 @use "../../../assets/style/abstracts/mixins" as mixn;
 @use "../../../assets/style/abstracts/variable" as var;
+@use "../../../assets/style/base/animation" as *;
 
 .table__loading {
   position: absolute;
@@ -19,6 +20,11 @@
   box-shadow: 0.1rem 0.1rem 1rem rgba(0, 0, 0, 0.08);
   font-size: var.$fsi-12;
   font-weight: var.$fwt-400;
+
+  // For animation.
+  animation-name: fadeInUp;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
 
   @media screen and (max-width: 900px) {
     font-size: 1rem;
