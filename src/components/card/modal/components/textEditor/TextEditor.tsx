@@ -1,12 +1,6 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import DOMPurify from "dompurify";
-
+import { useCallback, useContext, useState } from "react";
 import { IError } from "../../../../../types/status.type";
-
-import EditingButtons from "./EditingButtons";
-import "./TextEditor.scss";
 import { INewTheme } from "../../../../../types/styledComp";
-import styled from "styled-components";
 import {
   IkanbamContext,
   KanbamContext,
@@ -15,7 +9,11 @@ import { MdEditNote } from "react-icons/md";
 import { ICard } from "../../../../../types/kanbam";
 import useUpdates from "../../../../../utils/api/useUpdates";
 import useSignalRConnection from "../../../../../hooks/useSignalRConnection";
+import styled from "styled-components";
+import DOMPurify from "dompurify";
 import { logger } from "../../../../../utils/logger";
+import Tiptap from "./Tiptap";
+import "./TextEditor.scss";
 
 const TextEditorStyled = styled.div<INewTheme>`
   .text-editor {
@@ -37,6 +35,21 @@ const TextEditorStyled = styled.div<INewTheme>`
         $themeList[$newtheme].bg["card"]};
       color: ${({ $themeList, $newtheme }) =>
         $themeList[$newtheme].font["quaternary"]};
+
+      .dropdown-menu {
+        background-color: ${({ $themeList, $newtheme }) =>
+          $themeList[$newtheme].bg["lists"]};
+      }
+
+      button {
+        color: ${({ $themeList, $newtheme }) =>
+          $themeList[$newtheme].font["quaternary"]};
+
+        &:hover {
+          background-color: ${({ $themeList, $newtheme }) =>
+            $themeList[$newtheme].bg["lists"]};
+        }
+      }
     }
 
     &__btns button {
@@ -62,21 +75,20 @@ const EditedStyled = styled.div<INewTheme>`
 `;
 
 export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
-  const [html, setHtml] = useState(DOMPurify.sanitize(cardDetail.description!));
+  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
   const { updateCard } = useUpdates();
   const [isEditorialOpen, setIsEditorialOpen] = useState(false);
-  const [localDescription, setLocalDescription] = useState(
-    cardDetail.description
+  const [html, setHtml] = useState(DOMPurify.sanitize(cardDetail.description!));
+  const [description, setDescription] = useState<string | undefined>(
+    DOMPurify.sanitize(cardDetail.description!)
   );
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
 
-  const paraRef = useRef(null);
-
+  // Configuration for real-time update
   const configureOnConnections = useCallback(
     async (connection: signalR.HubConnection) => {
       // update
       connection.on("ReceiveCardUpdate", (updatedCardReceived: ICard) => {
-        setLocalDescription(() => updatedCardReceived.description);
+        setDescription(() => updatedCardReceived.description);
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -91,24 +103,15 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
     configureOnConnections,
   });
 
-  useEffect(() => {
-    if (paraRef.current) {
-      const elemRef = paraRef?.current as HTMLElement;
-      elemRef.focus();
-    }
-  }, [isEditorialOpen]);
-
   // end of hooks
-
   const handleSave = async () => {
-    if (!paraRef.current) return;
     try {
-      const currentValue = paraRef.current as HTMLElement;
-      cardDetail.description = currentValue.innerHTML;
+      const purifiedHtml = DOMPurify.sanitize(html);
+      cardDetail.description = DOMPurify.sanitize(purifiedHtml);
 
       await updateCard(cardDetail.id!, cardDetail);
 
-      setLocalDescription(currentValue.innerHTML);
+      setDescription(purifiedHtml);
       setIsEditorialOpen(false);
     } catch (err) {
       const error = err as IError;
@@ -118,11 +121,9 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
     }
   };
 
-  const handleCancel = () => {
-    setIsEditorialOpen(false);
-  };
+  const handleCancel = () => setIsEditorialOpen(false);
 
-  const editedContent = (
+  const editedContent = () => (
     <EditedStyled
       $themeList={themeList}
       $newtheme={theme}
@@ -130,28 +131,18 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
     >
       <div
         className="text-editor__edited-content"
-        dangerouslySetInnerHTML={{ __html: `${localDescription}` }}
+        dangerouslySetInnerHTML={{ __html: `${description}` }}
       />
+
       <button
         onClick={() => {
-          setHtml(localDescription!);
+          setHtml(description!);
           setIsEditorialOpen(true);
         }}
       >
         <MdEditNote size={20} />
       </button>
     </EditedStyled>
-  );
-
-  const editingCanvas = (
-    <p
-      className="text-editor__para-editing"
-      contentEditable
-      dangerouslySetInnerHTML={{
-        __html: html || "Write description here...",
-      }}
-      ref={paraRef}
-    ></p>
   );
 
   // JSX
@@ -161,7 +152,7 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
       $newtheme={theme}
       className="text-editor"
     >
-      {!localDescription && !isEditorialOpen ? (
+      {(!description || description === "<p></p>") && !isEditorialOpen ? (
         <div
           className="text-editor__starter"
           onClick={() => setIsEditorialOpen(true)}
@@ -171,11 +162,10 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
       ) : (
         <>
           {!isEditorialOpen ? (
-            editedContent
+            editedContent()
           ) : (
             <div className="text-editor__editorial-area">
-              <EditingButtons />
-              {editingCanvas}
+              <Tiptap content={html} setHtml={setHtml} />
               <div className="text-editor__save-btn">
                 <button onClick={handleSave}>Save</button>
                 <button onClick={handleCancel}>Cancel</button>
