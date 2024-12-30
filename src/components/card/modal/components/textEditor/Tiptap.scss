@@ -1,0 +1,88 @@
+@use "../../../../../assets/style/abstracts/mixins" as mixn;
+@use "../../../../../assets/style/abstracts/variable" as var;
+
+.tiptap-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  background-color: transparent;
+}
+
+.tiptap {
+  height: auto;
+  padding: 1.5rem 2.5rem;
+  padding-bottom: 3rem;
+  z-index: var.$z-ix-last;
+  font-size: var.$fsi-16;
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  &-btns {
+    @include mixn.flexy(row, flex-start, center, 0.2rem);
+    flex-wrap: wrap;
+    border-bottom: 0.05rem solid rgba(255, 255, 255, 0.05);
+
+    .custom-dropdown {
+      position: relative;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      z-index: var.$z-ix-last + 1;
+    }
+
+    .custom-dropdown:hover .dropdown-menu {
+      display: block;
+    }
+
+    .dropdown-menu button {
+      text-align: left;
+      width: 100%;
+    }
+
+    button {
+      background-color: transparent;
+      border: transparent;
+      font-size: var.$fsi-16;
+      cursor: pointer;
+
+      padding: 1rem;
+
+      &:not(:last-child) {
+        border-right: 0.05rem solid rgba(255, 255, 255, 0.05);
+      }
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 1.1;
+  }
+
+  ol,
+  ul {
+    padding-left: 1rem;
+  }
+
+  code {
+    background: rgba(#ffffff, 0.1);
+    color: rgba(#c6c132, 0.9);
+    border: 1px solid rgba(#ffffff, 0.1);
+    border-radius: 0.5rem;
+    padding: 0.2rem;
+  }
+
+  blockquote {
+    margin-left: 0;
+    padding-left: 1rem;
+    border-left: 2px solid rgba(#ffffff, 0.4);
+  }
+}
