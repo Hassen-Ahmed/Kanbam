@@ -222,11 +222,6 @@ export default function CardModal({
     handleModlaVisibility(false);
   };
 
-  const handleDragStart = (ev: React.DragEvent<HTMLDivElement>) => {
-    ev.stopPropagation();
-    ev.preventDefault();
-  };
-
   const computedTitle = () => (
     <h1 onClick={() => setIsTitleInputVisible(true)}>
       {titleValueOfThisCard?.length > 20
@@ -302,6 +297,32 @@ export default function CardModal({
     />
   );
 
+  const handleDragStart = (ev: React.DragEvent<HTMLDivElement>) => {
+    ev.stopPropagation();
+    ev.preventDefault();
+  };
+
+  const draggableChanger = (isDraggable: string) => {
+    const cardElem = document.getElementsByClassName("card-container");
+
+    const listsElem = document.getElementsByClassName("lists--container--main");
+    const cardModalElem = document.getElementsByClassName(
+      "card-modal--container"
+    );
+
+    [...cardElem].forEach((elm) => {
+      elm.setAttribute("draggable", isDraggable);
+    });
+
+    [...listsElem].forEach((elm) => {
+      elm.setAttribute("draggable", isDraggable);
+    });
+
+    [...cardModalElem].forEach((elm) => {
+      elm.setAttribute("draggable", isDraggable);
+    });
+  };
+
   //  JSX
 
   return (
@@ -309,6 +330,8 @@ export default function CardModal({
       className="card-modal--container"
       draggable="true"
       onDragStart={(ev) => handleDragStart(ev)}
+      onMouseDown={() => draggableChanger("false")}
+      onMouseUp={() => draggableChanger("true")}
     >
       <BgAndFont
         $themeList={themeList}
