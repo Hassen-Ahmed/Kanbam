@@ -2,14 +2,16 @@ import { Outlet, useLocation } from "react-router-dom";
 import NavBar from "../../components/nav/NavBar";
 import SideBarLeft from "../../components/sidebar/SideBarLeft";
 import { ListsContext } from "../../context/ListsContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { handleAppOnDrop } from "../../utils/handleAppOnDrop";
 import styled from "styled-components";
 import { INewTheme } from "../../types/styledComp";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { IListsContext } from "../../types/kanbam";
-import "./Kanbam.scss";
 import useUpdates from "../../utils/api/useUpdates";
+import { useAppDispath, useAppSelector } from "../../features/hooks";
+import { setTheme, setThemeList } from "../../features/slices/themeSlice";
+import { ThemeName } from "../../types/theme.type";
+import "./Kanbam.scss";
 
 export const GlobalStyle = styled.div<INewTheme>`
   ::-webkit-scrollbar-thumb {
@@ -31,17 +33,31 @@ export const GlobalStyle = styled.div<INewTheme>`
 `;
 
 export default function Kanbam() {
+  const dispatchRdx = useAppDispath();
   const { updateList, updateCard } = useUpdates();
   const { lists } = useContext(ListsContext) as IListsContext;
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
   const location = useLocation();
 
   const onDropHandler = () => handleAppOnDrop(lists, updateList, updateCard);
 
+  useEffect(() => {
+    dispatchRdx(setThemeList());
+
+    const responseTheme = localStorage.getItem("theme") as ThemeName;
+
+    if (!responseTheme) {
+      localStorage.setItem("theme", "light");
+    } else {
+      dispatchRdx(setTheme(responseTheme));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <GlobalStyle
       $themeList={themeList}
-      $newtheme={theme}
+      $newtheme={themeName}
       className="kanbam"
       onDrop={onDropHandler}
     >

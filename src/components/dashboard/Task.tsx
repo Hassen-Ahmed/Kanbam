@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { INewTheme } from "../../types/styledComp";
-import { useContext } from "react";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+import { useAppSelector } from "../../features/hooks";
 import "./Task.scss";
 
 interface ITask {
@@ -45,12 +44,12 @@ const TaskStyled = styled.div<newINewTheme>`
 `;
 
 export default function Task({ title, priority }: ITask) {
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
 
   return (
     <TaskStyled
       $themeList={themeList}
-      $newtheme={theme}
+      $newtheme={themeName}
       $priority={priority}
       className="task"
     >

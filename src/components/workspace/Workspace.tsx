@@ -1,7 +1,6 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import useFetchAllBoardsByWorkspaceId from "../../hooks/useFetchAllBoardsByWorkspaceId";
-import { useCallback, useContext, useState } from "react";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+import { useCallback, useState } from "react";
 import "./Workspace.scss";
 import styled from "styled-components";
 import { INewTheme } from "../../types/styledComp";
@@ -24,6 +23,7 @@ import useDeletes from "../../utils/api/useDeletes";
 import useSignalRConnection from "../../hooks/useSignalRConnection";
 import { IBoard } from "../../types/kanbam";
 import { logger } from "../../utils/logger";
+import { useAppSelector } from "../../features/hooks";
 
 const WorkspaceStyled = styled.div<INewTheme>`
   background-color: ${({ $themeList, $newtheme }) =>
@@ -51,7 +51,7 @@ const WorkspaceStyled = styled.div<INewTheme>`
 `;
 
 export default function Workspace() {
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
   const { updateBoard } = useUpdates();
   const { deleteBoardById } = useDeletes();
   const { w_id, w_name } = useParams();
@@ -208,7 +208,7 @@ export default function Workspace() {
     <div className="boards-container">
       <WorkspaceStyled
         $themeList={themeList}
-        $newtheme={theme}
+        $newtheme={themeName}
         className="boards"
       >
         <div className="boards__top">

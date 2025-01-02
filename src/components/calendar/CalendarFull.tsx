@@ -15,13 +15,13 @@ import Event from "./Event";
 import EventTaskContainer from "./EventTaskContainer";
 import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { ICard, IListsContext, IListsWithCards } from "../../types/kanbam";
 import { useParams } from "react-router-dom";
 import useFetchAllListByBoardId from "../../hooks/useFetchAllListByBoardId";
 import ErrorMessage from "../notifications/ErrorMessage";
 import useUpdates from "../../utils/api/useUpdates";
 import usePosts from "../../utils/api/usePosts";
+import { useAppSelector } from "../../features/hooks";
 
 export interface IListFewDetail {
   id: string;
@@ -41,7 +41,7 @@ const CalendarFull = () => {
   const { lists, dispatch, searchText } = useContext(
     ListsContext
   ) as IListsContext;
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
   const [cardDetails, setCardDetails] = useState<ICard[] | null>(null);
   const [cardDetail, setCardDetail] = useState<ICard | null>(null);
 
@@ -177,10 +177,10 @@ const CalendarFull = () => {
   return (
     <CalendarFullStyled
       $themeList={themeList}
-      $newtheme={theme}
+      $newtheme={themeName}
       className="calendar-full"
       style={{
-        backgroundColor: theme == "light" ? "#ffffff" : "#3d4349",
+        backgroundColor: themeName == "light" ? "#ffffff" : "#3d4349",
       }}
     >
       {!cardDetails && <Loading />}

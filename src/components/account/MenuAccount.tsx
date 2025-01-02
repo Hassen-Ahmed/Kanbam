@@ -1,15 +1,15 @@
 import { createPortal } from "react-dom";
 import MenuAccountLogo from "./MenuAccountLogo";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import ConfettiComp from "../Confetti";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { INewTheme } from "../../types/styledComp";
 import { Hr } from "../../utils/constantDatas/styledUtils";
 import usePosts from "../../utils/api/usePosts";
 import ThemeList from "./components/ThemeList";
 import "./MenuAccount.scss";
+import { useAppSelector } from "../../features/hooks";
 
 const MenuStyled = styled.div<INewTheme>`
   .menu {
@@ -57,7 +57,7 @@ const MenuAccount = ({
   const { postAuthRevoke } = usePosts();
   const [areWeCelebrating, setAreWeCelebrating] = useState(false);
   const navigate = useNavigate();
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
 
   const handleLogout = async () => {
     navigate("/auth/login");
@@ -70,7 +70,7 @@ const MenuAccount = ({
       {!isAccountMenuVisible ? null : (
         <MenuStyled
           $themeList={themeList}
-          $newtheme={theme}
+          $newtheme={themeName}
           className="menu-account"
           style={{
             zIndex: isAccountMenuVisible ? 2100 : 0,
@@ -79,7 +79,11 @@ const MenuAccount = ({
           <div className="menu">
             <h2 className="menu__heading">Account</h2>
             <MenuAccountLogo />
-            <Hr $themeList={themeList} $themename={theme} $group="secondary" />
+            <Hr
+              $themeList={themeList}
+              $themename={themeName}
+              $group="secondary"
+            />
 
             <div className="theme-btn-container">
               <label htmlFor="menu-theme">
@@ -93,8 +97,6 @@ const MenuAccount = ({
             <div id="themes">
               <ThemeList />
             </div>
-
-            {/* <Hr $themeList={themeList} $themename={theme} $group="secondary" /> */}
 
             <Link
               className="menu__workspaces"

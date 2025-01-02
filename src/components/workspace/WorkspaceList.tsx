@@ -2,8 +2,7 @@ import useFetchAllWorkspace from "../../hooks/useFetchAllWorkspace";
 import "./Workspaces.scss";
 import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
-import { useContext, useState } from "react";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+import { useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import NewItem, { IItemDetail } from "./components/NewItem";
 import Loading from "../notifications/Loading";
@@ -15,6 +14,7 @@ import useUpdates from "../../utils/api/useUpdates";
 import usePosts from "../../utils/api/usePosts";
 import useDeletes from "../../utils/api/useDeletes";
 import ErrorMessage from "../notifications/ErrorMessage";
+import { useAppSelector } from "../../features/hooks";
 
 const WorkspacesStyled = styled.div<INewTheme>`
   background-color: ${({ $themeList, $newtheme }) =>
@@ -40,7 +40,7 @@ export default function WorkspaceList() {
   const { postWorkspace } = usePosts();
   const { updateWorkspace } = useUpdates();
   const { deleteWorkspaceById } = useDeletes();
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
   const { data, loading, error, refetch } = useFetchAllWorkspace();
 
   const [showNewItemModal, setShowNewItemModal] = useState(false);
@@ -121,7 +121,7 @@ export default function WorkspaceList() {
     <div className="workspaces-contianer">
       <WorkspacesStyled
         $themeList={themeList}
-        $newtheme={theme}
+        $newtheme={themeName}
         className="workspaces"
       >
         <div className="workspaces__top">

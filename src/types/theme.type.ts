@@ -27,3 +27,5 @@ export interface Theme {
     tertiary: string;
   };
 }
+
+export type ThemeName = "light" | "dark" | "aiTheme";

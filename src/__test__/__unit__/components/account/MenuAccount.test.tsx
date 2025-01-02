@@ -2,34 +2,23 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import MenuAccount from "../../../../components/account/MenuAccount";
 import { MemoryRouter } from "react-router-dom";
 import { KanbamContext } from "../../../../context/kanbamContext";
-import { TokenContext } from "../../../../context/TokenContext";
-import { themes } from "../../../../utils/constantDatas/themes";
+import { Provider } from "react-redux";
+import { store } from "../../../../store/store";
 
 let mockIsAccountMenuVisible = false;
 const mockSetIsAccountMenuVisible = vi.fn();
-const mockTheme2 = "dark";
-
 const userDetail = {
   email: "string",
   userName: "string",
 };
 const setUserDetail = vi.fn();
-const mockTokenInCtx = "dark";
-const themeList = themes;
-const setRandomNum = vi.fn();
 
 const renderWithMemoryRouter = () => {
   render(
     <MemoryRouter>
-      <TokenContext.Provider
-        value={{ tokenInCtx: mockTokenInCtx, handleSetAccessToken: vi.fn() }}
-      >
+      <Provider store={store}>
         <KanbamContext.Provider
           value={{
-            theme: mockTheme2,
-            themeList: themeList,
-            themeSetter: vi.fn(),
-            setRandomNum: setRandomNum,
             itemDragging: { current: null },
             userDetail,
             setUserDetail,
@@ -40,7 +29,7 @@ const renderWithMemoryRouter = () => {
             setIsAccountMenuVisible={mockSetIsAccountMenuVisible}
           />
         </KanbamContext.Provider>
-      </TokenContext.Provider>
+      </Provider>
     </MemoryRouter>
   );
 };

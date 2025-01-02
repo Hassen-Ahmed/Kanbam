@@ -9,6 +9,7 @@ import { icons } from "./modal/components/priorities/Priorities";
 import { ICard } from "../../types/kanbam";
 import "./Card.scss";
 import useAnimatekComp from "../../hooks/useAnimatekComp";
+import { useAppSelector } from "../../features/hooks";
 
 interface ICardComp {
   cardDetail: ICard;
@@ -16,9 +17,8 @@ interface ICardComp {
 }
 
 const Card = ({ cardDetail, animationDelay }: ICardComp) => {
-  const { theme, themeList, itemDragging } = useContext(
-    KanbamContext
-  ) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
+  const { itemDragging } = useContext(KanbamContext) as IkanbamContext;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const animObj = useAnimatekComp(animationDelay);
 
@@ -91,7 +91,7 @@ const Card = ({ cardDetail, animationDelay }: ICardComp) => {
 
       <BgAndFont
         $themeList={themeList}
-        $themename={theme}
+        $themename={themeName}
         $groupbg="card"
         $groupfont="quaternary"
         className="card"

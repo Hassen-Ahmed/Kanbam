@@ -33,8 +33,8 @@ import useUpdates from "../../utils/api/useUpdates";
 import usePosts from "../../utils/api/usePosts";
 import { logger } from "../../utils/logger";
 import useSignalRConnection from "../../hooks/useSignalRConnection";
-import { ITokenContext, TokenContext } from "../../context/TokenContext";
 import { jwtDecode } from "jwt-decode";
+import { useAppSelector } from "../../features/hooks";
 
 const ListsStyled = styled.div<INewTheme>`
   .lists {
@@ -79,10 +79,9 @@ const Lists = ({
   isDragging,
   opacity,
 }: IListsWithCards) => {
-  const { tokenInCtx } = useContext(TokenContext) as ITokenContext;
-  const { theme, themeList, itemDragging } = useContext(
-    KanbamContext
-  ) as IkanbamContext;
+  const { accessToken } = useAppSelector((state) => state.auth);
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
+  const { itemDragging } = useContext(KanbamContext) as IkanbamContext;
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const { postCard } = usePosts();
   const { updateList } = useUpdates();
@@ -95,7 +94,7 @@ const Lists = ({
   const [isNewCardInputVisible, setIsNewCardInputVisible] =
     useState<boolean>(false);
 
-  const { userId } = jwtDecode(tokenInCtx!) as IUserDecodedResult;
+  const { userId } = jwtDecode(accessToken!) as IUserDecodedResult;
 
   const configureOnConnections = useCallback(
     async (connection: signalR.HubConnection) => {
@@ -128,7 +127,7 @@ const Lists = ({
       connection.on(
         "ReceiveCardUpdate",
         (updatedCardReceived: ICard, userIdOfSender: string) => {
-          if (!tokenInCtx) return;
+          if (!accessToken) return;
 
           if (userIdOfSender == userId) return;
 
@@ -383,7 +382,7 @@ const Lists = ({
   return (
     <ListsStyled
       $themeList={themeList}
-      $newtheme={theme}
+      $newtheme={themeName}
       className="lists--container--main"
       draggable="true"
       onDragStart={(ev) => handleDragStart(ev)}

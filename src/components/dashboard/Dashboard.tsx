@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { INewTheme } from "../../types/styledComp";
-import { useCallback, useContext, useEffect, useState } from "react";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+import { useCallback, useEffect, useState } from "react";
 import Loading from "../notifications/Loading";
 import TopDashboard from "./components/TopDashboard";
 import BottomDashboard from "./components/BottomDashboard";
@@ -11,6 +10,7 @@ import useFetchAllListByBoardId from "../../hooks/useFetchAllListByBoardId";
 import { useParams } from "react-router-dom";
 import { IListsWithCards } from "../../types/kanbam";
 import ErrorMessage from "../notifications/ErrorMessage";
+import { useAppSelector } from "../../features/hooks";
 
 const DashboardStyled = styled.div<INewTheme>`
   color: ${({ $themeList, $newtheme }) =>
@@ -57,7 +57,7 @@ export interface IDataBar extends Rec {
 }
 
 export default function Dashboard() {
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
   const [listTitles, setListTitles] = useState<string[]>([]);
 
   const [tableContents, setTableContents] = useState<ITableContents[] | null>(
@@ -195,10 +195,10 @@ export default function Dashboard() {
   return (
     <DashboardStyled
       $themeList={themeList}
-      $newtheme={theme}
+      $newtheme={themeName}
       className="dashboard"
       style={{
-        backgroundColor: theme == "light" ? "#f1f1f1" : "#3d4349",
+        backgroundColor: themeName == "light" ? "#f1f1f1" : "#3d4349",
       }}
     >
       <div className="dashboard__heading">

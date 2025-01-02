@@ -4,8 +4,7 @@ import "./Members.scss";
 import { IoMdClose } from "react-icons/io";
 import { INewTheme } from "../../../types/styledComp";
 import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
-import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
+import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import ErrorMessage from "../../notifications/ErrorMessage";
 import Loading from "../../notifications/Loading";
@@ -17,7 +16,7 @@ import { IError } from "../../../types/status.type";
 import AreYouSure from "../../../utils/areYouSure/AreYouSure";
 import useUpdates from "../../../utils/api/useUpdates";
 import useDeletes from "../../../utils/api/useDeletes";
-import { ITokenContext, TokenContext } from "../../../context/TokenContext";
+import { useAppSelector } from "../../../features/hooks";
 
 const MembersStyled = styled.div<INewTheme>`
   background-color: ${({ $themeList, $newtheme }) =>
@@ -50,8 +49,9 @@ interface IMembers {
 }
 
 export default function Members({ b_id, setShowMembers }: IMembers) {
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
-  const { tokenInCtx } = useContext(TokenContext) as ITokenContext;
+  const { accessToken } = useAppSelector((state) => state.auth);
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
+
   const { updateBoardMember } = useUpdates();
   const { deleteBoardMemberById } = useDeletes();
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
@@ -70,8 +70,8 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
   } = useFetchAllBoardMembersByBoardId(b_id!);
 
   useEffect(() => {
-    if (tokenInCtx) {
-      const { userId } = jwtDecode(tokenInCtx) as IUserDecodedResult;
+    if (accessToken) {
+      const { userId } = jwtDecode(accessToken) as IUserDecodedResult;
       setCurrentUserId(userId);
 
       if (dataBoardMembers) {
@@ -81,7 +81,7 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
         setCurrentUserRole(filterMemberByUserId[0].role);
       }
     }
-  }, [dataBoardMembers, tokenInCtx]);
+  }, [dataBoardMembers, accessToken]);
 
   const handleUpdateMemberModlaVisibility = (value: boolean) =>
     setShowUpdateMemberModal(value);
@@ -157,7 +157,7 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
 
       <MembersStyled
         $themeList={themeList}
-        $newtheme={theme}
+        $newtheme={themeName}
         className="board-members"
       >
         <div className="close-modal" onClick={() => setShowMembers(false)}>

@@ -1,16 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "./CalendarPicker.scss";
 import { VscClose } from "react-icons/vsc";
 import { IError } from "../../../../../types/status.type";
-import {
-  IkanbamContext,
-  KanbamContext,
-} from "../../../../../context/kanbamContext";
+
 import { CalendarStyled } from "./CalendarStyled";
 import { months } from "../../../../../utils/constantDatas/months";
 import { ICard } from "../../../../../types/kanbam";
 import useUpdates from "../../../../../utils/api/useUpdates";
+import { useAppSelector } from "../../../../../features/hooks";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -37,8 +35,7 @@ export default function CalendarPicker({
   const [dueDateGets, setDueDateGets] = useState<number[] | null>(null);
 
   const [reminderDay, setReminderDay] = useState<string | number>(0);
-
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
 
   useEffect(() => {
     if (cardDetail.dueDate) {
@@ -158,7 +155,7 @@ export default function CalendarPicker({
   return (
     <CalendarStyled
       $themeList={themeList}
-      $newtheme={theme}
+      $newtheme={themeName}
       className="calendar-container"
     >
       <div

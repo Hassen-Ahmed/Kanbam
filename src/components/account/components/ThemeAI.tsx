@@ -1,6 +1,6 @@
-import { useContext } from "react";
 import { Theme } from "../../../types/theme.type";
-import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
+import { useAppDispath } from "../../../features/hooks";
+import { setTheme, setThemeList } from "../../../features/slices/themeSlice";
 
 interface IThemeAI {
   option: string;
@@ -13,14 +13,12 @@ export default function ThemeAI({
   generatedTheme,
   animationDelay,
 }: IThemeAI) {
-  const { themeSetter, setRandomNum } = useContext(
-    KanbamContext
-  ) as IkanbamContext;
+  const dispatchRdx = useAppDispath();
 
   const storeTheme = () => {
     localStorage.setItem("aiTheme", JSON.stringify(generatedTheme));
-    themeSetter("aiTheme");
-    setRandomNum(Math.random());
+    dispatchRdx(setThemeList());
+    dispatchRdx(setTheme("aiTheme"));
   };
 
   return (

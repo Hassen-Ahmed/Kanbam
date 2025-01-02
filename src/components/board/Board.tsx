@@ -10,7 +10,6 @@ import BoardNewListCreator from "./BoardNewListCreator";
 import Loading from "../notifications/Loading";
 import Lists from "../lists/Lists";
 import styled from "styled-components";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { INewTheme } from "../../types/styledComp";
 import useFetchAllListByBoardId from "../../hooks/useFetchAllListByBoardId";
 import {
@@ -22,10 +21,10 @@ import {
 import ErrorMessage from "../notifications/ErrorMessage";
 import useSignalRConnection from "../../hooks/useSignalRConnection";
 import "./Board.scss";
-import { ITokenContext, TokenContext } from "../../context/TokenContext";
 import { jwtDecode } from "jwt-decode";
 import * as signalR from "@microsoft/signalr";
 import { deepCopiedLists, updatedListsByListId } from "../lists/utilsForLists";
+import { useAppSelector } from "../../features/hooks";
 
 const BoardStyled = styled.div<INewTheme>`
   .board {
@@ -54,12 +53,12 @@ const BoardStyled = styled.div<INewTheme>`
 `;
 
 const Board = () => {
-  const { tokenInCtx } = useContext(TokenContext) as ITokenContext;
+  const { accessToken } = useAppSelector((state) => state.auth);
   const [isListAdded, setIsListAdded] = useState<boolean>(false);
   const { lists, dispatch, searchText } = useContext(
     ListsContext
   ) as IListsContext;
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
 
   const { b_id } = useParams();
 
@@ -84,8 +83,8 @@ const Board = () => {
       connection.on(
         "ReceiveListUpdate",
         (updatedList: IList, userIdOfSender: string) => {
-          if (!tokenInCtx) return;
-          const { userId } = jwtDecode(tokenInCtx) as IUserDecodedResult;
+          if (!accessToken) return;
+          const { userId } = jwtDecode(accessToken) as IUserDecodedResult;
           if (userIdOfSender == userId) return;
 
           copyOfLists = copyOfLists?.map((list) => {
@@ -171,7 +170,11 @@ const Board = () => {
 
   return (
     <div className="board-container">
-      <BoardStyled $themeList={themeList} $newtheme={theme} className="board">
+      <BoardStyled
+        $themeList={themeList}
+        $newtheme={themeName}
+        className="board"
+      >
         {renderLists()}
         {renderNewListCreator()}
       </BoardStyled>

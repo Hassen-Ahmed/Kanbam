@@ -15,7 +15,6 @@ import ButtonsRight from "./components/ButtonsRight";
 import Comment from "./components/Comment";
 import "./CardModal.scss";
 import { BgAndFont } from "../../../utils/constantDatas/styledUtils";
-import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
 import { INewTheme } from "../../../types/styledComp";
 import styled from "styled-components";
 import { icons } from "./components/priorities/Priorities";
@@ -28,13 +27,13 @@ import {
 } from "../../../types/kanbam";
 import useUpdates from "../../../utils/api/useUpdates";
 import useDeletes from "../../../utils/api/useDeletes";
-import { ITokenContext, TokenContext } from "../../../context/TokenContext";
 import { jwtDecode } from "jwt-decode";
 import { logger } from "../../../utils/logger";
 import { MdDeleteForever } from "react-icons/md";
 import usePosts from "../../../utils/api/usePosts";
 import useSignalRConnection from "../../../hooks/useSignalRConnection";
 import { deepCopiedLists } from "../../lists/utilsForLists";
+import { useAppSelector } from "../../../features/hooks";
 
 const ActivityStyled = styled.div<INewTheme>`
   &,
@@ -70,9 +69,9 @@ export default function CardModal({
   handleModlaVisibility: (value: boolean) => void;
   cardDetail: ICard;
 }) {
-  const { tokenInCtx } = useContext(TokenContext) as ITokenContext;
+  const { accessToken } = useAppSelector((state) => state.auth);
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
   const { updateCard } = useUpdates();
   const { postCardComment } = usePosts();
   const { deleteCardById, deleteCardCommentByCommentId } = useDeletes();
@@ -86,7 +85,7 @@ export default function CardModal({
   const [isTitleInputVisible, setIsTitleInputVisible] =
     useState<boolean>(false);
 
-  const { userId, unique_name } = jwtDecode(tokenInCtx!) as IUserDecodedResult;
+  const { userId, unique_name } = jwtDecode(accessToken!) as IUserDecodedResult;
 
   const configureOnConnections = useCallback(
     async (connection: signalR.HubConnection) => {
@@ -110,7 +109,7 @@ export default function CardModal({
       });
       // update
       connection.on("ReceiveCardUpdate", (updatedCardReceived: ICard) => {
-        if (!tokenInCtx) return;
+        if (!accessToken) return;
 
         setTitleOfThisCard(() => updatedCardReceived.title);
         setComments(() => updatedCardReceived.comments);
@@ -327,7 +326,7 @@ export default function CardModal({
     >
       <BgAndFont
         $themeList={themeList}
-        $themename={theme}
+        $themename={themeName}
         $groupbg="cardModal"
         $groupfont="quaternary"
         className="card-modal"
@@ -376,7 +375,7 @@ export default function CardModal({
 
               <ActivityStyled
                 $themeList={themeList}
-                $newtheme={theme}
+                $newtheme={themeName}
                 className="activity"
               >
                 <div className="activity__heading">

@@ -1,10 +1,10 @@
 import { IoMdClose } from "react-icons/io";
 import "./NewMember.scss";
-import { useContext, useState } from "react";
-import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
+import { useState } from "react";
 import styled from "styled-components";
 import { INewTheme } from "../../../types/styledComp";
 import { validateEmail } from "../../../utils/validations";
+import { useAppSelector } from "../../../features/hooks";
 
 const NewMemberStyled = styled.div<INewTheme>`
   background-color: ${({ $themeList, $newtheme }) =>
@@ -40,7 +40,7 @@ export default function NewMember({
   handleInviteMember,
   handleNewMemberModlaVisibility,
 }: INewMember) {
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
   const [inputError, setInputError] = useState(false);
   const [newMemberDetail, setNewMemberDetail] = useState<INewMemberDetail>({
     email: "",
@@ -71,7 +71,7 @@ export default function NewMember({
     <div className="board-new-member-container">
       <NewMemberStyled
         $themeList={themeList}
-        $newtheme={theme}
+        $newtheme={themeName}
         className="board-new-member"
       >
         <div

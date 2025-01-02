@@ -4,7 +4,6 @@ import "./TaskTable.scss";
 import styled from "styled-components";
 import { INewTheme } from "../../../types/styledComp";
 import { useContext, useState } from "react";
-import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
 import { ITaskContent } from "../Table";
 import { ListsContext } from "../../../context/ListsContext";
 import CardModal from "../../card/modal/CardModal";
@@ -13,6 +12,7 @@ import { IError } from "../../../types/status.type";
 import { ICard, IListsContext } from "../../../types/kanbam";
 import useDeletes from "../../../utils/api/useDeletes";
 import useAnimatekComp from "../../../hooks/useAnimatekComp";
+import { useAppSelector } from "../../../features/hooks";
 
 const TaskTableStyled = styled.div<INewTheme>`
   background-color: ${({ $themeList, $newtheme }) =>
@@ -33,7 +33,7 @@ export default function TaskTable({
   animationDelay: number;
 }) {
   const { deleteCardById } = useDeletes();
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
   const { lists } = useContext(ListsContext) as IListsContext;
 
   const [showModalCard, setShowModalCard] = useState(false);
@@ -99,7 +99,7 @@ export default function TaskTable({
   return (
     <TaskTableStyled
       $themeList={themeList}
-      $newtheme={theme}
+      $newtheme={themeName}
       className="task-table"
       style={{
         ...animObj,

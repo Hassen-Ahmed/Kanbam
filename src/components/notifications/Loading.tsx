@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import "./Loading.scss";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
-import { useContext } from "react";
 import { INewTheme } from "../../types/styledComp";
 import { BgAndFont } from "../../utils/constantDatas/styledUtils";
+import { useAppSelector } from "../../features/hooks";
+import "./Loading.scss";
 
 const LoadinIcongStyled = styled.div<INewTheme>`
   &::before,
@@ -14,20 +13,20 @@ const LoadinIcongStyled = styled.div<INewTheme>`
 `;
 
 const Loading = () => {
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
 
   return (
     <div className="loading-container ">
       <BgAndFont
         $themeList={themeList}
-        $themename={theme}
+        $themename={themeName}
         $groupbg="card"
         $groupfont="secondary"
         className="loading"
       >
         <LoadinIcongStyled
           $themeList={themeList}
-          $newtheme={theme}
+          $newtheme={themeName}
           className="loading__icon"
         ></LoadinIcongStyled>
         <p>Loading...</p>
