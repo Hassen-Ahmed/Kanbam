@@ -1,10 +1,9 @@
 import { ResponsivePie } from "@nivo/pie";
-import { useContext } from "react";
-import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
 import { IDataPie } from "../Dashboard";
+import { useAppSelector } from "../../../features/hooks";
 
 export default function PieChart({ data }: { data: IDataPie[] }) {
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const themeName = useAppSelector((state) => state.theme.themeName);
 
   return (
     <ResponsivePie
@@ -17,7 +16,7 @@ export default function PieChart({ data }: { data: IDataPie[] }) {
       borderWidth={1}
       borderColor={{ from: "color", modifiers: [["darker", 0.2]] }}
       arcLinkLabelsSkipAngle={10}
-      arcLinkLabelsTextColor={theme == "light" ? "#5e6c84" : "#adbccc"}
+      arcLinkLabelsTextColor={themeName == "light" ? "#5e6c84" : "#adbccc"}
       arcLinkLabelsThickness={2}
       arcLinkLabelsColor={{ from: "color" }}
       arcLabelsSkipAngle={10}
