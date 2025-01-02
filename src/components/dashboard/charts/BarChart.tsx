@@ -1,7 +1,6 @@
 import { ResponsiveBar } from "@nivo/bar";
-import { useContext } from "react";
-import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
 import { IDataBar } from "../Dashboard";
+import { useAppSelector } from "../../../features/hooks";
 
 const font_rotate = window.innerWidth < 700 ? 15 : 0;
 
@@ -12,7 +11,7 @@ export default function BarChart({
   data: IDataBar[];
   legendName: string;
 }) {
-  const { theme } = useContext(KanbamContext) as IkanbamContext;
+  const themeName = useAppSelector((state) => state.theme.themeName);
 
   return (
     <ResponsiveBar
@@ -27,13 +26,13 @@ export default function BarChart({
           ticks: {
             text: {
               fontSize: 12,
-              fill: theme == "light" ? "#5e6c84" : "#adbccc",
+              fill: themeName == "light" ? "#5e6c84" : "#adbccc",
             },
           },
           legend: {
             text: {
               fontSize: 14,
-              fill: theme == "light" ? "#5e6c84" : "#adbccc",
+              fill: themeName == "light" ? "#5e6c84" : "#adbccc",
             },
           },
         },
