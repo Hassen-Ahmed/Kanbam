@@ -35,6 +35,7 @@ import { MdDeleteForever } from "react-icons/md";
 import usePosts from "../../../utils/api/usePosts";
 import useSignalRConnection from "../../../hooks/useSignalRConnection";
 import { deepCopiedLists } from "../../lists/utilsForLists";
+
 const ActivityStyled = styled.div<INewTheme>`
   &,
   &__comment {
@@ -303,24 +304,15 @@ export default function CardModal({
   };
 
   const draggableChanger = (isDraggable: string) => {
-    const cardElem = document.getElementsByClassName("card-container");
-
     const listsElem = document.getElementsByClassName("lists--container--main");
+    const cardElem = document.getElementsByClassName("card-container");
     const cardModalElem = document.getElementsByClassName(
       "card-modal--container"
     );
 
-    [...cardElem].forEach((elm) => {
-      elm.setAttribute("draggable", isDraggable);
-    });
-
-    [...listsElem].forEach((elm) => {
-      elm.setAttribute("draggable", isDraggable);
-    });
-
-    [...cardModalElem].forEach((elm) => {
-      elm.setAttribute("draggable", isDraggable);
-    });
+    [...listsElem, ...cardElem, ...cardModalElem].forEach((elm) =>
+      elm.setAttribute("draggable", isDraggable)
+    );
   };
 
   //  JSX
