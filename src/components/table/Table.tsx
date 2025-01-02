@@ -1,7 +1,6 @@
 import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
 import { useContext, useEffect, useState } from "react";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
 import { ListsContext } from "../../context/ListsContext";
 import Loading from "../notifications/Loading";
@@ -13,6 +12,7 @@ import { IListsContext, IListsWithCards } from "../../types/kanbam";
 import { useParams } from "react-router-dom";
 import useFetchAllListByBoardId from "../../hooks/useFetchAllListByBoardId";
 import ErrorMessage from "../notifications/ErrorMessage";
+import { useAppSelector } from "../../features/hooks";
 
 export interface ITaskContent {
   id: string;
@@ -43,7 +43,7 @@ const TableStyled = styled.div<INewTheme>`
 `;
 
 export default function Table() {
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
 
   const [isAsceSort, setIsAsceSort] = useState({ title: true, priority: true });
@@ -111,7 +111,7 @@ export default function Table() {
     );
 
   return (
-    <TableStyled $themeList={themeList} $newtheme={theme} className="table">
+    <TableStyled $themeList={themeList} $newtheme={themeName} className="table">
       {showModalNewTask && (
         <AddNewTask
           handleAddNewTaskShow={handleAddNewTaskShow}

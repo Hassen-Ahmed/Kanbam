@@ -2,8 +2,8 @@ import { IoMdClose } from "react-icons/io";
 import "./NewItem.scss";
 import { INewTheme } from "../../../types/styledComp";
 import styled from "styled-components";
-import { useContext, useState } from "react";
-import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
+import { useState } from "react";
+import { useAppSelector } from "../../../features/hooks";
 
 const NewItemStyled = styled.div<INewTheme>`
   background-color: ${({ $themeList, $newtheme }) =>
@@ -41,7 +41,7 @@ export default function NewItem({
   handleItemCreation,
   handleNewItemModlaVisibility,
 }: INewItem) {
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
   const [itemDetail, setItemDetail] = useState<IItemDetail>({
     name: "",
     description: "",
@@ -69,7 +69,7 @@ export default function NewItem({
     <div className="new-item-container">
       <NewItemStyled
         $themeList={themeList}
-        $newtheme={theme}
+        $newtheme={themeName}
         className="new-item"
       >
         <div

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { FaArrowRotateLeft } from "react-icons/fa6";
@@ -9,10 +9,11 @@ import { IError } from "../../../types/status.type";
 import FormInput from "../formInput/FormInput";
 import "./LogIn.scss";
 import usePosts from "../../../utils/api/usePosts";
-import { ITokenContext, TokenContext } from "../../../context/TokenContext";
+import { useAppDispath } from "../../../features/hooks";
+import { setAsscessToken } from "../../../features/slices/authSlice";
 
 const LogIn = () => {
-  const { handleSetAccessToken } = useContext(TokenContext) as ITokenContext;
+  const dispatchRdx = useAppDispath();
   const { postAuthLogin } = usePosts();
   const [isAuthorizing, setIsAuthorizing] = useState(false);
   const [isWrongUser, setIsWrongUser] = useState(false);
@@ -39,11 +40,10 @@ const LogIn = () => {
     setIsAuthorizing(true);
 
     try {
-      const { accessToken }: { accessToken: string } = await postAuthLogin(
-        userDetails
-      );
+      const data: { accessToken: string } = await postAuthLogin(userDetails);
 
-      handleSetAccessToken(accessToken);
+      dispatchRdx(setAsscessToken(data.accessToken));
+
       navigate("/kanbam/w");
     } catch (err) {
       setIsAuthorizing(false);

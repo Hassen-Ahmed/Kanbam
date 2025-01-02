@@ -8,15 +8,12 @@ import { VscClose } from "react-icons/vsc";
 import { INewTheme } from "../../../../../types/styledComp";
 import styled from "styled-components";
 import {
-  IkanbamContext,
-  KanbamContext,
-} from "../../../../../context/kanbamContext";
-import {
   ICard,
   IListsContext,
   IListsWithCards,
 } from "../../../../../types/kanbam";
 import useUpdates from "../../../../../utils/api/useUpdates";
+import { useAppSelector } from "../../../../../features/hooks";
 
 const MoveCardStyled = styled.div<INewTheme>`
   background-color: ${({ $themeList, $newtheme }) =>
@@ -66,7 +63,7 @@ export default function MoveCard({
   const [cardPositions, setCardPositions] = useState<number[]>([]);
 
   const listArray = lists?.map((list) => list.title);
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
 
   useEffect(() => {
     const positions = lists
@@ -130,7 +127,7 @@ export default function MoveCard({
   return (
     <MoveCardStyled
       $themeList={themeList}
-      $newtheme={theme}
+      $newtheme={themeName}
       className="card-move"
       style={{ display: isVisible ? "block" : "none" }}
     >

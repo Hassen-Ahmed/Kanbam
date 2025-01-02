@@ -2,9 +2,9 @@ import { IoMdClose } from "react-icons/io";
 import "./NewItem.scss";
 import { INewTheme } from "../../../types/styledComp";
 import styled from "styled-components";
-import { useContext, useState } from "react";
-import { IkanbamContext, KanbamContext } from "../../../context/kanbamContext";
+import { useState } from "react";
 import "./UpdateMember.scss";
+import { useAppSelector } from "../../../features/hooks";
 
 const UpdateMemberStyled = styled.div<INewTheme>`
   background-color: ${({ $themeList, $newtheme }) =>
@@ -41,7 +41,7 @@ export default function UpdateMember({
   handleUpdateMember,
   handleUpdateMemberModlaVisibility,
 }: INewItem) {
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
   const [itemDetail, setItemDetail] = useState<IUpdateMemberDetail>({
     role: "Admin",
   });
@@ -62,7 +62,7 @@ export default function UpdateMember({
     <div className="update-member-container">
       <UpdateMemberStyled
         $themeList={themeList}
-        $newtheme={theme}
+        $newtheme={themeName}
         className="update-member"
       >
         <div

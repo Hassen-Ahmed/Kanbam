@@ -1,10 +1,9 @@
-import { useContext } from "react";
 import styled from "styled-components";
 import NavLinks from "./NavLinks";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { INewTheme } from "../../types/styledComp";
 import "./SideBarLeft.scss";
 import Logo from "./Logo";
+import { useAppSelector } from "../../features/hooks";
 
 const SideBarStyled = styled.div<INewTheme>`
   transition: all 0.2s ease;
@@ -47,7 +46,7 @@ const SideBarStyled = styled.div<INewTheme>`
 `;
 
 const SideBarLeft = () => {
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
 
   const handleActiveButton = ({ isActive }: { isActive: boolean }) =>
     isActive ? "side-bar-left__btn-active" : "";
@@ -55,7 +54,7 @@ const SideBarLeft = () => {
   return (
     <SideBarStyled
       $themeList={themeList}
-      $newtheme={theme}
+      $newtheme={themeName}
       className="side-bar-left"
     >
       <div className="side-bar-left__container">

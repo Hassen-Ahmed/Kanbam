@@ -1,12 +1,13 @@
 import themeLight from "../../../../public/theme-light.svg";
 import themeDark from "../../../../public/theme-dark.svg";
-import { useContext, useEffect, useState } from "react";
-import { KanbamContext, IkanbamContext } from "../../../context/kanbamContext";
+import { useEffect, useState } from "react";
 import { Hr } from "../../../utils/constantDatas/styledUtils";
 import ThemeContainer from "./ThemeCard";
-import "./ThemeList.scss";
 import styled from "styled-components";
 import { INewTheme } from "../../../types/styledComp";
+import { useAppDispath, useAppSelector } from "../../../features/hooks";
+import { setTheme } from "../../../features/slices/themeSlice";
+import "./ThemeList.scss";
 
 const ThemeListStyled = styled.div<INewTheme>`
   .theme--list {
@@ -36,26 +37,28 @@ const ThemeListStyled = styled.div<INewTheme>`
 `;
 
 const ThemeList = () => {
-  const { theme, themeSetter, themeList } = useContext(
-    KanbamContext
-  ) as IkanbamContext;
+  const dispatchRdx = useAppDispath();
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
 
   const [isAiThemeStored, setIsAiThemeStored] = useState(false);
 
   useEffect(() => {
     const storedThemesString = localStorage.getItem("aiTheme");
-    if (storedThemesString) setIsAiThemeStored(true);
-  }, [theme]);
+
+    if (storedThemesString) {
+      setIsAiThemeStored(true);
+    }
+  }, [themeName]);
 
   return (
     <ThemeListStyled
       $themeList={themeList}
-      $newtheme={theme}
+      $newtheme={themeName}
       className="theme-list-container"
     >
       <ul className="theme--list">
         <li
-          onClick={() => themeSetter("light")}
+          onClick={() => dispatchRdx(setTheme("light"))}
           style={{ animationDelay: `0s` }}
         >
           <div className="theme--btn">
@@ -63,9 +66,11 @@ const ThemeList = () => {
           </div>
           <p>Light</p>
         </li>
-        <Hr $themeList={themeList} $themename={theme} $group="secondary" />
+
+        <Hr $themeList={themeList} $themename={themeName} $group="secondary" />
+
         <li
-          onClick={() => themeSetter("dark")}
+          onClick={() => dispatchRdx(setTheme("dark"))}
           style={{ animationDelay: `0.1s` }}
         >
           <div className="theme--btn">
@@ -73,12 +78,13 @@ const ThemeList = () => {
           </div>
           <p>Dark</p>
         </li>
-        <Hr $themeList={themeList} $themename={theme} $group="secondary" />
+
+        <Hr $themeList={themeList} $themename={themeName} $group="secondary" />
 
         {isAiThemeStored && (
           <>
             <li
-              onClick={() => themeSetter("aiTheme")}
+              onClick={() => dispatchRdx(setTheme("aiTheme"))}
               style={{ animationDelay: `.2s` }}
             >
               <div className="theme--btn">
@@ -86,7 +92,11 @@ const ThemeList = () => {
               </div>
               <p>AI-Theme</p>
             </li>
-            <Hr $themeList={themeList} $themename={theme} $group="secondary" />
+            <Hr
+              $themeList={themeList}
+              $themename={themeName}
+              $group="secondary"
+            />
           </>
         )}
         <ThemeContainer />

@@ -6,8 +6,8 @@ import { ListsContext } from "../../context/ListsContext";
 import "./SearchBox.scss";
 import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { IListsContext } from "../../types/kanbam";
+import { useAppSelector } from "../../features/hooks";
 
 const SearchBoxStyled = styled.div<INewTheme>`
   .search__box {
@@ -33,7 +33,7 @@ const SearchBoxStyled = styled.div<INewTheme>`
 const SearchBox = () => {
   const [value, setValue] = useState("");
   const { handleSearchTextUpdate } = useContext(ListsContext) as IListsContext;
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
 
   useEffect(() => handleSearchTextUpdate(value), [value]);
 
@@ -52,7 +52,7 @@ const SearchBox = () => {
   return (
     <SearchBoxStyled
       $themeList={themeList}
-      $newtheme={theme}
+      $newtheme={themeName}
       className="search-container"
     >
       <div className="search__box">

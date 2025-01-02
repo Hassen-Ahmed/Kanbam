@@ -1,10 +1,7 @@
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useState } from "react";
 import { IError } from "../../../../../types/status.type";
 import { INewTheme } from "../../../../../types/styledComp";
-import {
-  IkanbamContext,
-  KanbamContext,
-} from "../../../../../context/kanbamContext";
+
 import { MdEditNote } from "react-icons/md";
 import { ICard } from "../../../../../types/kanbam";
 import useUpdates from "../../../../../utils/api/useUpdates";
@@ -14,6 +11,7 @@ import DOMPurify from "dompurify";
 import { logger } from "../../../../../utils/logger";
 import Tiptap from "./Tiptap";
 import "./TextEditor.scss";
+import { useAppSelector } from "../../../../../features/hooks";
 
 const TextEditorStyled = styled.div<INewTheme>`
   .text-editor {
@@ -75,7 +73,7 @@ const EditedStyled = styled.div<INewTheme>`
 `;
 
 export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
   const { updateCard } = useUpdates();
   const [isEditorialOpen, setIsEditorialOpen] = useState(false);
   const [html, setHtml] = useState(DOMPurify.sanitize(cardDetail.description!));
@@ -126,7 +124,7 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
   const editedContent = () => (
     <EditedStyled
       $themeList={themeList}
-      $newtheme={theme}
+      $newtheme={themeName}
       className="text-editor__edited"
     >
       <div
@@ -149,7 +147,7 @@ export default function TextEditor({ cardDetail }: { cardDetail: ICard }) {
   return (
     <TextEditorStyled
       $themeList={themeList}
-      $newtheme={theme}
+      $newtheme={themeName}
       className="text-editor"
     >
       {(!description || description === "<p></p>") && !isEditorialOpen ? (

@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import { VscClose } from "react-icons/vsc";
 import { IListFewDetail } from "./CalendarFull";
 import styled from "styled-components";
 import { INewTheme } from "../../types/styledComp";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { ICard } from "../../types/kanbam";
+import { useAppSelector } from "../../features/hooks";
 
 interface IEventTaskContainer {
   showAddTask: boolean;
@@ -40,12 +40,12 @@ export default function EventTaskContainer({
   handleAddNewTask,
   setShowAddTask,
 }: IEventTaskContainer) {
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
 
   return (
     <EventTaskStyled
       $themeList={themeList}
-      $newtheme={theme}
+      $newtheme={themeName}
       className="calendar-full_add-task-container"
       style={{ display: showAddTask ? "block" : "none" }}
     >

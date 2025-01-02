@@ -3,15 +3,12 @@ import { useContext, useState } from "react";
 import { VscClose } from "react-icons/vsc";
 import styled from "styled-components";
 import { INewTheme } from "../../../../types/styledComp";
-import {
-  IkanbamContext,
-  KanbamContext,
-} from "../../../../context/kanbamContext";
 import { ListsContext } from "../../../../context/ListsContext";
 import "./AddNewTask.scss";
 import { createNewTask } from "../../../calendar/helpers";
 import { IListsContext } from "../../../../types/kanbam";
 import usePosts from "../../../../utils/api/usePosts";
+import { useAppSelector } from "../../../../features/hooks";
 
 const AddTaskStyled = styled.div<INewTheme>`
   .task-add-new__sub {
@@ -44,7 +41,7 @@ export default function AddNewTask({
   handleRefetch,
 }: IAddNewTask) {
   const { postCard } = usePosts();
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
 
   const [newTask, setNewTask] = useState({
@@ -65,7 +62,7 @@ export default function AddNewTask({
   return (
     <AddTaskStyled
       $themeList={themeList}
-      $newtheme={theme}
+      $newtheme={themeName}
       className="task-add-new"
     >
       <div className="task-add-new__sub">

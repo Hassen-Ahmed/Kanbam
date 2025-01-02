@@ -1,11 +1,4 @@
 import { IError } from "../../../../../types/status.type";
-
-import "./Priorities.scss";
-import { useContext } from "react";
-import {
-  IkanbamContext,
-  KanbamContext,
-} from "../../../../../context/kanbamContext";
 import {
   FcHighPriority,
   FcLowPriority,
@@ -16,6 +9,8 @@ import { INewTheme } from "../../../../../types/styledComp";
 import styled from "styled-components";
 import { ICard } from "../../../../../types/kanbam";
 import useUpdates from "../../../../../utils/api/useUpdates";
+import { useAppSelector } from "../../../../../features/hooks";
+import "./Priorities.scss";
 
 interface IPriorityCollection {
   cardDetail: ICard;
@@ -59,7 +54,7 @@ export default function Priorities({
   handleIsPriorityPressed,
 }: IPriorityCollection) {
   const { updateCard } = useUpdates();
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
 
   const handlePriorityName = async (name: string) => {
     cardDetail.priority = name;
@@ -80,7 +75,7 @@ export default function Priorities({
   return (
     <PriorityStyled
       $themeList={themeList}
-      $newtheme={theme}
+      $newtheme={themeName}
       className="pritority__lists"
       style={{ display: isVisible ? "block" : "none" }}
     >

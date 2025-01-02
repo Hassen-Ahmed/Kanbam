@@ -1,7 +1,7 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import * as signalR from "@microsoft/signalr";
-import { ITokenContext, TokenContext } from "../context/TokenContext";
 import { logger } from "../utils/logger";
+import { useAppSelector } from "../features/hooks";
 
 interface IUseSignalRConnection {
   url: string;
@@ -12,17 +12,17 @@ export default function useSignalRConnection({
   url,
   configureOnConnections,
 }: IUseSignalRConnection) {
-  const { tokenInCtx } = useContext(TokenContext) as ITokenContext;
+  const { accessToken } = useAppSelector((state) => state.auth);
   const [connection, setConnection] = useState<signalR.HubConnection | null>(
     null
   );
   const connectionRef = useRef<signalR.HubConnection | null>(null);
 
   const handleConnection = useCallback(async () => {
-    if (!tokenInCtx) return;
+    if (!accessToken) return;
 
     const connect = new signalR.HubConnectionBuilder()
-      .withUrl(url, { accessTokenFactory: () => `${tokenInCtx}` })
+      .withUrl(url, { accessTokenFactory: () => `${accessToken}` })
       .withAutomaticReconnect()
       .configureLogging(signalR.LogLevel.None)
       .build();
@@ -38,7 +38,7 @@ export default function useSignalRConnection({
     } catch (error) {
       logger("error", `Error when starting connection: ${error}`);
     }
-  }, [url, configureOnConnections, tokenInCtx]);
+  }, [url, configureOnConnections, accessToken]);
 
   useEffect(() => {
     handleConnection();

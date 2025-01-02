@@ -1,11 +1,11 @@
-import { useContext, useEffect } from "react";
-import { ITokenContext, TokenContext } from "../../context/TokenContext";
+import { useEffect } from "react";
 import axios from "axios";
+import { useAppDispath, useAppSelector } from "../../features/hooks";
+import { setAsscessToken } from "../../features/slices/authSlice";
 
 export default function useKanbamApiClient() {
-  const { tokenInCtx, handleSetAccessToken } = useContext(
-    TokenContext
-  ) as ITokenContext;
+  const { accessToken } = useAppSelector((state) => state.auth);
+  const dispatchRdx = useAppDispath();
 
   const kanbamApi = axios.create({
     baseURL: `${import.meta.env.VITE_KANBAM_API_URL}`,
@@ -16,7 +16,7 @@ export default function useKanbamApiClient() {
     const requestInterceptor = kanbamApi.interceptors.request.use(
       (config) => {
         if (!config.headers["Authorization"]) {
-          config.headers["Authorization"] = `Bearer ${tokenInCtx}`;
+          config.headers["Authorization"] = `Bearer ${accessToken}`;
         }
 
         return config;
@@ -34,15 +34,15 @@ export default function useKanbamApiClient() {
           originalRequest._retry = true;
 
           try {
-            const {
-              data: { accessToken },
-            } = await kanbamApi.post<{ accessToken: string }>(
+            const { data } = await kanbamApi.post<{ accessToken: string }>(
               "/auth/RefreshToken"
             );
 
-            handleSetAccessToken(accessToken);
+            dispatchRdx(setAsscessToken(data.accessToken));
 
-            originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
+            originalRequest.headers[
+              "Authorization"
+            ] = `Bearer ${data.accessToken}`;
             return kanbamApi(originalRequest);
             //
           } catch (error) {
@@ -61,7 +61,7 @@ export default function useKanbamApiClient() {
       kanbamApi.interceptors.request.eject(requestInterceptor);
       kanbamApi.interceptors.response.eject(responseInterceptor);
     };
-  }, [kanbamApi, tokenInCtx, handleSetAccessToken]);
+  }, [kanbamApi, accessToken, dispatchRdx]);
 
   return kanbamApi;
 }

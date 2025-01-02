@@ -1,12 +1,11 @@
-import { useContext, useState } from "react";
-
+import { useState } from "react";
 import ButtonAccount from "../account/ButtonAccount";
 import MenuAccount from "../account/MenuAccount";
 import SearchBox from "./SearchBox";
 import { INewTheme } from "../../types/styledComp";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
+import { useAppSelector } from "../../features/hooks";
 import "./NavBar.scss";
 
 const NavBarStyled = styled.div<INewTheme>`
@@ -28,11 +27,15 @@ const NavBarStyled = styled.div<INewTheme>`
 const NavBar = () => {
   const [isAccountMenuVisible, setIsAccountMenuVisible] =
     useState<boolean>(false);
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
   const location = useLocation();
 
   return (
-    <NavBarStyled $themeList={themeList} $newtheme={theme} className="nav-bar">
+    <NavBarStyled
+      $themeList={themeList}
+      $newtheme={themeName}
+      className="nav-bar"
+    >
       <div className="nav-bar__left">
         {!location.pathname.includes("kanbam/ds") && <SearchBox />}
         <ButtonAccount setIsAccountMenuVisible={setIsAccountMenuVisible} />

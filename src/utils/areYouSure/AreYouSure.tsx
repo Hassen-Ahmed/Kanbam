@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import "./AreYouSure.scss";
 import { INewTheme } from "../../types/styledComp";
-import { useContext } from "react";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+import { useAppSelector } from "../../features/hooks";
 
 const AreYouSureStyled = styled.div<INewTheme>`
   background-color: ${({ $themeList, $newtheme }) =>
@@ -19,13 +18,13 @@ interface IAreYouSure {
   handleAreYouSure: (status: boolean) => void;
 }
 export default function AreYouSure({ handleAreYouSure }: IAreYouSure) {
-  const { theme, themeList } = useContext(KanbamContext) as IkanbamContext;
+  const { themeName, themeList } = useAppSelector((state) => state.theme);
 
   return (
     <div className="sure-to-del-container">
       <AreYouSureStyled
         $themeList={themeList}
-        $newtheme={theme}
+        $newtheme={themeName}
         className="sure-to-del-table"
       >
         <h2>Are you sure?</h2>
