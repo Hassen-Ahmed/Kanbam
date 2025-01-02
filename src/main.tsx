@@ -4,7 +4,8 @@ import KanbamContextProvider from "./context/kanbamContext.tsx";
 import ListsContextProvider from "./context/ListsContext.tsx";
 import RouterMain from "./router/RouterMain.tsx";
 import "./assets/style/main.scss";
-import TokenContextProvider from "./context/TokenContext.tsx";
+import { Provider } from "react-redux";
+import { store } from "./store/store.ts";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -12,12 +13,12 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <TokenContextProvider>
+    <Provider store={store}>
       <ListsContextProvider>
         <KanbamContextProvider>
           <RouterMain />
         </KanbamContextProvider>
       </ListsContextProvider>
-    </TokenContextProvider>
+    </Provider>
   </React.StrictMode>
 );
