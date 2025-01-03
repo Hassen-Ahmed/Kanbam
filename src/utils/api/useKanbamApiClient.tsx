@@ -1,16 +1,11 @@
 import { useEffect } from "react";
-import axios from "axios";
 import { useAppDispath, useAppSelector } from "../../features/hooks";
 import { setAsscessToken } from "../../features/slices/authSlice";
+import { kanbamApi } from "./baseApi";
 
 export default function useKanbamApiClient() {
   const { accessToken } = useAppSelector((state) => state.auth);
   const dispatchRdx = useAppDispath();
-
-  const kanbamApi = axios.create({
-    baseURL: `${import.meta.env.VITE_KANBAM_API_URL}`,
-    withCredentials: true,
-  });
 
   useEffect(() => {
     const requestInterceptor = kanbamApi.interceptors.request.use(
@@ -61,7 +56,7 @@ export default function useKanbamApiClient() {
       kanbamApi.interceptors.request.eject(requestInterceptor);
       kanbamApi.interceptors.response.eject(responseInterceptor);
     };
-  }, [kanbamApi, accessToken, dispatchRdx]);
+  }, [accessToken, dispatchRdx]);
 
   return kanbamApi;
 }
