@@ -1,20 +1,26 @@
-import { useContext } from "react";
 import { ImCamera } from "react-icons/im";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+import { useAppSelector } from "../../features/hooks";
+import Loading from "../notifications/Loading";
 
 export default function MenuAccountLogo() {
-  const { userDetail } = useContext(KanbamContext) as IkanbamContext;
+  const { status, profile } = useAppSelector((state) => state.profile);
+
+  if (status === "loading") return <Loading />;
+
+  if (status === "failed")
+    return <p>Sorry, something went wrong. Try again!</p>;
+
   return (
     <div className="menu__logo">
       <div className="menu__logo--icon">
-        <p>{userDetail?.userName.slice(0, 2).toUpperCase()}</p>
+        <p>{profile?.userName.slice(0, 2).toUpperCase()}</p>
       </div>
       <div className="menu__logo--photo">
         <ImCamera size={16} />
       </div>
       <div className="menu__logo--texts">
-        <h2 className="menu__logo--user">{userDetail?.userName}</h2>
-        <h3 className="menu__logo--email">{userDetail?.email}</h3>
+        <h2 className="menu__logo--user">{profile?.userName}</h2>
+        <h3 className="menu__logo--email">{profile?.email}</h3>
       </div>
     </div>
   );

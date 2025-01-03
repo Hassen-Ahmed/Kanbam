@@ -116,6 +116,7 @@ export interface IWorkspaceMemberUpdate {
 // userDetail
 
 export interface IUserResponseDetail {
+  id: string;
   email: string;
   userName: string;
 }

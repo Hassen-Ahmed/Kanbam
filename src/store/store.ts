@@ -1,11 +1,13 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import { authReducer } from "../features/slices/authSlice";
 import { themeReducer } from "../features/slices/themeSlice";
+import { profileSlice } from "../features/slices/profileSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer.reducer,
     theme: themeReducer.reducer,
+    profile: profileSlice.reducer,
   },
 });
 
