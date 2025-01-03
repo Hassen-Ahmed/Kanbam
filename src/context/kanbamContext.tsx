@@ -1,5 +1,5 @@
-import { createContext, useRef, useState } from "react";
-import { ICard, IComment, IUserResponseDetail } from "../types/kanbam";
+import { createContext, useRef } from "react";
+import { ICard, IComment } from "../types/kanbam";
 
 interface IItem {
   id?: string;
@@ -22,26 +22,17 @@ export interface IItemDragging {
 
 export interface IkanbamContext {
   itemDragging: React.MutableRefObject<IItemDragging | null>;
-  userDetail: IUserResponseDetail | null;
-  setUserDetail: React.Dispatch<
-    React.SetStateAction<IUserResponseDetail | null>
-  >;
 }
 
 export const KanbamContext = createContext<IkanbamContext | null>(null);
 
 const KanbamContextProvider = ({ children }: { children: React.ReactNode }) => {
   const itemDragging = useRef<IItemDragging | null>(null);
-  const [userDetail, setUserDetail] = useState<IUserResponseDetail | null>(
-    null
-  );
 
   return (
     <KanbamContext.Provider
       value={{
         itemDragging,
-        userDetail,
-        setUserDetail,
       }}
     >
       {children}
