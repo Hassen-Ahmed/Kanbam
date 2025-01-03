@@ -15,6 +15,7 @@ import usePosts from "../../utils/api/usePosts";
 import useDeletes from "../../utils/api/useDeletes";
 import ErrorMessage from "../notifications/ErrorMessage";
 import { useAppSelector } from "../../features/hooks";
+import { statusType } from "../../features/slices/profileSlice";
 
 const WorkspacesStyled = styled.div<INewTheme>`
   background-color: ${({ $themeList, $newtheme }) =>
@@ -41,8 +42,9 @@ export default function WorkspaceList() {
   const { updateWorkspace } = useUpdates();
   const { deleteWorkspaceById } = useDeletes();
   const { themeName, themeList } = useAppSelector((state) => state.theme);
-  const { data, loading, error, refetch } = useFetchAllWorkspace();
+  const { status, profile } = useAppSelector((state) => state.profile);
 
+  const { data, loading, error, refetch } = useFetchAllWorkspace();
   const [showNewItemModal, setShowNewItemModal] = useState(false);
   const [showUpdateItemModal, setShowUpdateItemModal] = useState(false);
 
@@ -109,6 +111,22 @@ export default function WorkspaceList() {
     }
   };
 
+  const profileElem = (profileStatus: statusType) => {
+    switch (profileStatus) {
+      case "loading":
+        return <p>Loading ... </p>;
+      case "failed":
+        return <p>Sorry, something went wrong. Try again!</p>;
+      default:
+        return (
+          <div className="user-detail">
+            <h3>{profile.userName}</h3>
+            <h4>{profile.email}</h4>
+          </div>
+        );
+    }
+  };
+
   //
   if (loading) return <Loading />;
 
@@ -125,10 +143,7 @@ export default function WorkspaceList() {
         className="workspaces"
       >
         <div className="workspaces__top">
-          <div className="user-detail">
-            <h3>{data?.userDetail.userName}</h3>
-            <h4>{data?.userDetail.email}</h4>
-          </div>
+          {profileElem(status)}
           <div
             className="create-workspace"
             onClick={() => {
