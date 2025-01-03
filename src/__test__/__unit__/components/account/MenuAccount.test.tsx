@@ -7,11 +7,6 @@ import { store } from "../../../../store/store";
 
 let mockIsAccountMenuVisible = false;
 const mockSetIsAccountMenuVisible = vi.fn();
-const userDetail = {
-  email: "string",
-  userName: "string",
-};
-const setUserDetail = vi.fn();
 
 const renderWithMemoryRouter = () => {
   render(
@@ -20,8 +15,6 @@ const renderWithMemoryRouter = () => {
         <KanbamContext.Provider
           value={{
             itemDragging: { current: null },
-            userDetail,
-            setUserDetail,
           }}
         >
           <MenuAccount
