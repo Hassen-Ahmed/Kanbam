@@ -6,12 +6,14 @@ import { useContext, useEffect } from "react";
 import { handleAppOnDrop } from "../../utils/handleAppOnDrop";
 import styled from "styled-components";
 import { INewTheme } from "../../types/styledComp";
-import { IListsContext } from "../../types/kanbam";
+import { IListsContext, IUserDecodedResult } from "../../types/kanbam";
 import useUpdates from "../../utils/api/useUpdates";
 import { useAppDispath, useAppSelector } from "../../features/hooks";
 import { setTheme, setThemeList } from "../../features/slices/themeSlice";
 import { ThemeName } from "../../types/theme.type";
 import "./Kanbam.scss";
+import { jwtDecode } from "jwt-decode";
+import { fetchProfileThunk } from "../../features/thunks/profileThunk";
 
 export const GlobalStyle = styled.div<INewTheme>`
   ::-webkit-scrollbar-thumb {
@@ -37,6 +39,8 @@ export default function Kanbam() {
   const { updateList, updateCard } = useUpdates();
   const { lists } = useContext(ListsContext) as IListsContext;
   const { themeName, themeList } = useAppSelector((state) => state.theme);
+  const { accessToken } = useAppSelector((state) => state.auth);
+
   const location = useLocation();
 
   const onDropHandler = () => handleAppOnDrop(lists, updateList, updateCard);
@@ -53,6 +57,13 @@ export default function Kanbam() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (accessToken) {
+      const { userId } = jwtDecode(accessToken) as IUserDecodedResult;
+      dispatchRdx(fetchProfileThunk(userId));
+    }
+  }, [accessToken, dispatchRdx]);
 
   return (
     <GlobalStyle
