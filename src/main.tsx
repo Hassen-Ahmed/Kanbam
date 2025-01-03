@@ -1,4 +1,4 @@
-import React from "react";
+import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import KanbamContextProvider from "./context/kanbamContext.tsx";
 import ListsContextProvider from "./context/ListsContext.tsx";
@@ -12,7 +12,7 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <React.StrictMode>
+  <StrictMode>
     <Provider store={store}>
       <ListsContextProvider>
         <KanbamContextProvider>
@@ -20,5 +20,5 @@ root.render(
         </KanbamContextProvider>
       </ListsContextProvider>
     </Provider>
-  </React.StrictMode>
+  </StrictMode>
 );
