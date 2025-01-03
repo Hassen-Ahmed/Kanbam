@@ -6,7 +6,6 @@ import {
   ICard,
   IList,
   IListsWithCards,
-  IUserResponseDetail,
   IWorkspace,
   IWorkspaceMember,
 } from "../../types/kanbam";
@@ -17,13 +16,12 @@ export default function useGets() {
   // workspaces
   const getAllWorkspace = useCallback(async () => {
     const {
-      data: { workspaces, userDetail },
+      data: { workspaces },
     } = await kanbamApi.get<{
       workspaces: IWorkspace[];
-      userDetail: IUserResponseDetail;
     }>(`/Workspaces`);
 
-    return { workspaces, userDetail };
+    return { workspaces };
   }, [kanbamApi]);
 
   // WorkspaceMembers By WorkspaceId
