@@ -1,7 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import MenuAccount from "../../../../components/account/MenuAccount";
 import { MemoryRouter } from "react-router-dom";
-import { KanbamContext } from "../../../../context/kanbamContext";
 import { Provider } from "react-redux";
 import { store } from "../../../../store/store";
 
@@ -12,16 +11,10 @@ const renderWithMemoryRouter = () => {
   render(
     <MemoryRouter>
       <Provider store={store}>
-        <KanbamContext.Provider
-          value={{
-            itemDragging: { current: null },
-          }}
-        >
-          <MenuAccount
-            isAccountMenuVisible={mockIsAccountMenuVisible}
-            setIsAccountMenuVisible={mockSetIsAccountMenuVisible}
-          />
-        </KanbamContext.Provider>
+        <MenuAccount
+          isAccountMenuVisible={mockIsAccountMenuVisible}
+          setIsAccountMenuVisible={mockSetIsAccountMenuVisible}
+        />
       </Provider>
     </MemoryRouter>
   );
