@@ -1,6 +1,5 @@
-import { IItemDragging } from "../../context/kanbamContext";
 import { DragEventMy } from "../../types/html.type";
-import { ICard, IListsWithCards } from "../../types/kanbam";
+import { ICard, IItemDragging, IListsWithCards } from "../../types/kanbam";
 
 export const deepCopiedLists = (lists: IListsWithCards[]) => {
   return JSON.parse(JSON.stringify(lists)) as IListsWithCards[];
@@ -39,7 +38,10 @@ export const updatedListOnCardHovered = (
 
   const updatedLists = clonedLists.map((listObj) => {
     if (listObj.id == id) {
-      const cardsUpdatedWithListId = listOfCards.map((card) => {
+      const cardsUpdatedWithListId = listOfCards.map((cd) => {
+        // card.listId is read-only in strict mode. So we need to deep copy the cd
+        const card = JSON.parse(JSON.stringify(cd));
+
         if (card.listId === undefined) return card;
         card.listId = listObj.id!;
         return card;
@@ -137,7 +139,9 @@ export const updatedListOnListsSwaps = (
   );
 
   // update indexNumber of this lists
-  const finalLists = filteredLists.map((listObj, i) => {
+  const finalLists = filteredLists.map((list, i) => {
+    // indexNumber is read-only in strict mode. So we need to deep copy the list
+    const listObj = JSON.parse(JSON.stringify(list));
     listObj.indexNumber = i;
 
     return listObj;
