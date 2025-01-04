@@ -1,13 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
 
-import { ListsContext } from "../../context/ListsContext";
 import "./SearchBox.scss";
 import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
-import { IListsContext } from "../../types/kanbam";
-import { useAppSelector } from "../../features/hooks";
+import { useAppDispath, useAppSelector } from "../../features/hooks";
+import { setSearchText } from "../../features/slices/kanbamSlice";
 
 const SearchBoxStyled = styled.div<INewTheme>`
   .search__box {
@@ -31,11 +30,14 @@ const SearchBoxStyled = styled.div<INewTheme>`
 `;
 
 const SearchBox = () => {
+  const dispatchRdx = useAppDispath();
   const [value, setValue] = useState("");
-  const { handleSearchTextUpdate } = useContext(ListsContext) as IListsContext;
   const { themeName, themeList } = useAppSelector((state) => state.theme);
+  const searchText = useAppSelector((state) => state.kanbam.searchText);
 
-  useEffect(() => handleSearchTextUpdate(value), [value]);
+  useEffect(() => {
+    dispatchRdx(setSearchText(value));
+  }, [value, searchText]);
 
   // end of hooks
 
