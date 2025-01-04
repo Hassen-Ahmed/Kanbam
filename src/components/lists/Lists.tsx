@@ -7,7 +7,6 @@ import { handleDragstartUtil, handleRemoveCloneElem } from "../../utils/dnd";
 import { IError } from "../../types/status.type";
 import { DragEventMy } from "../../types/html.type";
 
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
 import { ListsContext } from "../../context/ListsContext";
 import {
   deepCopiedLists,
@@ -34,7 +33,8 @@ import usePosts from "../../utils/api/usePosts";
 import { logger } from "../../utils/logger";
 import useSignalRConnection from "../../hooks/useSignalRConnection";
 import { jwtDecode } from "jwt-decode";
-import { useAppSelector } from "../../features/hooks";
+import { useAppDispath, useAppSelector } from "../../features/hooks";
+import { setItemDragging } from "../../features/slices/kanbamSlice";
 
 const ListsStyled = styled.div<INewTheme>`
   .lists {
@@ -79,9 +79,11 @@ const Lists = ({
   isDragging,
   opacity,
 }: IListsWithCards) => {
+  const dispatchRdx = useAppDispath();
   const { accessToken } = useAppSelector((state) => state.auth);
   const { themeName, themeList } = useAppSelector((state) => state.theme);
-  const { itemDragging } = useContext(KanbamContext) as IkanbamContext;
+  const { itemDragging } = useAppSelector((state) => state.kanbam);
+
   const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const { postCard } = usePosts();
   const { updateList } = useUpdates();
@@ -273,7 +275,7 @@ const Lists = ({
   };
 
   const handleDragStart = (ev: DragEventMy) => {
-    itemDragging.current = {
+    const current = {
       item: {
         id,
         boardId,
@@ -285,6 +287,8 @@ const Lists = ({
       },
       identity: "list",
     };
+
+    dispatchRdx(setItemDragging(current));
 
     if (!(ev.target instanceof HTMLDivElement)) return;
     handleDragstartUtil(ev, "lists--container--sub");

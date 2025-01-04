@@ -1,15 +1,16 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { BsTextParagraph } from "react-icons/bs";
 import { handleDragstartUtil, handleRemoveCloneElem } from "../../utils/dnd";
 import { DragEventMy } from "../../types/html.type";
-import { IkanbamContext, KanbamContext } from "../../context/kanbamContext";
+
 import CardModal from "./modal/CardModal";
 import { BgAndFont } from "../../utils/constantDatas/styledUtils";
 import { icons } from "./modal/components/priorities/Priorities";
 import { ICard } from "../../types/kanbam";
 import "./Card.scss";
 import useAnimatekComp from "../../hooks/useAnimatekComp";
-import { useAppSelector } from "../../features/hooks";
+import { useAppDispath, useAppSelector } from "../../features/hooks";
+import { setItemDragging } from "../../features/slices/kanbamSlice";
 
 interface ICardComp {
   cardDetail: ICard;
@@ -17,8 +18,9 @@ interface ICardComp {
 }
 
 const Card = ({ cardDetail, animationDelay }: ICardComp) => {
+  const dispatchRdx = useAppDispath();
   const { themeName, themeList } = useAppSelector((state) => state.theme);
-  const { itemDragging } = useContext(KanbamContext) as IkanbamContext;
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const animObj = useAnimatekComp(animationDelay);
 
@@ -39,14 +41,15 @@ const Card = ({ cardDetail, animationDelay }: ICardComp) => {
 
   const handleDragStart = (ev: DragEventMy) => {
     ev.stopPropagation();
-
-    itemDragging.current = {
+    const current = {
       item: {
         ...cardDetail,
         opacity: ".3",
       },
       identity: "card",
     };
+
+    dispatchRdx(setItemDragging(current));
 
     if (!(ev.target instanceof HTMLDivElement)) return;
 
