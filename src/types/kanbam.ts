@@ -125,8 +125,6 @@ export interface IUserResponseDetail {
 export interface IListsContext {
   lists: IListsWithCards[] | null;
   dispatch: React.Dispatch<IActionBoard>;
-  searchText: string;
-  handleSearchTextUpdate: (text: string) => void;
 }
 
 export interface IUserDecodedResult {
@@ -134,4 +132,23 @@ export interface IUserDecodedResult {
   unique_name: string;
   role: string;
   exp: number;
+}
+
+interface IItem {
+  id?: string;
+  listId?: string;
+  boardId?: string;
+  indexNumber: number;
+  title: string;
+  description?: string;
+  priority?: string;
+  comments?: IComment[];
+  isDragging?: boolean;
+  cards?: ICard[];
+  opacity: string;
+}
+
+export interface IItemDragging {
+  item: IItem;
+  identity: string;
 }
