@@ -38,9 +38,8 @@ const CalendarFullStyled = styled.div<INewTheme>`
 const CalendarFull = () => {
   const { postCard } = usePosts();
   const { updateCard } = useUpdates();
-  const { lists, dispatch, searchText } = useContext(
-    ListsContext
-  ) as IListsContext;
+  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
+  const searchText = useAppSelector((state) => state.kanbam.searchText);
   const { themeName, themeList } = useAppSelector((state) => state.theme);
   const [cardDetails, setCardDetails] = useState<ICard[] | null>(null);
   const [cardDetail, setCardDetail] = useState<ICard | null>(null);

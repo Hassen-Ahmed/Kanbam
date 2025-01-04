@@ -54,10 +54,9 @@ const BoardStyled = styled.div<INewTheme>`
 
 const Board = () => {
   const { accessToken } = useAppSelector((state) => state.auth);
+  const searchText = useAppSelector((state) => state.kanbam.searchText);
   const [isListAdded, setIsListAdded] = useState<boolean>(false);
-  const { lists, dispatch, searchText } = useContext(
-    ListsContext
-  ) as IListsContext;
+  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const { themeName, themeList } = useAppSelector((state) => state.theme);
 
   const { b_id } = useParams();
@@ -125,7 +124,9 @@ const Board = () => {
   }, [data]);
 
   useEffect(() => {
-    if (searchText) handleSearchText(searchText, dispatch);
+    if (searchText) {
+      handleSearchText(searchText, dispatch);
+    }
   }, [searchText, dispatch]);
 
   //
