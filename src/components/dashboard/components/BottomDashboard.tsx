@@ -1,8 +1,8 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import BarChart from "../charts/BarChart";
-import { ListsContext } from "../../../context/ListsContext";
 import { IDataBar } from "../Dashboard";
-import { IListsContext, IListsWithCards } from "../../../types/kanbam";
+import { IListsWithCards } from "../../../types/kanbam";
+import { useAppSelector } from "../../../features/hooks";
 
 interface IBottomDashboard {
   handleBarData: (task: string, lists: IListsWithCards[]) => void;
@@ -13,7 +13,8 @@ export default function BottomDashboard({
   handleBarData,
   dataBar,
 }: IBottomDashboard) {
-  const { lists } = useContext(ListsContext) as IListsContext;
+  const lists = useAppSelector((state) => state.lists.lists);
+
   const [legendName, setLegendName] = useState("Lists");
 
   const deepListsCopy = JSON.parse(JSON.stringify(lists)) as IListsWithCards[];

@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { FaRegCreditCard } from "react-icons/fa";
 import { BsTextParagraph } from "react-icons/bs";
@@ -9,7 +9,6 @@ import { CiEdit } from "react-icons/ci";
 import { handleUpdateLists } from "../../../utils/order_and_update";
 import { IError } from "../../../types/status.type";
 
-import { ListsContext } from "../../../context/ListsContext";
 import TextEditor from "./components/textEditor/TextEditor";
 import ButtonsRight from "./components/ButtonsRight";
 import Comment from "./components/Comment";
@@ -21,7 +20,6 @@ import { icons } from "./components/priorities/Priorities";
 import {
   ICard,
   IComment,
-  IListsContext,
   IListsWithCards,
   IUserDecodedResult,
 } from "../../../types/kanbam";
@@ -33,7 +31,8 @@ import { MdDeleteForever } from "react-icons/md";
 import usePosts from "../../../utils/api/usePosts";
 import useSignalRConnection from "../../../hooks/useSignalRConnection";
 import { deepCopiedLists } from "../../lists/utilsForLists";
-import { useAppSelector } from "../../../features/hooks";
+import { useAppDispath, useAppSelector } from "../../../features/hooks";
+import { addAllList } from "../../../features/slices/listsSlice";
 
 const ActivityStyled = styled.div<INewTheme>`
   &,
@@ -69,9 +68,11 @@ export default function CardModal({
   handleModlaVisibility: (value: boolean) => void;
   cardDetail: ICard;
 }) {
+  const dispatchRdx = useAppDispath();
   const { accessToken } = useAppSelector((state) => state.auth);
   const { themeName, themeList } = useAppSelector((state) => state.theme);
-  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
+  const lists = useAppSelector((state) => state.lists.lists);
+
   const { updateCard } = useUpdates();
   const { postCardComment } = usePosts();
   const { deleteCardById, deleteCardCommentByCommentId } = useDeletes();
@@ -134,11 +135,7 @@ export default function CardModal({
   });
 
   const updateListsAndStoredLists = (payload: IListsWithCards[]) => {
-    dispatch({
-      type: "ADD_ALL_LISTS",
-      payload,
-    });
-
+    dispatchRdx(addAllList(payload));
     localStorage.setItem("storedLists", JSON.stringify(payload));
   };
 
@@ -215,10 +212,8 @@ export default function CardModal({
 
   const handleClosingModal = () => {
     const updatedLists = handleUpdateLists(lists!, cardDetail);
-    dispatch({
-      type: "ADD_ALL_LISTS",
-      payload: updatedLists as IListsWithCards[],
-    });
+
+    dispatchRdx(addAllList(updatedLists as IListsWithCards[]));
     handleModlaVisibility(false);
   };
 

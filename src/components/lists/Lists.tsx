@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { IoMdAdd } from "react-icons/io";
 import { VscClose } from "react-icons/vsc";
@@ -7,7 +7,6 @@ import { handleDragstartUtil, handleRemoveCloneElem } from "../../utils/dnd";
 import { IError } from "../../types/status.type";
 import { DragEventMy } from "../../types/html.type";
 
-import { ListsContext } from "../../context/ListsContext";
 import {
   deepCopiedLists,
   updatedListOnCardHovered,
@@ -24,7 +23,6 @@ import {
   ICard,
   ICardCreate,
   IComment,
-  IListsContext,
   IListsWithCards,
   IUserDecodedResult,
 } from "../../types/kanbam";
@@ -35,6 +33,7 @@ import useSignalRConnection from "../../hooks/useSignalRConnection";
 import { jwtDecode } from "jwt-decode";
 import { useAppDispath, useAppSelector } from "../../features/hooks";
 import { setItemDragging } from "../../features/slices/kanbamSlice";
+import { addAllList } from "../../features/slices/listsSlice";
 
 const ListsStyled = styled.div<INewTheme>`
   .lists {
@@ -83,8 +82,8 @@ const Lists = ({
   const { accessToken } = useAppSelector((state) => state.auth);
   const { themeName, themeList } = useAppSelector((state) => state.theme);
   const { itemDragging } = useAppSelector((state) => state.kanbam);
+  const lists = useAppSelector((state) => state.lists.lists);
 
-  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const { postCard } = usePosts();
   const { updateList } = useUpdates();
   const [titleValueOfThisList, setTitleOfThisList] = useState<string>(title);
@@ -195,11 +194,7 @@ const Lists = ({
   }, [title]);
 
   const updateListsAndStoredLists = (payload: IListsWithCards[]) => {
-    dispatch({
-      type: "ADD_ALL_LISTS",
-      payload,
-    });
-
+    dispatchRdx(addAllList(payload));
     localStorage.setItem("storedLists", JSON.stringify(payload));
   };
   // end of hooks
@@ -232,10 +227,7 @@ const Lists = ({
           itemDragging
         ) as IListsWithCards[];
 
-        dispatch({
-          type: "ADD_ALL_LISTS",
-          payload: finalLists,
-        });
+        dispatchRdx(addAllList(finalLists));
         // don't set storedLists here, because in every drop event we need to compare lists and storedList.
       }
 
@@ -243,10 +235,7 @@ const Lists = ({
       if (!cards.length) {
         const finalLists = updatedListOnEmptyList(lists!, id, itemDragging);
 
-        dispatch({
-          type: "ADD_ALL_LISTS",
-          payload: finalLists,
-        });
+        dispatchRdx(addAllList(finalLists));
         // don't set storedLists here, because in every drop event we need to compare lists and storedList.
       }
     }
@@ -266,10 +255,7 @@ const Lists = ({
         ev
       );
 
-      dispatch({
-        type: "ADD_ALL_LISTS",
-        payload: finalLists,
-      });
+      dispatchRdx(addAllList(finalLists));
       // don't set storedLists here, because in every drop event we need to compare lists and storedList.
     }
   };
@@ -298,7 +284,7 @@ const Lists = ({
   };
 
   const handleDrop = () => {
-    dispatch({ type: "ADD_ALL_LISTS", payload: updatedListOnDrop(lists!) });
+    dispatchRdx(addAllList(updatedListOnDrop(lists!)));
     handleRemoveCloneElem();
   };
 

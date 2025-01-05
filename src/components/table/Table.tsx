@@ -1,18 +1,17 @@
 import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
-import { ListsContext } from "../../context/ListsContext";
 import Loading from "../notifications/Loading";
 import { handleDataGrouping, handleFiltering, handleGrouping } from "./Utils";
 import TableBottom from "./components/TableBottom";
 import "./Table.scss";
 import AddNewTask from "./components/addNewTask/AddNewTask";
-import { IListsContext, IListsWithCards } from "../../types/kanbam";
+import { IListsWithCards } from "../../types/kanbam";
 import { useParams } from "react-router-dom";
 import useFetchAllListByBoardId from "../../hooks/useFetchAllListByBoardId";
 import ErrorMessage from "../notifications/ErrorMessage";
-import { useAppSelector } from "../../features/hooks";
+import { useAppDispath, useAppSelector } from "../../features/hooks";
 
 export interface ITaskContent {
   id: string;
@@ -43,8 +42,9 @@ const TableStyled = styled.div<INewTheme>`
 `;
 
 export default function Table() {
+  const dispatchRdx = useAppDispath();
   const { themeName, themeList } = useAppSelector((state) => state.theme);
-  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
+  const lists = useAppSelector((state) => state.lists.lists);
 
   const [isAsceSort, setIsAsceSort] = useState({ title: true, priority: true });
   const [taskContents, setTaskContents] = useState<ITaskContent[] | null>(null);
@@ -101,7 +101,7 @@ export default function Table() {
   useEffect(() => {
     const choosenData = lists || data;
     if (choosenData) getData(choosenData!);
-  }, [lists, dispatch, data]);
+  }, [lists, dispatchRdx, data]);
 
   if (loading) return <Loading />;
 

@@ -1,10 +1,9 @@
 import { MdDeleteForever, MdEditNote } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { joinString } from "../../../utils/manipulators";
-import { useContext } from "react";
-import { ListsContext } from "../../../context/ListsContext";
-import { IListsContext } from "../../../types/kanbam";
 import { svgList } from "../../../utils/constantDatas/svg-list";
+import { addAllList } from "../../../features/slices/listsSlice";
+import { useAppDispath } from "../../../features/hooks";
 
 interface IItem {
   type: string;
@@ -29,7 +28,7 @@ export default function Item({
   setRequestError,
   setIdToModify,
 }: IItem) {
-  const { dispatch } = useContext(ListsContext) as IListsContext;
+  const dispatchRdx = useAppDispath();
   const searchQuery = type == "b" ? "" : `?al=${boardAccessLevel}`;
 
   const randomSvgIcon = svgList[Math.floor(Math.random() * svgList.length)];
@@ -45,7 +44,7 @@ export default function Item({
         <div className="item-name">
           <Link
             onClick={() => {
-              dispatch({ type: "ADD_ALL_LISTS", payload: null });
+              dispatchRdx(addAllList(null));
             }}
             to={{
               pathname: `/kanbam/${type}/${id}/${joinString(name)}`,

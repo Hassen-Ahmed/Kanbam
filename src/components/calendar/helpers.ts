@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IActionBoard } from "../../types/actions.type";
+import { addAllList } from "../../features/slices/listsSlice";
 import { IListsWithCards, ICard, ICardCreate } from "../../types/kanbam";
 import { IError } from "../../types/status.type";
 
 export const createNewTask = async (
-  dispatch: (value: IActionBoard) => void,
+  dispatchRdx: any,
   lists: IListsWithCards[],
   newTask: ICardCreate,
   postCard: (newCard: ICardCreate) => Promise<ICard>
@@ -16,7 +16,7 @@ export const createNewTask = async (
       return { ...list, cards: [...list.cards!, res] };
     }) as IListsWithCards[];
 
-    dispatch({ type: "ADD_ALL_LISTS", payload: updatedLists });
+    dispatchRdx(addAllList(updatedLists));
     localStorage.setItem("storedLists", JSON.stringify(updatedLists));
   } catch (err) {
     const error = err as IError;
