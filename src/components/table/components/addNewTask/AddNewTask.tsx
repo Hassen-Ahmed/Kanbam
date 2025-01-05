@@ -1,14 +1,12 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 import { VscClose } from "react-icons/vsc";
 import styled from "styled-components";
 import { INewTheme } from "../../../../types/styledComp";
-import { ListsContext } from "../../../../context/ListsContext";
 import "./AddNewTask.scss";
 import { createNewTask } from "../../../calendar/helpers";
-import { IListsContext } from "../../../../types/kanbam";
 import usePosts from "../../../../utils/api/usePosts";
-import { useAppSelector } from "../../../../features/hooks";
+import { useAppDispath, useAppSelector } from "../../../../features/hooks";
 
 const AddTaskStyled = styled.div<INewTheme>`
   .task-add-new__sub {
@@ -40,9 +38,10 @@ export default function AddNewTask({
   handleAddNewTaskShow,
   handleRefetch,
 }: IAddNewTask) {
+  const dispatchRdx = useAppDispath();
   const { postCard } = usePosts();
   const { themeName, themeList } = useAppSelector((state) => state.theme);
-  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
+  const lists = useAppSelector((state) => state.lists.lists);
 
   const [newTask, setNewTask] = useState({
     title: "",
@@ -52,7 +51,7 @@ export default function AddNewTask({
   });
 
   const handleAddNewTask = async () => {
-    createNewTask(dispatch, lists!, newTask, postCard).then(() => {
+    createNewTask(dispatchRdx, lists!, newTask, postCard).then(() => {
       setNewTask((preValue) => ({ ...preValue, title: "" }));
     });
     handleRefetch();

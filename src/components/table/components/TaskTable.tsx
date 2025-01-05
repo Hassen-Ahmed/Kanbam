@@ -3,13 +3,12 @@ import { MdDeleteForever, MdEditNote } from "react-icons/md";
 import "./TaskTable.scss";
 import styled from "styled-components";
 import { INewTheme } from "../../../types/styledComp";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { ITaskContent } from "../Table";
-import { ListsContext } from "../../../context/ListsContext";
 import CardModal from "../../card/modal/CardModal";
 import AreYouSure from "../../../utils/areYouSure/AreYouSure";
 import { IError } from "../../../types/status.type";
-import { ICard, IListsContext } from "../../../types/kanbam";
+import { ICard } from "../../../types/kanbam";
 import useDeletes from "../../../utils/api/useDeletes";
 import useAnimatekComp from "../../../hooks/useAnimatekComp";
 import { useAppSelector } from "../../../features/hooks";
@@ -34,7 +33,7 @@ export default function TaskTable({
 }) {
   const { deleteCardById } = useDeletes();
   const { themeName, themeList } = useAppSelector((state) => state.theme);
-  const { lists } = useContext(ListsContext) as IListsContext;
+  const lists = useAppSelector((state) => state.lists.lists);
 
   const [showModalCard, setShowModalCard] = useState(false);
   const [showAreYouSure, setShowAreYouSure] = useState(false);

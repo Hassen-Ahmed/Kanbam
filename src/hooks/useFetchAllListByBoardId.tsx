@@ -1,34 +1,30 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { IError } from "../types/status.type";
-import { IListsContext, IListsWithCards } from "../types/kanbam";
-import { ListsContext } from "../context/ListsContext";
 import { handleReorderingData } from "../utils/order_and_update";
 import useGets from "../utils/api/useGets";
 import axios from "axios";
 import { handlingAxioxError } from "../utils/errorHandling";
+import { useAppDispath, useAppSelector } from "../features/hooks";
+import { addAllList } from "../features/slices/listsSlice";
+import { IListsWithCards } from "../types/kanbam";
 
 export default function useFetchAllListByBoardId(b_id: string) {
+  const dispatchRdx = useAppDispath();
   const { getAllListWithCardsByBoardId } = useGets();
-  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
+  const lists = useAppSelector((state) => state.lists.lists);
+
   const [data, setData] = useState<IListsWithCards[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<IError | null>(null);
 
   const fetchListsData = async () => {
     try {
-      dispatch({
-        type: "ADD_ALL_LISTS",
-        payload: null,
-      });
-
+      dispatchRdx(addAllList(null));
       const fetchedLists = await getAllListWithCardsByBoardId(b_id);
 
       const reorderedData = handleReorderingData(fetchedLists);
 
-      dispatch({
-        type: "ADD_ALL_LISTS",
-        payload: reorderedData,
-      });
+      dispatchRdx(addAllList(reorderedData));
 
       localStorage.setItem("storedLists", JSON.stringify(reorderedData));
 

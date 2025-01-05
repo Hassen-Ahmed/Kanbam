@@ -1,5 +1,3 @@
-import { IActionBoard } from "./actions.type";
-
 // comment
 export interface IComment {
   id?: string;
@@ -119,12 +117,6 @@ export interface IUserResponseDetail {
   id: string;
   email: string;
   userName: string;
-}
-
-// others
-export interface IListsContext {
-  lists: IListsWithCards[] | null;
-  dispatch: React.Dispatch<IActionBoard>;
 }
 
 export interface IUserDecodedResult {

@@ -1,6 +1,5 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
-import ListsContextProvider from "./context/ListsContext.tsx";
 import RouterMain from "./router/RouterMain.tsx";
 import "./assets/style/main.scss";
 import { Provider } from "react-redux";
@@ -13,9 +12,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <StrictMode>
     <Provider store={store}>
-      <ListsContextProvider>
-        <RouterMain />
-      </ListsContextProvider>
+      <RouterMain />
     </Provider>
   </StrictMode>
 );

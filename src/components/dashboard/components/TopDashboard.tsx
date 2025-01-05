@@ -1,8 +1,7 @@
-import { useContext } from "react";
 import PieChart from "../charts/PieChart";
 import { IDataPie, ITableContents } from "../Dashboard";
-import { ListsContext } from "../../../context/ListsContext";
-import { IListsContext, IListsWithCards } from "../../../types/kanbam";
+import { IListsWithCards } from "../../../types/kanbam";
+import { useAppSelector } from "../../../features/hooks";
 
 interface ITopDashboard {
   dataPie: IDataPie[];
@@ -19,7 +18,7 @@ export default function TopDashboard({
   listTitles,
   tableContents,
 }: ITopDashboard) {
-  const { lists } = useContext(ListsContext) as IListsContext;
+  const lists = useAppSelector((state) => state.lists.lists);
 
   const deepListsCopy = JSON.parse(JSON.stringify(lists)) as IListsWithCards[];
 

@@ -1,13 +1,12 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { MdOutlineCancel } from "react-icons/md";
 
 import { IError } from "../../types/status.type";
 
-import { ListsContext } from "../../context/ListsContext";
-import "./BoardNewListCreator.scss";
-import { IListsContext } from "../../types/kanbam";
 import usePosts from "../../utils/api/usePosts";
 import { logger } from "../../utils/logger";
+import { useAppSelector } from "../../features/hooks";
+import "./BoardNewListCreator.scss";
 
 type isListAddedType = {
   isListAddedSetter: (value: boolean) => void;
@@ -20,7 +19,7 @@ const BoardNewListCreator = ({
 }: isListAddedType) => {
   const { postList } = usePosts();
   const [inputList, setInputList] = useState<string>("");
-  const { lists } = useContext(ListsContext) as IListsContext;
+  const lists = useAppSelector((state) => state.lists.lists);
 
   //
 

@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import multiMonthPlugin from "@fullcalendar/multimonth";
 import interactionPlugin from "@fullcalendar/interaction";
 
-import { ListsContext } from "../../context/ListsContext";
 import Loading from "../notifications/Loading";
 import CardModal from "../card/modal/CardModal";
 import { createNewTask, eventDrop, eventResize, events } from "./helpers";
@@ -15,13 +14,14 @@ import Event from "./Event";
 import EventTaskContainer from "./EventTaskContainer";
 import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
-import { ICard, IListsContext, IListsWithCards } from "../../types/kanbam";
+import { ICard, IListsWithCards } from "../../types/kanbam";
 import { useParams } from "react-router-dom";
 import useFetchAllListByBoardId from "../../hooks/useFetchAllListByBoardId";
 import ErrorMessage from "../notifications/ErrorMessage";
 import useUpdates from "../../utils/api/useUpdates";
 import usePosts from "../../utils/api/usePosts";
-import { useAppSelector } from "../../features/hooks";
+import { useAppDispath, useAppSelector } from "../../features/hooks";
+import { addAllList } from "../../features/slices/listsSlice";
 
 export interface IListFewDetail {
   id: string;
@@ -36,9 +36,11 @@ const CalendarFullStyled = styled.div<INewTheme>`
 `;
 
 const CalendarFull = () => {
+  const dispatchRdx = useAppDispath();
   const { postCard } = usePosts();
   const { updateCard } = useUpdates();
-  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
+  const lists = useAppSelector((state) => state.lists.lists);
+
   const searchText = useAppSelector((state) => state.kanbam.searchText);
   const { themeName, themeList } = useAppSelector((state) => state.theme);
   const [cardDetails, setCardDetails] = useState<ICard[] | null>(null);
@@ -68,8 +70,7 @@ const CalendarFull = () => {
     let cardListFiltered: ICard[] = [];
 
     if (!lists) {
-      // const data = await handleGetAllLists();
-      dispatch({ type: "ADD_ALL_LISTS", payload: data as IListsWithCards[] });
+      dispatchRdx(addAllList(data as IListsWithCards[]));
       localStorage.setItem("storedLists", JSON.stringify(data));
       newLists = data!;
     } else {
@@ -92,7 +93,7 @@ const CalendarFull = () => {
     );
 
     setCardDetails(cardListFiltered);
-  }, [lists, dispatch, data, searchText]);
+  }, [lists, data, searchText, dispatchRdx]);
 
   useEffect(() => {
     handleCardDetailsAssignment();
@@ -159,7 +160,7 @@ const CalendarFull = () => {
   };
 
   const handleAddNewTask = async () => {
-    createNewTask(dispatch, lists!, newTask, postCard).then(() => {
+    createNewTask(dispatchRdx, lists!, newTask, postCard).then(() => {
       setNewTask((preValue) => ({ ...preValue, title: "" }));
     });
 

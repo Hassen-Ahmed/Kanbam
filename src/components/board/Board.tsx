@@ -1,30 +1,25 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IoMdAdd } from "react-icons/io";
 
 import { handleSearchText } from "../../utils/order_and_update";
 
-import { ListsContext } from "../../context/ListsContext";
 import BoardNewListCreator from "./BoardNewListCreator";
 import Loading from "../notifications/Loading";
 import Lists from "../lists/Lists";
 import styled from "styled-components";
 import { INewTheme } from "../../types/styledComp";
 import useFetchAllListByBoardId from "../../hooks/useFetchAllListByBoardId";
-import {
-  IList,
-  IListsContext,
-  IListsWithCards,
-  IUserDecodedResult,
-} from "../../types/kanbam";
+import { IList, IListsWithCards, IUserDecodedResult } from "../../types/kanbam";
 import ErrorMessage from "../notifications/ErrorMessage";
 import useSignalRConnection from "../../hooks/useSignalRConnection";
 import "./Board.scss";
 import { jwtDecode } from "jwt-decode";
 import * as signalR from "@microsoft/signalr";
 import { deepCopiedLists, updatedListsByListId } from "../lists/utilsForLists";
-import { useAppSelector } from "../../features/hooks";
+import { useAppDispath, useAppSelector } from "../../features/hooks";
+import { addAllList } from "../../features/slices/listsSlice";
 
 const BoardStyled = styled.div<INewTheme>`
   .board {
@@ -53,10 +48,11 @@ const BoardStyled = styled.div<INewTheme>`
 `;
 
 const Board = () => {
+  const dispatchRdx = useAppDispath();
   const { accessToken } = useAppSelector((state) => state.auth);
+  const lists = useAppSelector((state) => state.lists.lists);
   const searchText = useAppSelector((state) => state.kanbam.searchText);
   const [isListAdded, setIsListAdded] = useState<boolean>(false);
-  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
   const { themeName, themeList } = useAppSelector((state) => state.theme);
 
   const { b_id } = useParams();
@@ -74,8 +70,7 @@ const Board = () => {
 
         copyOfLists = [...copyOfLists, createdList];
 
-        dispatch({ type: "ADD_ALL_LISTS", payload: copyOfLists });
-
+        dispatchRdx(addAllList(copyOfLists));
         localStorage.setItem("storedLists", JSON.stringify(copyOfLists));
       });
       // update
@@ -91,7 +86,8 @@ const Board = () => {
             return { ...list, ...updatedList };
           });
 
-          dispatch({ type: "ADD_ALL_LISTS", payload: copyOfLists });
+          dispatchRdx(addAllList(copyOfLists));
+
           localStorage.setItem("storedLists", JSON.stringify(copyOfLists));
         }
       );
@@ -100,10 +96,7 @@ const Board = () => {
         const result = updatedListsByListId(copyOfLists!, listId);
         copyOfLists = result;
 
-        dispatch({
-          type: "ADD_ALL_LISTS",
-          payload: result,
-        });
+        dispatchRdx(addAllList(result));
 
         localStorage.setItem("storedLists", JSON.stringify(result));
       });
@@ -125,9 +118,9 @@ const Board = () => {
 
   useEffect(() => {
     if (searchText) {
-      handleSearchText(searchText, dispatch);
+      handleSearchText(searchText, dispatchRdx);
     }
-  }, [searchText, dispatch]);
+  }, [searchText]);
 
   //
 

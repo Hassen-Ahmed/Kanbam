@@ -1,10 +1,8 @@
-import { IActionBoard } from "../types/actions.type";
+import { addAllList } from "../features/slices/listsSlice";
 import { ICard, IListsWithCards } from "../types/kanbam";
 
-export const handleSearchText = (
-  searchText: string,
-  dispatch: React.Dispatch<IActionBoard>
-) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const handleSearchText = (searchText: string, dispatchRdx: any) => {
   const storedLists = JSON.parse(
     localStorage.getItem("storedLists")!
   ) as IListsWithCards[];
@@ -27,7 +25,7 @@ export const handleSearchText = (
     payload = updatedLists;
   }
 
-  dispatch({ type: "ADD_ALL_LISTS", payload: payload as IListsWithCards[] });
+  dispatchRdx(addAllList(payload as IListsWithCards[]));
 };
 
 export const handleUpdateLists = (

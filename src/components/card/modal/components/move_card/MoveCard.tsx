@@ -1,19 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { IError } from "../../../../../types/status.type";
 
 import "./MoveCard.scss";
-import { ListsContext } from "../../../../../context/ListsContext";
 
 import { VscClose } from "react-icons/vsc";
 import { INewTheme } from "../../../../../types/styledComp";
 import styled from "styled-components";
-import {
-  ICard,
-  IListsContext,
-  IListsWithCards,
-} from "../../../../../types/kanbam";
+import { ICard, IListsWithCards } from "../../../../../types/kanbam";
 import useUpdates from "../../../../../utils/api/useUpdates";
-import { useAppSelector } from "../../../../../features/hooks";
+import { useAppDispath, useAppSelector } from "../../../../../features/hooks";
+import { addAllList } from "../../../../../features/slices/listsSlice";
 
 const MoveCardStyled = styled.div<INewTheme>`
   background-color: ${({ $themeList, $newtheme }) =>
@@ -54,8 +50,9 @@ export default function MoveCard({
   cardDetail,
   handleIsMovePressed,
 }: IMoveCard) {
+  const dispatchRdx = useAppDispath();
   const { updateCard } = useUpdates();
-  const { lists, dispatch } = useContext(ListsContext) as IListsContext;
+  const lists = useAppSelector((state) => state.lists.lists);
   const [position, setPosition] = useState("1");
   const [listTitle, setListTittle] = useState<string | null>(
     lists?.map((list) => list.title)[0] as string
@@ -104,10 +101,7 @@ export default function MoveCard({
         return list;
       }) as IListsWithCards[];
 
-      dispatch({
-        type: "ADD_ALL_LISTS",
-        payload: newLists,
-      });
+      dispatchRdx(addAllList(newLists));
       localStorage.setItem("storedLists", JSON.stringify(newLists));
     };
 

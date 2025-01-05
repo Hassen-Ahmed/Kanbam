@@ -3,6 +3,7 @@ import { authReducer } from "../features/slices/authSlice";
 import { themeReducer } from "../features/slices/themeSlice";
 import { profileSlice } from "../features/slices/profileSlice";
 import { kanbamSlice } from "../features/slices/kanbamSlice";
+import { listsSlice } from "../features/slices/listsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     theme: themeReducer.reducer,
     profile: profileSlice.reducer,
     kanbam: kanbamSlice.reducer,
+    lists: listsSlice.reducer,
   },
 });
 
