@@ -1,5 +1,6 @@
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Highlight from "@tiptap/extension-highlight";
 import MenuBar from "./MenuBar";
 import "./Tiptap.scss";
 
@@ -10,7 +11,7 @@ interface ITiptap {
 
 const Tiptap = ({ setHtml, content }: ITiptap) => {
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [StarterKit, Highlight],
     content,
     editorProps: {
       attributes: {
