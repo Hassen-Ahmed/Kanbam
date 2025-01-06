@@ -10,7 +10,8 @@ import styled from "styled-components";
 import { Hr } from "../../utils/constantDatas/styledUtils";
 import useDeletes from "../../utils/api/useDeletes";
 import { logger } from "../../utils/logger";
-import { useAppSelector } from "../../features/hooks";
+import { useAppDispath, useAppSelector } from "../../features/hooks";
+import { filtetListsById } from "../../features/slices/listsSlice";
 
 const ListMenuStyled = styled.div<INewTheme>`
   .lists-menu {
@@ -45,6 +46,7 @@ export default function ListsMenu({
   boardId: string;
   setIsNewCardInputVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const dispatchRdx = useAppDispath();
   const { deleteListsById } = useDeletes();
   const [isListRemoved, setIsListRemoved] = useState(false);
   const { themeName, themeList } = useAppSelector((state) => state.theme);
@@ -66,11 +68,12 @@ export default function ListsMenu({
 
   // end of hooks
 
-  const handleListArchive = async (listId: string) => {
+  const handleListArchive = async (id: string) => {
     setIsListRemoved(true);
     try {
-      await deleteListsById(listId, boardId);
+      await deleteListsById(id, boardId);
       handleIsListMenuVisible(false);
+      dispatchRdx(filtetListsById({ id }));
     } catch (err) {
       const error = err as IError;
       logger("error", `Error deleting list, err:  ${error.message}`);
@@ -124,20 +127,32 @@ export default function ListsMenu({
             <button>Move list</button>
           </div>
 
-          <Hr $themeList={themeList} $themename={themeName} $group="primary" />
+          <Hr
+            $themeList={themeList}
+            $themename={themeName}
+            $group="secondary"
+          />
 
           <div className="lists-menu__btn">
             <button>Sort by...</button>
           </div>
 
-          <Hr $themeList={themeList} $themename={themeName} $group="primary" />
+          <Hr
+            $themeList={themeList}
+            $themename={themeName}
+            $group="secondary"
+          />
           <div className="lists-menu__btn">
             <button>Archive all cards in this list</button>
           </div>
           <div className="lists-menu__btn">
             <button>Move all cards in this list</button>
           </div>
-          <Hr $themeList={themeList} $themename={themeName} $group="primary" />
+          <Hr
+            $themeList={themeList}
+            $themename={themeName}
+            $group="secondary"
+          />
 
           {archiveButton}
         </div>
