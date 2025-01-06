@@ -39,7 +39,7 @@ const TextEditorStyled = styled.div<INewTheme>`
           $themeList[$newtheme].bg["lists"]};
       }
 
-      button {
+      .tiptap-btns button {
         color: ${({ $themeList, $newtheme }) =>
           $themeList[$newtheme].font["quaternary"]};
 
