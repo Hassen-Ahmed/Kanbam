@@ -19,7 +19,14 @@ export const listsSlice = createSlice({
     addAllList: (state, action: PayloadAction<IListsWithCards[] | null>) => {
       state.lists = action.payload;
     },
+    filtetListsById: (state, action: PayloadAction<{ id: string }>) => {
+      const modifiedLists = state.lists?.filter(
+        (listObj) => listObj.id !== action.payload.id
+      );
+      state.lists = modifiedLists!;
+    },
   },
 });
 
-export const { addSingleList, addAllList } = listsSlice.actions;
+export const { addSingleList, addAllList, filtetListsById } =
+  listsSlice.actions;
