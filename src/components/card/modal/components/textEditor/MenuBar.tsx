@@ -1,5 +1,6 @@
 import { Editor } from "@tiptap/react";
-import { BsCode, BsTypeStrikethrough } from "react-icons/bs";
+import { BsCode, BsParagraph, BsTypeStrikethrough } from "react-icons/bs";
+import { FaHighlighter } from "react-icons/fa";
 import { GoListOrdered, GoListUnordered, GoQuote } from "react-icons/go";
 import { IoIosRedo, IoIosUndo } from "react-icons/io";
 import { VscCode } from "react-icons/vsc";
@@ -101,7 +102,12 @@ const MenuBar = ({ editor }: IMenuBar) => {
           </button>
         </div>
       </div>
-
+      <button
+        onClick={() => editor.chain().focus().setParagraph().run()}
+        className={editor.isActive("paragraph") ? "is-active" : ""}
+      >
+        <BsParagraph />
+      </button>
       <button
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         className={editor.isActive("bulletList") ? "is-active" : ""}
@@ -144,6 +150,12 @@ const MenuBar = ({ editor }: IMenuBar) => {
         disabled={!editor.can().chain().focus().redo().run()}
       >
         <IoIosRedo />
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleHighlight().run()}
+        className={editor.isActive("highlight") ? "is-active" : ""}
+      >
+        <FaHighlighter />
       </button>
     </div>
   );
