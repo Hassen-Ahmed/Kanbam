@@ -23,6 +23,7 @@
     "@nivo/core": "^0.87.0",
     "@nivo/pie": "^0.87.0",
     "@reduxjs/toolkit": "^2.5.0",
+    "@tiptap/extension-highlight": "^2.11.0",
     "@tiptap/pm": "^2.10.4",
     "@tiptap/react": "^2.10.4",
     "@tiptap/starter-kit": "^2.10.4",
