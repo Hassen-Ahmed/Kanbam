@@ -117,9 +117,7 @@ const Board = () => {
   }, [data]);
 
   useEffect(() => {
-    if (searchText) {
-      handleSearchText(searchText, dispatchRdx);
-    }
+    handleSearchText(searchText, dispatchRdx);
   }, [searchText]);
 
   //
