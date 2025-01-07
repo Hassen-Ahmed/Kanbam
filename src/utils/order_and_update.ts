@@ -7,7 +7,7 @@ export const handleSearchText = (searchText: string, dispatchRdx: any) => {
     localStorage.getItem("storedLists")!
   ) as IListsWithCards[];
 
-  let payload;
+  let payload: IListsWithCards[];
 
   if (!searchText) {
     payload = storedLists;
@@ -25,7 +25,7 @@ export const handleSearchText = (searchText: string, dispatchRdx: any) => {
     payload = updatedLists;
   }
 
-  dispatchRdx(addAllList(payload as IListsWithCards[]));
+  dispatchRdx(addAllList(payload));
 };
 
 export const handleUpdateLists = (
