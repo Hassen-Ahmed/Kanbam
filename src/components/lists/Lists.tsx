@@ -95,10 +95,12 @@ const Lists = ({
   const [isNewCardInputVisible, setIsNewCardInputVisible] =
     useState<boolean>(false);
 
-  const { userId } = jwtDecode(accessToken!) as IUserDecodedResult;
-
   const configureOnConnections = useCallback(
     async (connection: signalR.HubConnection) => {
+      if (!accessToken) return;
+
+      const { userId } = jwtDecode(accessToken!) as IUserDecodedResult;
+
       let copyOfLists = deepCopiedLists(lists!);
       // create
       connection.on("ReceiveCardCreated", (newCard: ICard) => {
