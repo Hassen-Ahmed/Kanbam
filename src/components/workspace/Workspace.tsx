@@ -1,6 +1,6 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import useFetchAllBoardsByWorkspaceId from "../../hooks/useFetchAllBoardsByWorkspaceId";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./Workspace.scss";
 import styled from "styled-components";
 import { INewTheme } from "../../types/styledComp";
@@ -51,18 +51,27 @@ const WorkspaceStyled = styled.div<INewTheme>`
 `;
 
 export default function Workspace() {
+  const searchText = useAppSelector((state) => state.kanbam.searchText);
   const { themeName, themeList } = useAppSelector((state) => state.theme);
   const { updateBoard } = useUpdates();
   const { deleteBoardById } = useDeletes();
+  const { postWorkspaceMemeber, postBoard } = usePosts();
   const { w_id, w_name } = useParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const accessLevel = queryParams.get("al");
-  const { postWorkspaceMemeber, postBoard } = usePosts();
 
   const { data, loading, error, setData } = useFetchAllBoardsByWorkspaceId(
     w_id!
   );
+  const [filterdBoards, setFilterdBoards] = useState<IBoard[] | null>(null);
+
+  useEffect(() => {
+    if (data)
+      setFilterdBoards(() =>
+        data.filter((b) => b.name.toLowerCase().includes(searchText))
+      );
+  }, [searchText, data]);
 
   const configureOnConnections = useCallback(
     async (connection: signalR.HubConnection) => {
@@ -256,10 +265,10 @@ export default function Workspace() {
             <h1>Boards</h1>
           </div>
           <div className="list">
-            {data?.length == 0 ? (
+            {filterdBoards?.length == 0 ? (
               <p className="empty-data">No items available to dispaly.</p>
             ) : (
-              data?.map((b) => {
+              filterdBoards?.map((b) => {
                 return (
                   <Item
                     boardAccessLevel=""
