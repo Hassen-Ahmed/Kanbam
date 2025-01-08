@@ -2,7 +2,7 @@ import useFetchAllWorkspace from "../../hooks/useFetchAllWorkspace";
 import "./Workspaces.scss";
 import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import NewItem, { IItemDetail } from "./components/NewItem";
 import Loading from "../notifications/Loading";
@@ -16,6 +16,7 @@ import useDeletes from "../../utils/api/useDeletes";
 import ErrorMessage from "../notifications/ErrorMessage";
 import { useAppSelector } from "../../features/hooks";
 import { statusType } from "../../features/slices/profileSlice";
+import { IWorkspace } from "../../types/kanbam";
 
 const WorkspacesStyled = styled.div<INewTheme>`
   background-color: ${({ $themeList, $newtheme }) =>
@@ -42,15 +43,27 @@ export default function WorkspaceList() {
   const { updateWorkspace } = useUpdates();
   const { deleteWorkspaceById } = useDeletes();
   const { themeName, themeList } = useAppSelector((state) => state.theme);
+  const searchText = useAppSelector((state) => state.kanbam.searchText);
   const { status, profile } = useAppSelector((state) => state.profile);
 
   const { data, loading, error, refetch } = useFetchAllWorkspace();
+  const [filterdWorkspaces, setFilterdWorkspaces] = useState<
+    IWorkspace[] | null
+  >(null);
+
   const [showNewItemModal, setShowNewItemModal] = useState(false);
   const [showUpdateItemModal, setShowUpdateItemModal] = useState(false);
 
   const [requestError, setRequestError] = useState(false);
   const [showAreYouSureModal, setShowAreYouSureModal] = useState(false);
   const [IdToModify, setIdToModify] = useState("");
+
+  useEffect(() => {
+    if (data)
+      setFilterdWorkspaces(() =>
+        data.filter((ws) => ws.name.toLowerCase().includes(searchText))
+      );
+  }, [searchText, data]);
 
   const handleNewItemModlaVisibility = (value: boolean) => {
     setShowNewItemModal(value);
@@ -160,10 +173,10 @@ export default function WorkspaceList() {
             <h1>Workspaces</h1>
           </div>
           <div className="list">
-            {data?.workspaces.length == 0 ? (
+            {filterdWorkspaces?.length == 0 ? (
               <p className="empty-data">No items available to dispaly.</p>
             ) : (
-              data?.workspaces.map((w) => {
+              filterdWorkspaces?.map((w) => {
                 return (
                   <Item
                     key={w.workspaceId}
