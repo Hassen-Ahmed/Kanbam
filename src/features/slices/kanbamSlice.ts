@@ -19,7 +19,7 @@ export const kanbamSlice = createSlice({
       state.itemDragging.current = action.payload;
     },
     setSearchText: (state, action: PayloadAction<string>) => {
-      state.searchText = action.payload;
+      state.searchText = action.payload.trim().toLowerCase();
     },
   },
 });

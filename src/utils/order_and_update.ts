@@ -16,7 +16,7 @@ export const handleSearchText = (searchText: string, dispatchRdx: any) => {
       if (listObj.cards == undefined) return listObj;
 
       const filteredCards = listObj.cards.filter((card) =>
-        card.title.toLocaleLowerCase().includes(searchText.trim())
+        card.title.toLowerCase().includes(searchText)
       );
 
       return { ...listObj, cards: filteredCards };
