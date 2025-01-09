@@ -64,10 +64,34 @@ const CalendarFull = () => {
   const { data, loading, error } = useFetchAllListByBoardId(b_id!);
 
   //
-  const handleCardDetailsAssignment = useCallback(async () => {
+  const filterCardDetail = useCallback(
+    (newLists: IListsWithCards[]) => {
+      let cardListFiltered: ICard[] = [];
+      const cardList: ICard[] = [];
+
+      const cardsArrayList = newLists?.map((list) => {
+        setListsFewDetail((preValue) => [
+          ...preValue,
+          { id: list.id!, title: list.title },
+        ]);
+        return list?.cards;
+      });
+
+      cardsArrayList?.forEach((cards) =>
+        cards?.forEach((card) => cardList.push(card))
+      );
+
+      cardListFiltered = cardList.filter((card) =>
+        card.title.toLowerCase().includes(searchText)
+      );
+
+      return cardListFiltered;
+    },
+    [searchText]
+  );
+
+  const handleCardDetailsAssignment = useCallback(() => {
     let newLists: IListsWithCards[] = [];
-    const cardList: ICard[] = [];
-    let cardListFiltered: ICard[] = [];
 
     if (!lists) {
       dispatchRdx(addAllList(data as IListsWithCards[]));
@@ -76,28 +100,13 @@ const CalendarFull = () => {
     } else {
       newLists = lists;
     }
-
-    const cardsRespone = newLists?.map((list) => {
-      setListsFewDetail((preValue) => {
-        return [...preValue, { id: list.id!, title: list.title }];
-      });
-      return list?.cards;
-    });
-
-    cardsRespone?.forEach((cards) => {
-      cards?.forEach((card) => cardList.push(card));
-    });
-
-    cardListFiltered = cardList.filter((card) =>
-      card.title.toLocaleLowerCase().includes(searchText.trim())
-    );
-
-    setCardDetails(cardListFiltered);
-  }, [lists, data, searchText, dispatchRdx]);
+    setCardDetails(filterCardDetail(newLists));
+  }, [lists, data, dispatchRdx, filterCardDetail]);
 
   useEffect(() => {
     handleCardDetailsAssignment();
-  }, [searchText, lists, handleCardDetailsAssignment]);
+    console.log("data");
+  }, [handleCardDetailsAssignment]);
 
   const handleDateClick = (info: any) => {
     const listsTitle = listsFewDetail.filter(
