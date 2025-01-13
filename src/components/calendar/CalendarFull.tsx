@@ -105,7 +105,6 @@ const CalendarFull = () => {
 
   useEffect(() => {
     handleCardDetailsAssignment();
-    console.log("data");
   }, [handleCardDetailsAssignment]);
 
   const handleDateClick = (info: any) => {
