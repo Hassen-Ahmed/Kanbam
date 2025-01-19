@@ -23,12 +23,12 @@ export const loginData = () => {
       name: "password",
       type: "text",
       errormessage:
-        "Password should be 8-20 character and should include at list 1 letter, 1 number and only 1 spcecial character.",
-      placeholder: "#test1234",
+        "Password should be 8-20 character and should include at least 1 CAPITAL letter, 1 number and only 1 spcecial character.",
+      placeholder: "#Test1234",
       label: "Password",
       required: true,
       pattern:
-        "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[#$@!%&*?])[A-Za-z0-9#$@!%&*?]{8,20}$",
+        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[#$@!%&*?])[A-Za-z0-9#$@!%&*?]{8,20}$",
     },
   ];
   return data;
@@ -51,19 +51,19 @@ export const signupData = (userDetails: IUserDetailsSignup) => {
       name: "password",
       type: "text",
       errormessage:
-        "Password should be 8-20 character and should include at list 1 letter, 1 number and only 1 spcecial character.",
-      placeholder: "#test1234",
+        "Password should be 8-20 character and should include at least 1 CAPITAL letter, 1 number and only 1 spcecial character.",
+      placeholder: "#Test1234",
       label: "Password",
       required: true,
       pattern:
-        "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[#$@!%&*?])[A-Za-z0-9#$@!%&*?]{8,20}$",
+        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[#$@!%&*?])[A-Za-z0-9#$@!%&*?]{8,20}$",
     },
     {
       id: "confirmpassword",
       name: "passwordConfirm",
       type: "text",
       errormessage: "Password does not match!",
-      placeholder: "#test1234",
+      placeholder: "#Test1234",
       label: "ConfirmPassword",
       required: true,
       pattern: userDetails.password,
