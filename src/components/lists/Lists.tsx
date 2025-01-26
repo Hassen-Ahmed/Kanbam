@@ -4,7 +4,6 @@ import { IoMdAdd } from "react-icons/io";
 import { VscClose } from "react-icons/vsc";
 
 import { handleDragstartUtil, handleRemoveCloneElem } from "../../utils/dnd";
-import { IError } from "../../types/status.type";
 import { DragEventMy } from "../../types/html.type";
 
 import {
@@ -23,6 +22,7 @@ import {
   ICard,
   ICardCreate,
   IComment,
+  IError,
   IListsWithCards,
   IUserDecodedResult,
 } from "../../types/kanbam";

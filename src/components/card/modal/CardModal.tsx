@@ -7,7 +7,6 @@ import { VscClose } from "react-icons/vsc";
 import { CiEdit } from "react-icons/ci";
 
 import { handleUpdateLists } from "../../../utils/order_and_update";
-import { IError } from "../../../types/status.type";
 
 import TextEditor from "./components/textEditor/TextEditor";
 import ButtonsRight from "./components/ButtonsRight";
@@ -20,6 +19,7 @@ import { icons } from "./components/priorities/Priorities";
 import {
   ICard,
   IComment,
+  IError,
   IListsWithCards,
   IUserDecodedResult,
 } from "../../../types/kanbam";

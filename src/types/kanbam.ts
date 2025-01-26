@@ -144,3 +144,10 @@ export interface IItemDragging {
   item: IItem;
   identity: string;
 }
+
+export type StatusType = "idle" | "loading" | "failed";
+
+export interface IError {
+  message: string;
+  statusCode: number;
+}

@@ -38,6 +38,24 @@ const router = createBrowserRouter([
           return { Component: SignUp.default };
         },
       },
+      {
+        path: "/auth/forgot-password",
+        async lazy() {
+          const ForgotPassword = await import(
+            "../pages/auth/forgotPassword/ForgotPassword"
+          );
+          return { Component: ForgotPassword.default };
+        },
+      },
+      {
+        path: "/auth/reset-password",
+        async lazy() {
+          const ResetPassword = await import(
+            "../pages/auth/resetPassword/ResetPassword"
+          );
+          return { Component: ResetPassword.default };
+        },
+      },
     ],
   },
 

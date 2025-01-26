@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { IError } from "../../../../../types/status.type";
 
 import "./MoveCard.scss";
 
 import { VscClose } from "react-icons/vsc";
 import { INewTheme } from "../../../../../types/styledComp";
 import styled from "styled-components";
-import { ICard, IListsWithCards } from "../../../../../types/kanbam";
+import { ICard, IError, IListsWithCards } from "../../../../../types/kanbam";
 import useUpdates from "../../../../../utils/api/useUpdates";
 import { useAppDispath, useAppSelector } from "../../../../../features/hooks";
 import { addAllList } from "../../../../../features/slices/listsSlice";
+import { logger } from "../../../../../utils/logger";
 
 const MoveCardStyled = styled.div<INewTheme>`
   background-color: ${({ $themeList, $newtheme }) =>
@@ -111,9 +111,9 @@ export default function MoveCard({
       updatedListsByMovingCard(cardDetail);
     } catch (err) {
       const error = err as IError;
-      console.log(`Error message: ${error.message}`);
+      logger("error", `Error message: ${error.message}`);
     } finally {
-      console.log("Card is moving to it's destination!");
+      logger("info", "Card is moving to it's destination!");
       handleIsMovePressed(false);
     }
   };

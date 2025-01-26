@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { MdOutlineCancel } from "react-icons/md";
 
-import { IError } from "../../types/status.type";
-
 import usePosts from "../../utils/api/usePosts";
 import { logger } from "../../utils/logger";
 import { useAppSelector } from "../../features/hooks";
 import "./BoardNewListCreator.scss";
+import { IError } from "../../types/kanbam";
 
 type isListAddedType = {
   isListAddedSetter: (value: boolean) => void;

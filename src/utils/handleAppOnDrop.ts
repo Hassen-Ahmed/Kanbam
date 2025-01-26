@@ -1,5 +1,4 @@
-import { ICard, IList, IListsWithCards } from "../types/kanbam";
-import { IError } from "../types/status.type";
+import { ICard, IError, IList, IListsWithCards } from "../types/kanbam";
 import { logger } from "./logger";
 
 export const handleAppOnDrop = (

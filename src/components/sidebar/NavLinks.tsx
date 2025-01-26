@@ -8,11 +8,11 @@ import { HiViewBoards } from "react-icons/hi";
 import { useState } from "react";
 
 import { FaUsersGear } from "react-icons/fa6";
-import { IError } from "../../types/status.type";
 import NewMember, { INewMemberDetail } from "./components/NewMember";
-import { IBoardMemberCreate } from "../../types/kanbam";
+import { IBoardMemberCreate, IError } from "../../types/kanbam";
 import Members from "./components/Members";
 import usePosts from "../../utils/api/usePosts";
+import { logger } from "../../utils/logger";
 
 type ActiveButtonType = ({ isActive }: { isActive: boolean }) => string;
 
@@ -42,7 +42,7 @@ const NavLinks = ({
     } catch (err) {
       setRequestError(true);
       const error = err as IError;
-      console.log("Error Creating Board: ", error.message);
+      logger("error", `Error Creating Board: ${error.message}`);
     }
   };
 

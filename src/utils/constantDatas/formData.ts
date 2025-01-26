@@ -1,73 +1,75 @@
 import { IFormData } from "../../types/formData.type";
 
 interface IUserDetailsSignup {
-  email: string;
+  email?: string;
   password: string;
   passwordConfirm: string;
 }
 
-export const loginData = () => {
-  const data: IFormData[] = [
-    {
-      id: "email",
-      name: "email",
-      type: "email",
-      errormessage: "Wrong email address",
-      placeholder: "example@gmail.com",
-      label: "Email",
-      required: true,
-      pattern: "^[\\w]+(?:\\.[\\w]+)*@(?:[\\w]+\\.)+[\\w]{2,7}$",
-    },
-    {
-      id: "password",
-      name: "password",
-      type: "text",
-      errormessage:
-        "Password should be 8-20 character and should include at least 1 CAPITAL letter, 1 number and only 1 spcecial character.",
-      placeholder: "#Test1234",
-      label: "Password",
-      required: true,
-      pattern:
-        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[#$@!%&*?])[A-Za-z0-9#$@!%&*?]{8,20}$",
-    },
-  ];
-  return data;
+type PasswordConfirmType = (password: string) => IFormData;
+
+type LoginDataType = () => IFormData[];
+type SignupDataType = (userDetails: IUserDetailsSignup) => IFormData[];
+type ForgotPasswordDataType = () => IFormData[];
+type ResetPasswordDataType = (userDetails: IUserDetailsSignup) => IFormData[];
+
+// Constant data for email, password and passwordConfirm
+const emailAttributeData: IFormData = {
+  id: "email",
+  name: "email",
+  type: "email",
+  errormessage: "Wrong email address!",
+  placeholder: "example@gmail.com",
+  label: "Email",
+  required: true,
+  pattern: "^[\\w]+(?:\\.[\\w]+)*@(?:[\\w]+\\.)+[\\w]{2,7}$",
 };
 
-export const signupData = (userDetails: IUserDetailsSignup) => {
-  const data: IFormData[] = [
-    {
-      id: "email",
-      name: "email",
-      type: "email",
-      errormessage: "Wrong email address",
-      placeholder: "example@gmail.com",
-      label: "Email",
-      required: true,
-      pattern: "^[\\w]+(?:\\.[\\w]+)*@(?:[\\w]+\\.)+[\\w]{2,7}$",
-    },
-    {
-      id: "password",
-      name: "password",
-      type: "text",
-      errormessage:
-        "Password should be 8-20 character and should include at least 1 CAPITAL letter, 1 number and only 1 spcecial character.",
-      placeholder: "#Test1234",
-      label: "Password",
-      required: true,
-      pattern:
-        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[#$@!%&*?])[A-Za-z0-9#$@!%&*?]{8,20}$",
-    },
-    {
-      id: "confirmpassword",
-      name: "passwordConfirm",
-      type: "text",
-      errormessage: "Password does not match!",
-      placeholder: "#Test1234",
-      label: "ConfirmPassword",
-      required: true,
-      pattern: userDetails.password,
-    },
-  ];
-  return data;
+const passwordAttributeData: IFormData = {
+  id: "password",
+  name: "password",
+  type: "text",
+  errormessage:
+    "Password must be 8–20 characters long and include at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.",
+  placeholder: "#Test1234",
+  label: "Password",
+  required: true,
+  pattern:
+    "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[#$@!%&*?])[A-Za-z0-9#$@!%&*?]{8,20}$",
 };
+
+const passwordConfirmAttributeData: PasswordConfirmType = (
+  password: string
+) => {
+  return {
+    id: "confirmpassword",
+    name: "passwordConfirm",
+    type: "text",
+    errormessage: "Password does not match!",
+    placeholder: "#Test1234",
+    label: "ConfirmPassword",
+    required: true,
+    pattern: password,
+  };
+};
+
+// exports
+export const loginData: LoginDataType = () => [
+  emailAttributeData,
+  passwordAttributeData,
+];
+
+export const signupData: SignupDataType = (userDetails) => [
+  emailAttributeData,
+  passwordAttributeData,
+  passwordConfirmAttributeData(userDetails.password),
+];
+
+export const forgotPasswordData: ForgotPasswordDataType = () => [
+  emailAttributeData,
+];
+
+export const resetPasswordData: ResetPasswordDataType = (userDetails) => [
+  passwordAttributeData,
+  passwordConfirmAttributeData(userDetails.password),
+];

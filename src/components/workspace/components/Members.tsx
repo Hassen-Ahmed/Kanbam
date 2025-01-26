@@ -1,5 +1,5 @@
 import { MdDeleteForever, MdEditNote } from "react-icons/md";
-import { IUserDecodedResult } from "../../../types/kanbam";
+import { IError, IUserDecodedResult } from "../../../types/kanbam";
 import "./Members.scss";
 import { IoMdClose } from "react-icons/io";
 import { INewTheme } from "../../../types/styledComp";
@@ -10,11 +10,11 @@ import useFetchAllWorkspaceMembersByWorkspaceId from "../../../hooks/useFetchAll
 import ErrorMessage from "../../notifications/ErrorMessage";
 import Loading from "../../notifications/Loading";
 import AreYouSure from "../../../utils/areYouSure/AreYouSure";
-import { IError } from "../../../types/status.type";
 import UpdateMember, { IUpdateMemberDetail } from "./UpdateMember";
 import useUpdates from "../../../utils/api/useUpdates";
 import useDeletes from "../../../utils/api/useDeletes";
 import { useAppSelector } from "../../../features/hooks";
+import { logger } from "../../../utils/logger";
 
 const MembersStyled = styled.div<INewTheme>`
   background-color: ${({ $themeList, $newtheme }) =>
@@ -88,7 +88,7 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
     } catch (err) {
       setRequestError(true);
       const error = err as IError;
-      console.log("Error Creating Board: ", error.message);
+      logger("error", `Error Creating Board: ${error.message}`);
     }
   };
 
@@ -98,7 +98,7 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
       refetchWrMembers();
     } catch (err) {
       const error = err as IError;
-      console.log("Error Creating Board: ", error.message);
+      logger("error", `Error Creating Board: ${error.message}`);
     } finally {
       setShowAreYouSureModal(false);
     }

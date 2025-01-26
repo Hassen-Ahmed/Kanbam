@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { addAllList } from "../../features/slices/listsSlice";
-import { IListsWithCards, ICard, ICardCreate } from "../../types/kanbam";
-import { IError } from "../../types/status.type";
+import {
+  IListsWithCards,
+  ICard,
+  ICardCreate,
+  IError,
+} from "../../types/kanbam";
 
 export const createNewTask = async (
   dispatchRdx: any,

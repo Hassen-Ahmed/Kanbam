@@ -1,9 +1,8 @@
 import { useCallback, useState } from "react";
-import { IError } from "../../../../../types/status.type";
 import { INewTheme } from "../../../../../types/styledComp";
 
 import { MdEditNote } from "react-icons/md";
-import { ICard } from "../../../../../types/kanbam";
+import { ICard, IError } from "../../../../../types/kanbam";
 import useUpdates from "../../../../../utils/api/useUpdates";
 import useSignalRConnection from "../../../../../hooks/useSignalRConnection";
 import styled from "styled-components";
