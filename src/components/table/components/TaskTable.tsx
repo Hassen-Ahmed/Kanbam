@@ -7,11 +7,11 @@ import { useState } from "react";
 import { ITaskContent } from "../Table";
 import CardModal from "../../card/modal/CardModal";
 import AreYouSure from "../../../utils/areYouSure/AreYouSure";
-import { IError } from "../../../types/status.type";
-import { ICard } from "../../../types/kanbam";
+import { ICard, IError } from "../../../types/kanbam";
 import useDeletes from "../../../utils/api/useDeletes";
 import useAnimatekComp from "../../../hooks/useAnimatekComp";
 import { useAppSelector } from "../../../features/hooks";
+import { logger } from "../../../utils/logger";
 
 const TaskTableStyled = styled.div<INewTheme>`
   background-color: ${({ $themeList, $newtheme }) =>
@@ -81,7 +81,7 @@ export default function TaskTable({
       handleRefetch();
     } catch (err) {
       const error = err as IError;
-      console.log("Error on deleting card, err:", error.message);
+      logger("error", `Error on deleting card, err: ${error.message}`);
     } finally {
       setShowAreYouSure(false);
     }

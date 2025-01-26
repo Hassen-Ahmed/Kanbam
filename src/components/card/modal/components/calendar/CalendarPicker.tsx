@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "./CalendarPicker.scss";
 import { VscClose } from "react-icons/vsc";
-import { IError } from "../../../../../types/status.type";
 
 import { CalendarStyled } from "./CalendarStyled";
 import { months } from "../../../../../utils/constantDatas/months";
-import { ICard } from "../../../../../types/kanbam";
+import { ICard, IError } from "../../../../../types/kanbam";
 import useUpdates from "../../../../../utils/api/useUpdates";
 import { useAppSelector } from "../../../../../features/hooks";
+import { logger } from "../../../../../utils/logger";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -145,9 +145,9 @@ export default function CalendarPicker({
       await updateCard(cardDetail.id!, cardDetail);
     } catch (err) {
       const error = err as IError;
-      console.log(`Error message: ${error.message}`);
+      logger("error", `Error message: ${error.message}`);
     } finally {
-      console.log("Card dates are updating...");
+      logger("info", "Card dates are updating...");
       handleIsDatePressed(false);
     }
   };

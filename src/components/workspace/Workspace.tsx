@@ -9,7 +9,6 @@ import { IoMdAdd } from "react-icons/io";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 import NewItem, { IItemDetail } from "./components/NewItem";
 import Loading from "../notifications/Loading";
-import { IError } from "../../types/status.type";
 import AreYouSure from "../../utils/areYouSure/AreYouSure";
 import Item from "./components/Item";
 import UpdateItem from "./components/UpdateItem";
@@ -21,7 +20,7 @@ import useUpdates from "../../utils/api/useUpdates";
 import usePosts from "../../utils/api/usePosts";
 import useDeletes from "../../utils/api/useDeletes";
 import useSignalRConnection from "../../hooks/useSignalRConnection";
-import { IBoard } from "../../types/kanbam";
+import { IBoard, IError } from "../../types/kanbam";
 import { logger } from "../../utils/logger";
 import { useAppSelector } from "../../features/hooks";
 

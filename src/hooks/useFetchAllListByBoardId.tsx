@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { IError } from "../types/status.type";
 import { handleReorderingData } from "../utils/order_and_update";
 import useGets from "../utils/api/useGets";
 import axios from "axios";
 import { handlingAxioxError } from "../utils/errorHandling";
 import { useAppDispath, useAppSelector } from "../features/hooks";
 import { addAllList } from "../features/slices/listsSlice";
-import { IListsWithCards } from "../types/kanbam";
+import { IError, IListsWithCards } from "../types/kanbam";
 
 export default function useFetchAllListByBoardId(b_id: string) {
   const dispatchRdx = useAppDispath();

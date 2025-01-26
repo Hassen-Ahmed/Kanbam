@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import NewItem, { IItemDetail } from "./components/NewItem";
 import Loading from "../notifications/Loading";
-import { IError } from "../../types/status.type";
 import Item from "./components/Item";
 import AreYouSure from "../../utils/areYouSure/AreYouSure";
 import UpdateItem from "./components/UpdateItem";
@@ -15,8 +14,8 @@ import usePosts from "../../utils/api/usePosts";
 import useDeletes from "../../utils/api/useDeletes";
 import ErrorMessage from "../notifications/ErrorMessage";
 import { useAppSelector } from "../../features/hooks";
-import { statusType } from "../../features/slices/profileSlice";
-import { IWorkspace } from "../../types/kanbam";
+import { IError, IWorkspace, StatusType } from "../../types/kanbam";
+import { logger } from "../../utils/logger";
 
 const WorkspacesStyled = styled.div<INewTheme>`
   background-color: ${({ $themeList, $newtheme }) =>
@@ -81,7 +80,7 @@ export default function WorkspaceList() {
     } catch (err) {
       setRequestError(true);
       const error = err as IError;
-      console.log("Error Creating Board: ", error.message);
+      logger("error", `Error Creating Board: ${error.message}`);
     }
   };
 
@@ -94,7 +93,7 @@ export default function WorkspaceList() {
     } catch (err) {
       setRequestError(true);
       const error = err as IError;
-      console.log("Error Creating Board: ", error.message);
+      logger("error", `Error Creating Board: ${error.message}`);
     }
   };
 
@@ -118,13 +117,13 @@ export default function WorkspaceList() {
     } catch (err) {
       setRequestError(true);
       const error = err as IError;
-      console.log("Error Creating Board: ", error.message);
+      logger("error", `Error Creating Board: ${error.message}`);
     } finally {
       setShowAreYouSureModal(false);
     }
   };
 
-  const profileElem = (profileStatus: statusType) => {
+  const profileElem = (profileStatus: StatusType) => {
     switch (profileStatus) {
       case "loading":
         return <p>Loading ... </p>;

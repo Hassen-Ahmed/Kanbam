@@ -1,4 +1,3 @@
-import { IError } from "../../../../../types/status.type";
 import {
   FcHighPriority,
   FcLowPriority,
@@ -7,10 +6,11 @@ import {
 import { VscClose } from "react-icons/vsc";
 import { INewTheme } from "../../../../../types/styledComp";
 import styled from "styled-components";
-import { ICard } from "../../../../../types/kanbam";
+import { ICard, IError } from "../../../../../types/kanbam";
 import useUpdates from "../../../../../utils/api/useUpdates";
 import { useAppSelector } from "../../../../../features/hooks";
 import "./Priorities.scss";
+import { logger } from "../../../../../utils/logger";
 
 interface IPriorityCollection {
   cardDetail: ICard;
@@ -62,9 +62,9 @@ export default function Priorities({
       await updateCard(cardDetail.id!, cardDetail);
     } catch (err) {
       const error = err as IError;
-      console.log(`Error message: ${error.message}`);
+      logger("error", `Error message: ${error.message}`);
     } finally {
-      console.log("Send put request for Priority...");
+      logger("info", "Send put request for Priority...");
     }
 
     handleIsPriorityPressed(false);

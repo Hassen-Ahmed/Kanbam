@@ -1,5 +1,5 @@
 import { MdDeleteForever, MdEditNote } from "react-icons/md";
-import { IUserDecodedResult } from "../../../types/kanbam";
+import { IError, IUserDecodedResult } from "../../../types/kanbam";
 import "./Members.scss";
 import { IoMdClose } from "react-icons/io";
 import { INewTheme } from "../../../types/styledComp";
@@ -12,11 +12,11 @@ import useFetchAllBoardMembersByBoardId from "../../../hooks/useFetchAllBoardMem
 import UpdateMember, {
   IUpdateMemberDetail,
 } from "../../workspace/components/UpdateMember";
-import { IError } from "../../../types/status.type";
 import AreYouSure from "../../../utils/areYouSure/AreYouSure";
 import useUpdates from "../../../utils/api/useUpdates";
 import useDeletes from "../../../utils/api/useDeletes";
 import { useAppSelector } from "../../../features/hooks";
+import { logger } from "../../../utils/logger";
 
 const MembersStyled = styled.div<INewTheme>`
   background-color: ${({ $themeList, $newtheme }) =>
@@ -94,7 +94,7 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
     } catch (err) {
       setRequestError(true);
       const error = err as IError;
-      console.log("Error Creating Board: ", error.message);
+      logger("error", `Error Creating Board: ${error.message}`);
     }
   };
 

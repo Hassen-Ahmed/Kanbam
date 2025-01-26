@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { IError } from "../types/status.type";
-import { IWorkspaceMember } from "../types/kanbam";
+import { IError, IWorkspaceMember } from "../types/kanbam";
 import useGets from "../utils/api/useGets";
 import axios from "axios";
 import { handlingAxioxError } from "../utils/errorHandling";

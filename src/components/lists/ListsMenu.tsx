@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { VscClose } from "react-icons/vsc";
 import { FaArrowRotateLeft } from "react-icons/fa6";
 
-import { IError } from "../../types/status.type";
-
 import "./ListsMenu.scss";
 import { INewTheme } from "../../types/styledComp";
 import styled from "styled-components";
@@ -12,6 +10,7 @@ import useDeletes from "../../utils/api/useDeletes";
 import { logger } from "../../utils/logger";
 import { useAppDispath, useAppSelector } from "../../features/hooks";
 import { filtetListsById } from "../../features/slices/listsSlice";
+import { IError } from "../../types/kanbam";
 
 const ListMenuStyled = styled.div<INewTheme>`
   .lists-menu {
