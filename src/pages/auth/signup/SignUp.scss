@@ -25,7 +25,8 @@
       color: var.$color-font-form-01;
     }
     span {
-      color: rgba(var.$color-font-form-01, 0.5);
+      color: var.$color-font-form-01;
+      font-weight: 600;
     }
   }
 }
