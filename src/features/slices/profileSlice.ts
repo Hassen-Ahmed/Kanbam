@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fetchProfileThunk } from "../thunks/profileThunk";
-
-export type statusType = "idle" | "loading" | "failed";
+import { StatusType } from "../../types/kanbam";
 
 interface IInitialState {
-  status: statusType;
+  status: StatusType;
   profile: {
     email: string;
     userName: string;
