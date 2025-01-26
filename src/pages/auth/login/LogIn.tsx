@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { FaArrowRotateLeft } from "react-icons/fa6";
-
 import { loginData } from "../../../utils/constantDatas/formData";
-import { IError } from "../../../types/status.type";
-
 import FormInput from "../formInput/FormInput";
-import "./LogIn.scss";
 import usePosts from "../../../utils/api/usePosts";
 import { useAppDispath } from "../../../features/hooks";
 import { setAsscessToken } from "../../../features/slices/authSlice";
+import { logger } from "../../../utils/logger";
+import { toasterHandler } from "../../../utils/toaster";
+import "./LogIn.scss";
+import { IError } from "../../../types/kanbam";
 
 const LogIn = () => {
   const dispatchRdx = useAppDispath();
@@ -48,32 +48,48 @@ const LogIn = () => {
     } catch (err) {
       setIsAuthorizing(false);
       setIsWrongUser(true);
+
+      toasterHandler({
+        dispathFun: dispatchRdx,
+        message: "Wrong credential, please try again!",
+        notificationType: "error",
+        duration: 5000,
+      });
+
       const error = err as IError;
-      console.log(error.message);
+      logger("error", error.message);
     }
   };
 
   // JSX
 
   return (
-    <form onSubmit={(ev) => handleLoginForm(ev)} className="login-form">
+    <form onSubmit={handleLoginForm} className="login-form" aria-live="polite">
       {formData.map((input) => {
         return (
           <FormInput
             key={input.id}
             {...input}
             value={userDetails[input.name != "email" ? "password" : input.name]}
+            aria-label={input.label}
             handleOnChange={handleOnChange}
           />
         );
       })}
 
-      <div
-        className="login_btn"
-        style={{ opacity: `${isAuthorizing ? "0.5" : "1"}` }}
-      >
-        <button disabled={isAuthorizing ? true : false}>
-          Log in
+      <div className="login-forgot-pw">
+        <Link to={"/auth/forgot-password"} aria-label="Forgot password link">
+          <span>Forgot Password?</span>
+        </Link>
+      </div>
+
+      <div className={`login_btn ${isAuthorizing ? "button-disabled" : ""}`}>
+        <button
+          disabled={isAuthorizing}
+          aria-live="polite"
+          aria-label="Log in button"
+        >
+          {isAuthorizing ? "Sending..." : "Log in"}
           {isAuthorizing && (
             <span className="loading-notifiation">
               <FaArrowRotateLeft />
@@ -91,14 +107,14 @@ const LogIn = () => {
           <span className="label">EMAIL</span>: test@gmail.com
         </span>
         <span>
-          <span className="label">PASSWORD</span>: #test1234
+          <span className="label">PASSWORD</span>: #Test1234
         </span>
       </div>
 
       <div className="login__create-account">
-        <Link to={"/auth/signup"}>
+        <Link to={"/auth/signup"} aria-label="Create new account link">
           <p>
-            No account? <span>Create one</span>{" "}
+            No account? <span>Create one</span>
           </p>
         </Link>
       </div>

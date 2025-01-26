@@ -10,7 +10,16 @@
   &-password {
     @include mixn.auth-credential;
   }
+  &-forgot-pw {
+    width: 100%;
+    @include mixn.flexy(row, flex-end, center, 4rem);
 
+    span {
+      color: var.$color-font-form-01;
+      font-size: var.$fsi-12;
+      font-weight: 600;
+    }
+  }
   &_btn {
     @include mixn.auth-btn;
     margin: 1rem 0;
@@ -26,7 +35,8 @@
     }
 
     span {
-      color: rgba(var.$color-font-form-01, 0.5);
+      color: var.$color-font-form-01;
+      font-weight: 600;
     }
   }
 }
