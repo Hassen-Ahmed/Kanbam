@@ -44,10 +44,28 @@ export default function usePosts() {
     [kanbamApi]
   );
 
-  // Auth login
+  // Auth RevokeRefreshToken
   const postAuthRevoke = useCallback(async () => {
     await kanbamApi.post("/auth/RevokeRefreshToken");
   }, [kanbamApi]);
+
+  // Auth postAuthForgotPassword
+  const postAuthForgotPassword = useCallback(
+    async (email: string) =>
+      await kanbamApi.post("/auth/ForgotPassword", { email }),
+    [kanbamApi]
+  );
+
+  // Auth postAuthResetPassword
+  const postAuthResetPassword = useCallback(
+    async (email: string, newPassword: string, token: string) =>
+      await kanbamApi.post("/auth/ResetPassword", {
+        email,
+        newPassword,
+        token,
+      }),
+    [kanbamApi]
+  );
 
   // WorkspaceMember
   const postWorkspaceMemeber = useCallback(
@@ -137,6 +155,8 @@ export default function usePosts() {
     postAuthRegistarion,
     postAuthLogin,
     postAuthRevoke,
+    postAuthForgotPassword,
+    postAuthResetPassword,
     postWorkspaceMemeber,
     postWorkspace,
     postBoardMemeber,
