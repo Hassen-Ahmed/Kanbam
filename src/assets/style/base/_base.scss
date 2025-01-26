@@ -30,9 +30,7 @@ body {
   background-color: #6e849600;
 }
 
-// .loading-notification__container {
-//   position: fixed;
-//   top: 50%;
-//   left: 50%;
-//   transform: translate(-50%, -50%);
-// }
+.button-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
