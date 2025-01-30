@@ -141,7 +141,7 @@ const LogIn = () => {
             <GoogleLogin
               onSuccess={handleGoogleLogin}
               onError={handleGoogleLoginError}
-              size="large"
+              size="medium"
             />
           </div>
         ) : null}
