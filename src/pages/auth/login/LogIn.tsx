@@ -16,6 +16,7 @@ import {
   GoogleOAuthProvider,
 } from "@react-oauth/google";
 import "./LogIn.scss";
+import { clearAllToasts } from "../../../features/slices/kanbamSlice";
 
 const LogIn = () => {
   const dispatchRdx = useAppDispath();
@@ -71,9 +72,9 @@ const LogIn = () => {
         dispathFun: dispatchRdx,
         message: "Almost there, please wait...",
         notificationType: "info",
-        duration: 3000,
       });
       const data = await postAuthGoogleLogin(credentialResponse.credential!);
+      dispatchRdx(clearAllToasts());
       toasterHandler({
         dispathFun: dispatchRdx,
         message: "Welcome to Kanbam!",
