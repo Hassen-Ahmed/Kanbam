@@ -150,4 +150,7 @@ export type StatusType = "idle" | "loading" | "failed";
 export interface IError {
   message: string;
   statusCode: number;
+  response:{
+    data:string
+  }
 }
