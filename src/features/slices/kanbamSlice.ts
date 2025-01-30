@@ -27,12 +27,14 @@ export const kanbamSlice = createSlice({
   name: "kanbam",
   initialState,
   reducers: {
+    // Item dragging
     setItemDragging: (state, action: PayloadAction<IItemDragging | null>) => {
       state.itemDragging.current = action.payload;
     },
     setSearchText: (state, action: PayloadAction<string>) => {
       state.searchText = action.payload.trim().toLowerCase();
     },
+    // Toasts
     addToast: (state, action: PayloadAction<Omit<Toast, "id">>) => {
       const id = Math.random().toString(36).substring(2, 9);
       state.toasts.push({ id, ...action.payload });
@@ -42,8 +44,16 @@ export const kanbamSlice = createSlice({
         (toast) => toast.id !== action.payload
       );
     },
+    clearAllToasts: (state) => {
+      state.toasts = [];
+    },
   },
 });
 
-export const { setItemDragging, setSearchText, addToast, removeToast } =
-  kanbamSlice.actions;
+export const {
+  setItemDragging,
+  setSearchText,
+  addToast,
+  removeToast,
+  clearAllToasts,
+} = kanbamSlice.actions;
