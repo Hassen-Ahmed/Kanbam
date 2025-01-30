@@ -67,6 +67,20 @@ export default function usePosts() {
     [kanbamApi]
   );
 
+  // Auth postAuthGoogleLogin
+  const postAuthGoogleLogin = useCallback(
+    async (token: string) => {
+      // Send the Google ID token to my backend API
+      const { data } = await kanbamApi.post("/auth/google-login", {
+        token,
+      });
+
+      return data;
+    },
+
+    [kanbamApi]
+  );
+
   // WorkspaceMember
   const postWorkspaceMemeber = useCallback(
     async (newWorkspaceMember: IWorkspaceMemberCreate) => {
@@ -157,6 +171,7 @@ export default function usePosts() {
     postAuthRevoke,
     postAuthForgotPassword,
     postAuthResetPassword,
+    postAuthGoogleLogin,
     postWorkspaceMemeber,
     postWorkspace,
     postBoardMemeber,
