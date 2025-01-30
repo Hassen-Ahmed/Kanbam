@@ -30,7 +30,9 @@
 
     & > div {
       &,
-      & > div {
+      & > div,
+      & > div > div {
+        @include mixn.flexy();
         width: 100%;
         border-radius: var.$bor-2;
         overflow: hidden;
