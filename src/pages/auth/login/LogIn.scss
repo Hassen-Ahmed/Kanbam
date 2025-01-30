@@ -24,6 +24,21 @@
     @include mixn.auth-btn;
     margin: 1rem 0;
   }
+  &-google {
+    width: 100%;
+    @include mixn.flexy();
+
+    & > div {
+      width: 100%;
+      border-radius: var.$bor-2;
+      overflow: hidden;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        transform: translateY(-0.2rem);
+      }
+    }
+  }
 
   &__create-account {
     align-self: center;
