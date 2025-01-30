@@ -17,9 +17,11 @@ import {
 } from "@react-oauth/google";
 import "./LogIn.scss";
 import { clearAllToasts } from "../../../features/slices/kanbamSlice";
+import GuestTip from "./GuestTip";
 
 const LogIn = () => {
   const dispatchRdx = useAppDispath();
+  const navigate = useNavigate();
   const { postAuthLogin, postAuthGoogleLogin } = usePosts();
   const [isAuthorizing, setIsAuthorizing] = useState(false);
   const [isWrongUser, setIsWrongUser] = useState(false);
@@ -28,9 +30,8 @@ const LogIn = () => {
     password: "",
   });
 
-  const navigate = useNavigate();
-
   // end of hooks
+
   const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
   const formData = loginData();
 
@@ -73,7 +74,9 @@ const LogIn = () => {
         message: "Almost there, please wait...",
         notificationType: "info",
       });
+
       const data = await postAuthGoogleLogin(credentialResponse.credential!);
+
       dispatchRdx(clearAllToasts());
       toasterHandler({
         dispathFun: dispatchRdx,
@@ -150,15 +153,6 @@ const LogIn = () => {
           {isWrongUser && <p>Wrong credential, please try again!</p>}
         </div>
 
-        <div className="tips">
-          <span>
-            <span className="label">EMAIL</span>: test@gmail.com
-          </span>
-          <span>
-            <span className="label">PASSWORD</span>: #Test1234
-          </span>
-        </div>
-
         <div className="login__create-account">
           <Link to={"/auth/signup"} aria-label="Create new account link">
             <p>
@@ -166,6 +160,7 @@ const LogIn = () => {
             </p>
           </Link>
         </div>
+        <GuestTip />
       </form>
     </GoogleOAuthProvider>
   );
