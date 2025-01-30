@@ -28,16 +28,18 @@
     width: 100%;
     @include mixn.flexy();
 
-    .L5Fo6c-sM5MNb,
-    #gsi_83032_349055-wrapper {
-      @include mixn.flexy();
-    }
-
     & > div {
-      width: 100%;
-      border-radius: var.$bor-2;
-      overflow: hidden;
-      transition: all 0.2s ease-in-out;
+      &,
+      & > div {
+        width: 100%;
+        border-radius: var.$bor-2;
+        overflow: hidden;
+        transition: all 0.2s ease-in-out;
+      }
+
+      iframe {
+        width: 100%;
+      }
 
       &:hover {
         transform: translateY(-0.2rem);
