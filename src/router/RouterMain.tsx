@@ -11,6 +11,45 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
+    path: "/donation-payment",
+    async lazy() {
+      const CheckoutForm = await import("../pages/payment/CheckoutForm");
+      return { Component: CheckoutForm.default };
+    },
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/payment",
+    async lazy() {
+      const PaymentStatus = await import(
+        "../pages/payment/payment-status/PaymentStatus"
+      );
+      return { Component: PaymentStatus.default };
+    },
+    errorElement: <ErrorPage />,
+  },
+
+  {
+    path: "/legal/privacy-policy",
+    async lazy() {
+      const PrivacyPolicy = await import(
+        "../pages/payment/legal-privacy-terms/PrivacyPolicy"
+      );
+      return { Component: PrivacyPolicy.default };
+    },
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/legal/terms-of-service",
+    async lazy() {
+      const TermsOfService = await import(
+        "../pages/payment/legal-privacy-terms/TermsOfService"
+      );
+      return { Component: TermsOfService.default };
+    },
+    errorElement: <ErrorPage />,
+  },
+  {
     path: "/auth",
     async lazy() {
       const Auth = await import("../routes/auth/Auth");
