@@ -81,6 +81,19 @@ export default function usePosts() {
     [kanbamApi]
   );
 
+  // Donation payment postDonationCheckout
+  const postDonationCheckout = useCallback(
+    async (amount: number) => {
+      const { data } = await kanbamApi.post("payment/create-checkout-session", {
+        amount,
+      });
+
+      return data;
+    },
+
+    [kanbamApi]
+  );
+
   // WorkspaceMember
   const postWorkspaceMemeber = useCallback(
     async (newWorkspaceMember: IWorkspaceMemberCreate) => {
@@ -172,6 +185,7 @@ export default function usePosts() {
     postAuthForgotPassword,
     postAuthResetPassword,
     postAuthGoogleLogin,
+    postDonationCheckout,
     postWorkspaceMemeber,
     postWorkspace,
     postBoardMemeber,
