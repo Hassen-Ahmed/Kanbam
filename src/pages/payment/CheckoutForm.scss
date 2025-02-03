@@ -1,0 +1,87 @@
+@use "../../assets/style/abstracts/mixins" as mixn;
+@use "../../assets/style/abstracts/variable" as var;
+
+.donation {
+  background-color: rgba(var.$bg-auth, 0.2);
+  width: auto;
+  margin: auto;
+  text-align: center;
+  padding: 4rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  @media screen and (max-width: 700px) {
+    width: 98%;
+  }
+
+  &-wrapper {
+    @include mixn.flexy(column);
+    width: 100vw;
+    height: 100vh;
+    background-image: var.$bg-image-home;
+  }
+
+  .title {
+    font-size: 2.4rem;
+    color: var.$color-font-form-01;
+    font-weight: 600;
+  }
+
+  .subtitle {
+    font-size: 1.6rem;
+    color: var.$color-font-form-01;
+    margin: 1rem;
+    margin-bottom: 4rem;
+  }
+
+  .donation-options {
+    @include mixn.flexy(row, center, center, 1rem);
+    margin: 2rem;
+
+    .donation-button {
+      background: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.3s;
+
+      &:hover {
+        background: #d4a017;
+        color: #fff;
+      }
+
+      &.selected {
+        background: #f4b400;
+        color: white;
+      }
+    }
+  }
+
+  .donate-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: 0.1rem solid rgba(92, 116, 212, 0.25);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      background: #218838;
+    }
+  }
+
+  .policy-text {
+    margin-top: 2rem;
+    a {
+      margin: 0.5rem;
+      display: block;
+      text-decoration: underline;
+      color: blue;
+    }
+  }
+}
