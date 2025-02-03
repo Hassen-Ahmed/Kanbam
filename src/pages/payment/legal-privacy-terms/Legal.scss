@@ -1,0 +1,35 @@
+.legal-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.legal-container h1 {
+  text-align: center;
+  color: #333;
+}
+
+.legal-container h2 {
+  margin-top: 20px;
+  color: #444;
+}
+
+.legal-container p,
+.legal-container ul {
+  line-height: 1.6;
+  color: #555;
+}
+
+.legal-container ul {
+  padding-left: 20px;
+}
+
+.legal-container a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.legal-container a:hover {
+  text-decoration: underline;
+}
