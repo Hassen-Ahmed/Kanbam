@@ -1,0 +1,51 @@
+@use "../../../assets/style/abstracts/mixins" as mixn;
+@use "../../../assets/style/abstracts/variable" as var;
+
+.payment-status {
+  background-color: rgba(var.$bg-auth, 0.2);
+  color: var.$color-font-form-01;
+  width: auto;
+  margin: auto;
+  text-align: center;
+  padding: 4rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: #fff 0.1rem dashed;
+
+  @media screen and (max-width: 700px) {
+    width: 98%;
+  }
+
+  &-wrapper {
+    @include mixn.flexy(column);
+    width: 100vw;
+    height: 100vh;
+    background-image: var.$bg-image-home;
+  }
+  .header {
+    @include mixn.flexy(row, center, center, 1rem);
+    margin: 2rem;
+  }
+
+  .heading {
+    font-size: 2.4rem;
+    color: var.$color-font-form-01;
+    font-weight: 600;
+  }
+  .btn {
+    background: rgba(var.$color-font-form-01, 0.5);
+    color: #fff;
+    border: none;
+    margin: 2rem;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      background: var.$color-font-form-01;
+      transform: translateY(-0.2rem);
+    }
+  }
+}

@@ -1,15 +1,12 @@
-import { createPortal } from "react-dom";
 import MenuAccountLogo from "./MenuAccountLogo";
-import { useState } from "react";
-import ConfettiComp from "../Confetti";
-import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { Link, useNavigate } from "react-router-dom";
 import { INewTheme } from "../../types/styledComp";
 import { Hr } from "../../utils/constantDatas/styledUtils";
 import usePosts from "../../utils/api/usePosts";
 import ThemeList from "./components/ThemeList";
-import "./MenuAccount.scss";
 import { useAppSelector } from "../../features/hooks";
+import "./MenuAccount.scss";
 
 const MenuStyled = styled.div<INewTheme>`
   .menu {
@@ -55,7 +52,6 @@ const MenuAccount = ({
   setIsAccountMenuVisible,
 }: IMenuVisiblity) => {
   const { postAuthRevoke } = usePosts();
-  const [areWeCelebrating, setAreWeCelebrating] = useState(false);
   const navigate = useNavigate();
   const { themeName, themeList } = useAppSelector((state) => state.theme);
 
@@ -63,6 +59,10 @@ const MenuAccount = ({
     navigate("/auth/login");
     localStorage.clear();
     await postAuthRevoke();
+  };
+
+  const handleDonationPayment = () => {
+    window.open("/donation-payment", "_blank");
   };
 
   return (
@@ -84,7 +84,6 @@ const MenuAccount = ({
               $themename={themeName}
               $group="secondary"
             />
-
             <div className="theme-btn-container">
               <label htmlFor="menu-theme">
                 <div className="theme-btn-main">
@@ -93,11 +92,9 @@ const MenuAccount = ({
               </label>
             </div>
             <input type="checkbox" name="menu-theme" id="menu-theme" />
-
             <div id="themes">
               <ThemeList />
             </div>
-
             <Link
               className="menu__workspaces"
               to={`/kanbam/w/`}
@@ -109,15 +106,9 @@ const MenuAccount = ({
             <div className="menu__logout" onClick={handleLogout}>
               <h2 className="menu__logout--text">Logout</h2>
             </div>
-            {areWeCelebrating && createPortal(<ConfettiComp />, document.body)}
-            <div
-              className="menu__donate"
-              onClick={() => {
-                setAreWeCelebrating((preValue) => {
-                  return preValue ? false : true;
-                });
-              }}
-            >
+
+            {/* This is the donation button */}
+            <div className="menu__donate" onClick={handleDonationPayment}>
               <h2 className="menu__donate--text">Donate</h2>
             </div>
           </div>
