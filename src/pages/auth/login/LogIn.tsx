@@ -18,6 +18,7 @@ import {
 import "./LogIn.scss";
 import { clearAllToasts } from "../../../features/slices/kanbamSlice";
 import GuestTip from "./GuestTip";
+import CloudFlareTurnstile from "../captcha/cloudflare/CloudFlareTurnstile";
 
 const LogIn = () => {
   const dispatchRdx = useAppDispath();
@@ -29,6 +30,7 @@ const LogIn = () => {
     email: "",
     password: "",
   });
+  const [isCaptchaVisible, setIsCaptchaVisible] = useState(false);
 
   // end of hooks
 
@@ -42,16 +44,28 @@ const LogIn = () => {
     });
   };
 
-  const handleLoginForm = async (ev: React.FormEvent<HTMLFormElement>) => {
+  // const onVeriyCloudflareTurnstile = (token: string) =>
+  //   setUserDetails((prevDetail) => ({ ...prevDetail, token }));
+
+  const trigerCaptchaTurnstile = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
+    console.log("userDetail: ", userDetails);
+    setIsCaptchaVisible(true);
+  };
+
+  const handleLogin = async (token: string) => {
     setIsAuthorizing(true);
 
     try {
-      const data: { accessToken: string } = await postAuthLogin(userDetails);
+      const data: { accessToken: string } = await postAuthLogin({
+        ...userDetails,
+        token,
+      });
 
       dispatchRdx(setAsscessToken(data.accessToken));
       navigate("/kanbam/w");
     } catch (err) {
+      setIsCaptchaVisible(false);
       setIsAuthorizing(false);
       setIsWrongUser(true);
 
@@ -101,7 +115,7 @@ const LogIn = () => {
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <form
-        onSubmit={handleLoginForm}
+        onSubmit={trigerCaptchaTurnstile}
         className="login-form"
         aria-live="polite"
       >
@@ -161,6 +175,7 @@ const LogIn = () => {
           </Link>
         </div>
         <GuestTip />
+        {isCaptchaVisible && <CloudFlareTurnstile onVerify={handleLogin} />}
       </form>
     </GoogleOAuthProvider>
   );
