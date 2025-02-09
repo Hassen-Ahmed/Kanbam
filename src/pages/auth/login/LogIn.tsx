@@ -44,12 +44,8 @@ const LogIn = () => {
     });
   };
 
-  // const onVeriyCloudflareTurnstile = (token: string) =>
-  //   setUserDetails((prevDetail) => ({ ...prevDetail, token }));
-
   const trigerCaptchaTurnstile = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    console.log("userDetail: ", userDetails);
     setIsCaptchaVisible(true);
   };
 
