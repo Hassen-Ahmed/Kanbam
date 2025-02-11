@@ -55,7 +55,7 @@ const MenuAccount = ({
   const { themeName, themeList } = useAppSelector((state) => state.theme);
 
   const handleLogout = async () => {
-    const newTab = window.open("/auth/login", "_blank");
+    const newTab = window.open("/auth/login");
 
     if (newTab) {
       window.close();
