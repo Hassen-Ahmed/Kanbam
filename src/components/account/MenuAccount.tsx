@@ -1,6 +1,6 @@
 import MenuAccountLogo from "./MenuAccountLogo";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { INewTheme } from "../../types/styledComp";
 import { Hr } from "../../utils/constantDatas/styledUtils";
 import usePosts from "../../utils/api/usePosts";
@@ -52,11 +52,15 @@ const MenuAccount = ({
   setIsAccountMenuVisible,
 }: IMenuVisiblity) => {
   const { postAuthRevoke } = usePosts();
-  const navigate = useNavigate();
   const { themeName, themeList } = useAppSelector((state) => state.theme);
 
   const handleLogout = async () => {
-    navigate("/auth/login");
+    const newTab = window.open("/auth/login", "_blank");
+
+    if (newTab) {
+      window.close();
+    }
+
     localStorage.clear();
     await postAuthRevoke();
   };
