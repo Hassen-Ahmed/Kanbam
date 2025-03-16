@@ -72,7 +72,8 @@ export default function Members({ w_id, setShowMembers }: IMembers) {
         const filterMemberByUserId = dataWrMembers.filter(
           (m) => m.userId == userId
         );
-        setCurrentUserRole(filterMemberByUserId[0].role);
+
+        setCurrentUserRole(filterMemberByUserId[0]?.role);
       }
     }
   }, [dataWrMembers, accessToken]);

@@ -78,7 +78,8 @@ export default function Members({ b_id, setShowMembers }: IMembers) {
         const filterMemberByUserId = dataBoardMembers.filter(
           (m) => m.userId == userId
         );
-        setCurrentUserRole(filterMemberByUserId[0].role);
+
+        setCurrentUserRole(filterMemberByUserId[0]?.role);
       }
     }
   }, [dataBoardMembers, accessToken]);
